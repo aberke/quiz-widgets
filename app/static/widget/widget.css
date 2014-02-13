@@ -1,0 +1,78 @@
+/*
+	total width: 550px;
+	each answer width: 170px;
+		x2 = 340px
+	-> question width: 210px;
+
+*/
+
+
+.huffpostlabs-quiz {
+	width: 550px;
+	height: 300px;
+	margin: auto;
+
+	border: 2px solid gray;
+}
+.huffpostlabs-quiz .quiz-title {
+	padding: 8px;
+	margin: 0 10px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid gray;
+}
+.huffpostlabs-quiz .question-text {
+	display: inline-block;
+	float: left;
+	width: 204px; /* change to 210 after getting rid of borders */
+}
+.huffpostlabs-quiz .question-text p{
+	text-align: center;
+	font-size: 16px;
+	padding: 20px;
+	padding-top: 25px;
+}
+
+
+.huffpostlabs-quiz .answer {
+	border: 1px solid black;
+	display: inline-block;
+	width: 170px;
+}
+.huffpostlabs-quiz .answer-left {
+	float: left;
+}
+.huffpostlabs-quiz .answer-right {
+	float: right;
+}
+
+.huffpostlabs-quiz .answer-img {
+	width: 170px;
+	height: 170px;
+
+}
+.huffpostlabs-quiz .answer-text p{
+	text-align: center;
+	margin: 0;
+	padding: 5px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+
+.huffpostlabs-quiz .outcome-img {
+	width: 232px;
+	height: 232px;
+}
+.huffpostlabs-quiz .outcome-text {
+	text-align: center;
+	width: 300px;
+	display: inline-block;
+	margin: auto;
+}
+
+
+
+
+

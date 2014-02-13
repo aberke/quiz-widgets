@@ -1,0 +1,74 @@
+.bold {
+	font-weight: bold;
+}
+.text-decoration-none, .text-decoration-none:hover {
+	text-decoration: none;
+}
+input.error, select.error, textarea.error {
+	border-color: red;
+}
+
+
+body {
+	background-color: white;
+}
+.header{
+	border-bottom: 2px solid aquamarine;
+	margin:10px;
+}
+footer {
+	text-align: center;
+	border-top: 2px solid lavender;
+	padding: 15px;
+}
+
+.view {
+	/*border: 1px solid purple;*/
+}
+
+/********************** new-page ******************/
+
+#new-page section {
+	width: 550px;
+	margin: 30px auto;
+	padding-bottom: 15px;
+	border-bottom: 1px solid lightgray;
+}
+#new-page #instructions .btn {
+	font-size: 18px;
+	font-weight: bold;
+}
+#instructions-text {
+	padding: 10px;
+	color: gray;
+}
+
+#new-page #outcomes {
+	margin-bottom: 10px;
+}
+
+
+#new-page label {
+	display: block;
+	margin-top: 5px;
+}
+#new-page input {
+	width: 90%;
+}
+#new-page .huffpostlabs-quiz {
+	margin: 10px auto;
+}
+
+#new-page #new-question-answer-1, #new-page #new-question-answer-2 {
+	width: 265px;
+	display: inline-block;
+}
+#new-page #new-question-answer-1 {
+	margin-right: 15px;
+}
+#new-page #new-question-answer-1 input,#new-page #new-question-answer-2 input{
+	width: 100%;
+}
+
+
+

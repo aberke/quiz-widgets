@@ -1,0 +1,113 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<title>Swipe 2</title>
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
+<link href='/lib/swipe/style.css' rel='stylesheet'/>
+<style>
+
+/* Swipe 2 required styles */
+
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
+}
+
+/* END required styles */
+
+</style>
+
+</head>
+<body>
+
+<h1>Swipe 2</h1>
+
+
+
+<div id='mySwipe' style='max-width:500px;margin:0 auto' class='swipe'>
+  <div class='swipe-wrap'>
+    
+    <div class='swipe-slide'>
+      <div class='question-container'>1</div>
+    </div>
+    
+    <div class='swipe-slide'>
+      <div class='question-container'>0</div>
+    </div>
+    
+    <div class='swipe-slide'>
+      <div class='question-container'>1</div>
+    </div>
+  
+  </div>
+</div>
+
+
+
+<div style='text-align:center;padding-top:20px;'>
+  <button onclick='mySwipe.prev()'>prev</button> 
+  <button onclick='mySwipe.next()'>next</button>
+</div>
+<script src='/lib/swipe/swipe.js'></script>
+<script>
+
+var content = [1,2,3,4];
+var nextQuestion = content.shift();
+console.log('content', content, 'nextQuestion', nextQuestion);
+
+var containers = document.getElementsByClassName('question-container');
+var lastContainerIndex = containers.length - 1;
+
+function te(index, elem) {
+  console.log('transitionEnd', index, elem)
+
+  var cLeft = (index > 0) ? containers[index-1] : containers[lastContainerIndex];
+  var cRight = (index < lastContainerIndex) ? containers[index + 1] : containers[0];
+  var nextQuestion = content.shift();
+
+  fillWithContent(cLeft, nextQuestion);
+  fillWithContent(cRight, nextQuestion);
+
+  if (!content.length) {
+    window.mySwipe = null;
+  }
+}
+
+
+function fillWithContent(container, content) {
+  container.innerHTML = content;
+}
+
+
+// pure JS
+var elem = document.getElementById('mySwipe');
+window.mySwipe = Swipe(elem, {
+  startSlide: 1, // always 3 slides
+  //auto: 3000,
+  continuous: true,
+  disableScroll: true,
+  stopPropagation: true,
+  //callback: cb,
+  transitionEnd: te
+});
+
+
+
+
+
+
+
+
+
+</script>

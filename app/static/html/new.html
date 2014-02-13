@@ -1,0 +1,162 @@
+<!-- new quiz creation page -->
+
+
+<div id='new-page' class='view'>
+	{{quiz}}
+	<section id='instructions'>
+		<button class='btn btn-default' ng-show="!showInstructions" ng-click="showInstructions=true">Instructions</button>
+		<button class='btn btn-default' ng-show="showInstructions" ng-click="showInstructions=false">Hide Instructions</button>
+		<div id='instructions-text' ng-show="showInstructions">
+			<p>Here's how it works:</p>
+			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
+			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer add a 'point' to one of the outcomes you created.</p>
+			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
+		</div>
+	</section>
+
+	<!-- ********************* set-title *********************  -->
+	<section id='set-title'>
+		<label>Title:</label>
+		<input type='text' ng-model='quiz.title' />
+	</section> <!-- ********************* set-title *********************  -->
+
+
+	<!-- ********************* set-outcomes *********************  -->
+	<section id='set-outcomes'>
+		<h3>Outcomes</h3>
+
+		<div id="outcomes" ng-repeat="outcome in quiz.outcomeList">
+			<p class='bold'>{{outcome.index}}.</p>
+			<div class="huffpostlabs-quiz">
+				<p class='quiz-title'>{{quiz.title}}</p>
+
+				<div class="outcome">
+					<img class="outcome-img" ng-src="{{outcome.pic_url}}"></img>
+					<p class='outcome-text'>{{outcome.text}}</p>
+				</div>
+			</div>
+		</div>
+
+		<button ng-show="!showAddNewOutcome" ng-click="showAddNewOutcome=true" id='show-add-outcome-btn' class='btn btn-sm btn-success'>+ Add New Outcome</button>
+		
+
+		<div ng-show="showAddNewOutcome" ng-model='new_outcome'>
+			<label>Text:</label>
+			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
+
+			<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.">Image URL</label>
+			<input id='new-outcome-pic-url' type="url" ng-model="new_outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" required>
+
+			<div class="huffpostlabs-quiz">
+				<p class='quiz-title'>{{quiz.title}}</p>
+
+				<div class="outcome">
+					<img class="outcome-img" ng-src="{{new_outcome.pic_url}}"></img>
+					<p class='outcome-text'>{{new_outcome.text}}</p>
+				</div>
+			</div>
+
+
+
+			<button ng-click="showAddNewOutcome=false;new_outcome={}" id='add-outcome-btn' class='btn btn-sm btn-danger'>Cancel</button>
+			<button ng-click="addNewOutcome(new_outcome)" id='add-outcome-btn' class='btn btn-sm btn-success'>Done</button>
+		</div>
+	</section> <!-- ********************* set-outcomes *********************  -->
+
+	<!-- ********************* set-questions *********************  -->
+	<section id='set-questions'>
+		<h3>Questions</h3>
+
+		<div id="questions" ng-repeat="question in quiz.questionList">
+			<p class='bold'>{{question.index}}.</p>
+			<div class="huffpostlabs-quiz">
+				<p class='quiz-title'>{{quiz.title}}</p>
+
+				<div class="question">
+					<div class="answer answer-left">
+						<img class="answer-img" ng-src={{question.answer1.pic_url}}></img>
+						<div class='answer-text'>
+							<p>{{question.answer1.text}}</p>
+							<p>&larr;</p>
+						</div>
+					</div>
+
+					<div class="question-text">
+						<p>{{question.text}}</p>
+					</div>
+
+					<div class="answer answer-right">
+						<img class='answer-img' ng-src="{{question.answer2.pic_url}}"></img>
+						<div class='answer-text'>
+							<p>{{question.answer2.text}}</p>
+							<p>&rarr;</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<button ng-show="!showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
+		
+
+		<form ng-submit="" ng-show="showAddNewQuestion" ng-model='new_question'>
+			<label>Question Text:</label>
+			<input type='text' ng-model='new_question.text' required >
+
+			<div id='new-question-answer-1'>
+				<label>Answer 1 Text:</label>
+				<input id='new-question-answer1-text' type='text' ng-model='new_question.answer1.text' required >
+
+				<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.">Answer 1 Image URL</label>
+				<input id='new-question-answer1-pic-url' type="url" ng-model="new_question.answer1.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" required >
+				
+				<select id='new-question-answer1-outcome' ng-model="new_question.answer1.outcome" ng-options="time for time in timeOptions" ng-required="blogcast.time" ng-change="dateOnChange()">
+					<option value="">Choose Time</option>
+				</select>
+			</div>
+				
+			<div id='new-question-answer-2'>
+				<label>Answer 2 Text:</label>
+				<input id='new-question-answer2-text' required type='text' ng-model='new_question.answer2.text' >
+
+				<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.">Answer 2 Image URL</label>
+				<input id='new-question-answer2-pic-url' type="url" ng-model="new_question.answer2.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" required >
+			</div>
+
+			<div class="huffpostlabs-quiz">
+				<p class='quiz-title'>{{quiz.title}}</p>
+
+				<div class="question">
+					<div class="answer answer-left">
+						<img class="answer-img" ng-src={{new_question.answer1.pic_url}}></img>
+						<div class='answer-text'>
+							<p>{{new_question.answer1.text}}</p>
+							<p>&larr;</p>
+						</div>
+					</div>
+
+					<div class="question-text">
+						<p>{{new_question.text}}</p>
+					</div>
+
+					<div class="answer answer-right">
+						<img class='answer-img' ng-src="{{new_question.answer2.pic_url}}"></img>
+						<div class='answer-text'>
+							<p>{{new_question.answer2.text}}</p>
+							<p>&rarr;</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+			<button ng-click="addNewQuestion(new_question)" id='add-question-btn' class='btn btn-sm btn-success'>Done</button>
+		</div>
+	</section> <!-- ********************* set-questions *********************  -->
+
+
+
+<link href="/widget/widget.css" rel="stylesheet">
+</div>
