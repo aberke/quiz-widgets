@@ -9,6 +9,7 @@ input.error, select.error, textarea.error {
 }
 
 
+
 body {
 	background-color: white;
 }
@@ -32,11 +33,11 @@ footer {
 	width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
-	border-bottom: 1px solid lightgray;
 }
-#new-page #instructions .btn {
-	font-size: 18px;
-	font-weight: bold;
+#new-page section#set-title, 
+#new-page section#set-outcomes, 
+#new-page section#set-questions{
+	border-bottom: 1px solid lightgray;
 }
 #instructions-text {
 	padding: 10px;
@@ -52,8 +53,17 @@ footer {
 	display: block;
 	margin-top: 5px;
 }
-#new-page input {
-	width: 90%;
+#new-page input, #new-page select {
+	padding: 3px 8px;
+	width: 100%;
+	border: 2px solid lightblue;
+}
+#new-page select {
+	font-size: 16px;
+}
+#new-page input.error,
+#new-page select.error {
+	border: 3px solid red;
 }
 #new-page .huffpostlabs-quiz {
 	margin: 10px auto;
@@ -66,8 +76,8 @@ footer {
 #new-page #new-question-answer-1 {
 	margin-right: 15px;
 }
-#new-page #new-question-answer-1 input,#new-page #new-question-answer-2 input{
-	width: 100%;
+#new-page #instructions .btn {
+	font-weight: bold;
 }
 
 

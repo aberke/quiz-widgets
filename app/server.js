@@ -4,9 +4,8 @@ var express 		= require('express'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
-	widget 			= require('./routes/widget'),
+	widget 			= require('./routes/widget');
 
-	models 			= require('./models.js');
 
     ///authMiddleware  = require('./middleware/authentication-middleware.js'),
 	//passportMiddleware = require('./middleware/passport-middleware.js')(models);
@@ -32,10 +31,19 @@ var server = http.createServer(app);
 
 
 app.get('/', main_routes.serveBase);
+app.get('/quiz/:quizID', main_routes.serveBase);
 app.get('/new', main_routes.serveBase);
 app.get('/s', function(req, res) {
 	res.sendfile('static/lib/swipe/index.html')
 });
+
+
+app.get('/api/question/all', main_routes.serveAllQuestions);
+app.get('/api/quiz/all', main_routes.serveAllQuizes);
+app.get('/api/user/all', main_routes.serveAllUsers);
+
+
+app.post('/api/quiz', main_routes.POSTQuiz);
 
 
 

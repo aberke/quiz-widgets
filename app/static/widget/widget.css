@@ -36,7 +36,7 @@
 
 
 .huffpostlabs-quiz .answer {
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 	display: inline-block;
 	width: 170px;
 }
@@ -55,7 +55,7 @@
 .huffpostlabs-quiz .answer-text p{
 	text-align: center;
 	margin: 0;
-	padding: 5px;
+	padding: 5px 9px;
 	font-size: 14px;
 	font-weight: bold;
 }

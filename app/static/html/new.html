@@ -2,7 +2,7 @@
 
 
 <div id='new-page' class='view'>
-	{{quiz}}
+	
 	<section id='instructions'>
 		<button class='btn btn-default' ng-show="!showInstructions" ng-click="showInstructions=true">Instructions</button>
 		<button class='btn btn-default' ng-show="showInstructions" ng-click="showInstructions=false">Hide Instructions</button>
@@ -17,7 +17,7 @@
 	<!-- ********************* set-title *********************  -->
 	<section id='set-title'>
 		<label>Title:</label>
-		<input type='text' ng-model='quiz.title' />
+		<input placeholder="Title of your quiz" type='text' ng-model='quiz.title' />
 	</section> <!-- ********************* set-title *********************  -->
 
 
@@ -44,14 +44,14 @@
 			<label>Text:</label>
 			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
 
-			<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.">Image URL</label>
+			<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image. If it's a large image it will take a while to load.">Image URL</label>
 			<input id='new-outcome-pic-url' type="url" ng-model="new_outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" required>
 
 			<div class="huffpostlabs-quiz">
 				<p class='quiz-title'>{{quiz.title}}</p>
 
 				<div class="outcome">
-					<img class="outcome-img" ng-src="{{new_outcome.pic_url}}"></img>
+					<img ng-show="new_outcome.pic_url.length" class="outcome-img" ng-src="{{new_outcome.pic_url}}"></img>
 					<p class='outcome-text'>{{new_outcome.text}}</p>
 				</div>
 			</div>
@@ -74,7 +74,7 @@
 
 				<div class="question">
 					<div class="answer answer-left">
-						<img class="answer-img" ng-src={{question.answer1.pic_url}}></img>
+						<img class="answer-img" ng-src="{{question.answer1.pic_url}}"></img>
 						<div class='answer-text'>
 							<p>{{question.answer1.text}}</p>
 							<p>&larr;</p>
@@ -100,19 +100,20 @@
 		<button ng-show="!showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
 		
 
-		<form ng-submit="" ng-show="showAddNewQuestion" ng-model='new_question'>
+		<div ng-show="showAddNewQuestion" ng-model='new_question'>
 			<label>Question Text:</label>
-			<input type='text' ng-model='new_question.text' required >
+			<input id='new-question-text' type='text' ng-model='new_question.text' required >
 
 			<div id='new-question-answer-1'>
 				<label>Answer 1 Text:</label>
 				<input id='new-question-answer1-text' type='text' ng-model='new_question.answer1.text' required >
 
-				<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.">Answer 1 Image URL</label>
+				<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.  If it's a large image it will take a while to load.">Answer 1 Image URL</label>
 				<input id='new-question-answer1-pic-url' type="url" ng-model="new_question.answer1.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" required >
-				
-				<select id='new-question-answer1-outcome' ng-model="new_question.answer1.outcome" ng-options="time for time in timeOptions" ng-required="blogcast.time" ng-change="dateOnChange()">
-					<option value="">Choose Time</option>
+
+				<label class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="When a user selects this answer, a point will be added towards this outcome.">Outcome</label>
+				<select ng-required ng-model='new_question.answer1.outcome' id='new-question-answer1-outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList" >
+					<option value="">SELECT</option>
 				</select>
 			</div>
 				
@@ -120,8 +121,13 @@
 				<label>Answer 2 Text:</label>
 				<input id='new-question-answer2-text' required type='text' ng-model='new_question.answer2.text' >
 
-				<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.">Answer 2 Image URL</label>
+				<label class="popover-hover" data-original-title="Image URL (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="Instead of uploading an image, provide a URL to an already publicly hosted image, like your LinkedIn headshot.  Make sure this URL starts with 'http://' or 'https://'.  HINT: Use a square image.  If it's a large image it will take a while to load.">Answer 2 Image URL</label>
 				<input id='new-question-answer2-pic-url' type="url" ng-model="new_question.answer2.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" required >
+
+				<label class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="When a user selects this answer, a point will be added towards this outcome.">Outcome</label>
+				<select ng-required ng-model='new_question.answer2.outcome' id='new-question-answer2-outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList" >
+					<option value="">SELECT</option>
+				</select>
 			</div>
 
 			<div class="huffpostlabs-quiz">
@@ -129,7 +135,7 @@
 
 				<div class="question">
 					<div class="answer answer-left">
-						<img class="answer-img" ng-src={{new_question.answer1.pic_url}}></img>
+						<img class="answer-img" ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer1.pic_url}}"></img>
 						<div class='answer-text'>
 							<p>{{new_question.answer1.text}}</p>
 							<p>&larr;</p>
@@ -141,7 +147,7 @@
 					</div>
 
 					<div class="answer answer-right">
-						<img class='answer-img' ng-src="{{new_question.answer2.pic_url}}"></img>
+						<img class='answer-img' ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer2.pic_url}}"></img>
 						<div class='answer-text'>
 							<p>{{new_question.answer2.text}}</p>
 							<p>&rarr;</p>
@@ -151,10 +157,15 @@
 
 			</div>
 
-
 			<button ng-click="addNewQuestion(new_question)" id='add-question-btn' class='btn btn-sm btn-success'>Done</button>
 		</div>
 	</section> <!-- ********************* set-questions *********************  -->
+
+	<!-- ********************* set-complete *********************  -->
+	<section id='set-complete'>
+		<h3>Okay it's ready</h3>
+		<button ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
+	</section> <!-- ********************* set-complete *********************  -->
 
 
 

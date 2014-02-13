@@ -1,18 +1,40 @@
 
 
 var FormService = function() {
-  
+
   return {
-    /* handles checking if given input or select elements are empty and colors with class 'error' if so */
-    checkInputEmpty: function(elementIDsList) {
+
+    /* helpers to keep error representation consistent */
+    removeAllErrors: function() {
       /* first remove previous errors */
       $('.error').removeClass('error');
+    },
+    addError: function(elt) {
+      elt.addClass('error');
+    },
 
+    /* handles checking if given input or select elements are empty and colors with class 'error' if so */
+    checkInput: function(elementIDsList) {
       var error = false;
       for(var i=0; i < elementIDsList.length; i++) {
         var elt = $('#' + elementIDsList[i]);
         if(!elt.val()) {
-          elt.addClass('error');
+          this.addError(elt);
+          error = true;
+        }
+      }
+      return error;
+    },
+
+    /* parameter: [{model: model, elementID: id} 
+        -- checks that given model is set and if not adds error class to element */
+    checkModel: function(modelElementIDList) {
+      error = false;
+      for (var i=0; i < modelElementIDList.length; i++) {
+        var model = modelElementIDList[i].model;
+        if (model == null || model == undefined || model =='') {
+          var elt = $('#' + modelElementIDList[i].elementID);
+          this.addError(elt);
           error = true;
         }
       }
@@ -39,7 +61,7 @@ var HTTPService = function($http, $q){
 
   return {
 
-    http: function(method, url, data) {
+    HTTP: function(method, url, data) {
       var deferred = $q.defer();
       $http({
         method: method,
@@ -57,17 +79,17 @@ var HTTPService = function($http, $q){
       return deferred.promise;
     },
 
-    httpGET: function(url) {
-      return this.http('GET', url, null);
+    GET: function(url) {
+      return this.HTTP('GET', url, null);
     },
-    httpPOST: function(url, data) {
-      return this.http('POST', url, data);
+    POST: function(url, data) {
+      return this.HTTP('POST', url, data);
     },
-    httpPUT: function(url, data) {
-      return this.http('PUT', url, data);
+    PUT: function(url, data) {
+      return this.HTTP('PUT', url, data);
     },
-    httpDELETE: function(url) {
-      return this.http('DELETE', url, null);
+    DELETE: function(url) {
+      return this.HTTP('DELETE', url, null);
     },
 
   }
