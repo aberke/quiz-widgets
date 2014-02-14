@@ -133,7 +133,30 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		callback(null, newQuiz)
 	});
 }
-		
+
+exports.findQuiz = function(quizID, callback) {
+	/* get FULLY POPULATED quiz */
+	Quiz.findById(quizID)
+		.populate('outcomeList')
+		.populate('questionList')
+		.exec(function(err, quiz) {
+			if (err || !quiz) { return callback(new Error('Error in models.findQuiz'), null); }
+
+			var options = [{
+				path: 'questionList.answer1',
+				model: 'Answer'
+			},{
+				path: 'questionList.answer2',
+				model: 'Answer'
+			}];
+
+			Quiz.populate(quiz, options, function(err, data) {
+				if (err || !data) { return callback(new Error('Error in models.findQuiz'), null); }
+				
+				callback(null, quiz)
+			});
+	});
+}		
 
 
 exports.allUsers = function(callback){

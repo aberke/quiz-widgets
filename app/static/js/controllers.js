@@ -18,8 +18,20 @@ function MainCntl($scope, $location) {
 	}
 }
 
-function IndexCntl($scope) {
+function IndexCntl($scope, HTTPService) {
 	console.log('IndexCntl')
+	$scope.quizList = [];
+
+
+	var init = function() {
+		HTTPService.GET('/api/quiz/all').then(function(data) {
+			console.log('data', data)
+			$scope.quizList = data;
+		});
+
+
+	}
+	init();
 }
 function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	$scope.showAddNewOutcome = false;

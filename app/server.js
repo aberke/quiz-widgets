@@ -38,13 +38,14 @@ app.get('/s', function(req, res) {
 });
 
 
+app.get('/widget/quiz/:id', widget.serveQuiz);
+
 app.get('/api/question/all', main_routes.serveAllQuestions);
 app.get('/api/quiz/all', main_routes.serveAllQuizes);
 app.get('/api/user/all', main_routes.serveAllUsers);
 
 
 app.post('/api/quiz', main_routes.POSTQuiz);
-
 
 
 app.get('/test', main_routes.test);

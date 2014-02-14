@@ -1,9 +1,40 @@
+/* swipe related styles */
+
+.swipe-container {
+	height: 258px;
+}
+
+.swipe-container div div.question-container {
+	display:block;
+	padding:100px 10px;
+	border: 1px solid red;
+}
+
+.swipe {
+	overflow: hidden;
+	visibility: hidden;
+	position: relative;
+}
+.swipe-wrap {
+	overflow: hidden;
+	position: relative;
+	height: 100%;
+}
+.swipe-wrap > div {
+	float:left;
+	width:100%;
+	position: relative;
+}
+
 /*
 	total width: 550px;
 	each answer width: 170px;
 		x2 = 340px
 	-> question width: 210px;
 
+	total height: 300px;
+	title height+padding = 41px
+		-> remaining height = 259px
 */
 
 
@@ -17,6 +48,7 @@
 .huffpostlabs-quiz .quiz-title {
 	padding: 8px;
 	margin: 0 10px;
+	height: 25px;
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;

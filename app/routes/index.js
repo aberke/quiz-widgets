@@ -26,7 +26,6 @@ exports.POSTQuiz = function(req, res) {
 
 
 
-
 exports.serveAllQuestions = function(req, res){
 	models.allQuestions(function (err, questions){
 		if (err) return res.send(handleError(err));

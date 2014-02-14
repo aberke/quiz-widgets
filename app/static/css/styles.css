@@ -27,6 +27,32 @@ footer {
 	/*border: 1px solid purple;*/
 }
 
+/********************** index-page ******************/
+#index-page {
+	min-height: 400px;
+	max-width: 900px;
+	margin: auto;
+}
+#index-page #create-new-btn {
+	float: right;
+}
+
+#index-page #all-quizes-container {
+	border: 1px solid red;
+}
+#index-page .quiz-and-embed-container {
+	margin-top: 30px;
+}
+#index-page .quiz-container,
+#index-page .embed-container,
+#index-page .quiz-and-embed-container h4 {
+	display: inline-block;
+}
+
+
+
+/********************** index-page above ******************/
+
 /********************** new-page ******************/
 
 #new-page section {
@@ -79,6 +105,7 @@ footer {
 #new-page #instructions .btn {
 	font-weight: bold;
 }
+/********************** new-page above ******************/
 
 
 
