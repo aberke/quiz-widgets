@@ -34,7 +34,7 @@ app.get('/', main_routes.serveBase);
 app.get('/quiz/:quizID', main_routes.serveBase);
 app.get('/new', main_routes.serveBase);
 app.get('/s', function(req, res) {
-	res.sendfile('static/lib/swipe/index.html')
+	res.sendfile('static/s.html')
 });
 
 

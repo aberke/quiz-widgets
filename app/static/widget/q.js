@@ -15,10 +15,9 @@ var QuizModule = function() {
 	var contentModule;
 
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
-	var scripts 	= [(domain + "/lib/swipe/swipe.js"),
+	var scripts 	= [(domain + "/widget/swipe.js"),
 					   (domain + "/widget/quiz-object.js")];
-	var stylesheets = [(domain + "/widget/widget.css"),
-					   (domain + "/lib/swipe/style.css")];
+	var stylesheets = [(domain + "/widget/widget.css")];
 
 	function load_quiz_info(quizID, callback){
 		jsonp(
@@ -129,11 +128,13 @@ var QuizModule = function() {
 			var container = widgetContainers[i];
 
 			var quizID = container.id;
+			if (quizID) {
+				load_quiz_info(quizID, function(data) {
+					var widget = new HuffpostLabsQuizObject(container, data);
+					this.widgets.push(widget);
+				});
+			}
 
-			load_quiz_info(quizID, function(data) {
-				var widget = new HuffpostLabsQuizObject(container, data);
-				this.widgets.push(widget);
-			});
 
 		}
 	}
