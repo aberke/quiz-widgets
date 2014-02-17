@@ -1,6 +1,7 @@
-// let's make the name as short as possible as for easy reference
-
-
+/* name is q.js: let's make the name as short as possible as for easy reference
+	
+	This is pure javascript - no jQuery
+*/
 
 var domain = "http://";
 domain += '127.0.0.1:8080';
@@ -11,6 +12,8 @@ domain += '127.0.0.1:8080';
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 var QuizModule = function() {
 	this.widgets = [];
+	window.swipeControllers = (window.swipeControllers || {});
+	window.quizModuleJSONPcallbacks = (window.quizModuleJSONPcallbacks || {});
 	var mobile = false;
 	var contentModule;
 
@@ -20,25 +23,23 @@ var QuizModule = function() {
 	var stylesheets = [(domain + "/widget/widget.css")];
 
 	function load_quiz_info(quizID, callback){
-		jsonp(
-			"/widget/quiz/" + quizID, 
-			null,
-			callback
-		);
+		jsonp("/api/quiz/" + quizID, callback);
 	};
 
 	/* helper for 'getting' and 'posting' (cough... jsonp hack to get around cross origin issue...) */
-	function jsonp(data_url, data, callback){
+	function jsonp(data_url, callback){
+		var random = Math.random().toString();
+		
 		var tempscript  = document.createElement('script');
-		tempscript.id   = "tempscript";
-		tempscript.src  = domain + data_url + '?callback=quizModuleJSONPcallback';
+		tempscript.id   = "tempscript-" + random;
+		tempscript.src  = domain + data_url + "?callback=quizModuleJSONPcallbacks['" + random + "']";
 		tempscript.type = "text/javascript";
 		document.body.appendChild(tempscript);
 
-		window.quizModuleJSONPcallback = function(data) {
+		window.quizModuleJSONPcallbacks[random] = function(data) {
 			document.body.removeChild(tempscript);
 			tempscript = null;
-			callback(data);
+			if (callback) { callback(data); }
 		}
 	}
 	/* check if user is using mobile browser -- return true if so */
@@ -66,7 +67,7 @@ var QuizModule = function() {
 
 	var withScripts = function(srcList, callback) {
 		var numScripts = srcList.length;
-		console.log('withScripts', numScripts, srcList)
+		//console.log('withScripts', numScripts, srcList)
 		var numLoaded = 0;
         function scriptLoaded() {
             numLoaded++;
@@ -97,7 +98,6 @@ var QuizModule = function() {
 	};
 
 	var withStyleSheets = function(srcList, callback) {
-		console.log('stylesheets', srcList)
 		for (var i=0; i<srcList.length; i++) {
 			if (document.createStyleSheet) {
 				document.createStyleSheet(srcList[i]);
@@ -123,6 +123,16 @@ var QuizModule = function() {
 			console.log('MOBILE');
 		}
 
+		var quizCompleteCallback = function(outcome, chosenAnswers) {
+			console.log('quizCompleteCallback', chosenAnswers, outcome)
+			
+			/* increment counts for outcome and each chosenAnswer */
+			jsonp("/api/outcome/" + outcome._id + "/increment-count", null);
+			for (var i=0; i<chosenAnswers.length; i++) {
+				jsonp("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
+			}
+		}
+
 		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
 		for (var i=0; i<widgetContainers.length; i++) {
 			var container = widgetContainers[i];
@@ -130,7 +140,7 @@ var QuizModule = function() {
 			var quizID = container.id;
 			if (quizID) {
 				load_quiz_info(quizID, function(data) {
-					var widget = new HuffpostLabsQuizObject(container, data);
+					var widget = new HuffpostLabsQuizObject(container, data, quizCompleteCallback);
 					this.widgets.push(widget);
 				});
 			}

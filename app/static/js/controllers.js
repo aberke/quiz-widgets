@@ -28,10 +28,11 @@ function IndexCntl($scope, HTTPService) {
 			console.log('data', data)
 			$scope.quizList = data;
 		});
-
-
 	}
 	init();
+}
+function QuizCntl($scope, HTTPService) {
+	
 }
 function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	$scope.showAddNewOutcome = false;

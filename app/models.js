@@ -156,6 +156,20 @@ exports.findQuiz = function(quizID, callback) {
 				callback(null, quiz)
 			});
 	});
+}
+exports.findOutcome = function(outcomeID, callback) {
+	Outcome.findById(outcomeID)
+		.exec(function(err, outcome) {
+			if (err || !outcome) { return callback(new Error('Error in models.findOutcome'), null); }
+			callback(null, outcome);
+		});
+}
+exports.findAnswer = function(answerID, callback) {
+	Answer.findById(answerID)
+		.exec(function(err, answer) {
+			if (err || !answer) { return callback(new Error('Error in models.findAnswer'), null); }
+			callback(null, answer);
+		});
 }		
 
 

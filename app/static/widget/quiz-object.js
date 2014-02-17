@@ -1,5 +1,4 @@
 
-
 var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	/* when the quiz is complete I'll send back data 
 		worthwhile data: 
@@ -22,6 +21,8 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 					leadingOutcome = o
 				
 	*/
+	var quizID = quizData._id;
+	var quizIDString = quizID.toString();
 	var questionList;
 	var currQuestion;
 	var nextQuestion;
@@ -33,8 +34,10 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	var containers;
 	var currIndex = 0;
 	var lastContainerIndex;
+	this.swipeController;
 
 	var init = function() {
+		buildWidgetSkeleton(container, quizData.title);
 		containers = document.getElementsByClassName('swipe-slide');
 		lastContainerIndex = containers.length - 1;
 
@@ -42,8 +45,6 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 		currQuestion = questionList.shift();
 		nextQuestion = questionList.shift();
 		outcomeMap = createOutcomeMap(quizData.outcomeList);
-		console.log('questionList', questionList, '\nnextQuestion', nextQuestion)
-		console.log('\noutcomeMap', outcomeMap, 'leading_outcome', leadingOutcome)
 
 		fillSlideContainer(0, buildQuestionContent(currQuestion));
 		setupNextQuestion(nextQuestion, 0);
@@ -72,7 +73,6 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 		incrementOutcome(answer._outcome);
 	}
 	function chooseAnswer1() {
-		console.log('chooseAnswer1')
 		a = currQuestion.answer1;
 		chooseAnswer(a);
 	}
@@ -90,6 +90,7 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	}
 
 	function setupOutcome(index) {
+		console.log(outcomeMap)
 		var outcomeContent = buildOutcomeContent(leadingOutcome);
 		setupNextContent(index, outcomeContent);
 	}
@@ -98,13 +99,23 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	  setupNextContent(index, questionContent);
 	}
 	function enableSwipe() {
-		document.getElementById('prev-btn').onclick = mySwipe.prev;
-		document.getElementById('next-btn').onclick = mySwipe.next;
+		this.swipeController = Swipe(document.getElementById('swipe-container'), {
+			startSlide: currIndex, // always 3 slides
+			//auto: 3000,
+			continuous: true,
+			disableScroll: true,
+			stopPropagation: true,
+			callback: swipeStart,
+			transitionEnd: swipeEnd,
+		});
+		window.swipeControllers[quizIDString] = this.swipeController;
+		document.getElementById('prev-btn').onclick = window.swipeControllers[quizIDString].prev;
+		document.getElementById('next-btn').onclick = window.swipeControllers[quizIDString].next;
 	}
 	function disableSwipe() {
-		mySwipe = null;
-		document.getElementById('prev-btn').onclick = function() {console.log('prev')};
-		document.getElementById('next-btn').onclick = function() {console.log('next')};
+		window.swipeControllers[quizIDString] = null;
+		document.getElementById('prev-btn').onclick = null;
+		document.getElementById('next-btn').onclick = null;
 	}
 
 	function swipeStart(index, elem) {
@@ -118,7 +129,7 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	function swipeEnd(index, elem) {
 		currIndex = index;
 	  	if (lastSwipe) {
-	  		disableSwipe();
+	  		handleQuizEnd();
 	  		return;
 	  	}
 		var nextQuestion = questionList.shift();
@@ -129,6 +140,10 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 			setupNextQuestion(nextQuestion, index);
 		}
 	}
+	function handleQuizEnd() {
+  		disableSwipe();
+  		if (completeCallback) { completeCallback(leadingOutcome, chosenAnswers); }
+	}
 
 
 	function fillSlideContainer(index, content) {
@@ -136,30 +151,13 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	}
 
 
-
-
-// pure JS
-var elem = document.getElementById('swipe-container');
-var mySwipe = Swipe(elem, {
-  startSlide: currIndex, // always 3 slides
-  //auto: 3000,
-  continuous: true,
-  disableScroll: true,
-  stopPropagation: true,
-  callback: swipeStart,
-  transitionEnd: swipeEnd,
-});
-
-	function buildOutcomeContent(outcome) {
-		var html = '<div class="outcome">';
-		html 	+= '    <img class="outcome-img" src="' + outcome.pic_url + '"></img>';
-    	html 	+= '	<p class="outcome-text">' + outcome.text + '</p>';
-    	html 	+= '</div>';
-		return html;
+	function swipeControllerString() {
+		return "swipeControllers['" + quizIDString + "']";
 	}
 	function buildQuestionContent(question) {
+		var swipeController = swipeControllerString();
 		var html = '<div class="question">';
-		html 	+= '	<div class="answer answer-left">';
+		html 	+= '	<div onclick="' + swipeController + '.prev()" class="answer answer-left">';
 		html 	+= '  		<img class="answer-img" src="' + question.answer1.pic_url + '"></img>';
 		html 	+= '	   	<div class="answer-text">';
 		html 	+= '	    <p>' + question.answer1.text + '</p>';
@@ -169,7 +167,7 @@ var mySwipe = Swipe(elem, {
 		html 	+= '	<div class="question-text">';
 		html 	+= '	<p>' + question.text + '</p>';
 		html 	+= '	</div>';
-		html 	+= '	<div class="answer answer-right">';
+		html 	+= '	<div onclick="' + swipeController + '.next()" class="answer answer-right">';
 		html 	+= '	  <img class="answer-img" src="' + question.answer2.pic_url + '"></img>';
 		html 	+= '	  <div class="answer-text">';
 		html 	+= '	    <p>' + question.answer2.text + '</p>';
@@ -178,6 +176,23 @@ var mySwipe = Swipe(elem, {
 		html 	+= '	</div>';
 		html 	+= '	</div>';
 	  	return html;
+	}
+	function buildWidgetSkeleton(container, quizTitle) {
+		var html = '<p class="quiz-title">' + quizTitle + '</p>';
+		html 	 += '<div id="swipe-container" class="swipe swipe-container">';
+		html 	 += '	<div class="swipe-wrap">';
+		html 	 += 		'<div class="swipe-slide"></div>';
+		html 	 += 		'<div class="swipe-slide"></div>';
+		html 	 += 		'<div class="swipe-slide"></div>';
+		html 	 += '</div>';
+		container.innerHTML = html;
+	}
+	function buildOutcomeContent(outcome) {
+		var html = '<div class="outcome">';
+		html 	+= '    <img class="outcome-img" src="' + outcome.pic_url + '"></img>';
+    	html 	+= '	<p class="outcome-text">' + outcome.text + '</p>';
+    	html 	+= '</div>';
+		return html;
 	}
 	init();
 }

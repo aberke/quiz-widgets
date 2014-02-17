@@ -4,7 +4,7 @@ var express 		= require('express'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
-	widget 			= require('./routes/widget');
+	api_routes 		= require('./routes/api');
 
 
     ///authMiddleware  = require('./middleware/authentication-middleware.js'),
@@ -29,6 +29,8 @@ app.configure(function () {
 var server = http.createServer(app);
 
 
+api_routes.registerEndpoints(app);
+
 
 app.get('/', main_routes.serveBase);
 app.get('/quiz/:quizID', main_routes.serveBase);
@@ -38,14 +40,8 @@ app.get('/s', function(req, res) {
 });
 
 
-app.get('/widget/quiz/:id', widget.serveQuiz);
-
-app.get('/api/question/all', main_routes.serveAllQuestions);
-app.get('/api/quiz/all', main_routes.serveAllQuizes);
-app.get('/api/user/all', main_routes.serveAllUsers);
 
 
-app.post('/api/quiz', main_routes.POSTQuiz);
 
 
 app.get('/test', main_routes.test);
