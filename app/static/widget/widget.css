@@ -1,28 +1,26 @@
 /* swipe related styles */
 
-.swipe-container {
+div.huffpostlabs-quiz .swipe-container {
 	height: 258px;
 }
-
-
-.swipe-container div.swipe-slide div.question,
-.swipe-container div.swipe-slide div.outcome { /* should be div.question, div.outcome */
+div.huffpostlabs-quiz .swipe-container div.swipe-slide div.question,
+div.huffpostlabs-quiz .swipe-container div.swipe-slide div.outcome { /* should be div.question, div.outcome */
   display:block;
   border: 1px solid red;
   height: 258px;
 }
 
-.swipe {
+div.huffpostlabs-quiz .swipe {
 	overflow: hidden;
 	visibility: hidden;
 	position: relative;
 }
-.swipe-wrap {
+div.huffpostlabs-quiz .swipe-wrap {
 	overflow: hidden;
 	position: relative;
 	height: 100%;
 }
-.swipe-wrap > div {
+div.huffpostlabs-quiz .swipe-wrap > div {
 	float:left;
 	width:100%;
 	position: relative;
@@ -50,7 +48,7 @@ div.huffpostlabs-quiz {
 div.huffpostlabs-quiz .quiz-title {
 	padding: 8px;
 	margin: 0 10px;
-	height: 25px;
+	height: 40px;
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
@@ -101,11 +99,11 @@ div.huffpostlabs-quiz .answer-text p{
 }
 
 
-.huffpostlabs-quiz .outcome-img {
+div.huffpostlabs-quiz .outcome-img {
 	width: 232px;
 	height: 232px;
 }
-.huffpostlabs-quiz .outcome-text {
+div.huffpostlabs-quiz .outcome-text {
 	text-align: center;
 	width: 300px;
 	display: inline-block;

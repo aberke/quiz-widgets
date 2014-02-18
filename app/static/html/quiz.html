@@ -4,11 +4,66 @@
 <div id='quiz-page' class='view'>
 
 <!-- the count stats -->
+<section id='quiz-stats'>
+	<h4>Outcome Stats</h4>
+	
+	<table class="table table-hover">
+	    <thead>
+	        <tr>
+	        	<th></th>
+	            <th>Outcome</th>
+	            <th>Raw Count</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr ng-repeat="o in quiz.outcomeList">
+	            <td><img height="20px" ng-src={{o.pic_url}}></img></td>
+	            <td class="text">{{o.text}}</td>
+	            <td class="number">{{o.count}}</td>
+	        </tr>
+	    </tbody>
+	</table>
 
+	<h4>Answer Stats</h4>
+	
+	<table class="table table-hover">
+	    <thead>
+	        <tr>
+	            <th>Question</th>
+	            <th>Answer 1</th>
+	            <th>Raw Count</th>
+	            <th>Answer 2</th>
+	            <th>Raw Count</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr ng-repeat="q in quiz.questionList">
+	            
+	            <td class="text">{{q.text}}</td>
+	            <td class="text">{{q.answer1.text}}</td>
+	            <td class="number">{{q.answer1.count}}</td>
+
+	            <td class="text">{{q.answer2.text}}</td>
+	            <td class="number">{{q.answer2.count}}</td>
+	        </tr>
+	    </tbody>
+	</table>
+
+
+</section>
 
 <!-- the quiz widget -->
+<section id='quiz-widget'>
+	<div class="huffpostlabs-quiz" id="{{quiz._id}}"></div>
+	<script src="/widget/q.js"></script>
+</section>
 
 <!-- the embed code -->
+<section id='quiz-embed'>
+	<h4>Embed</h4>
+	<pre>&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;
+&lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
+</section>
 
 
 

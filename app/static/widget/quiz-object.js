@@ -108,13 +108,9 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 			transitionEnd: swipeEnd,
 		});
 		window.swipeControllers[quizIDString] = this.swipeController;
-		document.getElementById('prev-btn').onclick = window.swipeControllers[quizIDString].prev;
-		document.getElementById('next-btn').onclick = window.swipeControllers[quizIDString].next;
 	}
 	function disableSwipe() {
 		window.swipeControllers[quizIDString] = null;
-		document.getElementById('prev-btn').onclick = null;
-		document.getElementById('next-btn').onclick = null;
 	}
 
 	function swipeStart(index, elem) {

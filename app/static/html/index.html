@@ -3,22 +3,23 @@
   <button id='create-new-btn' ng-click="newPage()" type="button" class="btn btn-default">Create New</button>
 
 
-  <div class="huffpostlabs-quiz" id="52fd4dd314c3630000c83cd4"></div>
-
-
   <div id='all-quizes-container'>
 
-    <div ng-repeat='q in quizList' class='quiz-and-embed-container'>
-      <div class='quiz-container'>
+    <div class='row quiz-and-embed-container' ng-repeat='q in quizList' >
+      <div class='col-sm-8' class='quiz-container'>
         <h4>Quiz</h4>
         <div class="huffpostlabs-quiz" id="{{q._id}}"></div>
       </div>
 
-      <div class='embed-container'>
+      <div class='col-sm-4' class='embed-container'>
         <h4>Embed</h4>
         <pre>&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;
 &lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
+
+        <a ng-href="/quiz/{{q._id}}">View details</a>
       </div>
+
+      <hr />
 
     </div>
 
