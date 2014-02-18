@@ -59,7 +59,7 @@ footer {
 	width: 750px;
 	margin: 30px auto;
 	padding-bottom: 15px;
-}#quiz-page section#quiz-embed {
+}#quiz-page section#quiz-embed,#quiz-page section#quiz-delete {
 	max-width: 550px;
 }
 #quiz-page th {

@@ -73,23 +73,23 @@
 				<p class='quiz-title'>{{quiz.title}}</p>
 
 				<div class="question">
-					<div class="answer answer-left">
-						<img class="answer-img" ng-src="{{question.answer1.pic_url}}"></img>
-						<div class='answer-text'>
-							<p>{{question.answer1.text}}</p>
-							<p>&larr;</p>
-						</div>
-					</div>
-
 					<div class="question-text">
 						<p>{{question.text}}</p>
 					</div>
-
-					<div class="answer answer-right">
-						<img class='answer-img' ng-src="{{question.answer2.pic_url}}"></img>
-						<div class='answer-text'>
-							<p>{{question.answer2.text}}</p>
-							<p>&rarr;</p>
+					<div class="answers-container">
+						<div class="answer answer-left">
+							<img class="answer-img" ng-src="{{question.answer1.pic_url}}"></img>
+							<div class='answer-text'>
+								<p>{{question.answer1.text}}</p>
+								<p>&larr;</p>
+							</div>
+						</div>
+						<div class="answer answer-right">
+							<img class='answer-img' ng-src="{{question.answer2.pic_url}}"></img>
+							<div class='answer-text'>
+								<p>{{question.answer2.text}}</p>
+								<p>&rarr;</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -134,23 +134,23 @@
 				<p class='quiz-title'>{{quiz.title}}</p>
 
 				<div class="question">
-					<div class="answer answer-left">
-						<img class="answer-img" ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer1.pic_url}}"></img>
-						<div class='answer-text'>
-							<p>{{new_question.answer1.text}}</p>
-							<p>&larr;</p>
-						</div>
-					</div>
-
 					<div class="question-text">
 						<p>{{new_question.text}}</p>
 					</div>
-
-					<div class="answer answer-right">
-						<img class='answer-img' ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer2.pic_url}}"></img>
-						<div class='answer-text'>
-							<p>{{new_question.answer2.text}}</p>
-							<p>&rarr;</p>
+					<div class="answers-container">
+						<div class="answer answer-left">
+							<img class="answer-img" ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer1.pic_url}}"></img>
+							<div class='answer-text'>
+								<p>{{new_question.answer1.text}}</p>
+								<p>&larr;</p>
+							</div>
+						</div>
+						<div class="answer answer-right">
+							<img class='answer-img' ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer2.pic_url}}"></img>
+							<div class='answer-text'>
+								<p>{{new_question.answer2.text}}</p>
+								<p>&rarr;</p>
+							</div>
 						</div>
 					</div>
 				</div>

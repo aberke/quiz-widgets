@@ -61,8 +61,15 @@
 <!-- the embed code -->
 <section id='quiz-embed'>
 	<h4>Embed</h4>
-	<pre>&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;
+	<pre>&lt;div class="huffpostlabs-quiz" id="{{quiz._id}}"&gt;&lt;/div&gt;
 &lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
+</section>
+
+<section id='quiz-delete'>
+	<div class="alert alert-danger">
+		<button ng-click="delete()" class='btn btn-danger btn-xs'>X</button>
+		Delete
+	</div>
 </section>
 
 

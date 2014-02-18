@@ -5,7 +5,7 @@
 
 var domain = "http://";
 //domain += '127.0.0.1:8080';
-domain += '4426e6f7.ngrok.com/'; // for mobile development
+domain += '61ad6007.ngrok.com'; // for mobile development
 
 
 
@@ -22,8 +22,25 @@ var QuizModule = function() {
 					   (domain + "/widget/quiz-object.js")];
 	var stylesheets = [(domain + "/widget/widget.css")];
 
-	function load_quiz_info(quizID, callback){
-		jsonp("/api/quiz/" + quizID, callback);
+
+	var quizCompleteCallback = function(outcome, chosenAnswers) {
+		console.log('quizCompleteCallback', chosenAnswers, outcome)
+		
+		/* increment counts for outcome and each chosenAnswer */
+		jsonp("/api/outcome/" + outcome._id + "/increment-count", null);
+		for (var i=0; i<chosenAnswers.length; i++) {
+			jsonp("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
+		}
+	}
+
+
+	function load_quiz_info(quizID, container){
+		console.log('load_quiz_info', container)
+		jsonp("/api/quiz/" + quizID, function(data) {
+			var c = container;
+			var widget = new HuffpostLabsQuizObject(c, data, mobile, quizCompleteCallback);
+			this.widgets.push(widget);
+		});
 	};
 
 	/* helper for 'getting' and 'posting' (cough... jsonp hack to get around cross origin issue...) */
@@ -124,26 +141,21 @@ var QuizModule = function() {
 			console.log('MOBILE');
 		}
 
-		var quizCompleteCallback = function(outcome, chosenAnswers) {
-			console.log('quizCompleteCallback', chosenAnswers, outcome)
-			
-			/* increment counts for outcome and each chosenAnswer */
-			jsonp("/api/outcome/" + outcome._id + "/increment-count", null);
-			for (var i=0; i<chosenAnswers.length; i++) {
-				jsonp("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
-			}
-		}
 
 		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
+		console.log('widgetContainers', widgetContainers)
 		for (var i=0; i<widgetContainers.length; i++) {
 			var container = widgetContainers[i];
 
+
 			var quizID = container.id;
 			if (quizID) {
-				load_quiz_info(quizID, function(data) {
-					var widget = new HuffpostLabsQuizObject(container, data, mobile, quizCompleteCallback);
-					this.widgets.push(widget);
-				});
+				load_quiz_info(quizID, container);
+				// load_quiz_info(quizID, function(data) {
+				// 	var c = container;
+				// 	var widget = new HuffpostLabsQuizObject(c, data, mobile, quizCompleteCallback);
+				// 	this.widgets.push(widget);
+				// });
 			}
 
 
@@ -153,6 +165,5 @@ var QuizModule = function() {
 
 	return {widgets: this.widgets};	
 }();
-
 
 

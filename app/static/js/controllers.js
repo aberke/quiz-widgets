@@ -27,9 +27,19 @@ function IndexCntl($scope, HTTPService, quizList) {
 	}
 	init();
 }
-function QuizCntl($scope, HTTPService, quiz) {
+function QuizCntl($scope, $location, HTTPService, quiz) {
 	$scope.quiz = quiz;
 		console.log('QuizCntl', quiz)
+
+	$scope.delete = function() {
+		var confirmed = confirm('Are you sure you want to permenantly delete this quiz?  This quiz will no longer show up on any of the pages on which it is embedded.');
+		if (!confirmed){ return false; }
+		
+		HTTPService.DELETE('/api/quiz/' + quiz._id, $scope.quiz).then(function(data) {
+			console.log('delete returned: ', data);
+		});
+		$location.path('/');
+	}
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
@@ -41,8 +51,8 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 
 
 	$scope.quiz = { 'title': '',
-					'outcomeList': [{"index": 1, "text": "You are bananas.",
-								    "pic_url": "http://www.fairtrasa.com/wp-content/themes/simplicity/functions/thumb.php?src=wp-content/uploads/2012/08/shutterstock_99478112.jpg&w=534&h=&zc=1&q=90"},
+					'outcomeList': [
+						// {"index": 1, "text": "You are bananas.", "pic_url": "http://www.fairtrasa.com/wp-content/themes/simplicity/functions/thumb.php?src=wp-content/uploads/2012/08/shutterstock_99478112.jpg&w=534&h=&zc=1&q=90"},
 								   ],
 					'questionList': [],
 					};

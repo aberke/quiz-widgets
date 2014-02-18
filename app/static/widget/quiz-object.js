@@ -30,6 +30,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 					leadingOutcome = o
 				
 	*/
+	var container = container;
+	var quizData = quizData;
 	var isMobile = mobile;
 	var quizID = quizData._id;
 	var quizIDString = quizID.toString();
@@ -46,10 +48,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 	var containers;
 	var currIndex = 0;
 	var lastContainerIndex;
-	var init = function() {
+	function init(){
+		console.log('init', quizData, container)
 
-		buildWidgetSkeleton(container, quizData.title);
-		containers = document.getElementsByClassName('swipe-slide');
+		containers = buildWidgetSkeleton(container, quizData.title);
+		//this.containers = document.getElementsByClassName('swipe-slide');
 		lastContainerIndex = containers.length - 1;
 
 		questionList = quizData.questionList;
@@ -108,7 +111,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 	  setupNextContent(index, questionContent);
 	}
 	function enableSwipe() {
-		window.swipeControllers[quizIDString] = Swipe(document.getElementById('swipe-container'), {
+		window.swipeControllers[quizIDString] = Swipe(document.getElementById('swipe-container-' + quizIDString), {
 			startSlide: currIndex, // always 3 slides
 			//auto: 3000,
 			continuous: true,
@@ -156,20 +159,23 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 	}
 
 
-	function buildWidgetSkeleton(container, quizTitle) {
+	function buildWidgetSkeleton() {
+		console.log('buildWidgetSkeleton', quizData.title)
 		var html = "";
 		if (isMobile) {
 			container.className += ' mobile';
 			html += "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>";
 		}
-		html += '<p class="quiz-title">' + quizTitle + '</p>';
-		html += '<div id="swipe-container" class="swipe swipe-container">';
-		html += '	<div class="swipe-wrap">';
+		html += '<p class="quiz-title">' + quizData.title + '</p>';
+		html += '<div id="swipe-container-' + quizIDString + '" class="swipe swipe-container">';
+		html += '	<div class="swipe-wrap" id="swipe-wrap-' + quizIDString + '">';
 		html += 		'<div class="swipe-slide"></div>';
 		html += 		'<div class="swipe-slide"></div>';
 		html += 		'<div class="swipe-slide"></div>';
+		html += '	</div>';
 		html += '</div>';
 		container.innerHTML = html;
+		return document.getElementById('swipe-wrap-' + quizIDString).children;
 	}
 	function buildQuestionContent(question) {
 		var html = '<div class="question">';

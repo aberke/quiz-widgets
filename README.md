@@ -9,5 +9,6 @@ TODO
 ====
 
 
+handle case of tie
 
 write api tests
