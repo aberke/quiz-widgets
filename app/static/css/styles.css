@@ -126,6 +126,10 @@ footer {
 #new-page #instructions .btn {
 	font-weight: bold;
 }
+#new-page #set-complete p {
+	margin-left: 30px;
+	color: gray;
+}
 /********************** new-page above ******************/
 
 

@@ -515,7 +515,10 @@ function Swipe(container, options) {
     },
     kill: function() {
 
-      // cancel slideshow
+      /* 
+      Alex wants to keep the styling but disable the sliding 
+      
+      //cancel slideshow
       stop();
 
       // reset element
@@ -533,6 +536,7 @@ function Swipe(container, options) {
         if (browser.transitions) translate(pos, 0, 0);
 
       }
+      */
 
       // removed event listeners
       if (browser.addEventListener) {

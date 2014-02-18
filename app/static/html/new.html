@@ -163,8 +163,14 @@
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>
-		<h3>Okay it's ready</h3>
-		<button ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
+		<h3 ng-show="quiz.title&&!quiz.questionList.length&&(quiz.questionList.length > 1)&&quiz.outcomeList.length">Okay it's ready</h3>
+		
+		<h3 ng-show="!quiz.title||!quiz.questionList.length||(quiz.questionList.length < 2)||!quiz.outcomeList.length">Still Required:</h3>
+			<p ng-show="!quiz.title">Title</p>
+			<p ng-show="!quiz.outcomeList.length">At least one Outcome</p>
+			<p ng-show="!quiz.questionList.length||(quiz.questionList.length < 2)">At least 2 Questions</p>
+
+		<button ng-disabled="!quiz.title||!quiz.questionList.length||(quiz.questionList.length < 2)||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
 	</section> <!-- ********************* set-complete *********************  -->
 
 

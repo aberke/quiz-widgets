@@ -1,6 +1,15 @@
+/* Mobile building functions */
 
-var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
-	/* when the quiz is complete I'll send back data 
+
+
+
+
+var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallback) {
+	/* 
+	Params:
+		mobile: boolean as to weather q.js detected mobile device
+
+	when the quiz is complete I'll send back data 
 		worthwhile data: 
 			list of chosen answers chosenAnswers = []
 			which outcome resulted
@@ -21,8 +30,11 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 					leadingOutcome = o
 				
 	*/
+	var isMobile = mobile;
 	var quizID = quizData._id;
 	var quizIDString = quizID.toString();
+	var swipeControllerString = "swipeControllers['" + quizIDString + "']";
+
 	var questionList;
 	var currQuestion;
 	var nextQuestion;
@@ -34,9 +46,8 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	var containers;
 	var currIndex = 0;
 	var lastContainerIndex;
-	this.swipeController;
-
 	var init = function() {
+
 		buildWidgetSkeleton(container, quizData.title);
 		containers = document.getElementsByClassName('swipe-slide');
 		lastContainerIndex = containers.length - 1;
@@ -46,10 +57,9 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 		nextQuestion = questionList.shift();
 		outcomeMap = createOutcomeMap(quizData.outcomeList);
 
+		enableSwipe(); // need to define swipeControllerString before building questions
 		fillSlideContainer(0, buildQuestionContent(currQuestion));
 		setupNextQuestion(nextQuestion, 0);
-
-		enableSwipe();
 	}
 	function createOutcomeMap(outcomeList) {
 		map = {};
@@ -98,7 +108,7 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	  setupNextContent(index, questionContent);
 	}
 	function enableSwipe() {
-		this.swipeController = Swipe(document.getElementById('swipe-container'), {
+		window.swipeControllers[quizIDString] = Swipe(document.getElementById('swipe-container'), {
 			startSlide: currIndex, // always 3 slides
 			//auto: 3000,
 			continuous: true,
@@ -107,10 +117,9 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 			callback: swipeStart,
 			transitionEnd: swipeEnd,
 		});
-		window.swipeControllers[quizIDString] = this.swipeController;
 	}
 	function disableSwipe() {
-		window.swipeControllers[quizIDString] = null;
+		window.swipeControllers[quizIDString].kill();
 	}
 
 	function swipeStart(index, elem) {
@@ -147,23 +156,47 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	}
 
 
-	function swipeControllerString() {
-		return "swipeControllers['" + quizIDString + "']";
+	function buildWidgetSkeleton(container, quizTitle) {
+		var html = "";
+		if (isMobile) {
+			container.className += ' mobile';
+			html += "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>";
+		}
+		html += '<p class="quiz-title">' + quizTitle + '</p>';
+		html += '<div id="swipe-container" class="swipe swipe-container">';
+		html += '	<div class="swipe-wrap">';
+		html += 		'<div class="swipe-slide"></div>';
+		html += 		'<div class="swipe-slide"></div>';
+		html += 		'<div class="swipe-slide"></div>';
+		html += '</div>';
+		container.innerHTML = html;
 	}
 	function buildQuestionContent(question) {
-		var swipeController = swipeControllerString();
 		var html = '<div class="question">';
-		html 	+= '	<div onclick="' + swipeController + '.prev()" class="answer answer-left">';
+		html 	+= '	<div class="question-text">';
+		html 	+= '	<p>' + question.text + '</p>';
+		html 	+= '	</div>';
+		html 	+= '<div class="answers-container">';
+		
+		if (isMobile) {
+			html 	+= '<div class="answer answer-left">';
+		} else {
+			html 	+= '<div onclick="' + swipeControllerString + '.prev()" class="answer answer-left">';
+		}
+		
 		html 	+= '  		<img class="answer-img" src="' + question.answer1.pic_url + '"></img>';
 		html 	+= '	   	<div class="answer-text">';
 		html 	+= '	    <p>' + question.answer1.text + '</p>';
 		html 	+= '	    <p>&larr;</p>';
 		html 	+= '	  </div>';
 		html 	+= '	</div>';
-		html 	+= '	<div class="question-text">';
-		html 	+= '	<p>' + question.text + '</p>';
-		html 	+= '	</div>';
-		html 	+= '	<div onclick="' + swipeController + '.next()" class="answer answer-right">';
+
+		if (isMobile) {
+			html 	+= '<div class="answer answer-right">';
+		} else {
+			html 	+= '<div onclick="' + swipeControllerString + '.next()" class="answer answer-right">';
+		}
+		
 		html 	+= '	  <img class="answer-img" src="' + question.answer2.pic_url + '"></img>';
 		html 	+= '	  <div class="answer-text">';
 		html 	+= '	    <p>' + question.answer2.text + '</p>';
@@ -171,17 +204,9 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 		html 	+= '	  </div>';
 		html 	+= '	</div>';
 		html 	+= '	</div>';
+
+		html 	+= ' </div>';
 	  	return html;
-	}
-	function buildWidgetSkeleton(container, quizTitle) {
-		var html = '<p class="quiz-title">' + quizTitle + '</p>';
-		html 	 += '<div id="swipe-container" class="swipe swipe-container">';
-		html 	 += '	<div class="swipe-wrap">';
-		html 	 += 		'<div class="swipe-slide"></div>';
-		html 	 += 		'<div class="swipe-slide"></div>';
-		html 	 += 		'<div class="swipe-slide"></div>';
-		html 	 += '</div>';
-		container.innerHTML = html;
 	}
 	function buildOutcomeContent(outcome) {
 		var html = '<div class="outcome">';

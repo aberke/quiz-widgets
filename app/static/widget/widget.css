@@ -1,13 +1,13 @@
 /* swipe related styles */
 
 div.huffpostlabs-quiz .swipe-container {
-	height: 258px;
+	/*height: 258px;*/
 }
 div.huffpostlabs-quiz .swipe-container div.swipe-slide div.question,
 div.huffpostlabs-quiz .swipe-container div.swipe-slide div.outcome { /* should be div.question, div.outcome */
   display:block;
   border: 1px solid red;
-  height: 258px;
+  /*height: 258px;*/
 }
 
 div.huffpostlabs-quiz .swipe {
@@ -28,22 +28,29 @@ div.huffpostlabs-quiz .swipe-wrap > div {
 
 /*
 	total width: 550px;
-	each answer width: 170px;
-		x2 = 340px
-	-> question width: 210px;
 
-	total height: 300px;
-	title height+padding = 41px
-		-> remaining height = 259px
 */
 
 
 div.huffpostlabs-quiz {
 	width: 550px;
-	height: 300px;
+	/*height: 450px;*/
 	margin: auto;
 	font-family: Arial;
-	border: 2px solid gray;
+	border-left: 2px solid gray;
+	border-right: 2px solid gray;
+}
+div.huffpostlabs-quiz.mobile {
+	/*border: 2px solid green;*/
+	width: 90%;
+	height: auto;
+}
+
+@media (max-width: 340px) {
+	div.huffpostlabs-quiz.mobile {
+		width: 300px;
+		height: 350px; /* keep the width:height ratio always 7:6 for non-mobile*/
+	}
 }
 div.huffpostlabs-quiz .quiz-title {
 	padding: 8px;
@@ -55,22 +62,19 @@ div.huffpostlabs-quiz .quiz-title {
 	border-bottom: 2px solid gray;
 }
 div.huffpostlabs-quiz .question-text {
-	display: inline-block;
-	float: left;
-	width: 204px; /* change to 210 after getting rid of borders */
+	display: block;
+	float: none;
+	width: 100%; /* change to 210 after getting rid of borders */
 }
 div.huffpostlabs-quiz .question-text p{
 	text-align: center;
 	font-size: 16px;
-	padding: 20px;
-	padding-top: 25px;
+	padding: 5px 3px;
 }
 
-
-.huffpostlabs-quiz .answer,
 div.huffpostlabs-quiz .answer {
 	display: inline-block;
-	width: 170px;
+	width: 50%;
 	height: 100%;
 }
 div.huffpostlabs-quiz .answer:hover,
@@ -78,17 +82,10 @@ div.huffpostlabs-quiz .answer:active {
 	opacity: 0.5;
 	background-color: whitesmoke;
 }
-div.huffpostlabs-quiz .answer-left {
-	float: left;
-}
-div.huffpostlabs-quiz .answer-right {
-	float: right;
-}
 
 div.huffpostlabs-quiz .answer-img {
-	width: 170px;
-	height: 170px;
-
+	width: 100%;
+	height: auto;
 }
 div.huffpostlabs-quiz .answer-text p{
 	text-align: center;
