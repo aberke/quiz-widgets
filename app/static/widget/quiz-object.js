@@ -77,7 +77,6 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 		chooseAnswer(a);
 	}
 	function chooseAnswer2() {
-		console.log('chooseAnswer2')
 		a = currQuestion.answer2;
 		chooseAnswer(a);
 	}
@@ -119,10 +118,10 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	}
 
 	function swipeStart(index, elem) {
-		if (index < currIndex) {
-			chooseAnswer1();
-		} else {
+		if (index == (currIndex + 1) || index == 0) {
 			chooseAnswer2();
+		} else {
+			chooseAnswer1();
 		}
 	}
 	var lastSwipe = false;
@@ -132,7 +131,8 @@ var HuffpostLabsQuizObject = function(container, quizData, completeCallback) {
 	  		handleQuizEnd();
 	  		return;
 	  	}
-		var nextQuestion = questionList.shift();
+	  	currQuestion = nextQuestion;
+		nextQuestion = questionList.shift();
 		if (!nextQuestion) {
 			lastSwipe = true;
 			setupOutcome(index);

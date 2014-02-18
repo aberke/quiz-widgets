@@ -29,7 +29,7 @@ exports.registerEndpoints = function (app) {
 /* --------------- API --------------------- */
 
 var POSTquiz = function(req, res) {
-	console.log('req.body', req.body)
+	console.log('POSTquiz', req.body)
 
 	models.newQuiz(req.body, function(err, quiz) {
 		res.send(quiz);
@@ -41,7 +41,6 @@ var PUToutcomeIncrementCount = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err) return res.send(500, util.handleError(err));
 
-		console.log('PUToutcomeIncrementCount', outcome.count, outcome)
 		outcome.count = outcome.count + 1;
 		outcome.save(function(err) {
 			if (err) { return res.send(500, util.handleError(err)); }
@@ -53,7 +52,6 @@ var PUTanswerIncrementCount = function(req, res) {
 	models.findAnswer(req.params.id, function(err, answer) {
 		if (err) return res.send(500, util.handleError(err));
 
-		console.log('PUToutcomeIncrementCount', answer.count, answer)
 		answer.count = answer.count + 1;
 		answer.save(function(err) {
 			if (err) { return res.send(500, util.handleError(err)); }
