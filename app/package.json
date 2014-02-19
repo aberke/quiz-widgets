@@ -10,6 +10,7 @@
     "mongoose": "",
     "passport-twitter": "*",
     "passport": "*",
+    "connect": "*",
     "connect-ensure-login": "*",
     "express-validator": "*"
   }
