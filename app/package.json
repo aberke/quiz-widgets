@@ -6,7 +6,6 @@
   "private": true,
   "dependencies": {
     "express": "",
-    "mongodb": "",
     "mongoose": "",
     "passport-twitter": "*",
     "passport": "*",

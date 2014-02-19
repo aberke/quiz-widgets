@@ -5,7 +5,8 @@
 
 var domain = "http://";
 //domain += '127.0.0.1:8080';
-domain += '61ad6007.ngrok.com'; // for mobile development
+//domain += '61ad6007.ngrok.com'; // for mobile development
+domain += 'quizwidget-petri.dotcloud.com';
 
 
 
