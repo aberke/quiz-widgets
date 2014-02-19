@@ -33,17 +33,19 @@
     <div class="header">
         <nav>
             <ul class="nav nav-pills pull-right">
+                <li><a href="https://github.com/aberke/quiz-widgets" ng-click="login()" id="source-code-link">Source Code</a></li>
+                
                 <li ng-class="{active: (page=='help')}">
                     <a ng-href="{{location.path()}}" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="mailto:labs@huffingtonpost.com?subject=[Quiz%20App%20Feedback]">Email Us</a></li>
                     </ul>
                 </li>
-                <li><a href="#" ng-click="login()" id="login-button">Sign In</a></li>
-                <li><a href="#" style="display:none;" ng-click="logout()" id="logout-button">Sign Out</a></li>
+<!--                 <li><a href="" ng-click="login()" id="login-button">Sign In</a></li>
+                <li><a href="" style="display:none;" ng-click="logout()" id="logout-button">Sign Out</a></li> -->
             </ul>
         </nav>
-        <a class="text-decoration-none" href="/"><h2 class="text-muted">Quiz Widgets</h2></a>
+        <a class="text-decoration-none" href="/"><h2 class="text-muted">Quiz Widget<span id='mvp'>MVP</span></h2></a>
     </div>
 
     <div ng-view></div>

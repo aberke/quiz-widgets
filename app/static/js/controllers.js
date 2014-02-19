@@ -37,8 +37,8 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 		
 		HTTPService.DELETE('/api/quiz/' + quiz._id, $scope.quiz).then(function(data) {
 			console.log('delete returned: ', data);
+			$location.path('/');
 		});
-		$location.path('/');
 	}
 
 	var init = function() {

@@ -166,6 +166,9 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 			container.className += ' mobile';
 			html += "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>";
 		}
+		// html += '<div class="share-buttons">'; 
+		// html += '<a href="https://twitter.com/share" class="twitter-share-button" data-text="' + quizData.title + '" data-via="HuffPostCode" data-hashtags="huffpostQuiz">Tweet</a>';
+		// html += '</div>';
 		html += '<p class="quiz-title">' + quizData.title + '</p>';
 		html += '<div id="swipe-container-' + quizIDString + '" class="swipe swipe-container">';
 		html += '	<div class="swipe-wrap" id="swipe-wrap-' + quizIDString + '">';
@@ -175,6 +178,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 		html += '	</div>';
 		html += '</div>';
 		container.innerHTML = html;
+		twttr.widgets.load();
 		return document.getElementById('swipe-wrap-' + quizIDString).children;
 	}
 	function buildQuestionContent(question) {
@@ -184,11 +188,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 		html 	+= '	</div>';
 		html 	+= '<div class="answers-container">';
 		
-		if (isMobile) {
-			html 	+= '<div class="answer answer-left">';
-		} else {
+		// if (isMobile) {
+		// 	html 	+= '<div class="answer answer-left">';
+		// } else {
 			html 	+= '<div onclick="' + swipeControllerString + '.prev()" class="answer answer-left">';
-		}
+		//}
 		
 		html 	+= '  		<img class="answer-img" src="' + question.answer1.pic_url + '"></img>';
 		html 	+= '	   	<div class="answer-text">';
@@ -197,11 +201,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 		html 	+= '	  </div>';
 		html 	+= '	</div>';
 
-		if (isMobile) {
-			html 	+= '<div class="answer answer-right">';
-		} else {
+		// if (isMobile) {
+		// 	html 	+= '<div class="answer answer-right">';
+		// } else {
 			html 	+= '<div onclick="' + swipeControllerString + '.next()" class="answer answer-right">';
-		}
+		//}
 		
 		html 	+= '	  <img class="answer-img" src="' + question.answer2.pic_url + '"></img>';
 		html 	+= '	  <div class="answer-text">';

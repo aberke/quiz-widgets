@@ -13,6 +13,7 @@ exports.registerEndpoints = function (app) {
 	app.post('/api/quiz', POSTquiz);
 	app.get('/api/quiz/all', GETallQuizes);
 	app.get('/api/quiz/:id', GETquiz);
+	app.delete('/api/quiz/:id', DELETEquiz);
 
 
 	app.get('/api/outcome/all', GETallOutcomes);
@@ -96,6 +97,20 @@ var GEToutcome = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err) return res.send(500, util.handleError(err));
 		res.send(200, outcome);
+	});
+}
+
+/* --------------- DELETE ---------------------- */
+
+
+var DELETEquiz = function(req, res) {
+	models.findQuiz(req.params.id, function(err, quiz) {
+		if (err) return res.send(500, util.handleError(err));	
+		
+		quiz.remove(function (err) {
+			if (err) { return res.json(500, {error: handleError(err)}); }
+			res.json(200);
+		});
 	});
 }
 

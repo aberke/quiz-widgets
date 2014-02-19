@@ -27,7 +27,28 @@ footer {
 	/*border: 1px solid purple;*/
 }
 
+/********************** base *************************/
+#mvp {
+	color: crimson;
+	font-size: 18px;
+	margin-left: 10px;
+}
+
 /********************** index-page ******************/
+
+/* ---- take out once mvp stuff is out */
+section#mvp-explainer .mvp-btn {
+	margin-bottom: 10px;
+}
+section#mvp-explainer #mvp-text-container {
+	border-bottom: 3px solid lavenderblush;
+	margin-bottom: 15px;
+}
+/* ---- take out once mvp stuff is out */
+
+
+
+
 #index-page {
 	min-height: 400px;
 	max-width: 900px;

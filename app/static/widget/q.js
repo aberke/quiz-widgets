@@ -19,7 +19,9 @@ var QuizModule = function() {
 
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
 	var scripts 	= [(domain + "/widget/swipe.js"),
-					   (domain + "/widget/quiz-object.js")];
+					   (domain + "/widget/quiz-object.js"),
+					   "http://platform.twitter.com/widgets.js",
+					   ];
 	var stylesheets = [(domain + "/widget/widget.css")];
 
 
@@ -35,10 +37,8 @@ var QuizModule = function() {
 
 
 	function load_quiz_info(quizID, container){
-		console.log('load_quiz_info', container)
 		jsonp("/api/quiz/" + quizID, function(data) {
-			var c = container;
-			var widget = new HuffpostLabsQuizObject(c, data, mobile, quizCompleteCallback);
+			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizCompleteCallback);
 			this.widgets.push(widget);
 		});
 	};
@@ -135,7 +135,7 @@ var QuizModule = function() {
 
 	// load dependencies before calling main
 	function main(){
-		var mobile = isMobile();
+		mobile = isMobile();
 
 		if (mobile) { 
 			console.log('MOBILE');
@@ -143,22 +143,12 @@ var QuizModule = function() {
 
 
 		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
-		console.log('widgetContainers', widgetContainers)
 		for (var i=0; i<widgetContainers.length; i++) {
 			var container = widgetContainers[i];
-
-
 			var quizID = container.id;
 			if (quizID) {
 				load_quiz_info(quizID, container);
-				// load_quiz_info(quizID, function(data) {
-				// 	var c = container;
-				// 	var widget = new HuffpostLabsQuizObject(c, data, mobile, quizCompleteCallback);
-				// 	this.widgets.push(widget);
-				// });
 			}
-
-
 		}
 	}
 	loadDependencies(main);
