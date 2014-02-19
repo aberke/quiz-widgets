@@ -11,6 +11,6 @@
     "passport-twitter": "*",
     "passport": "*",
     "connect-ensure-login": "*",
-    "express-validator": "*",
+    "express-validator": "*"
   }
 }
