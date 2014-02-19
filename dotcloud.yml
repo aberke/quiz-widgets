@@ -3,5 +3,6 @@ www:
     approot: app
     config:
         node_version: v0.8.x
+    prebuild: ./prebuild.sh     # <-- prebuild directive
 db:
     type: mongodb
