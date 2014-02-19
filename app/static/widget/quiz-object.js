@@ -160,7 +160,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 
 
 	function buildWidgetSkeleton() {
-		console.log('buildWidgetSkeleton', quizData.title)
 		var html = "";
 		if (isMobile) {
 			container.className += ' mobile';
@@ -194,9 +193,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 			html 	+= '<div onclick="' + swipeControllerString + '.prev()" class="answer answer-left">';
 		//}
 		
-		html 	+= '  		<img class="answer-img" src="' + question.answer1.pic_url + '"></img>';
+		if (question.answer1.pic_url) {
+			html+= '	  <img class="answer-img" src="' + question.answer1.pic_url + '"></img>';
+		}
 		html 	+= '	   	<div class="answer-text">';
-		html 	+= '	    <p>' + question.answer1.text + '</p>';
+		html 	+= '	    <p>' + (question.answer1.text || '') + '</p>';
 		html 	+= '	    <p>&larr;</p>';
 		html 	+= '	  </div>';
 		html 	+= '	</div>';
@@ -207,9 +208,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 			html 	+= '<div onclick="' + swipeControllerString + '.next()" class="answer answer-right">';
 		//}
 		
-		html 	+= '	  <img class="answer-img" src="' + question.answer2.pic_url + '"></img>';
+		if (question.answer2.pic_url) {
+			html+= '	  <img class="answer-img" src="' + question.answer2.pic_url + '"></img>';
+		}
 		html 	+= '	  <div class="answer-text">';
-		html 	+= '	    <p>' + question.answer2.text + '</p>';
+		html 	+= '	    <p>' + (question.answer2.text || '') + '</p>';
 		html 	+= '	    <p>&rarr;</p>';
 		html 	+= '	  </div>';
 		html 	+= '	</div>';

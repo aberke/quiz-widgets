@@ -90,7 +90,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		//_user: ?
 		title: 		  quizData.title,
 	});
-	console.log('\n\n000000 newQuiz', newQuiz)
+	console.log('\n\nnewQuiz', newQuiz)
 
 	var outcomeDict = {}; // maps {index: outcome} since answerData just has the index
 	for (var i=0; i<quizData.outcomeList.length; i++) {
@@ -101,7 +101,6 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			text:   	 outcomeData.text,
 			pic_url: 	 outcomeData.pic_url,
 		});
-		console.log('\n\noutcome', newOutcome)
 		outcomeDict[outcomeData.index] = newOutcome;
 		newQuiz.outcomeList.push(newOutcome);
 		newOutcome.save();

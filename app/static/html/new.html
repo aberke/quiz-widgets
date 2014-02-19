@@ -10,7 +10,7 @@
 			<p>Here's how it works:</p>
 			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
 			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer add a 'point' to one of the outcomes you created.</p>
-			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
+			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
 		</div>
 	</section>
 
@@ -97,8 +97,8 @@
 			</div>
 		</div>
 
-		<button ng-show="!showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
-		
+		<button ng-disabled="quiz.outcomeList.length==0" ng-show="!showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
+		<p ng-show="quiz.outcomeList.length==0" class='inline-block btn-helper'>First create the outcomes</p>
 
 		<div ng-show="showAddNewQuestion" ng-model='new_question'>
 			<label>Question Text:</label>
@@ -139,7 +139,7 @@
 					</div>
 					<div class="answers-container">
 						<div class="answer answer-left">
-							<img class="answer-img" ng-show="new_question.answer2.pic_url.length" ng-src="{{new_question.answer1.pic_url}}"></img>
+							<img class="answer-img" ng-show="new_question.answer1.pic_url.length" ng-src="{{new_question.answer1.pic_url}}"></img>
 							<div class='answer-text'>
 								<p>{{new_question.answer1.text}}</p>
 								<p>&larr;</p>
@@ -157,6 +157,7 @@
 
 			</div>
 
+			<button ng-click="showAddNewQuestion=false;new_question={}" class='btn btn-sm btn-danger'>Cancel</button>
 			<button ng-click="addNewQuestion(new_question)" id='add-question-btn' class='btn btn-sm btn-success'>Done</button>
 		</div>
 	</section> <!-- ********************* set-questions *********************  -->

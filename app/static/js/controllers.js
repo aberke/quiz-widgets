@@ -65,7 +65,6 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 		if (err1 || err2) {
 			return false;
 		}
-
 		$scope.showAddNewOutcome = false;
 
 		new_outcome['index'] = $scope.quiz.outcomeList.length + 1;
@@ -76,8 +75,8 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	$scope.addNewQuestion = function(new_question) {
 		FormService.removeAllErrors();
 		var err1 = FormService.checkInput([ 'new-question-text',
-											'new-question-answer1-text',
-											'new-question-answer2-text',
+											//'new-question-answer1-text',
+											//'new-question-answer2-text',
 												]);
 		var m1 = ($scope.new_question && $scope.new_question.answer1) ? $scope.new_question.answer1.outcome : null;
 		var m2 = ($scope.new_question && $scope.new_question.answer2) ? $scope.new_question.answer2.outcome : null;
@@ -87,8 +86,9 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 
 		var err2 = FormService.checkModel([ {'model':m1,'elementID':'new-question-answer1-outcome'},
 									 		{'model':m2,'elementID':'new-question-answer2-outcome'},
-											{'model':m3,'elementID':'new-question-answer1-pic-url'},
-											{'model':m4,'elementID':'new-question-answer2-pic-url'},]);
+											//{'model':m3,'elementID':'new-question-answer1-pic-url'},
+											//{'model':m4,'elementID':'new-question-answer2-pic-url'},
+											]);
 		if (err1 || err2) { return false; }
 
 		$scope.showAddNewQuestion = false;

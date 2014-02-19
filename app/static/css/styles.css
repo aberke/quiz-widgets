@@ -8,7 +8,8 @@ input.error, select.error, textarea.error {
 	border-color: red;
 }
 
-
+.inline-block { display: inline-block; }
+.btn-helper { color: gray; }
 
 body {
 	background-color: white;
