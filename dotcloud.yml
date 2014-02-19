@@ -3,6 +3,6 @@ www:
     approot: app
     config:
         node_version: v0.8.x
-    prebuild: ./prebuild.sh     # <-- prebuild directive
+    prebuild: ./prebuild.sh     # prebuild directive from http://stackoverflow.com/questions/20893690/ssl-error-cert-untrusted-on-dotcloud
 db:
     type: mongodb
