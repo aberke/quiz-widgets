@@ -29,6 +29,7 @@ var userSchema = new Schema({
 var quizSchema = new Schema({
 	_user: 		  {type: ObjectId, ref: 'User', default: null},
 	title: 		  {type: String, default: null},
+	pic_url: 	  {type: String, default: "http://www.huffingtonpost.com/favicon.ico"}, // need for sharing
 	date_created: { type: Date, default: Date.now },
 	questionList: [{ type: ObjectId, ref: 'Question' }],
 	outcomeList:  [{ type: ObjectId, ref: 'Outcome' }],

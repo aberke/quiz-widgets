@@ -1,6 +1,12 @@
+/* Share ---- */
+
+.fb-share-btn:hover, .twitter-share-btn:hover {
+	cursor: pointer;
+	opacity: 0.9;
+}
+
+
 /* swipe related styles */
-
-
 div.huffpostlabs-quiz .swipe-container div.swipe-slide div.question,
 div.huffpostlabs-quiz .swipe-container div.swipe-slide div.outcome { /* should be div.question, div.outcome */
   display:block;

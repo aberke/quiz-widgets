@@ -49,7 +49,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 	var currIndex = 0;
 	var lastContainerIndex;
 	function init(){
-		console.log('init', quizData, container)
 
 		containers = buildWidgetSkeleton(container, quizData.title);
 		//this.containers = document.getElementsByClassName('swipe-slide');
@@ -166,7 +165,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 			html += "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>";
 		}
 		// html += '<div class="share-buttons">'; 
-		// html += '<a href="https://twitter.com/share" class="twitter-share-button" data-text="' + quizData.title + '" data-via="HuffPostCode" data-hashtags="huffpostQuiz">Tweet</a>';
+		// html += 	buildTwitterShareQuiz();
+		// html += 	buildFBshareQuiz();
 		// html += '</div>';
 		html += '<p class="quiz-title">' + quizData.title + '</p>';
 		html += '<div id="swipe-container-' + quizIDString + '" class="swipe swipe-container">';
@@ -177,7 +177,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 		html += '	</div>';
 		html += '</div>';
 		container.innerHTML = html;
-		twttr.widgets.load();
 		return document.getElementById('swipe-wrap-' + quizIDString).children;
 	}
 	function buildQuestionContent(question) {
@@ -225,8 +224,45 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
 		var html = '<div class="outcome">';
 		html 	+= '    <img class="outcome-img" src="' + outcome.pic_url + '"></img>';
     	html 	+= '	<p class="outcome-text">' + outcome.text + '</p>';
+    	// html 	+= '	<div class="share-outcome-container">';
+    	// html 	+= ' 		<p class="share-outcome-text">Share your results</p>';
+    	// html 	+= 			buildFBshareOutcome(outcome);
+    	// html 	+= 			buildTwitterShareOutcome(outcome);
+    	// html 	+= '	</div>';
     	html 	+= '</div>';
 		return html;
 	}
+	function buildFBshareOutcome(outcome) {
+		var onclickString = "fbShareOutcome('" + quizData.title + "','" + outcome.pic_url + "','" + outcome.text + "')";
+		return buildFBshareButton(onclickString);
+	}
+	function buildFBshareQuiz() {
+		var onclickString = "fbShareQuiz('" + quizData.title + "','" + quizData.pic_url + "')";
+		return buildFBshareButton(onclickString);
+	}
+	function buildFBshareButton(onclickString) {
+		var html = '<img class="fb-share-btn" alt="Facebook share button" ';
+			html+= 'width="20" height="20" src="' + domain + '/icon/fb-icon.png" ';
+			html+= 'onclick="' + onclickString + '" ';
+			html+= ' />';
+		return html;
+	}
+	function buildTwitterShareQuiz() {
+		var onclickString = "twitterShare('" + quizData.title + "','HuffPostCode','huffpostQuiz')";
+		return buildTwitterShareButton(onclickString);
+	}
+	function buildTwitterShareOutcome(outcome) {
+		var text = 'I got: ' + outcome.text + ' -- ' + quizData.title;
+		var onclickString = "twitterShare('" + text + "', 'HuffPostCode','huffpostQuiz')";
+		return buildTwitterShareButton(onclickString);
+	}
+	function buildTwitterShareButton(onclickString) {
+		var html = '<span class="twitter-share-btn" onclick="' + onclickString + '" >';
+			html+= '	<img width="20" height="20" src="' + domain + '/icon/twitter-icon.png"></img>';
+			html+= '</span>';
+		return html;
+	}
+
+
 	init();
 }

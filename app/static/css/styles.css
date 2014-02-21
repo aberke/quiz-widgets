@@ -38,12 +38,15 @@ footer {
 /********************** index-page ******************/
 
 /* ---- take out once mvp stuff is out */
-section#mvp-explainer .mvp-btn {
+section#mvp-explainer .mvp-btn,section#preview .preview-btn {
 	margin-bottom: 10px;
 }
-section#mvp-explainer #mvp-text-container {
+section#mvp-explainer #mvp-text-container,section#preview #preview-text-container {
 	border-bottom: 3px solid lavenderblush;
 	margin-bottom: 15px;
+}
+section#preview #preview-text-container img{
+	margin: 10px;
 }
 /* ---- take out once mvp stuff is out */
 

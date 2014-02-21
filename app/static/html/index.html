@@ -11,6 +11,16 @@
       <p> -- Let's go viral</p>
     </div>
   </section>
+
+  <section id='preview'>    
+    <button class='btn btn-default btn-sm preview-btn' ng-show="hidePreview" ng-click="hidePreview=false">Preview Coming Soon</button>
+    <button class='btn btn-default btn-sm preview-btn' ng-show="!hidePreview" ng-click="hidePreview=true">Hide Preview</button>
+    <div id='preview-text-container' ng-show="!hidePreview">
+      <h3>Coming Soon: New Design</h3>
+      <img width='400' src="/designs/cover-screen.png"></img>
+      <img width='400' src="/designs/question-screen.png"></img>
+    </div>
+  </section>
     
   <button id='create-new-btn' ng-click="newPage()" type="button" class="btn btn-default">Create New</button>
 

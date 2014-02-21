@@ -1,45 +1,16 @@
 <!DOCTYPE HTML> 
 <html>
 <head>
-<title>Swipe 2</title>
+<title>S</title>
 <meta http-equiv="X-UA-Compatible" content="IE=8">
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
 </head>
 <body>
 
 
-    <div style="display:none" id="fb-root"></div>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '813086478716856',
-          status     : true,
-          xfbml      : true
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/all.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-
-      function test() {
-        console.log('test')
-        FB.ui({
-        method: 'feed',
-        picture: "http://dogecoin.com/img/dogecoin-300.png",
-        link: 'http://127.0.0.1:8080/api/quiz/52fd4dd314c3630000c83cd4',
-        caption: 'An example caption',
-        }, function(response){});
-      }
-    </script>
-
-<a href="" onclick="test()">TEST</a>
 
 <h1>Quiz Widget</h1>
+
 
 
 

@@ -21,10 +21,77 @@ var QuizModule = function() {
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
 	var scripts 	= [(domain + "/widget/swipe.js"),
 					   (domain + "/widget/quiz-object.js"),
-					   "http://platform.twitter.com/widgets.js",
+					   //"http://platform.twitter.com/widgets.js",
 					   ];
 	var stylesheets = [(domain + "/widget/widget.css")];
 
+	var setupTwitter = function() {
+		window.twitterShare = function(text, via, hashtags) {
+			var twitterURL = 'https://twitter.com/share?url=' + window.location.href + '&text=' + text + '&via=HuffPostCode&hashtags=huffpostQuiz';
+			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
+		}
+	}
+	var setupFB = function() {
+	    /*
+	    facebook sharing plan:
+	      only share on facebook if its from huffpost domain (or dotcloud or locahost) -
+	            - need app for each domain
+	   */
+
+	    // NEED: <div style="display:none" id="fb-root"></div>
+	    var fb_root_div = document.getElementById('fb-root');
+	    if (!fb_root_div) {
+			fb_root_div = document.createElement('div');
+			fb_root_div.id = 'fb-root';
+			fb_root_div.style.display = 'none';
+			document.body.appendChild(fb_root_div);
+	    }
+
+	   /* ------------- necessary setup straight from FB ------------- */
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '813086478716856',
+				status     : true,
+				xfbml      : true
+			});
+		};
+		(function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) {return;}js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/all.js";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+		/* ------------- necessary setup straight from FB above ----------- */
+		
+
+		window.fbShareQuiz = function(quizTitle, quizPicUrl) {
+			FB.ui({
+				method: 'feed',
+				name: quizTitle,
+				picture: quizPicUrl,
+				link: window.location.href,
+				caption: 'Find out..',
+			}, 
+			function(response) {
+				if (response && response.post_id) {
+					console.log('FB quiz post was published.');
+				} else {
+					console.log('FB quiz post was not published.');
+				}
+			});
+		}
+		window.fbShareOutcome = function(quizTitle, outcomePicUrl, outcomeText) {
+			FB.ui({
+				method: 'feed',
+				name: quizTitle,
+				picture: outcomePicUrl,
+				link: window.location.href,
+				caption: 'I got: ' + outcomeText,
+			}, 
+			function(response) {
+				if (response && response.post_id) {
+				console.log('FB outcome post was published.');
+				} else {
+				console.log('FB outcome post was not published.');
+				}
+				});
+			}
+		}
 
 	var quizCompleteCallback = function(outcome, chosenAnswers) {
 		console.log('quizCompleteCallback', chosenAnswers, outcome)
@@ -136,8 +203,10 @@ var QuizModule = function() {
 
 	// load dependencies before calling main
 	function main(){
-		mobile = isMobile();
+		setupFB();
+		setupTwitter();
 
+		mobile = isMobile();
 		if (mobile) { 
 			console.log('MOBILE');
 		}
