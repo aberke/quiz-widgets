@@ -1,4 +1,50 @@
-/* Mobile building functions */
+var percentToNumber = function(percentString) {
+	return percentString.split('%')[0];
+}
+
+var slides = document.getElementsByClassName('slide');
+for(var i=0; i<slides.length; i++) {
+	slides[i].style.top = '102%';
+}
+
+var currSlideIndex = 0;
+var currSlide = slides[currSlideIndex];
+var nextSlide = slides[currSlideIndex + 1];
+
+console.log('currSlide', currSlide)
+currSlide.style.top = '0%';
+
+
+var answer1 = function() {
+	transitionSlides();
+}
+var answer2 = function() {
+	transitionSlides();
+}
+
+var transitionSlides = function() {
+    animateUp(currSlide, -100, function() {
+    	currSlideIndex += 1;
+    	currSlide = slides[currSlideIndex];
+    	nextSlide = slides[currSlideIndex + 1];
+    });
+    animateUp(nextSlide, 0)
+};
+
+var AnimationStep = 4; //pixels
+var AnimationInterval = 20; //milliseconds
+function animateUp(element, targetTop, callback) {
+    var currTop = percentToNumber(element.style.top);
+    if (currTop <= targetTop){
+    	if (callback) { callback(); }
+    	return;
+    }
+    
+    element.style.top = (currTop - AnimationStep) + "%";
+    window.setTimeout(function() {
+        animateUp(element, targetTop, callback);
+    }, AnimationInterval);
+}
 
 
 
