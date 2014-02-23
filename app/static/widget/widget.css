@@ -31,6 +31,7 @@
 
 div.w {
 	font-family: Arvo-Regular;
+	font-weight: 100;
 	color: white;
 	margin: auto;
 	display: inline-block;
@@ -38,7 +39,7 @@ div.w {
 	height: 425px;
   	display: block;
   	position: relative;
-  	z-index: -2; /* to go around the background image of -1 */
+  	z-index: 1; /* to go around the background image of -1 */
 	background-color: black;
 }
 div.w .quiz-container {
@@ -136,20 +137,53 @@ div.w .quiz-container::after {
 /* --------- QUESTION CONTAINER ------ */
 .quiz-container .question-answers-container {
 	position: absolute;
-	border: 1px solid white;
 	top: 2%;
 	bottom: 2%;
 	left: 2%;
 	right: 2%;
 	background-color: rgba(0,0,0,0.4);
+	border-top: 1px solid white;
 }
 .quiz-container .question-container {
+	border-bottom: none;
+	height: 50%;
 	border-bottom: 1px solid white;
-	padding: 3%;
+	border-left: 1px solid white;
+	border-right: 1px solid white;
 }
 .quiz-container .question-text {
-	font-size: 2em;
+	padding: 0.5em;
+	font-size: 2.5em;
 	font-weight: 100;
+}
+.quiz-container .answers-container {
+	height: 49%;
+	border: 1px solid white;
+	border-top: 0;
+}
+
+.quiz-container .answer-container {
+	height: 100%;
+	width: 50%;
+	display: inline-block;
+
+	/* background: url('pic_url') */
+	background-size: 50%;
+	background-repeat: no-repeat;
+	background-position-x: right;
+	background-position-y: bottom;
+}
+.quiz-container .answer-container:hover,
+.quiz-container .answer-container:active {
+	background-color: rgba(255,255,255,0.2);
+}
+.quiz-container .answer-1-container {
+	border-right: 1px solid white;
+	width: 49%;
+}
+.quiz-container .answer-text {
+	margin: 0.8em;
+	font-size: 1.5em;
 }
 
 /* --------- QUESTION CONTAINER above ------ */
@@ -163,6 +197,15 @@ div.w .quiz-container::after {
 	cursor: pointer;
 	opacity: 0.9;
 }
+
+
+
+
+
+
+
+
+
 
 
 /* swipe related styles */
