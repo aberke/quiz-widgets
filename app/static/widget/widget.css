@@ -1,3 +1,162 @@
+/* new design */
+
+
+/* ---------------- FONTS ----------- */
+@font-face {
+	font-family: Arvo-Bold;
+	src: url(/fonts/arvo/Arvo-Bold.ttf);
+}
+@font-face {
+	font-family: Arvo-BoldItalic;
+	src: url(/fonts/arvo/Arvo-BoldItalic.ttf);
+}
+@font-face {
+	font-family: Arvo-Italic;
+	src: url(/fonts/arvo/Arvo-Italic.ttf);
+}
+@font-face {
+	font-family: Arvo-Regular;
+	src: url(/fonts/arvo/Arvo-Regular.ttf);
+}
+/* ---------------- FONTS ------------ */
+
+
+
+
+/* BORDERS FOR DEVELOPMENT ------- */
+/*.green {border: 1px solid green;}
+.blue {border: 1px solid blue;}
+.white {border: 1px solid white; }*/
+
+
+div.w {
+	font-family: Arvo-Regular;
+	color: white;
+	margin: auto;
+	display: inline-block;
+	width: 550px;
+	height: 425px;
+  	display: block;
+  	position: relative;
+  	z-index: -2; /* to go around the background image of -1 */
+	background-color: black;
+}
+div.w .quiz-container {
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+div.w .quiz-container::after {
+	content: "";
+	opacity: 0.7;
+	background: url("/designs/images/bg.png") no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	z-index: -1;  
+}
+.quiz-container p,
+.quiz-container h1,
+.quiz-container h2,
+.quiz-container h3 {
+	padding: 0;
+	margin: 0;
+}
+
+/* --------- TITLE CONTAINER ------ */
+.quiz-container .title-container {
+	position: absolute;
+	top: 20%;
+	bottom: 0;
+	width: 100%;
+}
+.quiz-container .title-container .filler-left {
+	width: 23%;
+	height: 100%;
+	position: absolute;
+}
+
+.quiz-container .title-container .filler-square {
+	position: absolute;
+	right: 0;
+	height: 14%;
+	width: 35%;
+	background-color: white;
+}
+.quiz-container .title-container .title-content {
+	width: 76.8%;
+	bottom: 0;
+	top: 0;
+	right: 0;
+	position: absolute;
+	border-left: 1px solid white;
+}
+.quiz-container .title-container .title-content 
+.title {
+	font-size: 3.5em;
+	margin: 0 15px;
+}
+.quiz-container .title-container .title-content 
+.share-container {
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+	padding: 8px;
+}
+.share-container .embed-code {
+	border: 1px solid white;
+	font-size: 1em;
+	background-color: transparent;
+	color: white;
+	padding: 5px;
+	margin: 0;
+	vertical-align: top;
+}
+.start-container {
+	border: 1px solid red;
+	cursor: pointer;
+}
+.start-container:hover {
+	border: 1px solid blue;
+	background-color: rgba(255,255,255,0.4);
+}
+.start-container .start-text {
+	font-size: 2em;
+	font-weight: 100;
+	padding: 4%;
+}
+/* --------- TITLE CONTAINER above ------ */
+
+/* --------- QUESTION CONTAINER ------ */
+.quiz-container .question-answers-container {
+	position: absolute;
+	border: 1px solid white;
+	top: 2%;
+	bottom: 2%;
+	left: 2%;
+	right: 2%;
+	background-color: rgba(0,0,0,0.4);
+}
+.quiz-container .question-container {
+	border-bottom: 1px solid white;
+	padding: 3%;
+}
+.quiz-container .question-text {
+	font-size: 2em;
+	font-weight: 100;
+}
+
+/* --------- QUESTION CONTAINER above ------ */
+
+
+
+
 /* Share ---- */
 
 .fb-share-btn:hover, .twitter-share-btn:hover {
