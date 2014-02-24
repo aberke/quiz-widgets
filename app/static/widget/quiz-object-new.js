@@ -118,9 +118,9 @@ var HuffpostLabsQuizObjectNew = function(container, quizData, mobile, completeCa
         console.log('outcomeMap', outcomeMap)
 
         container.style.display = 'none';
-        handleMobile();
         buildWidget();
         setupSlides();
+        handleMobile();
 
         container.style.display = 'block';
     }
@@ -128,6 +128,14 @@ var HuffpostLabsQuizObjectNew = function(container, quizData, mobile, completeCa
     function handleMobile() {
         if (isMobile) {
             container.className += ' mobile';
+        }
+
+        /* hide the onclick lag with highlighting on touchstart */
+        var touchables = document.getElementsByClassName('touchable');
+        for (var i=0; i<touchables.length; i++) {
+            touchables[i].addEventListener('touchstart', function(e) {
+                e.target.className += ' selected';
+            });
         }
     }
     function buildWidget() {
@@ -173,7 +181,7 @@ var HuffpostLabsQuizObjectNew = function(container, quizData, mobile, completeCa
             html+= "                <img src='/designs/images/embed.png'></img>";
             html+= "            </span>";
             html+= "           </div>";
-            html+= "        <div class='start-container' onclick=" + onclickString + ">";
+            html+= "        <div class='start-container touchable' onclick=" + onclickString + ">";
             html+= "            <h2 class='start-text'>START</h2>";
             html+= "        </div>";
             html+= "    </div>";
@@ -196,10 +204,10 @@ var HuffpostLabsQuizObjectNew = function(container, quizData, mobile, completeCa
             html+= "        <h2 class='question-text'>" +  question.text + "</h2>";
             html+= "    </div>";
             html+= "    <div class='answers-container'>";
-            html+= "        <div onclick=" + onclickString1 + " style='" + answerStyleString(question.answer1) + "' class='answer-1-container answer-container'>";
+            html+= "        <div onclick=" + onclickString1 + " style='" + answerStyleString(question.answer1) + "' class='touchable answer-1-container answer-container'>";
             html+= "            <h3 class='answer-text'>" + question.answer1.text + "</h3>";
             html+= "        </div>";
-            html+= "        <div onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='answer-2-container answer-container'>";
+            html+= "        <div onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='touchable answer-2-container answer-container'>";
             html+= "            <h3 class='answer-text'>" + question.answer2.text + "</h3>";
             html+= "        </div>";
             html+= "    </div>";
