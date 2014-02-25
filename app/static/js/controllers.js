@@ -57,6 +57,11 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 					'questionList': [],
 					};
 
+
+	$scope.updateQuizPic = function() {
+		UIService.addStyle('.huffpostlabs-quiz::after {background-image: url(' + $scope.quiz.pic_url + ');}');
+	}
+
 	$scope.addNewOutcome = function(new_outcome) {
 		/* validate form */
 		FormService.removeAllErrors();

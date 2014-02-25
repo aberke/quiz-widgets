@@ -4,10 +4,15 @@
     <button class='btn btn-default btn-sm mvp-btn' ng-show="hideExplainer" ng-click="hideExplainer=false">Feedback Please</button>
     <button class='btn btn-default btn-sm mvp-btn' ng-show="!hideExplainer" ng-click="hideExplainer=true">Hide Call for Feedback</button>
     <div id='mvp-text-container' ng-show="!hideExplainer">
-      <p>This is a minimal viable product for the Quiz Widget concept.</p>
+      <p>This is a minimal viable product for the Quiz Widget concept. Please report bugs.</p>
       <p>No design or product review has been done yet - so I would love to hear from you how this product could be better.</p>
       <p>If you have design ideas, preferred features, or general product ideas for how to make this more usable and better suit you, please <a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20App%20Feedback]">email me at alexandra.berke@huffingtonpost.com</a></p>
-      <p>Share buttons are on their way.</p>
+      <p>Enhancements on their way:</p>
+      <ul>
+        <li><p>Broader sharing options.</p></li>
+        <li><p>Ability to create questions with more than 2 answers.</p></li>
+        <li><p>More exciting outcome transition.</p></li>
+      </ul>
       <p> -- Let's go viral</p>
     </div>
   </section>
@@ -39,7 +44,8 @@
         <pre>&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;
 &lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
 
-        <a ng-href="/quiz/{{q._id}}">View More</a>
+        <p><a ng-href="/quiz/{{q._id}}">View More</a></p>
+        <p><a ng-href="/social">Notes on Social Sharing</a></p>
       </div>
 
       <hr />

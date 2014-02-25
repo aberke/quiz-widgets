@@ -1,12 +1,13 @@
 /* name is q.js: let's make the name as short as possible as for easy reference
 	
 	This is pure javascript - no jQuery
+
 */
 
 var domain = "http://";
 //domain += '127.0.0.1:8080';
-domain += '42461ba5.ngrok.com'; // for mobile development
-//domain += 'quizwidget-petri.dotcloud.com';
+//domain += '42461ba5.ngrok.com'; // for mobile development
+domain += 'quizwidget-petri.dotcloud.com';
 
 
 
@@ -47,11 +48,30 @@ domain += '42461ba5.ngrok.com'; // for mobile development
 			fb_root_div.style.display = 'none';
 			document.body.appendChild(fb_root_div);
 	    }
+		var defaultQuizPicUrl = domain + "/icon/huffpost-H.png";
+	    var appIDMap = { "http://quizwidget-petri.dotcloud.com": '611233398931791',
+					     "http://42461ba5.ngrok.com": '502717763181151',
+
+					     "http://www.huffingtonpost.com": '1427100424195799',
+					     "http://code.huffingtonpost.com": '1427100424195799',
+					     "http://huffingtonpost.com": '1427100424195799',
+					};
+
+		var appID = appIDMap[window.location.origin];
+		if (!appID) { /* NO FB SHARING */
+			console.log('FB sharing disabled.')
+			/* hide all the share buttons */
+			var rules = ".fb-share-btn,huffpostlabs-quiz .fb-share-btn{display:none}";
+			var stylesheet = document.createElement('style');
+    		document.body.appendChild(stylesheet);
+        	stylesheet.innerHTML = rules;
+			return;
+		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
 		window.fbAsyncInit = function() {
 			FB.init({
-				appId      : '813086478716856',
+				appId      : appID,
 				status     : true,
 				xfbml      : true
 			});
@@ -64,7 +84,7 @@ domain += '42461ba5.ngrok.com'; // for mobile development
 			FB.ui({
 				method: 'feed',
 				name: quizTitle,
-				picture: quizPicUrl,
+				picture: (quizPicUrl || defaultQuizPicUrl),
 				link: window.location.href,
 				caption: 'Find out..',
 			}, 
@@ -212,7 +232,7 @@ domain += '42461ba5.ngrok.com'; // for mobile development
 			console.log('MOBILE');
 		}
 
-		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz-new');
+		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
 		for (var i=0; i<widgetContainers.length; i++) {
 			var container = widgetContainers[i];
 			var quizID = container.id;

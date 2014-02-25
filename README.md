@@ -10,7 +10,7 @@ TODO
 
 
 in widget:
-	load in all images upon loading in quiz and tack on to the questions
+	add other share options -- embed currently commented out (it is also hidden on mobile by the css)
 
 add quiz image & description for fb share
 

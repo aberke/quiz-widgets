@@ -46,6 +46,9 @@ var FormService = function() {
 
 var UIService = function($timeout){
 
+    var stylesheet = document.createElement('style');
+    document.body.appendChild(stylesheet);
+
   return {
 
     setupPopovers: function() {
@@ -53,7 +56,11 @@ var UIService = function($timeout){
       $timeout(function(){
         $('.popover-hover').popover({trigger: 'hover'});
       }, 3000);
-    }
+    },
+
+    addStyle: function(rule) {
+        stylesheet.innerHTML += rule;
+    },
   }
 }
 

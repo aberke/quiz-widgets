@@ -53,7 +53,7 @@ section#preview #preview-text-container img{
 
 
 
-#index-page {
+#index-page, #social-page {
 	min-height: 400px;
 	max-width: 900px;
 	margin: auto;
@@ -105,6 +105,10 @@ section#preview #preview-text-container img{
 	width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
+}
+#new-page .required-star {
+	color: red;
+	margin-right: 5px;
 }
 #new-page section#set-title, 
 #new-page section#set-outcomes, 

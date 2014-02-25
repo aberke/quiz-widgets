@@ -4,6 +4,9 @@ QuizApp.config(function($routeProvider) {
 	$routeProvider.when('/new', {
 		templateUrl: '/html/new.html',
 		controller: NewQuizCntl,
+	});	
+	$routeProvider.when('/social', {
+		templateUrl: '/html/social.html',
 	});
 	$routeProvider.when('/quiz/:id', {
 		templateUrl: '/html/quiz.html',
