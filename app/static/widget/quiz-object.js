@@ -1,264 +1,264 @@
 
 
-var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallback) {
-	/* 
-	Params:
-		mobile: boolean as to whether q.js detected mobile device
-
-	when the quiz is complete I'll send back data 
-		worthwhile data: 
-			list of chosen answers chosenAnswers = []
-			which outcome resulted
-
-			have map: {_outcomeID: outcomeObject}
-			Each time an answer is chosen, 
-				onclick='chooseAnswer1()' or onclick='chooseAnswer2()'
-				a = currQuestion.answer1  or a = currQuestion.answer2
-				chosenAnswers.push(a)
-				incrementOutcome(a.outcome)
-
-			leadingOutcome = null
-			outcomesMap = {_outcomeID: outcomeObject}
-			function incrementOutcome(outcomeID):
-				o = outcomesMap[outcomeID]
-				o.points += 1
-				if o.points > leadingOutcome.points:
-					leadingOutcome = o
-				
-	*/
-	var container = container;
-	var quizData = quizData;
-	var isMobile = mobile;
-	var quizID = quizData._id;
-	var quizIDString = quizID.toString();
-	var swipeControllerString = "swipeControllers['" + quizIDString + "']";
-
-	var questionList;
-	var currQuestion;
-	var nextQuestion;
-
-	var outcomeMap; // {_outcomeID: outcomeObject}
-	var leadingOutcome = null;
-	var chosenAnswers = [];
-
-	var containers;
-	var currIndex = 0;
-	var lastContainerIndex;
-	function init(){
-
-		containers = buildWidgetSkeleton(container, quizData.title);
-		//this.containers = document.getElementsByClassName('swipe-slide');
-		lastContainerIndex = containers.length - 1;
-
-		questionList = quizData.questionList;
-		currQuestion = questionList.shift();
-		nextQuestion = questionList.shift();
-		outcomeMap = createOutcomeMap(quizData.outcomeList);
-
-		enableSwipe(); // need to define swipeControllerString before building questions
-		fillSlideContainer(0, buildQuestionContent(currQuestion));
-		setupNextQuestion(nextQuestion, 0);
-	}
-	function createOutcomeMap(outcomeList) {
-		map = {};
-		for (var i=0; i<outcomeList.length; i++) {
-			var o = outcomeList[i];
-			o.points = 0;
-			map[o._id] = o;
-		}
-		return map;
-	}
-	function incrementOutcome(outcomeID) {
-		var o = outcomeMap[outcomeID];
-		o.points += 1;
-		if (!leadingOutcome || o.points > leadingOutcome.points) {
-			leadingOutcome = o;
-		}
-		return leadingOutcome;
-	}
-	function chooseAnswer(answer) {
-		chosenAnswers.push(answer);
-		incrementOutcome(answer._outcome);
-	}
-	function chooseAnswer1() {
-		a = currQuestion.answer1;
-		chooseAnswer(a);
-	}
-	function chooseAnswer2() {
-		a = currQuestion.answer2;
-		chooseAnswer(a);
-	}
-	function setupNextContent(index, content) {
-	  var indexLeft = (index > 0) ? (index-1) : lastContainerIndex;
-	  var indexRight = (index < lastContainerIndex) ? (index + 1) : 0;
-
-	  fillSlideContainer(indexLeft, content);
-	  fillSlideContainer(indexRight, content);
-	}
-
-	function setupOutcome(index) {
-		console.log(outcomeMap)
-		var outcomeContent = buildOutcomeContent(leadingOutcome);
-		setupNextContent(index, outcomeContent);
-	}
-	function setupNextQuestion(nextQuestion, index) {
-	  var questionContent = buildQuestionContent(nextQuestion);
-	  setupNextContent(index, questionContent);
-	}
-	function enableSwipe() {
-		window.swipeControllers[quizIDString] = Swipe(document.getElementById('swipe-container-' + quizIDString), {
-			startSlide: currIndex, // always 3 slides
-			//auto: 3000,
-			continuous: true,
-			disableScroll: true,
-			stopPropagation: true,
-			callback: swipeStart,
-			transitionEnd: swipeEnd,
-		});
-	}
-	function disableSwipe() {
-		window.swipeControllers[quizIDString].kill();
-	}
-
-	function swipeStart(index, elem) {
-		if (index == (currIndex + 1) || index == 0) {
-			chooseAnswer2();
-		} else {
-			chooseAnswer1();
-		}
-	}
-	var lastSwipe = false;
-	function swipeEnd(index, elem) {
-		currIndex = index;
-	  	if (lastSwipe) {
-	  		handleQuizEnd();
-	  		return;
-	  	}
-	  	currQuestion = nextQuestion;
-		nextQuestion = questionList.shift();
-		if (!nextQuestion) {
-			lastSwipe = true;
-			setupOutcome(index);
-		} else {
-			setupNextQuestion(nextQuestion, index);
-		}
-	}
-	function handleQuizEnd() {
-  		disableSwipe();
-  		if (completeCallback) { completeCallback(leadingOutcome, chosenAnswers); }
-	}
 
 
-	function fillSlideContainer(index, content) {
-	  containers[index].innerHTML = content;
-	}
+var HuffpostLabsSlidesCntl = function(container) {
+    var container = container;
+    var slides;
+    var currSlideIndex
+    var currSlide;
+    var nextSlide;
 
+    var percentToNumber = function(percentString) {
+        return percentString.split('%')[0];
+    }
+    var startQuiz = function() {
+        transitionSlides();
+    }
+    var transitionNext = function() {
+        animateUp(currSlide, -100, function() {
+            currSlideIndex += 1;
+            currSlide = slides[currSlideIndex];
+            nextSlide = slides[currSlideIndex + 1];
+        });
+        animateUp(nextSlide, 0);
+    };
+    var updateLastSlide = function(content) {
+        slides[slides.length - 1].innerHTML = content;
+    }
 
-	function buildWidgetSkeleton() {
-		var html = "";
-		if (isMobile) {
-			container.className += ' mobile';
-			html += "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>";
-		}
-		// html += '<div class="share-buttons">'; 
-		// html += 	buildTwitterShareQuiz();
-		// html += 	buildFBshareQuiz();
-		// html += '</div>';
-		html += '<p class="quiz-title">' + quizData.title + '</p>';
-		html += '<div id="swipe-container-' + quizIDString + '" class="swipe swipe-container">';
-		html += '	<div class="swipe-wrap" id="swipe-wrap-' + quizIDString + '">';
-		html += 		'<div class="swipe-slide"></div>';
-		html += 		'<div class="swipe-slide"></div>';
-		html += 		'<div class="swipe-slide"></div>';
-		html += '	</div>';
-		html += '</div>';
-		container.innerHTML = html;
-		return document.getElementById('swipe-wrap-' + quizIDString).children;
-	}
-	function buildQuestionContent(question) {
-		var html = '<div class="question">';
-		html 	+= '	<div class="question-text">';
-		html 	+= '	<p>' + question.text + '</p>';
-		html 	+= '	</div>';
-		html 	+= '<div class="answers-container">';
-		
-		// if (isMobile) {
-		// 	html 	+= '<div class="answer answer-left">';
-		// } else {
-			html 	+= '<div onclick="' + swipeControllerString + '.prev()" class="answer answer-left">';
-		//}
-		
-		if (question.answer1.pic_url) {
-			html+= '	  <img class="answer-img" src="' + question.answer1.pic_url + '"></img>';
-		}
-		html 	+= '	   	<div class="answer-text">';
-		html 	+= '	    <p>' + (question.answer1.text || '') + '</p>';
-		html 	+= '	    <p>&larr;</p>';
-		html 	+= '	  </div>';
-		html 	+= '	</div>';
+    var AnimationStep = 4; // keep it a factor of 100
+    var AnimationInterval = 20; //milliseconds
+    function animateUp(element, targetTop, callback) {
+        var currTop = percentToNumber(element.style.top);
+        if (currTop <= targetTop){
+            if (callback) { callback(); }
+            return;
+        }
+        
+        element.style.top = (currTop - AnimationStep) + "%";
+        window.setTimeout(function() {
+            animateUp(element, targetTop, callback);
+        }, AnimationInterval);
+    }
 
-		// if (isMobile) {
-		// 	html 	+= '<div class="answer answer-right">';
-		// } else {
-			html 	+= '<div onclick="' + swipeControllerString + '.next()" class="answer answer-right">';
-		//}
-		
-		if (question.answer2.pic_url) {
-			html+= '	  <img class="answer-img" src="' + question.answer2.pic_url + '"></img>';
-		}
-		html 	+= '	  <div class="answer-text">';
-		html 	+= '	    <p>' + (question.answer2.text || '') + '</p>';
-		html 	+= '	    <p>&rarr;</p>';
-		html 	+= '	  </div>';
-		html 	+= '	</div>';
-		html 	+= '	</div>';
+    var init = function() {
+        slides = container.getElementsByClassName('slide');
+        for(var i=0; i<slides.length; i++) {
+            slides[i].style.top = '100%';
+        }
 
-		html 	+= ' </div>';
-	  	return html;
-	}
-	function buildOutcomeContent(outcome) {
-		var html = '<div class="outcome">';
-		html 	+= '    <img class="outcome-img" src="' + outcome.pic_url + '"></img>';
-    	html 	+= '	<p class="outcome-text">' + outcome.text + '</p>';
-    	// html 	+= '	<div class="share-outcome-container">';
-    	// html 	+= ' 		<p class="share-outcome-text">Share your results</p>';
-    	// html 	+= 			buildFBshareOutcome(outcome);
-    	// html 	+= 			buildTwitterShareOutcome(outcome);
-    	// html 	+= '	</div>';
-    	html 	+= '</div>';
-		return html;
-	}
-	function buildFBshareOutcome(outcome) {
-		var onclickString = "fbShareOutcome('" + quizData.title + "','" + outcome.pic_url + "','" + outcome.text + "')";
-		return buildFBshareButton(onclickString);
-	}
-	function buildFBshareQuiz() {
-		var onclickString = "fbShareQuiz('" + quizData.title + "','" + quizData.pic_url + "')";
-		return buildFBshareButton(onclickString);
-	}
-	function buildFBshareButton(onclickString) {
-		var html = '<img class="fb-share-btn" alt="Facebook share button" ';
-			html+= 'width="20" height="20" src="' + domain + '/icon/fb-icon.png" ';
-			html+= 'onclick="' + onclickString + '" ';
-			html+= ' />';
-		return html;
-	}
-	function buildTwitterShareQuiz() {
-		var onclickString = "twitterShare('" + quizData.title + "','HuffPostCode','huffpostQuiz')";
-		return buildTwitterShareButton(onclickString);
-	}
-	function buildTwitterShareOutcome(outcome) {
-		var text = 'I got: ' + outcome.text + ' -- ' + quizData.title;
-		var onclickString = "twitterShare('" + text + "', 'HuffPostCode','huffpostQuiz')";
-		return buildTwitterShareButton(onclickString);
-	}
-	function buildTwitterShareButton(onclickString) {
-		var html = '<span class="twitter-share-btn" onclick="' + onclickString + '" >';
-			html+= '	<img width="20" height="20" src="' + domain + '/icon/twitter-icon.png"></img>';
-			html+= '</span>';
-		return html;
-	}
+        currSlideIndex = 0;
+        currSlide = slides[currSlideIndex];
+        nextSlide = slides[currSlideIndex + 1];
+        currSlide.style.top = '0%';
+    }
+    init();
+    return { transitionNext: transitionNext, updateLastSlide: updateLastSlide };
+}
 
+var HuffpostLabsQuizObjectNew = function(container, quizData, mobile, completeCallback) {
+    console.log('quizData', quizData)
+    var container = container;
+    var quizData = quizData;
+    var isMobile = mobile;
+    var quizID = quizData._id;
 
-	init();
+    var slidesCntl;
+
+    var questionList;
+    var currQuestionIndex;
+    var outcomeMap; // {_outcomeID: outcomeObject}
+    var leadingOutcome = null;
+    var chosenAnswers = [];
+
+    function startQuiz() {
+        slidesCntl.transitionNext();
+    }
+    function answer1() {
+        a = questionList[currQuestionIndex].answer1;
+        chooseAnswer(a);
+    }
+    function answer2() {
+        a = questionList[currQuestionIndex].answer2;
+        chooseAnswer(a);
+    }
+    function chooseAnswer(answer) {
+        chosenAnswers.push(answer);
+        incrementOutcome(answer._outcome);
+        currQuestionIndex += 1;
+        slidesCntl.transitionNext();
+    }
+    function incrementOutcome(outcomeID) {
+        var o = outcomeMap[outcomeID];
+        o.points += 1;
+        if (!leadingOutcome || o.points > leadingOutcome.points) {
+            leadingOutcome = o;
+            slidesCntl.updateLastSlide(outcomeContentHTML(o));
+        }
+        return leadingOutcome;
+    }
+
+    function setupSlides() {
+        slidesCntl = new HuffpostLabsSlidesCntl(container);
+    }
+    function createOutcomeMap(outcomeList) {
+        map = {};
+        for (var i=0; i<outcomeList.length; i++) {
+            var o = outcomeList[i];
+            o.points = 0;
+            map[o._id] = o;
+        }
+        return map;
+    }
+    function init(){
+        questionList = quizData.questionList;
+        currQuestionIndex = 0;
+        outcomeMap = createOutcomeMap(quizData.outcomeList);
+
+        container.style.display = 'none';
+        buildWidget();
+        setupSlides();
+        handleMobile();
+
+        container.style.display = 'block';
+    }
+
+    function handleMobile() {
+        if (isMobile) {
+            container.className += ' mobile';
+        }
+
+        /* hide the onclick lag with highlighting on touchstart */
+        var touchables = document.getElementsByClassName('touchable');
+        for (var i=0; i<touchables.length; i++) {
+            touchables[i].addEventListener('touchstart', function(e) {
+                e.target.className += ' selected';
+            });
+        }
+    }
+    function buildWidget() {
+        /* add background image */
+        var newClassName = 'quiz-' + quizID;
+        container.className += (' ' + newClassName);
+        if (quizData.pic_url) {
+            addStyle('.' + newClassName + '::after {background-image: url(' + quizData.pic_url + ');}');
+        }
+
+        var html = "";
+            html+= "<div class='slides-container'>";
+            html+= titleContainerHTML();
+
+            var questionList = quizData.questionList;
+            for(var i=0; i<questionList.length; i++) {
+                html += questionAnswersContainerHTML(questionList[i]);
+            }
+            html += outcomeContainerHTML();
+            html+= "</div>";
+
+        container.innerHTML = html;
+    }
+
+    var stylesheet = document.createElement('style');
+    document.body.appendChild(stylesheet);
+    var addStyle = function(rule) {
+        stylesheet.innerHTML += rule;
+    }
+
+    function shareQuizFB() {
+        fbShareQuiz(quizData.title, quizData.pic_url);
+    }
+    function shareOutcomeFB() {
+        fbShareOutcome(quizData.title, leadingOutcome.pic_url, leadingOutcome.text);
+    }
+    function shareQuizTwitter() {
+        twitterShare(quizData.title, 'HuffpostCode', 'huffpostQuiz');
+    }
+    function shareOutcomeTwitter() {
+        var text = 'I got: ' + leadingOutcome.text + ' -- ' + quizData.title;
+        twitterShare(text, 'HuffPostCode', 'huffpostQuiz');
+    }
+    function titleContainerHTML() {
+        var onclickStart = "quizWidgets['" + quizID + "'].startQuiz()";
+        var onclickShareFB = "quizWidgets['" + quizID + "'].shareQuizFB()";
+        var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
+        
+        var html = "<div class='slide title-container'>";
+            html+= "    <div class='filler-left'>";
+            html+= "        <img src='/icon/white-square.png' class='filler-square'></img>";
+            html+= "    </div>";
+            html+= "    <div class='title-content'>";
+            html+= "        <h1 class='title'>" + quizData.title + "</h1>";
+            html+= "        <div class='share-container'>";
+            html+= "            <img class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='/designs/images/facebook.png'></img>";
+            html+= "            <img onclick=" + onclickShareTwitter + " class='share touchable' src='/designs/images/twitter.png'></img>";
+            // html+= "            <span class='embed-code'>";
+            // html+= "                <input value='http://61ad6007.ngrok.com/s' >";
+            // html+= "                <img src='/designs/images/embed.png'></img>";
+            // html+= "            </span>";
+            html+= "        </div>";
+            html+= "        <div class='start-container touchable' onclick=" + onclickStart + ">";
+            html+= "            <h2 class='start-text'>START</h2>";
+            html+= "        </div>";
+            html+= "    </div>";
+            html+= " </div>";
+        return html;
+    }
+    function answerStyleString(answer) {
+        var styleString = "";
+        if (answer.pic_url) {
+            styleString = "background-image: url(" + answer.pic_url + ")";
+        }
+        return styleString;
+    }
+    function questionAnswersContainerHTML(question) {
+        var onclickString1 = "quizWidgets['" + quizID + "'].answer1()";
+        var onclickString2 = "quizWidgets['" + quizID + "'].answer2()";
+
+        var html = "<div class='slide question-answers-container'>";
+            html+= "    <div class='question-container'>";
+            html+= "        <h2 class='question-text'>" +  question.text + "</h2>";
+            html+= "    </div>";
+            html+= "    <div class='answers-container'>";
+            html+= "        <div onclick=" + onclickString1 + " style='" + answerStyleString(question.answer1) + "' class='touchable answer-1-container answer-container'>";
+            html+= "            <h3 class='answer-text'>" + (question.answer1.text || "") + "</h3>";
+            html+= "        </div>";
+            html+= "        <div onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='touchable answer-2-container answer-container'>";
+            html+= "            <h3 class='answer-text'>" + (question.answer2.text || "") + "</h3>";
+            html+= "        </div>";
+            html+= "    </div>";
+            html+= "</div>";
+        return html;
+    }
+    function outcomeContentHTML(outcome) {
+        var onclickShareFB = "quizWidgets['" + quizID + "'].shareOutcomeFB()";
+        var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareOutcomeTwitter()";
+
+        var styleText = 'background-image: url(' + outcome.pic_url + ')';
+        var html = "<div style='" + styleText + "' class='outcome-content'>";
+            html+= "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
+            html+= "</div>";
+            html+= "<div class='share-container'>";
+            html+= "    <img class='fb-share-btn share touchable' onclick=" + onclickShareFB + " src='/designs/images/facebook.png'></img>";
+            html+= "    <img onclick=" + onclickShareTwitter + " class='share touchable' src='/designs/images/twitter.png'></img>";
+            html+= "    <div class='share-text'><p>Share your results</p></div>";
+            html+= "</div>";
+        return html;
+    }
+    function outcomeContainerHTML() {
+        var html = "<div class='slide outcome-container'>";
+            html+= "</div>";
+        return html;
+    }
+
+    init();
+    return{ startQuiz: startQuiz,
+            answer1:   answer1,
+            answer2:   answer2,
+
+            shareQuizFB:        shareQuizFB,
+            shareOutcomeFB:     shareOutcomeFB,
+            shareQuizTwitter:   shareQuizTwitter,
+            shareOutcomeTwitter:shareOutcomeTwitter,
+            };
 }
