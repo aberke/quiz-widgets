@@ -22,7 +22,6 @@ domain += 'quizwidget-petri.dotcloud.com';
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
 	var scripts 	= [(domain + "/widget/swipe.js"),
 					   (domain + "/widget/quiz-object.js"),
-					   (domain + "/widget/quiz-object-new.js"),
 					   //"http://platform.twitter.com/widgets.js",
 					   ];
 	var stylesheets = [(domain + "/widget/widget.css")];
@@ -127,7 +126,7 @@ domain += 'quizwidget-petri.dotcloud.com';
 
 	function load_quiz_info(quizID, container){
 		jsonp("/api/quiz/" + quizID, function(data) {
-			var widget = new HuffpostLabsQuizObjectNew(container, data, mobile, quizCompleteCallback);
+			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizCompleteCallback);
 			this.quizWidgets[quizID] = widget;
 		});
 	};

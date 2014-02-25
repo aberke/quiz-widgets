@@ -57,7 +57,7 @@ var HuffpostLabsSlidesCntl = function(container) {
     return { transitionNext: transitionNext, updateLastSlide: updateLastSlide };
 }
 
-var HuffpostLabsQuizObjectNew = function(container, quizData, mobile, completeCallback) {
+var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallback) {
     console.log('quizData', quizData)
     var container = container;
     var quizData = quizData;

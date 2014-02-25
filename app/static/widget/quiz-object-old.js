@@ -1,6 +1,6 @@
 
 
-var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallback) {
+var HuffpostLabsQuizObjectOld = function(container, quizData, mobile, completeCallback) {
 	/* 
 	Params:
 		mobile: boolean as to whether q.js detected mobile device
