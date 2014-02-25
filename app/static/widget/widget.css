@@ -44,7 +44,7 @@
 
 }.huffpostlabs-quiz::after{
 	content: "";
-	opacity: 0.7;
+	opacity: 0.5;
 	background-repeat: no-repeat;
 	background-position: center center;
 	-webkit-background-size: cover;

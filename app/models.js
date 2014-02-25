@@ -90,6 +90,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 	var newQuiz = new Quiz({
 		//_user: ?
 		title: 		  quizData.title,
+		pic_url: 	  quizData.pic_url,
 	});
 	console.log('\n\nnewQuiz', newQuiz)
 
