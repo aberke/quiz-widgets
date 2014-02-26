@@ -6,7 +6,7 @@
 	<section id='instructions'>
 		<button class='btn btn-default' ng-show="!showInstructions" ng-click="showInstructions=true">Instructions</button>
 		<button class='btn btn-default' ng-show="showInstructions" ng-click="showInstructions=false">Hide Instructions</button>
-		<div id='instructions-text' ng-show="showInstructions">
+		<div class='instructions-text' ng-show="showInstructions">
 			<p>Here's how it works:</p>
 			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
 			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
@@ -20,7 +20,7 @@
 		<input id='quiz-title' placeholder="Title of your quiz" type='text' ng-model='quiz.title' />
 
 		<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image is also used as a thumbnail when sharing to social networks.  
-		Instead of uploading an image, provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image URL</label>
+		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image URL</label>
 		<input ng-change="updateQuizPic()" id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
 
 		<div class="huffpostlabs-quiz" id='build-title'>
@@ -41,8 +41,6 @@
 				</div>
 			</div>
 		</div>
-
-
 
 	</section> <!-- ********************* set-title *********************  -->
 
@@ -190,6 +188,40 @@
 			<button ng-click="addNewQuestion(new_question)" id='add-question-btn' class='btn btn-sm btn-success'>Done</button>
 		</div>
 	</section> <!-- ********************* set-questions *********************  -->
+
+
+	<!-- ********************* set-sharing *********************  -->
+	<section id='set-sharing'>
+		<button ng-show="!showSetSharing" ng-click="showSetSharing=true" id='show-set-sharing-btn' class='btn btn-sm btn-info'>Edit</button>
+		<h3>Customized Social Sharing</h3>
+
+		<div ng-show="showSetSharing" ng-model='share'>
+			<div class='instructions-text'>
+			<p>You have the option to customize how this quiz will be shared on facebook.  If you do not fill out this section, the following defaults will be used:</p>
+			<ul>
+				<li>Picture for share quiz: The quiz image, or, if that is not provided, the Huffpost H.</li>
+				<li>Picture for share outcome: The outcome image if provided, otherwise defaults to the value above.</li>
+				<li>Caption for share quiz: "Find out..."</li>
+				<li>Caption for share outcome (Not customizable): "I got: {Outcome Text}"</li>
+				<li>Description: Pulled from the metadata of whichever page the share post is made from.</li>
+			</ul>
+		</div>
+
+		<img width="90%" id='fb-share-example' src="/img/fb-share-example.png"></img>
+
+			<img id='share-pic-url-preview' ng-show="share.pic_url" ng-src={{share.pic_url}}></img>
+			<label class="popover-hover" data-original-title="FB Share Quiz Picture" data-container="body" data-toggle="popover" data-placement="left" data-content="This image is used as a thumbnail when sharing to social networks.  
+			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">FB Share Quiz Picture</label>
+			<input id='share-pic-url' type="url" ng-model="share.pic_url">
+
+			<label>FB Share Quiz Caption:</label>
+			<input id='share-caption' placeholder="I got..." type='text' ng-model='share-FB-caption' />
+
+
+			<button ng-click="showSetSharing=false;share={}" class='btn btn-sm btn-danger'>Cancel</button>
+			<button ng-click="saveShare(share)" id='save-share-btn' class='btn btn-sm btn-success'>Save</button>
+		</div>
+	</section> <!-- ********************* set-sharing *********************  -->
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>

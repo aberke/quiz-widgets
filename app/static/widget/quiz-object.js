@@ -166,10 +166,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
     }
 
     function shareQuizFB() {
-        fbShareQuiz(quizData.title, quizData.pic_url);
+        fbShareQuiz(quizData);
     }
     function shareOutcomeFB() {
-        fbShareOutcome(quizData.title, leadingOutcome.pic_url, leadingOutcome.text);
+        fbShareOutcome(quizData, leadingOutcome);
     }
     function shareQuizTwitter() {
         twitterShare(quizData.title, 'HuffpostCode', 'huffpostQuiz');

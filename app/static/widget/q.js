@@ -6,15 +6,14 @@
 
 var domain = "http://";
 //domain += '127.0.0.1:8080';
-//domain += '42461ba5.ngrok.com'; // for mobile development
-domain += 'quizwidget-petri.dotcloud.com';
+domain += '42461ba5.ngrok.com'; // for mobile development
+//domain += 'quizwidget-petri.dotcloud.com';
 
 
 
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 	this.quizWidgets = {};
-	// window.swipeControllers = (window.swipeControllers || {});
 	window.quizModuleJSONPcallbacks = (window.quizModuleJSONPcallbacks || {});
 	var mobile = false;
 	var contentModule;
@@ -35,7 +34,7 @@ domain += 'quizwidget-petri.dotcloud.com';
 	var setupFB = function() {
 	    /*
 	    facebook sharing plan:
-	      only share on facebook if its from huffpost domain (or dotcloud or locahost) -
+	      only share on facebook if its from huffpost domain (or dotcloud or ngrok domain) -
 	            - need app for each domain
 	   */
 
@@ -79,13 +78,14 @@ domain += 'quizwidget-petri.dotcloud.com';
 		/* ------------- necessary setup straight from FB above ----------- */
 		
 
-		window.fbShareQuiz = function(quizTitle, quizPicUrl) {
+		window.fbShareQuiz = function(quiz) {
 			FB.ui({
 				method: 'feed',
-				name: quizTitle,
-				picture: (quizPicUrl || defaultQuizPicUrl),
+				name: quiz.title,
+				picture: (quiz.pic_url || defaultQuizPicUrl),
 				link: window.location.href,
 				caption: 'Find out..',
+				description: (quiz.description || ''),
 			}, 
 			function(response) {
 				if (response && response.post_id) {
@@ -95,13 +95,14 @@ domain += 'quizwidget-petri.dotcloud.com';
 				}
 			});
 		}
-		window.fbShareOutcome = function(quizTitle, outcomePicUrl, outcomeText) {
+		window.fbShareOutcome = function(quiz, outcome) {
 			FB.ui({
 				method: 'feed',
-				name: quizTitle,
-				picture: outcomePicUrl,
+				name: quiz.title,
+				picture: outcome.pic_url,
 				link: window.location.href,
-				caption: 'I got: ' + outcomeText,
+				caption: 'I got: ' + outcome.text,
+				description: (quiz.description || ''),
 			}, 
 			function(response) {
 				if (response && response.post_id) {

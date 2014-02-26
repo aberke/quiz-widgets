@@ -26,13 +26,26 @@ var userSchema = new Schema({
 	date_created: 	{ type: Date, default: Date.now },
 	quizList: 		[{ type: ObjectId, ref: 'Quiz' }] // need to push quiz on to user upon quiz creation)
 });
+var shareSchema = new Schema({
+	_quiz: 				{type: ObjectId, ref: 'Quiz', default: null},
+	description:  		{type: String, default: null}, // for sharing
+	/* for stats */
+	shareFBoutcomeCount:{ type: Number, default: 0},
+	shareFBquizCount:   { type: Number, default: 0},
+	shareTwitterquizCount:{ type: Number, default: 0},
+})
 var quizSchema = new Schema({
-	_user: 		  {type: ObjectId, ref: 'User', default: null},
-	title: 		  {type: String, default: null},
-	pic_url: 	  {type: String, default: null},
-	date_created: { type: Date, default: Date.now },
-	questionList: [{ type: ObjectId, ref: 'Question' }],
-	outcomeList:  [{ type: ObjectId, ref: 'Outcome' }],
+	_user: 		  		{type: ObjectId, ref: 'User', default: null},
+	title: 		  		{type: String, default: null},
+	pic_url: 	  		{type: String, default: null},
+	date_created: 		{ type: Date, default: Date.now },
+	questionList: 		[{ type: ObjectId, ref: 'Question' }],
+	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
+	share: 				{type: ObjectId, ref: 'Share', default: null},
+	
+	startedCount: 		{ type: Number, default: 0},
+	completedCount: 	{ type: Number, default: 0},
+
 });
 var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
@@ -58,13 +71,13 @@ var answerSchema = new Schema({
 
 exports.User 	 = User  	= mongoose.model('User', userSchema);
 exports.Quiz 	 = Quiz 	= mongoose.model('Quiz', quizSchema);
+exports.Share 	 = Share 	= mongoose.model('Share', shareSchema);
 exports.Answer   = Answer 	= mongoose.model('Answer', answerSchema);
 exports.Question = Question = mongoose.model('Question', questionSchema);
 exports.Outcome  = Outcome  = mongoose.model('Outcome', outcomeSchema);
 
 
 var newAnswer = function(answerData, question, outcomeDict) {
-	console.log('answer', answerData);
 	var answer = new Answer({
 		_question:  question,
 		_outcome: 	outcomeDict[answerData.outcome.index], // the outcome it adds a point to if selected

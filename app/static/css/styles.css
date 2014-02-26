@@ -112,10 +112,11 @@ section#preview #preview-text-container img{
 }
 #new-page section#set-title, 
 #new-page section#set-outcomes, 
-#new-page section#set-questions{
+#new-page section#set-questions, 
+#new-page section#set-sharing{
 	border-bottom: 1px solid lightgray;
 }
-#instructions-text {
+.instructions-text {
 	padding: 10px;
 	color: gray;
 }
@@ -154,6 +155,15 @@ section#preview #preview-text-container img{
 }
 #new-page #instructions .btn {
 	font-weight: bold;
+}
+#new-page #set-sharing h3 {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+}
+#new-page #set-sharing #fb-share-example {
+	margin: 20px 0;
 }
 #new-page #set-complete p {
 	margin-left: 30px;

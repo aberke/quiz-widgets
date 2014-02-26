@@ -51,10 +51,9 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 
 
 	$scope.quiz = { 'title': '',
-					'outcomeList': [
-						// {"index": 1, "text": "You are bananas.", "pic_url": "http://www.fairtrasa.com/wp-content/themes/simplicity/functions/thumb.php?src=wp-content/uploads/2012/08/shutterstock_99478112.jpg&w=534&h=&zc=1&q=90"},
-								   ],
+					'outcomeList': [],
 					'questionList': [],
+					'share': {},
 					};
 
 
@@ -66,8 +65,7 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 		/* validate form */
 		FormService.removeAllErrors();
 		var err1 = FormService.checkInput(['new-outcome-text']);
-		var err2 = FormService.checkModel([{'model':$scope.new_outcome.pic_url,'elementID':'new-outcome-pic-url'}]);
-		if (err1 || err2) {
+		if (err1) {
 			return false;
 		}
 		$scope.showAddNewOutcome = false;
@@ -79,20 +77,13 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	}
 	$scope.addNewQuestion = function(new_question) {
 		FormService.removeAllErrors();
-		var err1 = FormService.checkInput([ 'new-question-text',
-											//'new-question-answer1-text',
-											//'new-question-answer2-text',
-												]);
+		var err1 = FormService.checkInput([ 'new-question-text']);
 		var m1 = ($scope.new_question && $scope.new_question.answer1) ? $scope.new_question.answer1.outcome : null;
 		var m2 = ($scope.new_question && $scope.new_question.answer2) ? $scope.new_question.answer2.outcome : null;
-		var m3 = ($scope.new_question && $scope.new_question.answer1) ? $scope.new_question.answer1.pic_url : null;
-		var m4 = ($scope.new_question && $scope.new_question.answer2) ? $scope.new_question.answer2.pic_url : null;
 		
 
 		var err2 = FormService.checkModel([ {'model':m1,'elementID':'new-question-answer1-outcome'},
 									 		{'model':m2,'elementID':'new-question-answer2-outcome'},
-											//{'model':m3,'elementID':'new-question-answer1-pic-url'},
-											//{'model':m4,'elementID':'new-question-answer2-pic-url'},
 											]);
 		if (err1 || err2) { return false; }
 
