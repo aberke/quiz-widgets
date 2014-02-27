@@ -29,6 +29,8 @@ function IndexCntl($scope, HTTPService, quizList) {
 }
 function QuizCntl($scope, $location, HTTPService, quiz) {
 	$scope.quiz = quiz;
+	$scope.totalSharesFB;
+	$scope.totalSharesTwitter;
 		console.log('QuizCntl', quiz)
 
 	$scope.delete = function() {
@@ -40,9 +42,28 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 			$location.path('/');
 		});
 	}
+	var countTotalSharesFB = function(quiz) {
+		var count = (quiz.share ? quiz.share.fbCount : 0);
+		for (var i=0; i<quiz.outcomeList.length; i++) {
+			var o = quiz.outcomeList[i];
+			console.log('o',o)
+			count += (o.share ? o.share.fbCount : 0);
+		}
+		return count;
+	}
+	var countTotalSharesTwitter = function(quiz) {
+		var count = (quiz.share ? quiz.share.twitterCount : 0);
+		for (var i=0; i<quiz.outcomeList.length; i++) {
+			var o = quiz.outcomeList[i];
+			count += (o.share ? o.share.twitterCount : 0);
+		}
+		return count;
+	}
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
+		$scope.totalSharesFB = countTotalSharesFB(quiz);
+		$scope.totalSharesTwitter = countTotalSharesTwitter(quiz);
 	}
 	init();
 }

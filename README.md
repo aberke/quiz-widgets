@@ -8,10 +8,8 @@ before next meeting
 - start over button (customizable with icon)
 - tie outcome
 - be able to weight different outcomes
-- customizable fb sharing exerpt
 
-# shares
-# tweets vs fb
+
 # differentiate between how many started and how many finished
 # startover button
 
@@ -27,7 +25,6 @@ design feedback
 TODO
 ====
 
-post back each time its shared to log
 
 in widget:
 	add other share options -- embed currently commented out (it is also hidden on mobile by the css)

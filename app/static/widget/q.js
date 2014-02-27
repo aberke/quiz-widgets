@@ -13,8 +13,8 @@
 	//domain += '127.0.0.1:8080';
 	//domain += '42461ba5.ngrok.com'; // for mobile development
 	
-	//domain += 'quizwidget-petri.dotcloud.com';
-	domain += 'quiz.huffingtonpost.com'; // akamai cache
+	domain += 'quizwidget-petri.dotcloud.com';
+	//domain += 'quiz.huffingtonpost.com'; // akamai cache
 
 
 	this.quizWidgets = {};
@@ -32,6 +32,8 @@
 		window.twitterShare = function(text, via, hashtags) {
 			var twitterURL = 'https://twitter.com/share?url=' + window.location.href + '&text=' + text + '&via=HuffPostCode&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
+			jsonp("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
+
 		}
 	}
 	var setupFB = function() {
@@ -41,7 +43,7 @@
 	            - need app for each domain
 	   */
 
-	    // NEED: <div style="display:none" id="fb-root"></div>
+	    /* NEED: <div style="display:none" id="fb-root"></div> */
 	    var fb_root_div = document.getElementById('fb-root');
 	    if (!fb_root_div) {
 			fb_root_div = document.createElement('div');
