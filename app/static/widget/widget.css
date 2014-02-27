@@ -197,8 +197,7 @@
 	/* background: url('pic_url') */
 	background-size: 50%;
 	background-repeat: no-repeat;
-	background-position-x: right;
-	background-position-y: bottom;
+	background-position: right bottom;
 }
 .huffpostlabs-quiz .answer-container:hover,
 .huffpostlabs-quiz .answer-container.selected,
@@ -241,8 +240,7 @@
 	/* background: url('pic_url') */
 	background-size: 50%;
 	background-repeat: no-repeat;
-	background-position-x: right;
-	background-position-y: bottom;
+	background-position: right bottom;
 }
 .huffpostlabs-quiz .outcome-text {
 	color: black;
