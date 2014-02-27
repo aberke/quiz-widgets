@@ -3,16 +3,21 @@ var express 		= require('express'),
 	path 			= require('path'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
+
+
+    authMiddleware  = require('./middleware/authentication-middleware.js'),
+	//passportMiddleware = require('./middleware/passport-middleware.js')(models),
+
+
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
 	api_routes 		= require('./routes/api');
 
 
-    ///authMiddleware  = require('./middleware/authentication-middleware.js'),
-	//passportMiddleware = require('./middleware/passport-middleware.js')(models);
 
 
 
-var app = express();
+var app 	  = express(),
+	basicAuth = authMiddleware.basicAuth;
 
 app.configure(function () {
     app.set('port', process.env.WWW_PORT || 8080); // dotcloud doesn't have automatically set env variable for port, but know its on 8080
@@ -32,10 +37,10 @@ var server = http.createServer(app);
 api_routes.registerEndpoints(app);
 
 
-app.get('/', main_routes.serveBase);
-app.get('/quiz/:quizID', main_routes.serveBase);
-app.get('/new', main_routes.serveBase);
-app.get('/social/:id', main_routes.serveBase);
+app.get('/', 			basicAuth, main_routes.serveBase);
+app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
+app.get('/new', 		basicAuth, main_routes.serveBase);
+app.get('/social/:id',  basicAuth, main_routes.serveBase);
 app.get('/s', function(req, res) {
 	res.sendfile('static/s.html')
 });
