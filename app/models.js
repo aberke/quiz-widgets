@@ -138,9 +138,12 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		});
 		outcomeDict[outcomeData.index] = newOutcome;
 		newQuiz.outcomeList.push(newOutcome);
+
+		var newOutcomeShare = new Share({_outcome: newOutcome});
+		newOutcomeShare.save();
+		newOutcome.share = newOutcomeShare;
 		newOutcome.save();
 	}
-	console.log('\n\noutcomeDict', outcomeDict)
 	for (var i=0; i<quizData.questionList.length; i++) {
 		var questionData = quizData.questionList[i];
 		var newQuestion = new Question({
@@ -157,11 +160,10 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		newAnswer2.save();
 		newQuestion.answer2 = newAnswer2;
 
-		console.log('\n\noutcome', newQuestion)
 		newQuestion.save();
 		newQuiz.questionList.push(newQuestion);
 	}
-	console.log('\n\n111111 newQuiz', newQuiz)
+	console.log('\n\n***************\nnewQuiz', newQuiz)
 	newQuiz.save(function(err) {
 		if (err) { return callback(err, null); }
 		callback(null, newQuiz)
