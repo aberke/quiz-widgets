@@ -18,7 +18,6 @@
 
 
 	this.quizWidgets = {};
-	window.quizModuleJSONPcallbacks = (window.quizModuleJSONPcallbacks || {});
 	var mobile = false;
 	var contentModule;
 

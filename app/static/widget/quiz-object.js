@@ -88,6 +88,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
         incrementOutcome(answer._outcome);
         currQuestionIndex += 1;
         slidesCntl.transitionNext();
+
+        if (currQuestionIndex == questionList.length) {
+            completeCallback(leadingOutcome, chosenAnswers);
+        }
     }
     function incrementOutcome(outcomeID) {
         var o = outcomeMap[outcomeID];
@@ -149,7 +153,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
             html+= "<div class='slides-container'>";
             html+= titleContainerHTML();
 
-            var questionList = quizData.questionList;
             for(var i=0; i<questionList.length; i++) {
                 html += questionAnswersContainerHTML(questionList[i]);
             }
