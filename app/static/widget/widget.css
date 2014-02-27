@@ -115,6 +115,10 @@
 	height: 80%;
 	position: absolute;
 }
+.huffpostlabs-quiz .title {
+	margin-bottom: 10px;
+	line-height: 1em;
+}
 
 .huffpostlabs-quiz .title-container .filler-square {
 	position: absolute;
@@ -252,10 +256,14 @@
 	bottom: 0;
 	width: 100%;
 	padding: 8px;
+	vertical-align: baseline;
 }
 .huffpostlabs-quiz .outcome-container .share-text {
 	margin-left: 10px;
 	display: inline-block;
+}
+.huffpostlabs-quiz .outcome-container .share-text p {
+	margin: 0;
 }
 
 /* --------- OUTCOME CONTAINER above ------ */
