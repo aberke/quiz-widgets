@@ -25,6 +25,7 @@ design feedback
 TODO
 ====
 
+handle photo credit in design
 
 in widget:
 	add other share options -- embed currently commented out (it is also hidden on mobile by the css)

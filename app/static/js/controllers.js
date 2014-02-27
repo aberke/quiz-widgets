@@ -100,7 +100,6 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	$scope.quiz = { 'title': '',
 					'outcomeList': [],
 					'questionList': [],
-					'share': {},
 					};
 
 
@@ -149,7 +148,6 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 			$location.path('/quiz/' + data._id);
 		});
 	};
-
 
 
 	var init = function() {

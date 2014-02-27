@@ -41,6 +41,7 @@ var quizSchema = new Schema({
 	_user: 		  		{type: ObjectId, ref: 'User', default: null},
 	title: 		  		{type: String, default: null},
 	pic_url: 	  		{type: String, default: null},
+	pic_credit: 		{type: String, default: null},
 	date_created: 		{ type: Date, default: Date.now },
 	questionList: 		[{ type: ObjectId, ref: 'Question' }],
 	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
@@ -63,6 +64,7 @@ var outcomeSchema = new Schema({
 	index: 		 Number, // ordered
 	text:   	 String,
 	pic_url: 	 String,
+	pic_credit:  {type: String, default: null},
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
 var answerSchema = new Schema({
@@ -70,6 +72,7 @@ var answerSchema = new Schema({
 	_outcome: 	{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
 	text:   	String,
 	pic_url: 	String,
+	pic_credit: {type: String, default: null},
 	count:  	{ type: Number, default: 0}, // number of times it's been picked
 });
 
@@ -86,7 +89,8 @@ var newAnswer = function(answerData, question, outcomeDict) {
 		_question:  question,
 		_outcome: 	outcomeDict[answerData.outcome.index], // the outcome it adds a point to if selected
 		text:   	answerData.text,
-		pic_url: 	answerData.pic_url,
+		pic_url: 	(answerData.pic_url 	  || null),
+		pic_credit: (answerData.pic_credit || null),
 	});
 	return answer;
 }
@@ -95,9 +99,9 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 	var share = new Share({
 		_quiz: 		quiz,
 		_outcome: 	outcome,
-		caption: 	(shareData.caption || null),
-		description:(shareData.description || null),
-		pic_url: 	(shareData.pic_url || null)
+		caption: 	(shareData.caption 		|| null),
+		description:(shareData.description  || null),
+		pic_url: 	(shareData.pic_url 		|| null),
 	});
 	share.save(function(err) {
 		if (err) { return callback(err, null); }
@@ -120,8 +124,9 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 	*/
 	var newQuiz = new Quiz({
 		//_user: ?
-		title: 		  quizData.title,
-		pic_url: 	  quizData.pic_url,
+		title: 		quizData.title,
+		pic_url: 	(quizData.pic_url 	 || null),
+		pic_credit: (quizData.pic_credit || null),
 	});
 	var newShare = new Share({_quiz: newQuiz});
 	newShare.save();
@@ -134,7 +139,8 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			_quiz:  	 newQuiz,
 			index: 		 outcomeData.index, // ordered
 			text:   	 outcomeData.text,
-			pic_url: 	 outcomeData.pic_url,
+			pic_url: 	 (outcomeData.pic_url 	 || null),
+			pic_credit:  (outcomeData.pic_credit || null),
 		});
 		outcomeDict[outcomeData.index] = newOutcome;
 		newQuiz.outcomeList.push(newOutcome);
