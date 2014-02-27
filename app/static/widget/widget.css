@@ -4,19 +4,19 @@
 /* ---------------- FONTS ----------- */
 @font-face {
 	font-family: Arvo-Bold;
-	src: url(http://quiz.huffingtonpost.com/fonts/arvo/Arvo-Bold.ttf);
+	src: url('http://quiz.huffingtonpost.com/fonts/arvo/Arvo-Bold.ttf');
 }
 @font-face {
 	font-family: Arvo-BoldItalic;
-	src: url(http://quiz.huffingtonpost.com/fonts/arvo/Arvo-BoldItalic.ttf);
+	src: url('http://quiz.huffingtonpost.com/fonts/arvo/Arvo-BoldItalic.ttf');
 }
 @font-face {
 	font-family: Arvo-Italic;
-	src: url(http://quiz.huffingtonpost.com/fonts/arvo/Arvo-Italic.ttf);
+	src: url('http://quiz.huffingtonpost.com/fonts/arvo/Arvo-Italic.ttf');
 }
 @font-face {
 	font-family: Arvo-Regular;
-	src: url(http://quiz.huffingtonpost.com/fonts/arvo/Arvo-Regular.ttf);
+	src: url('http://quiz.huffingtonpost.com/fonts/arvo/Arvo-Regular.ttf');
 }
 /* ---------------- FONTS ------------ */
 
