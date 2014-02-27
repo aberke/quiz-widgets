@@ -15,28 +15,24 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/quiz/:id', GETquiz);
 	app.delete('/api/quiz/:id', DELETEquiz);
 	app.put('/api/quiz/:id/share', PUTquizShare);
-	app.put('/api/quiz/:id/share/increment-count', PUTquizShareIncrementCount);
-
 
 	app.get('/api/outcome/all', GETallOutcomes);
 	app.get('/api/outcome/:id', GEToutcome);
 	app.put('/api/outcome/:id/increment-count', PUToutcomeIncrementCount);
 	app.put('/api/outcome/:id/share', PUToutcomeShare);
-	app.put('/api/outcome/:id/share/increment-count', PUToutcomeShareIncrementCount);
-
 
 	app.put('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 
 	/* JSONP hacks -- these are GET requests because they're with JSONP */
 	app.get('/api/outcome/:id/increment-count', PUToutcomeIncrementCount);
 	app.get('/api/answer/:id/increment-count', PUTanswerIncrementCount);
+	app.get('/api/share/:id/increment-fb-count', PUTshareIncrementFBCount);
+	app.get('/api/share/:id/increment-twitter-count', PUTshareIncrementTwitterCount);
 }
 
 /* --------------- API --------------------- */
 
 var POSTquiz = function(req, res) {
-	console.log('POSTquiz', req.body)
-
 	models.newQuiz(req.body, function(err, quiz) {
 		res.send(quiz);
 	});
@@ -47,7 +43,7 @@ var PUTquizShare  = function(req, res) {
 
 	models.findQuiz(req.params.id, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
-		
+
 		if(quiz.share == null) {
 			models.newShare(quiz, null, shareData, function(err, share) {
 				quiz.share = share;
@@ -73,7 +69,6 @@ var PUToutcomeShare = function(req, res) {
 
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err || !outcome) { return res.send(500); }
-		console.log('\n\n****** \nPUToutcomeShare\n\n', shareData, '\n\n', outcome)
 
 		if(outcome.share == null) {
 			models.newShare(null, outcome, shareData, function(err, share) {
@@ -95,11 +90,29 @@ var PUToutcomeShare = function(req, res) {
 		}
 	});
 }
-var PUTquizShareIncrementCount = function(req, res) {
-	var shareData = req.body;
+var PUTshareIncrementTwitterCount = function(req, res) {
+	console.log('PUTshareIncrementTwitterCount', req.params.id)
+	models.findShare(req.params.id, function(err, share) {
+		if (err || !share) { return res.send(500); }
+
+		share.twitterCount = share.twitterCount + 1;
+		share.save(function(err) {
+			if (err) { return res.send(500, util.handleError(err)); }
+			res.jsonp(200);
+		});
+	});
 }
-var PUToutcomeShareIncrementCount = function(req, res) {
-	var shareData = req.body;
+var PUTshareIncrementFBCount = function(req, res) {
+	console.log('PUTshareIncrementFBCount', req.params.id)
+	models.findShare(req.params.id, function(err, share) {
+		if (err || !share) { return res.send(500); }
+
+		share.fbCount = share.fbCount + 1;
+		share.save(function(err) {
+			if (err) { return res.send(500, util.handleError(err)); }
+			res.jsonp(200);
+		});
+	});
 }
 var PUToutcomeIncrementCount = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {

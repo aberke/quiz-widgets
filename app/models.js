@@ -95,9 +95,9 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 	var share = new Share({
 		_quiz: 		quiz,
 		_outcome: 	outcome,
-		caption: 	shareData.caption,
-		description:shareData.description,
-		pic_url: 	shareData.pic_url
+		caption: 	(shareData.caption || null),
+		description:(shareData.description || null),
+		pic_url: 	(shareData.pic_url || null)
 	});
 	share.save(function(err) {
 		if (err) { return callback(err, null); }
@@ -123,7 +123,9 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		title: 		  quizData.title,
 		pic_url: 	  quizData.pic_url,
 	});
-	console.log('\n\nnewQuiz', newQuiz)
+	var newShare = new Share({_quiz: newQuiz});
+	newShare.save();
+	newQuiz.share = newShare;
 
 	var outcomeDict = {}; // maps {index: outcome} since answerData just has the index
 	for (var i=0; i<quizData.outcomeList.length; i++) {
@@ -206,6 +208,13 @@ exports.findAnswer = function(answerID, callback) {
 		.exec(function(err, answer) {
 			if (err || !answer) { return callback(new Error('Error in models.findAnswer'), null); }
 			callback(null, answer);
+		});
+}
+exports.findShare = function(shareID, callback) {
+	Share.findById(shareID)
+		.exec(function(err, share) {
+			if (err || !share) { return callback(new Error('Error in models.findShare'), null); }
+			callback(null, share);
 		});
 }		
 

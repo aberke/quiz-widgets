@@ -8,11 +8,11 @@
 
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
-	
+
 	var domain = "http://";
-	domain += '127.0.0.1:8080';
+	//domain += '127.0.0.1:8080';
 	//domain += '42461ba5.ngrok.com'; // for mobile development
-	//domain += 'quizwidget-petri.dotcloud.com';
+	domain += 'quizwidget-petri.dotcloud.com';
 
 
 	this.quizWidgets = {};
