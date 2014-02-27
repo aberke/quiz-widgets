@@ -5,9 +5,9 @@
 */
 
 var domain = "http://";
-//domain += '127.0.0.1:8080';
+domain += '127.0.0.1:8080';
 //domain += '42461ba5.ngrok.com'; // for mobile development
-domain += 'quizwidget-petri.dotcloud.com';
+//domain += 'quizwidget-petri.dotcloud.com';
 
 
 
@@ -91,6 +91,9 @@ domain += 'quizwidget-petri.dotcloud.com';
 			function(response) {
 				if (response && response.post_id) {
 					console.log('FB quiz post was published.');
+					/* log that it was shared */
+					if (!quiz.share._id) { return; }
+					jsonp("/api/share/" + quiz.share._id + "/increment-fb-count", null);
 				}
 			});
 		}
@@ -108,6 +111,9 @@ domain += 'quizwidget-petri.dotcloud.com';
 			function(response) {
 				if (response && response.post_id) {
 					console.log('FB outcome post was published.');
+					/* log that it was shared */
+					if (!outcome.share._id) { return; }
+					jsonp("/api/share/" + outcome.share._id + "/increment-fb-count", null);
 				}
 			});
 		}
@@ -130,22 +136,24 @@ domain += 'quizwidget-petri.dotcloud.com';
 			this.quizWidgets[quizID] = widget;
 		});
 	};
-
+	var addWindowFunction = function(f_name, f) {
+		window[f_name] = f;
+	}
 	/* helper for 'getting' and 'posting' (cough... jsonp hack to get around cross origin issue...) */
 	function jsonp(data_url, callback){
-		var random = Math.random().toString();
-
+		var f_name = "quizModuleJSONPcallbacks_" + String(data_url.split('/').join('_'));
+		
 		var tempscript  = document.createElement('script');
-		tempscript.id   = "tempscript-" + random;
-		tempscript.src  = domain + data_url + "?callback=quizModuleJSONPcallbacks['" + random + "']";
+		tempscript.id   = "tempscript-" + f_name;
+		tempscript.src  = domain + data_url + "?callback=" + f_name + "";
 		tempscript.type = "text/javascript";
 		document.body.appendChild(tempscript);
 
-		window.quizModuleJSONPcallbacks[random] = function(data) {
+		addWindowFunction(f_name, function(data) {
 			document.body.removeChild(tempscript);
 			tempscript = null;
 			if (callback) { callback(data); }
-		}
+		});
 	}
 	/* check if user is using mobile browser -- return true if so */
 	function isMobile() {
