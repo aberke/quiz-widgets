@@ -35,7 +35,7 @@ api_routes.registerEndpoints(app);
 app.get('/', main_routes.serveBase);
 app.get('/quiz/:quizID', main_routes.serveBase);
 app.get('/new', main_routes.serveBase);
-app.get('/social', main_routes.serveBase);
+app.get('/social/:id', main_routes.serveBase);
 app.get('/s', function(req, res) {
 	res.sendfile('static/s.html')
 });

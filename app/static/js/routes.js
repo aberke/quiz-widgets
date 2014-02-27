@@ -5,8 +5,16 @@ QuizApp.config(function($routeProvider) {
 		templateUrl: '/html/new.html',
 		controller: NewQuizCntl,
 	});	
-	$routeProvider.when('/social', {
+	$routeProvider.when('/social/:id', {
 		templateUrl: '/html/social.html',
+		controller: ShareCntl,
+		resolve: { /* returning the promise and then resolving the promise as the data */
+			quiz: function(HTTPService, $location){
+				return HTTPService.GET('/api/quiz/' + $location.path().split('/')[2]).then(function(data) {
+					return data;
+				});
+			},
+		}
 	});
 	$routeProvider.when('/quiz/:id', {
 		templateUrl: '/html/quiz.html',

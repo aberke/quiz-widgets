@@ -27,12 +27,15 @@ var userSchema = new Schema({
 	quizList: 		[{ type: ObjectId, ref: 'Quiz' }] // need to push quiz on to user upon quiz creation)
 });
 var shareSchema = new Schema({
+	/* The share model is either owned by a Quiz or an Outcome, since both are sharable */
 	_quiz: 				{type: ObjectId, ref: 'Quiz', default: null},
-	description:  		{type: String, default: null}, // for sharing
+	_outcome: 			{type: ObjectId, ref: 'Outcome', default: null}, 
+	caption: 			{type: String, default: null},
+	pic_url: 			{type: String, default: null},
+	description:  		{type: String, default: null},
 	/* for stats */
-	shareFBoutcomeCount:{ type: Number, default: 0},
-	shareFBquizCount:   { type: Number, default: 0},
-	shareTwitterquizCount:{ type: Number, default: 0},
+	fbCount: 	{ type: Number, default: 0},
+	twitterCount:{ type: Number, default: 0},
 })
 var quizSchema = new Schema({
 	_user: 		  		{type: ObjectId, ref: 'User', default: null},
@@ -56,6 +59,7 @@ var questionSchema = new Schema({
 });
 var outcomeSchema = new Schema({
 	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
+	share: 		 {type: ObjectId, ref: 'Share', default: null},
 	index: 		 Number, // ordered
 	text:   	 String,
 	pic_url: 	 String,
@@ -85,6 +89,20 @@ var newAnswer = function(answerData, question, outcomeDict) {
 		pic_url: 	answerData.pic_url,
 	});
 	return answer;
+}
+exports.newShare = function(quiz, outcome, shareData, callback) { // callback: function(err, data)
+	/* a share is owned by either a quiz or an outcome.  so either quiz or outcome is null */
+	var share = new Share({
+		_quiz: 		quiz,
+		_outcome: 	outcome,
+		caption: 	shareData.caption,
+		description:shareData.description,
+		pic_url: 	shareData.pic_url
+	});
+	share.save(function(err) {
+		if (err) { return callback(err, null); }
+		callback(null, share);
+	});
 }
 
 exports.newQuiz = function(quizData, callback) { // callback: function(err, data)
@@ -153,6 +171,7 @@ exports.findQuiz = function(quizID, callback) {
 	Quiz.findById(quizID)
 		.populate('outcomeList')
 		.populate('questionList')
+		.populate('share')
 		.exec(function(err, quiz) {
 			if (err || !quiz) { return callback(new Error('Error in models.findQuiz'), null); }
 
@@ -162,6 +181,9 @@ exports.findQuiz = function(quizID, callback) {
 			},{
 				path: 'questionList.answer2',
 				model: 'Answer'
+			},{
+				path: 'outcomeList.share',
+				model: 'Share'
 			}];
 
 			Quiz.populate(quiz, options, function(err, data) {
@@ -173,6 +195,7 @@ exports.findQuiz = function(quizID, callback) {
 }
 exports.findOutcome = function(outcomeID, callback) {
 	Outcome.findById(outcomeID)
+		.populate('share')
 		.exec(function(err, outcome) {
 			if (err || !outcome) { return callback(new Error('Error in models.findOutcome'), null); }
 			callback(null, outcome);

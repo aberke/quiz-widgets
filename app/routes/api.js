@@ -14,11 +14,16 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/quiz/all', GETallQuizes);
 	app.get('/api/quiz/:id', GETquiz);
 	app.delete('/api/quiz/:id', DELETEquiz);
+	app.put('/api/quiz/:id/share', PUTquizShare);
+	app.put('/api/quiz/:id/share/increment-count', PUTquizShareIncrementCount);
 
 
 	app.get('/api/outcome/all', GETallOutcomes);
 	app.get('/api/outcome/:id', GEToutcome);
 	app.put('/api/outcome/:id/increment-count', PUToutcomeIncrementCount);
+	app.put('/api/outcome/:id/share', PUToutcomeShare);
+	app.put('/api/outcome/:id/share/increment-count', PUToutcomeShareIncrementCount);
+
 
 	app.put('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 
@@ -37,10 +42,68 @@ var POSTquiz = function(req, res) {
 	});
 }
 
+var PUTquizShare  = function(req, res) {
+	var shareData = req.body;
 
+	models.findQuiz(req.params.id, function(err, quiz) {
+		if (err || !quiz) { return res.send(500); }
+		
+		if(quiz.share == null) {
+			models.newShare(quiz, null, shareData, function(err, share) {
+				quiz.share = share;
+				quiz.save(function(err) {
+					if (err){ return res.send(500, util.handleError(err)); }
+					res.send(share);
+				});
+			});
+		} 
+		else {
+			quiz.share.caption 	  = shareData.caption;
+			quiz.share.pic_url 	  = shareData.pic_url;
+			quiz.share.description = shareData.description;
+			quiz.share.save(function(err) {
+				if (err){ return res.send(500, util.handleError(err)); }
+				res.send(quiz.share);
+			});
+		}
+	});
+}
+var PUToutcomeShare = function(req, res) {
+	var shareData = req.body;
+
+	models.findOutcome(req.params.id, function(err, outcome) {
+		if (err || !outcome) { return res.send(500); }
+		console.log('\n\n****** \nPUToutcomeShare\n\n', shareData, '\n\n', outcome)
+
+		if(outcome.share == null) {
+			models.newShare(null, outcome, shareData, function(err, share) {
+				outcome.share = share;
+				outcome.save(function(err) {
+					if (err){ return res.send(500, util.handleError(err)); }
+					res.send(share);
+				});
+			});
+		} 
+		else {
+			outcome.share.caption 	  = shareData.caption;
+			outcome.share.pic_url 	  = shareData.pic_url;
+			outcome.share.description = shareData.description;
+			outcome.share.save(function(err) {
+				if (err){ return res.send(500, util.handleError(err)); }
+				res.send(share);
+			});
+		}
+	});
+}
+var PUTquizShareIncrementCount = function(req, res) {
+	var shareData = req.body;
+}
+var PUToutcomeShareIncrementCount = function(req, res) {
+	var shareData = req.body;
+}
 var PUToutcomeIncrementCount = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {
-		if (err) return res.send(500, util.handleError(err));
+		if (err || !outcome) { return res.send(500); }
 
 		outcome.count = outcome.count + 1;
 		outcome.save(function(err) {

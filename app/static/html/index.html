@@ -12,18 +12,13 @@
         <li><p>Broader sharing options.</p></li>
         <li><p>Ability to create questions with more than 2 answers.</p></li>
         <li><p>More exciting outcome transition.</p></li>
+        <li><p>Ability to go back and edit quizzes.</p></li>
+        <li><p>"Retake" button</p></li>
+        <li><p>"Previous" button to go back to previous question</p></li>
+        <li><p>More reliable and informative stats.</p></li>
+        <li><p>Ability to weight outcomes</p>
       </ul>
       <p> -- Let's go viral</p>
-    </div>
-  </section>
-
-  <section id='preview'>    
-    <button class='btn btn-default btn-sm preview-btn' ng-show="hidePreview" ng-click="hidePreview=false">Preview Coming Soon</button>
-    <button class='btn btn-default btn-sm preview-btn' ng-show="!hidePreview" ng-click="hidePreview=true">Hide Preview</button>
-    <div id='preview-text-container' ng-show="!hidePreview">
-      <h3>Coming Soon: New Design</h3>
-      <img width='400' src="/designs/cover-screen.png"></img>
-      <img width='400' src="/designs/question-screen.png"></img>
     </div>
   </section>
     
@@ -45,16 +40,13 @@
 &lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
 
         <p><a ng-href="/quiz/{{q._id}}">View More</a></p>
-        <p><a ng-href="/social">Notes on Social Sharing</a></p>
+        <p><a ng-href="/social/{{q._id}}">Customize Sharing</a></p>
       </div>
 
       <hr />
 
     </div>
-
   </div>
-
-    
 </div>
 
 <script src="/widget/q.js"></script>

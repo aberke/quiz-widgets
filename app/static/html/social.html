@@ -1,17 +1,111 @@
 <div id='social-page'>
-	<h3>Facebook sharing notes</h3>
+	<section id='fb-sharing-notes'>
+		<h3>Facebook sharing notes</h3>
 
-	<p>When a user shares the quiz, the sharing link will be the URL of whichever page the quiz was shared from --- so be wary of sharing from the quiz builder page!</p>
+		<p>When a user shares the quiz, the sharing link will be the URL of whichever page the quiz was shared from --- so be wary of sharing from the quiz builder page!</p>
 
-	<p>The Facebook share button will only be enabled from the following domains:
-	<ul>
-		<li><a href="http://quizwidget-petri.dotcloud.com/">http://quizwidget-petri.dotcloud.com/</a></li>
-		<li><a href="http://www.huffingtonpost.com/">http://www.huffingtonpost.com/</a></li>
-		<li><a href="http://huffingtonpost.com">http://huffingtonpost.com</a></li>
-		<li><a href="http://code.huffingtonpost.com">http://code.huffingtonpost.com</a></li>
-	</ul> It will be hidden and disabled otherwise.  If you would like a domain added, <a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20Sharing%20Feedback]">let me know</a>!</p>
+		<p>The Facebook share button will only be enabled from the following domains:
+		<ul>
+			<li><a href="http://quizwidget-petri.dotcloud.com/">http://quizwidget-petri.dotcloud.com/</a></li>
+			<li><a href="http://www.huffingtonpost.com/">http://www.huffingtonpost.com/</a></li>
+			<li><a href="http://huffingtonpost.com">http://huffingtonpost.com</a></li>
+			<li><a href="http://code.huffingtonpost.com">http://code.huffingtonpost.com</a></li>
+		</ul> It will be hidden and disabled otherwise.  If you would like a domain added, <a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20Sharing%20Feedback]">let me know</a>!</p>
 
-	<p>Sharing capabilities were created by a <a href="http://lifewithlauren.com/wp-content/uploads/2011/11/Nerd-Katy-the-2010-Teen-Choice-Awards-katy-perry-14599552-500-800.jpg">social n00b</a> so <a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20Sharing%20Feedback]">let me know</a> how to make this more sharable.</p>
+		<p>Sharing capabilities were created by a <a href="http://lifewithlauren.com/wp-content/uploads/2011/11/Nerd-Katy-the-2010-Teen-Choice-Awards-katy-perry-14599552-500-800.jpg">social n00b</a> so <a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20Sharing%20Feedback]">let me know</a> how to make this more sharable.</p>
+	</section>
 
+	<button ng-show="!showFBSharingOverview" ng-click="showFBSharingOverview=true" id='show-sharing-overview-btn' class='section-btn btn btn-sm btn-default'><h3>Facebook Sharing Overview</h3></button>
+	<button ng-show="showFBSharingOverview" ng-click="showFBSharingOverview=false" id='hide-sharing-overview-btn' class='section-btn btn btn-sm btn-default'>Hide</button>
+	<section ng-show="showFBSharingOverview" id='fb-sharing-overview'>
+
+		<div class='instructions-text'>
+			<p>There are two ways in which a user could share your quiz to Facebook.</p>
+			<ul>
+				<li><p>They could share the Quiz itself.</p>
+					<img width="50%" src="/img/fb-share-quiz-doge.png"></img>
+				</li>
+				<li><p>They could share their outcome.</p>
+					<img width="50%" src="/img/fb-share-outcome-fruit.png"></img>
+				</li>
+			</ul>
+			<p>You have the option to customize how this quiz will be shared to Facebook.  <em>If you do not fill out this section</em>, the following defaults will be used:</p>
+			<ul>
+				<li>Picture for share quiz: The quiz image, or, if that is not provided, the Huffpost H.</li>
+				<li>Picture for share outcome: The outcome image if provided, otherwise defaults to the value above.</li>
+				<li>Caption for share quiz: "Find out..."</li>
+				<li>Caption for share outcome: "I got: {Outcome Text}"</li>
+				<li>Description: Pulled from the metadata of whichever page the share post is made from.</li>
+			</ul>
+		</div>
+	</section>
+
+
+	<button ng-show="!showCustomizeQuiz" ng-click="showCustomizeQuiz=true" id='show-customize-quiz-btn' class='section-btn btn btn-sm btn-default'><h3>Customized Quiz Sharing</h3></button>
+	<button ng-show="showCustomizeQuiz" ng-click="showCustomizeQuiz=false" id='hide-customize-quiz-btn' class='section-btn btn btn-sm btn-default'>Hide</button>
+	<section ng-show="showCustomizeQuiz" id='customize-quiz-sharing'>
+		
+		<div class='row'>
+			<div class='col-md-4'>
+				<label>Your Quiz Title</label>
+				<p>{{quiz.title}}</p>
+				<label>Your Quiz Sharing Picture</label>
+				<img width="90%" ng-src='{{quiz.share.pic_url || quiz.pic_url || "/icon/huffpost-H.png"}}'></img>
+			</div>
+
+			<div class='col-md-8'>
+				<img width="90%" id='fb-share-example' src="/img/fb-share-example.png"></img>
+			</div>
+		</div>
+
+		<div class='input-container'>
+			<label>Caption</label>
+			<input placeholder='{{quiz.share.caption || "Find out..."}}' type='text' ng-model='quiz.share.caption' />
+
+			<label>Picture URL</label>
+			<input id='quiz-share-pic-url' type="url" ng-model="quiz.share.pic_url" placeholder="{{quiz.share.pic_url || quiz.pic_url}}">
+
+			<label>Description</label>
+			<input id='quiz-share-description' placeholder="{{quiz.share.description}}" type='text' ng-model='quiz.share.description' />
+
+			<button ng-click="saveQuizShare()" class='btn btn-sm btn-success'>SAVE</button>
+		</div>
+	</section>
+
+
+	<button ng-show="!showCustomizeOutcome" ng-click="showCustomizeOutcome=true" id='show-customize-outcome-btn' class='section-btn btn btn-sm btn-default'><h3>Customized Outcome Sharing</h3></button>
+	<button ng-show="showCustomizeOutcome" ng-click="showCustomizeOutcome=false" id='hide-customize-outcome-btn' class='section-btn btn btn-sm btn-default'>Hide</button>
+	<section ng-show="showCustomizeOutcome" id='customize-outcome-sharing'>
+		
+		<div id="outcomes" ng-repeat="outcome in quiz.outcomeList">
+			<div class='outcome'>
+				<img ng-src="{{outcome.share.pic_url || outcome.pic_url || quiz.share.pic_url || quiz.pic_url || '/icon/huffpost-H.png'}}"></img>
+				<h4 class='display-inline'>{{outcome.text}}</h4>
+				
+				<label>Caption</label>
+				<input placeholder="You got: {{outcome.text}}" type='text' ng-model='outcome.share.caption' />
+
+				<label>Picture URL</label>
+				<input id='outcome-share-pic-url' type="url" ng-model="outcome.share.pic_url" placeholder="{{outcome.share.pic_url || outcome.pic_url}}">
+
+				<label>Description</label>
+				<input id='outcome-share-description' placeholder="{{outcome.share.description}}" type='text' ng-model='outcome.share.description' />
+
+				<button ng-click="saveOutcomeShare(outcome)" class='btn btn-sm btn-success'>SAVE</button>
+			</div>
+
+		</div>
+
+	</section>
 
 </div>
+
+
+
+
+
+
+
+
+
+

@@ -27,6 +27,7 @@ design feedback
 TODO
 ====
 
+post back each time its shared to log
 
 in widget:
 	add other share options -- embed currently commented out (it is also hidden on mobile by the css)
@@ -42,3 +43,9 @@ handle case of tie
 deal with resize event
 
 write api tests
+
+make nice 404
+
+necessary e2e tests
+===
+

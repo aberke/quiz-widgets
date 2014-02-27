@@ -46,6 +46,32 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 	}
 	init();
 }
+function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
+	$scope.quiz = quiz;
+	$scope.quiz.share = (quiz.share || {});
+
+	for (var i=0; i<quiz.outcomeList.length; i++) {
+		console.log($scope.quiz.outcomeList[i])
+		$scope.quiz.outcomeList[i].share = (quiz.outcomeList[i].share || {});
+	}
+
+	$scope.saveOutcomeShare = function(outcome) {
+		HTTPService.PUT('/api/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
+			console.log('data', data);
+		});
+	}
+	$scope.saveQuizShare = function() {
+		console.log('saveQuizShare', $scope.quiz.share)
+		HTTPService.PUT('/api/quiz/' + $scope.quiz._id + '/share', $scope.quiz.share).then(function(data) {
+			console.log('data', data);
+		});
+	}
+
+	var init = function() {
+		console.log('QuizCntl', quiz)
+	}
+	init();
+}
 function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	$scope.showAddNewOutcome = false;
 

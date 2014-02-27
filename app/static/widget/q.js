@@ -6,8 +6,8 @@
 
 var domain = "http://";
 //domain += '127.0.0.1:8080';
-domain += '42461ba5.ngrok.com'; // for mobile development
-//domain += 'quizwidget-petri.dotcloud.com';
+//domain += '42461ba5.ngrok.com'; // for mobile development
+domain += 'quizwidget-petri.dotcloud.com';
 
 
 
@@ -79,40 +79,39 @@ domain += '42461ba5.ngrok.com'; // for mobile development
 		
 
 		window.fbShareQuiz = function(quiz) {
+			var quizShare = (quiz.share || {});
 			FB.ui({
 				method: 'feed',
 				name: quiz.title,
-				picture: (quiz.pic_url || defaultQuizPicUrl),
+				picture: (quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
 				link: window.location.href,
-				caption: 'Find out..',
-				description: (quiz.description || ''),
+				caption: (quizShare.caption || 'Find out..'),
+				description: (quizShare.description || ''),
 			}, 
 			function(response) {
 				if (response && response.post_id) {
 					console.log('FB quiz post was published.');
-				} else {
-					console.log('FB quiz post was not published.');
 				}
 			});
 		}
 		window.fbShareOutcome = function(quiz, outcome) {
+			var quizShare = (quiz.share || {});
+			var outcomeShare = (outcome.share || {});
 			FB.ui({
 				method: 'feed',
 				name: quiz.title,
-				picture: outcome.pic_url,
+				picture: (outcomeShare.pic_url || outcome.pic_url || quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
 				link: window.location.href,
-				caption: 'I got: ' + outcome.text,
-				description: (quiz.description || ''),
+				caption: (outcomeShare.caption || 'I got: ' + outcome.text),
+				description: (outcomeShare.description || quizShare.description || ''),
 			}, 
 			function(response) {
 				if (response && response.post_id) {
-				console.log('FB outcome post was published.');
-				} else {
-				console.log('FB outcome post was not published.');
+					console.log('FB outcome post was published.');
 				}
-				});
-			}
+			});
 		}
+	}
 
 	var quizCompleteCallback = function(outcome, chosenAnswers) {
 		console.log('quizCompleteCallback', chosenAnswers, outcome)
