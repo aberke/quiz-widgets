@@ -139,7 +139,7 @@ section#preview #preview-text-container img{
 #new-page #outcomes {
 	margin-bottom: 10px;
 }
-#new-page .delete-outcome-btn {
+#new-page .delete-outcome-btn, #new-page .delete-question-btn {
 	float: right;
 }
 

@@ -133,6 +133,15 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 			$scope.quiz.outcomeList[i].index = i + 1;
 		}
 	}
+	$scope.removeQuestion = function(question) {
+
+		$scope.quiz.questionList.splice(question.index-1, 1); // question.index is not zero-indexed
+		
+		/* decrement the index of all the outcomes that followed */
+		for (var i=question.index-1; i<$scope.quiz.questionList.length; i++) {
+			$scope.quiz.questionList[i].index = i + 1;
+		}
+	}
 	$scope.addNewQuestion = function(new_question) {
 		FormService.removeAllErrors();
 		var err1 = FormService.checkInput([ 'new-question-text']);

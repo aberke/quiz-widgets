@@ -64,7 +64,6 @@
 			<p class='bold display-inline'>{{outcome.index}}.</p>
 			<button ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger delete-outcome-btn'>X</button>
 
-
 			<div class="huffpostlabs-quiz">
 				<div class="slides-container">
 					<div class="slide outcome-container">
@@ -127,7 +126,8 @@
 		<h3>Questions</h3>
 
 		<div id="questions" ng-repeat="question in quiz.questionList">
-			<p class='bold'>{{question.index}}.</p>
+			<p class='display-inline bold'>{{question.index}}.</p>
+			<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger delete-question-btn'>X</button>
 
 			<div class="huffpostlabs-quiz">
 				<div class="slides-container">
@@ -149,7 +149,7 @@
 
 		</div>
 
-		<button ng-disabled="quiz.outcomeList.length==0" ng-show="!showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
+		<button ng-disabled="quiz.outcomeList.length==0||showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
 		<p ng-show="quiz.outcomeList.length==0" class='inline-block btn-helper'>First create the outcomes</p>
 
 		<div ng-show="showAddNewQuestion" ng-model='new_question'>
@@ -219,7 +219,7 @@
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>
-		<h3 ng-show="quiz.title&&!quiz.questionList.length&&quiz.outcomeList.length">Okay it's ready</h3>
+		<h3 ng-show="quiz.title&&quiz.questionList.length&&quiz.outcomeList.length">Okay it's ready</h3>
 		
 		<h3 ng-show="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length">Still Required:</h3>
 			<p ng-show="!quiz.title">Title</p>
