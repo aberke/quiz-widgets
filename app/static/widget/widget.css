@@ -266,17 +266,40 @@
 	margin: 0;
 	font-family: Arvo-Regular;
 }
+.huffpostlabs-quiz .outcome-container .refresh-btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 8px; /* same as padding of outer container (share-container) */
+}
 
 /* --------- OUTCOME CONTAINER above ------ */
 
 
-/* --------- EVENTS ------ */
-.huffpostlabs-quiz .touchable {
-	cursor: pointer;
+/* --------- SHARE ------ */
+.huffpostlabs-quiz .fb-share-container {
+	display: inline-block;
 }
+.huffpostlabs-quiz .fb-share-container img.fb-share-btn-blue{
+	display: none;
+}
+.huffpostlabs-quiz .fb-share-container:hover img.fb-share-btn-blue{
+	display: inline;
+	opacity: 1;
+}
+.huffpostlabs-quiz .fb-share-container:hover img.fb-share-btn{
+	display: none;
+}
+
+/* --------- SHARE above ------ */
+
+/* --------- EVENTS ------ */
+
+
 .huffpostlabs-quiz img.share:hover,
 .huffpostlabs-quiz img.share:active,
-.huffpostlabs-quiz img.share.selected {
+.huffpostlabs-quiz img.share.selected,
+.huffpostlabs-quiz .touchable:hover {
 	opacity: 0.7;
 	cursor: pointer;
 }

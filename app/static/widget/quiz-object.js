@@ -173,6 +173,9 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
         stylesheet.innerHTML += rule;
     }
 
+    function refresh() {
+        console.log('refresh')
+    }
     function shareQuizFB() {
         fbShareQuiz(quizData);
     }
@@ -198,7 +201,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
             html+= "    <div class='title-content'>";
             html+= "        <h1 class='title'>" + quizData.title + "</h1>";
             html+= "        <div class='share-container'>";
-            html+= "            <img class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/designs/images/facebook.png'></img>";
+            html+= "            <div class='fb-share-container'>";
+            html+= "                <img width='30px' height='30px' class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/designs/images/facebook.png'></img>";
+            html+= "                <img width='30px' height='30px' class='share fb-share-btn-blue touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
+            html+= "            </div>";
             html+= "            <img onclick=" + onclickShareTwitter + " class='share touchable' src='" + static_domain + "/designs/images/twitter.png'></img>";
             // html+= "            <span class='embed-code'>";
             // html+= "                <input value='" + static_domain + .... + "' >";
@@ -241,15 +247,20 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
     function outcomeContentHTML(outcome) {
         var onclickShareFB = "quizWidgets['" + quizID + "'].shareOutcomeFB()";
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareOutcomeTwitter()";
+        var onclickRefresh = "quizWidgets['" + quizID + "'].refresh()";
 
         var styleText = 'background-image: url(' + outcome.pic_url + ')';
         var html = "<div style='" + styleText + "' class='outcome-content'>";
             html+= "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
             html+= "</div>";
             html+= "<div class='share-container'>";
-            html+= "    <img class='fb-share-btn share touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/designs/images/facebook.png'></img>";
-            html+= "    <img onclick=" + onclickShareTwitter + " class='share touchable' src='" + static_domain + "/designs/images/twitter.png'></img>";
+            html+= "    <div class='fb-share-container'>";
+            html+= "        <img width='30px' height='30px' class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/designs/images/facebook.png'></img>";
+            html+= "        <img width='30px' height='30px' class='share fb-share-btn-blue touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
+            html+= "    </div>";
+            html+= "    <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='share touchable' src='" + static_domain + "/designs/images/twitter.png'></img>";
             html+= "    <div class='share-text'><p>Share your results</p></div>";
+            //html+= "    <img width='30px' height='30px' class='refresh-btn touchable' onclick=" + onclickRefresh + " src='" + static_domain + "/icon/refresh.png'></img>";
             html+= "</div>";
         return html;
     }
@@ -264,6 +275,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
             answer1:   answer1,
             answer2:   answer2,
 
+            refresh:            refresh,
             shareQuizFB:        shareQuizFB,
             shareOutcomeFB:     shareOutcomeFB,
             shareQuizTwitter:   shareQuizTwitter,

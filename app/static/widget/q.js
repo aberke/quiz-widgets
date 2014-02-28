@@ -9,11 +9,14 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	var domain = "http://";
-	//domain += '127.0.0.1:8080';
+	//var domain = 'http://127.0.0.1:8080';
+	//var static_domain = 'http://127.0.0.1:8080';
 	
-	domain += 'quizwidget-petri.dotcloud.com';
-	//domain += 'quiz.huffingtonpost.com'; // akamai cache
+	var domain = 'http://quizwidget-petri.dotcloud.com';
+	var static_domain = 'http://quiz.huffingtonpost.com';
+	 /* akamai cache domain: 'quiz.huffingtonpost.com'
+			Only use it for static assets...  not JSONP requests.. right?
+	 */
 
 
 	this.quizWidgets = {};
@@ -67,7 +70,7 @@
 			var rules = ".fb-share-btn,huffpostlabs-quiz .fb-share-btn{display:none}";
 			var stylesheet = document.createElement('style');
     		document.body.appendChild(stylesheet);
-        	stylesheet.innerHTML = rules;
+        	stylesheet.innerHTML = rules; 
 			return;
 		}
 
