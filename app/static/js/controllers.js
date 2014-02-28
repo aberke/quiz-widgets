@@ -1,6 +1,10 @@
 
 function MainCntl($scope, $location) {
 	$scope.domain = window.location.origin;
+	if ($scope.domain == 'http://quizwidget-petri.dotcloud.com'){
+		$scope.domain = 'http://quiz.huffingtonpost.com';
+	}
+	
 	$scope.user = null;
 
 
@@ -46,7 +50,6 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 		var count = (quiz.share ? quiz.share.fbCount : 0);
 		for (var i=0; i<quiz.outcomeList.length; i++) {
 			var o = quiz.outcomeList[i];
-			console.log('o',o)
 			count += (o.share ? o.share.fbCount : 0);
 		}
 		return count;
