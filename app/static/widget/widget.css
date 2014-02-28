@@ -277,17 +277,21 @@
 
 
 /* --------- SHARE ------ */
-.huffpostlabs-quiz .fb-share-container {
+.huffpostlabs-quiz .fb-share-container,
+.huffpostlabs-quiz .twitter-share-container {
 	display: inline-block;
 }
-.huffpostlabs-quiz .fb-share-container img.fb-share-btn-blue{
+.huffpostlabs-quiz .fb-share-container img.fb-share-btn-blue,
+.huffpostlabs-quiz .twitter-share-container img.twitter-share-btn-blue{
 	display: none;
 }
-.huffpostlabs-quiz .fb-share-container:hover img.fb-share-btn-blue{
+.huffpostlabs-quiz .fb-share-container:hover img.fb-share-btn-blue,
+.huffpostlabs-quiz .twitter-share-container:hover img.twitter-share-btn-blue{
 	display: inline;
 	opacity: 1;
 }
-.huffpostlabs-quiz .fb-share-container:hover img.fb-share-btn{
+.huffpostlabs-quiz .fb-share-container:hover img.fb-share-btn,
+.huffpostlabs-quiz .twitter-share-container:hover img.twitter-share-btn{
 	display: none;
 }
 
