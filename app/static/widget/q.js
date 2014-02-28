@@ -12,8 +12,8 @@
 	var domain = "http://";
 	//domain += '127.0.0.1:8080';
 	
-	//domain += 'quizwidget-petri.dotcloud.com';
-	domain += 'quiz.huffingtonpost.com'; // akamai cache
+	domain += 'quizwidget-petri.dotcloud.com';
+	//domain += 'quiz.huffingtonpost.com'; // akamai cache
 
 
 	this.quizWidgets = {};
