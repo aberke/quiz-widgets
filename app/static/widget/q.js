@@ -11,7 +11,6 @@
 
 	var domain = "http://";
 	//domain += '127.0.0.1:8080';
-	//domain += '42461ba5.ngrok.com'; // for mobile development
 	
 	//domain += 'quizwidget-petri.dotcloud.com';
 	domain += 'quiz.huffingtonpost.com'; // akamai cache
@@ -24,7 +23,6 @@
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
 	var scripts 	= [(domain + "/widget/swipe.js"),
 					   (domain + "/widget/quiz-object.js"),
-					   //"http://platform.twitter.com/widgets.js",
 					   ];
 	var stylesheets = [(domain + "/widget/widget.css")];
 
@@ -58,6 +56,8 @@
 					     "http://www.huffingtonpost.com": '1427100424195799',
 					     "http://code.huffingtonpost.com": '1427100424195799',
 					     "http://huffingtonpost.com": '1427100424195799',
+					     "http://m.huffpost.com": '1427100424195799',
+					     "http://p.huffingtonpost.com": '1427100424195799',
 					};
 
 		var appID = appIDMap[window.location.origin];
