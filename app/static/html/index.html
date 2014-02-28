@@ -19,7 +19,6 @@
       </ul>
       <p>I'm currently working on:</p>
       <ul>
-        <li><p>Buggy widget quirks</p></li>
         <li><p>Easier to use quiz creation suite</p></li>
         <li><p>Ability to edit quizzes</p></li>
         <li><p>More reliable FB sharing functionality</p></li>
@@ -46,8 +45,8 @@
         <pre>&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;
 &lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
 
-        <p><a ng-href="/quiz/{{q._id}}">View More</a></p>
-        <p><a ng-href="/social/{{q._id}}">Customize Sharing</a></p>
+        <a ng-href="/quiz/{{q._id}}" class='display-block btn btn-sm btn-warning'><h5>View More</h5></a>
+        <a ng-href="/social/{{q._id}}" class='display-block btn btn-sm btn-info'><h5>Customize Sharing</h5></a>
       </div>
 
       <hr />

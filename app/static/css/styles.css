@@ -1,4 +1,5 @@
 .bold { font-weight: bold; }
+.display-block { display: block; }
 .display-inline { display: inline; }
 .inline-block { display: inline-block; }
 .text-decoration-none, .text-decoration-none:hover { text-decoration: none; }
@@ -26,7 +27,7 @@ footer {
 	/*border: 1px solid purple;*/
 }
 
-.btn h3 {
+.btn h3, .btn h5 {
 	margin: 0;
 	padding: 5px;
 }
@@ -76,7 +77,9 @@ section#preview #preview-text-container img{
 	display: inline-block;
 }
 
-
+#index-page .btn {
+	margin: 10px 0;
+}
 
 /********************** index-page above ******************/
 
