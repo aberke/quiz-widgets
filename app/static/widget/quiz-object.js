@@ -263,7 +263,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
             html+= "    </div>";
             html+= "    <div class='twitter-share-container'>";
             html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/designs/images/twitter.png'></img>";
-            html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + /*static_domain +*/ "/icon/twitter-icon-blue.png'></img>";
+            html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "    </div>";
             html+= "    <div class='share-text'><p>Share your results</p></div>";
             //html+= "    <img width='30px' height='30px' class='refresh-btn touchable' onclick=" + onclickRefresh + " src='" + static_domain + "/icon/refresh.png'></img>";
