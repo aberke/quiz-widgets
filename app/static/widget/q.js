@@ -30,8 +30,8 @@
 	var stylesheets = [(domain + "/widget/widget.css")];
 
 	var setupTwitter = function() {
-		window.twitterShare = function(quiz) {
-			var twitterURL = 'https://twitter.com/share?url=' + window.location.href + '&text=' + quiz.title + '&via=HuffPostCode&hashtags=huffpostQuiz';
+		window.twitterShare = function(quiz, text) {
+			var twitterURL = 'https://twitter.com/share?url=' + window.location.href + '&text=' + (text || quiz.title) + '&via=HuffPostCode&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
 			jsonp("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
 

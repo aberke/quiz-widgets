@@ -187,7 +187,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
     }
     function shareOutcomeTwitter() {
         var text = 'I got: ' + leadingOutcome.text + ' -- ' + quizData.title;
-        twitterShare(text, 'HuffPostCode', 'huffpostQuiz');
+        twitterShare(quizData, text);
     }
     function titleContainerHTML() {
         var onclickStart = "quizWidgets['" + quizID + "'].startQuiz(this)";
