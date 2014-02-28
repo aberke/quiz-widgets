@@ -4,7 +4,7 @@ function MainCntl($scope, $location) {
 	if ($scope.domain == 'http://quizwidget-petri.dotcloud.com'){
 		$scope.domain = 'http://quiz.huffingtonpost.com';
 	}
-	
+
 	$scope.user = null;
 
 
@@ -123,6 +123,15 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 		$scope.quiz.outcomeList.push(new_outcome);
 
 		$scope.new_outcome = {};
+	}
+	$scope.removeOutcome = function(outcome) {
+
+		$scope.quiz.outcomeList.splice(outcome.index-1, 1); // outcome.index is not zero-indexed
+		
+		/* decrement the index of all the outcomes that followed */
+		for (var i=outcome.index-1; i<$scope.quiz.outcomeList.length; i++) {
+			$scope.quiz.outcomeList[i].index = i + 1;
+		}
 	}
 	$scope.addNewQuestion = function(new_question) {
 		FormService.removeAllErrors();

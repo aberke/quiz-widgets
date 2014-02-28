@@ -14,7 +14,9 @@
 			<p>Full size quiz widget dimensions: 550px x 425px</p>
 			<p>Mobile size quiz widget dimensions: 300px x 270px</p>
 
-			<p>After you creat the quiz you can customize how it is shared on Facebook</p>
+			<p>After you create the quiz you can customize how it is shared on Facebook</p>
+
+			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p.
 		</div>
 	</section>
 
@@ -59,7 +61,9 @@
 		<h3>Outcomes</h3>
 
 		<div id="outcomes" ng-repeat="outcome in quiz.outcomeList">
-			<p class='bold'>{{outcome.index}}.</p>
+			<p class='bold display-inline'>{{outcome.index}}.</p>
+			<button ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger delete-outcome-btn'>X</button>
+
 
 			<div class="huffpostlabs-quiz">
 				<div class="slides-container">
@@ -80,7 +84,7 @@
 		</div>
 
 
-		<button ng-show="!showAddNewOutcome" ng-click="showAddNewOutcome=true" id='show-add-outcome-btn' class='btn btn-sm btn-success'>+ Add New Outcome</button>
+		<button ng-disabled="showAddNewOutcome" ng-click="showAddNewOutcome=true" id='show-add-outcome-btn' class='btn btn-sm btn-success'>+ Add New Outcome</button>
 		
 
 		<div ng-show="showAddNewOutcome" ng-model='new_outcome'>

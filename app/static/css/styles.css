@@ -139,6 +139,9 @@ section#preview #preview-text-container img{
 #new-page #outcomes {
 	margin-bottom: 10px;
 }
+#new-page .delete-outcome-btn {
+	float: right;
+}
 
 
 #new-page label {
