@@ -58,11 +58,15 @@
 	position: absolute;
 	z-index: -1;
 }
-/*.quiz-53039d7f218ff31f2ae49c54::after {
-	background-image: url("/designs/images/bg.png");
-}*/
 
-.slides-container {
+.huffpostlabs-quiz .slide {
+	-webkit-transition: all 0.3s ease;                  
+    -moz-transition: all 0.3s ease;                 
+    -o-transition: all 0.3s ease;   
+    -ms-transition: all 0.3s ease;          
+    transition: all 0.3s ease;
+}
+.huffpostlabs-quiz .slides-container {
 	position: absolute;
 	top: 2%;
 	bottom: 2%;
@@ -114,6 +118,17 @@
 	top: 20%;
 	height: 80%;
 	position: absolute;
+}
+
+.huffpostlabs-quiz .title::before {
+	position: absolute;
+	left: -43px;
+	top: 0px;
+	width: 43px;
+	height: 43px;
+	display: block;
+	background-color: #ffffff;
+	content: '';
 }
 .huffpostlabs-quiz .title {
 	margin-bottom: 10px;
@@ -172,7 +187,7 @@
 }
 .huffpostlabs-quiz .question-container {
 	border-bottom: none;
-	height: 49%;
+	height: 49%; /* sometimes the border hides if this is 50% */
 	border-bottom: 1px solid white;
 	border-left: 1px solid white;
 	border-right: 1px solid white;
@@ -183,7 +198,7 @@
 	font-weight: 100;
 }
 .huffpostlabs-quiz .answers-container {
-	height: 49%;
+	height: 49%; /* sometimes the border hides if this is 50% */
 	border: 1px solid white;
 	border-top: 0;
 	display: inline-flex;
@@ -194,7 +209,7 @@
 
 .huffpostlabs-quiz .answer-container {
 	height: 100%;
-	width: 49%;
+	width: 50%;
 	display: inline-block;
 	position: absolute;
 
@@ -219,6 +234,30 @@
 .huffpostlabs-quiz .answer-text {
 	margin: 0.8em;
 }
+.answer-container img {
+	max-width: 50%;
+	max-height: 70%;
+    float:right;
+    position:absolute;
+    bottom:0;
+    right:0;
+    clear:right
+}
+span.photo-credit{
+	font-family: arial;
+	position: absolute;
+	display: block;
+	bottom: 0;
+	right: 0;
+	padding: 0 5px;
+	color: rgba(255,255,255,1);
+	background-color: rgba(0,0,0,0.3);
+	font-weight: normal;
+	display: none;
+}
+.slide:hover span.photo-credit{
+	display: block;
+}
 .huffpostlabs-quiz.mobile .answer-text {
 	margin: 0.4em;
 }
@@ -239,15 +278,15 @@
 	top: 0;
 	bottom: 52px;
 	width: 100%;
-	background-color: rgba(255,255,255,0.6);
-
+	background-color: rgba(0,0,0,0.4);
+	border: solid 1px #ffffff;
 	/* background: url('pic_url') */
 	background-size: 50%;
 	background-repeat: no-repeat;
 	background-position: right bottom;
 }
 .huffpostlabs-quiz .outcome-text {
-	color: black;
+	color: white;
 	font-family: Arvo-Bold;
 	padding: 0.5em;
 }

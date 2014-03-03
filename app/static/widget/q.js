@@ -16,6 +16,7 @@
 	
 	// var domain = 'http://quizwidget-petri.dotcloud.com';
 	// var static_domain = 'http://quiz.huffingtonpost.com';
+
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
 			Only use it for static assets...  not JSONP requests.. right?
 	 */

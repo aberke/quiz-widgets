@@ -14,12 +14,13 @@ var HuffpostLabsSlidesCntl = function(container) {
     }
 
     var transitionNext = function() {
-        animateUp(currSlide, -100, function() {
-            currSlideIndex += 1;
-            currSlide = slides[currSlideIndex];
-            nextSlide = slides[currSlideIndex + 1];
-        });
-        animateUp(nextSlide, 0);
+        
+        currSlide.style.top = "-100%";
+        nextSlide.style.top = "0%";
+        currSlideIndex += 1;
+
+        currSlide = slides[currSlideIndex];
+        nextSlide = slides[currSlideIndex + 1];
     };
     var updateLastSlide = function(content) {
         slides[slides.length - 1].innerHTML = content;
@@ -196,9 +197,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
         
         var html = "<div class='slide title-container'>";
-            html+= "    <div class='filler-left'>";
-            html+= "        <img src='" + static_domain + "/icon/white-square.png' class='filler-square'></img>";
-            html+= "    </div>";
+            html+= "    <span class='photo-credit'>" + (quizData.pic_credit || "") + "</span>";
             html+= "    <div class='title-content'>";
             html+= "        <h1 class='title'>" + quizData.title + "</h1>";
             html+= "        <div class='share-container'>";
@@ -222,12 +221,20 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= " </div>";
         return html;
     }
+    /* TODO: TAKE OUT */
     function answerStyleString(answer) {
         var styleString = "";
         if (answer.pic_url) {
             styleString = "background-image: url(" + answer.pic_url + ")";
         }
         return styleString;
+    }
+    function answerAddImage(answer) {
+        if (answer.pic_url) {
+            return "<img src='" + answer.pic_url + "'/>";
+        } else {
+            return "";
+        }
     }
     function questionAnswersContainerHTML(question) {
         var onclickString1 = "quizWidgets['" + quizID + "'].answer1(this)";
@@ -238,11 +245,15 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "        <h2 class='question-text'>" +  question.text + "</h2>";
             html+= "    </div>";
             html+= "    <div class='answers-container'>";
-            html+= "        <div onclick=" + onclickString1 + " style='" + answerStyleString(question.answer1) + "' class='touchable answer-1-container answer-container'>";
+            html+= "        <div onclick=" + onclickString1 + " class='touchable answer-1-container answer-container'>";
+            html+=              answerAddImage(question.answer1);
             html+= "            <h3 class='answer-text'>" + (question.answer1.text || "") + "</h3>";
+            html+= "            <span class='photo-credit'>" + (question.answer1.pic_credit || "") + "</span>";
             html+= "        </div>";
             html+= "        <div onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='touchable answer-2-container answer-container'>";
+            html+=              answerAddImage(question.answer2);
             html+= "            <h3 class='answer-text'>" + (question.answer2.text || "") + "</h3>";
+            html+= "            <span class='photo-credit'>" + (question.answer2.pic_credit || "") + "</span>";
             html+= "        </div>";
             html+= "    </div>";
             html+= "</div>";
@@ -256,13 +267,14 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         var styleText = 'background-image: url(' + outcome.pic_url + ')';
         var html = "<div style='" + styleText + "' class='outcome-content'>";
             html+= "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
+            html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
             html+= "</div>";
             html+= "<div class='share-container'>";
             html+= "    <div class='fb-share-container'>";
             html+= "        <img width='30px' height='30px' class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/designs/images/facebook.png'></img>";
             html+= "        <img width='30px' height='30px' class='share fb-share-btn-blue touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
-            html+= "    </div>";
-            html+= "    <div class='twitter-share-container'>";
+            html+= "    </div><!--";
+            html+= "    --><div class='twitter-share-container'>";
             html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/designs/images/twitter.png'></img>";
             html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "    </div>";
