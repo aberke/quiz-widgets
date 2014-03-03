@@ -196,7 +196,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
         
         var html = "<div class='slide title-container'>";
-            html+= "    <span class='photo-credit'>" + quizData.pic_credit + "</span>";
+            html+= "    <span class='photo-credit'>" + (quizData.pic_credit || "") + "</span>";
             html+= "    <div class='title-content'>";
             html+= "        <h1 class='title'>" + quizData.title + "</h1>";
             html+= "        <div class='share-container'>";
@@ -220,6 +220,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
             html+= " </div>";
         return html;
     }
+    /* TODO: TAKE OUT */
     function answerStyleString(answer) {
         var styleString = "";
         if (answer.pic_url) {
@@ -246,12 +247,12 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
             html+= "        <div onclick=" + onclickString1 + " class='touchable answer-1-container answer-container'>";
             html+=              answerAddImage(question.answer1);
             html+= "            <h3 class='answer-text'>" + (question.answer1.text || "") + "</h3>";
-            html+= "            <span class='photo-credit'>" + question.answer1.pic_credit + "</span>";
+            html+= "            <span class='photo-credit'>" + (question.answer1.pic_credit || "") + "</span>";
             html+= "        </div>";
             html+= "        <div onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='touchable answer-2-container answer-container'>";
             html+=              answerAddImage(question.answer2);
             html+= "            <h3 class='answer-text'>" + (question.answer2.text || "") + "</h3>";
-            html+= "            <span class='photo-credit'>" + question.answer2.pic_credit + "</span>";
+            html+= "            <span class='photo-credit'>" + (question.answer2.pic_credit || "") + "</span>";
             html+= "        </div>";
             html+= "    </div>";
             html+= "</div>";
@@ -265,7 +266,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
         var styleText = 'background-image: url(' + outcome.pic_url + ')';
         var html = "<div style='" + styleText + "' class='outcome-content'>";
             html+= "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
-            html+= "    <span class='photo-credit'>" + outcome.pic_credit + "</span>";
+            html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
             html+= "</div>";
             html+= "<div class='share-container'>";
             html+= "    <div class='fb-share-container'>";

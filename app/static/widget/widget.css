@@ -58,17 +58,15 @@
 	position: absolute;
 	z-index: -1;
 }
-/*.quiz-53039d7f218ff31f2ae49c54::after {
-	background-image: url("/designs/images/bg.png");
-}*/
-.slide {
+
+.huffpostlabs-quiz .slide {
 	-webkit-transition: all 0.3s ease;                  
     -moz-transition: all 0.3s ease;                 
     -o-transition: all 0.3s ease;   
     -ms-transition: all 0.3s ease;          
     transition: all 0.3s ease;
 }
-.slides-container {
+.huffpostlabs-quiz .slides-container {
 	position: absolute;
 	top: 2%;
 	bottom: 2%;
@@ -189,7 +187,7 @@
 }
 .huffpostlabs-quiz .question-container {
 	border-bottom: none;
-	height: 50%;
+	height: 49%; /* sometimes the border hides if this is 50% */
 	border-bottom: 1px solid white;
 	border-left: 1px solid white;
 	border-right: 1px solid white;
