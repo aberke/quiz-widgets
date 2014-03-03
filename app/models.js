@@ -175,7 +175,14 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		callback(null, newQuiz)
 	});
 }
-
+exports.findQuizPartial = function(quizID, callback) {
+	/* I don't care about populating -- return just quiz */
+	Quiz.findById(quizID).exec(function (err, data) {
+		if (err || !data) { return callback(new Error('Error in models.findQuizPartial'), null); }
+		
+		callback(null, data);
+	});
+}
 exports.findQuiz = function(quizID, callback) {
 	/* get FULLY POPULATED quiz */
 	Quiz.findById(quizID)
@@ -199,7 +206,7 @@ exports.findQuiz = function(quizID, callback) {
 			Quiz.populate(quiz, options, function(err, data) {
 				if (err || !data) { return callback(new Error('Error in models.findQuiz'), null); }
 				
-				callback(null, quiz)
+				callback(null, quiz);
 			});
 	});
 }

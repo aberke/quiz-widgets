@@ -8,14 +8,12 @@ before next meeting
 - start over button (customizable with icon)
 - tie outcome
 - be able to weight different outcomes
-- differentiate between how many started and how many finished
 
 design feedback
 ===
 
 -retake button or back button -- funny retake icon (mystery)
 -be able to share from every slide -- sometimes i'm inspired to share RIGHT NOW
-- use standard fb sharing icons
 
 TODO
 ====

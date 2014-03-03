@@ -9,11 +9,11 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	//var domain = 'http://127.0.0.1:8080';
-	//var static_domain = 'http://127.0.0.1:8080';
+	var domain = 'http://127.0.0.1:8080';
+	var static_domain = 'http://127.0.0.1:8080';
 	
-	var domain = 'http://quizwidget-petri.dotcloud.com';
-	var static_domain = 'http://quiz.huffingtonpost.com';
+	// var domain = 'http://quizwidget-petri.dotcloud.com';
+	// var static_domain = 'http://quiz.huffingtonpost.com';
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
 			Only use it for static assets...  not JSONP requests.. right?
 	 */
@@ -24,8 +24,9 @@
 	var contentModule;
 
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
-	var scripts 	= [(domain + "/widget/swipe.js"),
-					   (domain + "/widget/quiz-object.js"),
+	var scripts 	= [
+						//(domain + "/widget/swipe.js"),
+					   	(domain + "/widget/quiz-object.js"),
 					   ];
 	var stylesheets = [(domain + "/widget/widget.css")];
 
@@ -33,7 +34,7 @@
 		window.twitterShare = function(quiz, text) {
 			var twitterURL = 'https://twitter.com/share?url=' + window.location.href + '&text=' + (text || quiz.title) + '&via=HuffPostCode&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
-			jsonp("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
+			PUT("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
 
 		}
 	}
@@ -101,7 +102,7 @@
 					console.log('FB quiz post was published.');
 					/* log that it was shared */
 					if (!quiz.share._id) { return; }
-					jsonp("/api/share/" + quiz.share._id + "/increment-fb-count", null);
+					PUT("/api/share/" + quiz.share._id + "/increment-fb-count", null);
 				}
 			});
 		}
@@ -121,39 +122,48 @@
 					console.log('FB outcome post was published.');
 					/* log that it was shared */
 					if (!outcome.share._id) { return; }
-					jsonp("/api/share/" + outcome.share._id + "/increment-fb-count", null);
+					PUT("/api/share/" + outcome.share._id + "/increment-fb-count", null);
 				}
 			});
 		}
 	}
-
-	var quizCompleteCallback = function(outcome, chosenAnswers) {
+	var quizStartedCallback = function(quiz) {
+		PUT("/api/quiz/" + quiz._id + "/increment-started-count", null);
+	}
+	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
 		console.log('quizCompleteCallback', chosenAnswers, outcome)
 		
-		/* increment counts for outcome and each chosenAnswer */
-		jsonp("/api/outcome/" + outcome._id + "/increment-count", null);
+		/* increment counts for quiz, outcome and each chosenAnswer */
+		PUT("/api/quiz/" + quiz._id + "/increment-completed-count", null);
+		PUT("/api/outcome/" + outcome._id + "/increment-count", null);
 		for (var i=0; i<chosenAnswers.length; i++) {
-			jsonp("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
+			PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
 		}
 	}
 
 
 	function load_quiz_info(quizID, container){
-		jsonp("/api/quiz/" + quizID, function(data) {
-			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizCompleteCallback);
+		GET("/api/quiz/" + quizID, function(data) {
+			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizStartedCallback, quizCompletedCallback);
 			this.quizWidgets[quizID] = widget;
 		});
 	};
 	var addWindowFunction = function(f_name, f) {
 		window[f_name] = f;
 	}
-	/* helper for 'getting' and 'posting' (cough... jsonp hack to get around cross origin issue...) */
-	function jsonp(data_url, callback){
-		var f_name = "quizModuleJSONPcallbacks_" + String(data_url.split('/').join('_'));
+
+	/* helper for 'getting' and 'posting' 
+		
+		- using static_domain for GET requests and true domain for POSTS
+		because I want my POST requests to actually make it to my server rather than getting caught in the cache
+		- This is important because of the fact that JSONP is really using a GET	
+	*/
+	function jsonp(domain, endpoint, callback){
+		var f_name = "quizModuleJSONPcallbacks_" + String(endpoint.split('/').join('_'));
 		
 		var tempscript  = document.createElement('script');
 		tempscript.id   = "tempscript-" + f_name;
-		tempscript.src  = domain + data_url + "?callback=" + f_name + "";
+		tempscript.src  = domain + endpoint + "?callback=" + f_name + "";
 		tempscript.type = "text/javascript";
 		document.body.appendChild(tempscript);
 
@@ -163,6 +173,16 @@
 			if (callback) { callback(data); }
 		});
 	}
+	function GET(endpoint, callback) {
+		jsonp(static_domain, endpoint, callback);
+	}
+	/* (cough... jsonp hack to get around cross origin issue...) */
+	function PUT(endpoint, callback) {
+		jsonp(domain, endpoint, callback);
+	}
+
+
+
 	/* check if user is using mobile browser -- return true if so */
 	function isMobile() {
 		var check = false;

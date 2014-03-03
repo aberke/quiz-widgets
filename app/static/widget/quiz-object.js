@@ -55,7 +55,7 @@ var HuffpostLabsSlidesCntl = function(container) {
     return { transitionNext: transitionNext, updateLastSlide: updateLastSlide };
 }
 
-var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallback) {
+var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallback, completedCallback) {
     console.log('quizData', quizData)
 
     var static_domain = "http://quiz.huffingtonpost.com"; // akamai cache
@@ -77,6 +77,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
     function startQuiz(element) {
         element.onclick = null;
         slidesCntl.transitionNext();
+        startedCallback(quizData);
     }
     function answer1(element) {
         element.onclick = null;
@@ -95,7 +96,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, completeCallb
         slidesCntl.transitionNext();
 
         if (currQuestionIndex == questionList.length) {
-            completeCallback(leadingOutcome, chosenAnswers);
+            completedCallback(quizData, leadingOutcome, chosenAnswers);
         }
     }
     function incrementOutcome(outcomeID) {
