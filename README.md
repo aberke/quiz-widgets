@@ -25,6 +25,7 @@ TODO
 	add other share options -- embed currently commented out (it is also hidden on mobile by the css)
 
 
+- use animate in javascript rather than timeout
 
 -facebook app still in development mode
 
