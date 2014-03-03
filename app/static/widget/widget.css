@@ -61,7 +61,13 @@
 /*.quiz-53039d7f218ff31f2ae49c54::after {
 	background-image: url("/designs/images/bg.png");
 }*/
-
+.slide {
+	-webkit-transition: all 0.3s ease;                  
+    -moz-transition: all 0.3s ease;                 
+    -o-transition: all 0.3s ease;   
+    -ms-transition: all 0.3s ease;          
+    transition: all 0.3s ease;
+}
 .slides-container {
 	position: absolute;
 	top: 2%;

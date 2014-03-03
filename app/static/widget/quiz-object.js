@@ -14,12 +14,13 @@ var HuffpostLabsSlidesCntl = function(container) {
     }
 
     var transitionNext = function() {
-        animateUp(currSlide, -100, function() {
-            currSlideIndex += 1;
-            currSlide = slides[currSlideIndex];
-            nextSlide = slides[currSlideIndex + 1];
-        });
-        animateUp(nextSlide, 0);
+        
+        currSlide.style.top = "-100%";
+        nextSlide.style.top = "0%";
+        currSlideIndex += 1;
+
+        currSlide = slides[currSlideIndex];
+        nextSlide = slides[currSlideIndex + 1];
     };
     var updateLastSlide = function(content) {
         slides[slides.length - 1].innerHTML = content;
@@ -38,8 +39,6 @@ var HuffpostLabsSlidesCntl = function(container) {
         window.setTimeout(function() {
             animateUp(element, targetTop, callback);
         }, AnimationInterval);
-
-        // element.style.top = targetTop + "%";
     }
 
     var init = function() {
