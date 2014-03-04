@@ -73,6 +73,7 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 	$scope.quiz = quiz;
 	$scope.quiz.share = (quiz.share || {});
+	$scope.shareLinkSaved = false;
 
 	for (var i=0; i<quiz.outcomeList.length; i++) {
 		console.log($scope.quiz.outcomeList[i])
@@ -84,12 +85,19 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 			console.log('data', data);
 		});
 	}
-	$scope.saveQuizShare = function() {
-		console.log('saveQuizShare', $scope.quiz.share)
+	var saveQuizShare = function(callback) {
 		HTTPService.PUT('/api/quiz/' + $scope.quiz._id + '/share', $scope.quiz.share).then(function(data) {
 			console.log('data', data);
+			if (callback) { callback(data); }
 		});
 	}
+	$scope.saveQuizShareLink = function(link) {
+		$scope.quiz.share.link = link;
+		saveQuizShare(function() {
+			$scope.shareLinkSaved = true;
+		});
+	}
+	$scope.saveQuizShare = function() { saveQuizShare(); }
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
