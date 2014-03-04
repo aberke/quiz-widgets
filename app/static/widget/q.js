@@ -11,11 +11,11 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	var domain = 'http://127.0.0.1:8080';
-	var static_domain = 'http://127.0.0.1:8080';
+	// var domain = 'http://127.0.0.1:8080';
+	// var static_domain = 'http://127.0.0.1:8080';
 	
-	// var domain = 'http://quizwidget-petri.dotcloud.com';
-	// var static_domain = 'http://quiz.huffingtonpost.com';
+	var domain = 'http://quizwidget-petri.dotcloud.com';
+	var static_domain = 'http://quiz.huffingtonpost.com';
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
 			Only use it for static assets...  not JSONP requests.. right?
@@ -33,31 +33,6 @@
 					   ];
 	var stylesheets = [(domain + "/widget/widget.css")];
 
-	var setupAnimation = function() {
-		/* thanks buddy: https://gist.github.com/paulirish/1579671 */
-
-		var lastTime = 0;
-		var vendors = ['ms', 'moz', 'webkit', 'o'];
-		for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-			window.requestQuizAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-			window.cancelQuizAnimationFrame = (window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame']);
-		}
-
-		if (!window.requestQuizAnimationFrame) {
-			window.requestQuizAnimationFrame = function(callback, element) {
-				var currTime = new Date().getTime();
-				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-				var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-				timeToCall);
-				lastTime = currTime + timeToCall;
-				return id;
-			};
-		}
-
-		if (!window.cancelQuizAnimationFrame) {
-			window.cancelQuizAnimationFrame = function(id) { clearTimeout(id); }
-		};
-	}
 
 	var setupTwitter = function() {
 		window.twitterShare = function(quiz, text) {
@@ -288,7 +263,6 @@
 
 	// load dependencies before calling main
 	function main(){
-		// setupAnimation(); actually for now I'm not using requestAnimationFrame
 		setupFB();
 		setupTwitter();
 
