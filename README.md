@@ -8,6 +8,7 @@ before next meeting
 - start over button (customizable with icon)
 - tie outcome
 - be able to weight different outcomes
+- ability to link shares back to given URL
 
 design feedback
 ===
@@ -20,12 +21,10 @@ TODO
 
 -editable!
 
--handle photo credit in design
 -in widget:
 	add other share options -- embed currently commented out (it is also hidden on mobile by the css)
 
 
-- use animate in javascript rather than timeout
 
 -facebook app still in development mode
 
