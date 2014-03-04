@@ -11,12 +11,16 @@
 			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
 			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
 			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
-			<p>Full size quiz widget dimensions: 550px x 425px</p>
-			<p>Mobile size quiz widget dimensions: 300px x 270px</p>
+			<p>Quiz dimensions:
+				<ul>
+					<li>Full size: 550px x 425px</li>
+					<li>Mobile size: 300px x 270px</li>
+				</ul>
+			</p>
+
+			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p>
 
 			<p>After you create the quiz you can customize how it is shared on Facebook</p>
-
-			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p.
 		</div>
 	</section>
 
@@ -88,6 +92,7 @@
 							<div class="share-text">
 								<p>Share your results</p>
 							</div>
+							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
 						</div>
 					</div>
 				</div>
@@ -130,6 +135,7 @@
 							<div class="share-text">
 								<p>Share your results</p>
 							</div>
+							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
 						</div>
 					</div>
 				</div>
@@ -235,6 +241,40 @@
 	</section> <!-- ********************* set-questions *********************  -->
 
 
+	<!-- ********************* set-refresh-icon *********************  -->
+	<section id='set-refresh-icon'>
+		<button ng-click="showSetRefreshIcon=true" ng-disabled="showSetRefreshIcon" class='btn btn-sm btn-success'>Customize Refresh Icon</button>
+		<p ng-show="!showSetRefreshIcon" class='inline-block btn-helper'>optional</p>
+
+		<div ng-show="showSetRefreshIcon">
+			<p class='instructions-text'>
+				You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
+				Dimensions: 30x30
+			</p>
+			<div class='huffpostlabs-quiz'>
+				<div class='outcome-container'>
+					<div class="share-container">
+						<div class="fb-share-container">
+							<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">
+							<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">
+						</div>
+						<div class="twitter-share-container">
+							<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+							<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+						</div>
+						<div class="share-text"><p>Share your results</p></div>
+						<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
+					</div>
+				</div>
+			</div>
+
+			<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
+			<input id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
+
+			<button ng-click="showSetRefreshIcon=false;quiz.refresh_icon_url=null" class='btn btn-sm btn-danger'>Cancel</button>
+			<button ng-click="showSetRefreshIcon=false;" class='btn btn-sm btn-success'>OK</button>
+		</div>
+	</section> <!-- ********************* set-refresh-icon *********************  -->
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>

@@ -47,6 +47,7 @@ var quizSchema = new Schema({
 	questionList: 		[{ type: ObjectId, ref: 'Question' }],
 	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
 	share: 				{type: ObjectId, ref: 'Share', default: null},
+	refresh_icon_url: 	{type: String, default: null},
 	
 	startedCount: 		{ type: Number, default: 0},
 	completedCount: 	{ type: Number, default: 0},
@@ -128,9 +129,10 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 	*/
 	var newQuiz = new Quiz({
 		//_user: ?
-		title: 		quizData.title,
-		pic_url: 	(quizData.pic_url 	 || null),
-		pic_credit: (quizData.pic_credit || null),
+		title: 				quizData.title,
+		pic_url: 			(quizData.pic_url 	 		|| null),
+		pic_credit: 		(quizData.pic_credit 		|| null),
+		refresh_icon_url: 	(quizData.refresh_icon_url 	|| null),
 	});
 	var newShare = new Share({_quiz: newQuiz});
 	newShare.save();
