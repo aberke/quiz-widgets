@@ -153,6 +153,11 @@ section#preview #preview-text-container img{
 	width: 100%;
 	border: 2px solid lightblue;
 }
+#new-page input[type='checkbox']{
+	width: auto;
+	margin-right: 5px;
+	margin-top: 10px;
+}
 #new-page select {
 	font-size: 16px;
 }
