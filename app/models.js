@@ -68,12 +68,13 @@ var outcomeSchema = new Schema({
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
 var answerSchema = new Schema({
-	_question:  {type: ObjectId, ref: 'Question'},
-	_outcome: 	{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
-	text:   	String,
-	pic_url: 	String,
-	pic_credit: {type: String, default: null},
-	count:  	{ type: Number, default: 0}, // number of times it's been picked
+	_question:  	{type: ObjectId, ref: 'Question'},
+	_outcome: 		{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
+	text:   		String,
+	pic_url: 		String,
+	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'full'
+	pic_credit: 	{type: String, default: null},
+	count:  		{ type: Number, default: 0}, // number of times it's been picked
 });
 
 exports.User 	 = User  	= mongoose.model('User', userSchema);
@@ -89,8 +90,9 @@ var newAnswer = function(answerData, question, outcomeDict) {
 		_question:  question,
 		_outcome: 	outcomeDict[answerData.outcome.index], // the outcome it adds a point to if selected
 		text:   	answerData.text,
-		pic_url: 	(answerData.pic_url 	  || null),
-		pic_credit: (answerData.pic_credit || null),
+		pic_url: 	(answerData.pic_url   || null),
+		pic_credit: (answerData.pic_credit|| null),
+		pic_style:  (answerData.pic_style || "bottom-right"),
 	});
 	return answer;
 }
