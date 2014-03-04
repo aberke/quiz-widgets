@@ -30,7 +30,7 @@
 		<input id='quiz-title' placeholder="Title of your quiz" type='text' ng-model='quiz.title' />
 
 		<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image is also used as a thumbnail when sharing to social networks.  
-		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image URL</label>
+		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image/GIF URL</label>
 		<input ng-change="updateQuizPic()" id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
 
 		<span ng-show="quiz.pic_url">
@@ -108,7 +108,7 @@
 			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
 
 			<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image will also be used as a thumbnail when sharing result to social networks.
-			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image URL</label>
+			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image/GIF URL</label>
 			<input id='new-outcome-pic-url' type="url" ng-model="new_outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
 
 			<span ng-show="new_outcome.pic_url">
@@ -185,7 +185,7 @@
 				<label>Answer 1 Text:</label>
 				<input id='new-question-answer1-text' type='text' ng-model='new_question.answer1.text' required >
 
-				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 1 Image URL</label>
+				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 1 Image/GIF URL</label>
 				<input id='new-question-answer1-pic-url' type="url" ng-model="new_question.answer1.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" >
 	
 				<span ng-show="new_question.answer1.pic_url">
@@ -203,7 +203,7 @@
 				<label>Answer 2 Text:</label>
 				<input id='new-question-answer2-text' required type='text' ng-model='new_question.answer2.text' >
 
-				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 2 Image URL</label>
+				<label class="popover-hover" data-original-title="Image/GIF URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 2 Image/GIF URL</label>
 				<input id='new-question-answer2-pic-url' type="url" ng-model="new_question.answer2.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" >
 
 				<span ng-show="new_question.answer2.pic_url">
@@ -268,7 +268,7 @@
 				</div>
 			</div>
 
-			<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
+			<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
 			<input id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
 
 			<button ng-click="showSetRefreshIcon=false;quiz.refresh_icon_url=null" class='btn btn-sm btn-danger'>Cancel</button>
