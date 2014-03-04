@@ -234,7 +234,7 @@
 .huffpostlabs-quiz .answer-text {
 	margin: 0.8em;
 }
-.answer-container img {
+.huffpostlabs-quiz .answer-container img {
 	max-width: 50%;
 	max-height: 70%;
     float:right;
@@ -243,7 +243,7 @@
     right:0;
     clear:right
 }
-span.photo-credit{
+.huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
 	position: absolute;
 	display: block;
@@ -255,7 +255,7 @@ span.photo-credit{
 	font-weight: normal;
 	display: none;
 }
-.slide:hover span.photo-credit{
+.huffpostlabs-quiz .slide:hover span.photo-credit{
 	display: block;
 }
 .huffpostlabs-quiz.mobile .answer-text {

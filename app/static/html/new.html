@@ -37,17 +37,22 @@
 		<div class="huffpostlabs-quiz" id='build-title'>
 			<div class="slides-container">
 				<div class="slide title-container" style="top: 0%;">
-					<div class="filler-left">
-						<img src="/icon/white-square.png" class="filler-square">
-					</div>
+					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
 					<div class="title-content">
 						<h1 class="title">{{quiz.title || "YOUR TITLE HERE"}}</h1>
-					<div class="share-container">
-						<img class="share fb-share-btn" src="/designs/images/facebook.png">
-						<img class="share" src="/designs/images/twitter.png">
-					</div>
-					<div class="start-container touchable">
-						<h2 class="start-text">START</h2>
+						<div class="share-container">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
+						</div>
+						<div class="start-container touchable">
+							<h2 class="start-text">START</h2>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -69,10 +74,17 @@
 					<div class="slide outcome-container">
 						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{outcome.text}}</h1>
+							<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
-							<img class="fb-share-btn share touchable" src="/designs/images/facebook.png">
-							<img class="share touchable" src="/designs/images/twitter.png">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
 							<div class="share-text">
 								<p>Share your results</p>
 							</div>
@@ -104,10 +116,17 @@
 					<div class="slide outcome-container">
 						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{new_outcome.text}}</h1>
+							<span class="photo-credit">{{new_outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
-							<img class="fb-share-btn share touchable" src="/designs/images/facebook.png">
-							<img class="share touchable" src="/designs/images/twitter.png">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
 							<div class="share-text">
 								<p>Share your results</p>
 							</div>
