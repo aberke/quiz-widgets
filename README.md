@@ -40,6 +40,12 @@ TODO
 - write e2e tests
 - make nice 404
 
+Further Ideas
+===
+
+- Make poll product as well:
+	- Last slide would load in the oncomplete data to be able to show what other people answered
+
 Button notes
 ===
 Using btn-master.js to make mobile friendly buttons.  All our buttons have data tag data-huffpostlabs-btn in order to make them mobile friendly
