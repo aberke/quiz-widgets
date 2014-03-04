@@ -68,6 +68,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     var quizID = quizData._id;
 
     var slidesCntl;
+    var btnMaster;
 
     var questionList;
     var currQuestionIndex;
@@ -130,23 +131,18 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         container.style.display = 'none';
         buildWidget();
         setupSlides();
-        handleMobile(); /* just does styling changes */
+        handleMobile();
 
         container.style.display = 'block';
     }
 
     function handleMobile() {
+        /* turn all elements marked with the data-huffpostlabs-btn tag into HuffpostLabsBtns
+            Collecting + converting these btns for given context handled by the HuffpostLabsBtnMaster */
         if (isMobile) {
             container.className += ' mobile';
         }
-
-        /* hide the onclick lag with highlighting on touchstart */
-        var touchables = document.getElementsByClassName('touchable');
-        for (var i=0; i<touchables.length; i++) {
-            touchables[i].addEventListener('touchstart', function(e) {
-                e.target.className += ' selected';
-            });
-        }
+        btnMaster = new HuffpostLabsBtnMaster(container);
     }
     function buildWidget() {
         /* add background image */
@@ -202,19 +198,19 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "        <h1 class='title'>" + quizData.title + "</h1>";
             html+= "        <div class='share-container'>";
             html+= "            <div class='fb-share-container'>";
-            html+= "                <img width='30px' height='30px' class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon.png'></img>";
-            html+= "                <img width='30px' height='30px' class='share fb-share-btn-blue touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
+            html+= "                <img width='30px' height='30px' class='share fb-share-btn touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon.png'></img>";
+            html+= "                <img width='30px' height='30px' class='share fb-share-btn-blue touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
             html+= "            </div>";
             html+= "            <div class='twitter-share-container'>";
-            html+= "                <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
-            html+= "                <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
+            html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
+            html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "            </div>";
             // html+= "            <span class='embed-code'>";
             // html+= "                <input value='" + static_domain + .... + "' >";
             // html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
             // html+= "            </span>";
             html+= "        </div>";
-            html+= "        <div class='start-container touchable' onclick=" + onclickStart + ">";
+            html+= "        <div class='start-container touchable' data-huffpostlabs-btn onclick=" + onclickStart + ">";
             html+= "            <h2 class='start-text'>START</h2>";
             html+= "        </div>";
             html+= "    </div>";
@@ -245,12 +241,12 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "        <h2 class='question-text'>" +  question.text + "</h2>";
             html+= "    </div>";
             html+= "    <div class='answers-container'>";
-            html+= "        <div onclick=" + onclickString1 + " class='touchable answer-1-container answer-container'>";
+            html+= "        <div data-huffpostlabs-btn onclick=" + onclickString1 + " class='touchable answer-1-container answer-container'>";
             html+=              answerAddImage(question.answer1);
             html+= "            <h3 class='answer-text'>" + (question.answer1.text || "") + "</h3>";
             html+= "            <span class='photo-credit'>" + (question.answer1.pic_credit || "") + "</span>";
             html+= "        </div>";
-            html+= "        <div onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='touchable answer-2-container answer-container'>";
+            html+= "        <div data-huffpostlabs-btn onclick=" + onclickString2 + " style='" + answerStyleString(question.answer2) + "' class='touchable answer-2-container answer-container'>";
             html+=              answerAddImage(question.answer2);
             html+= "            <h3 class='answer-text'>" + (question.answer2.text || "") + "</h3>";
             html+= "            <span class='photo-credit'>" + (question.answer2.pic_credit || "") + "</span>";
@@ -271,15 +267,15 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "</div>";
             html+= "<div class='share-container'>";
             html+= "    <div class='fb-share-container'>";
-            html+= "        <img width='30px' height='30px' class='share fb-share-btn touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon.png'></img>";
-            html+= "        <img width='30px' height='30px' class='share fb-share-btn-blue touchable' onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
+            html+= "        <img width='30px' height='30px' class='share fb-share-btn touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon.png'></img>";
+            html+= "        <img width='30px' height='30px' class='share fb-share-btn-blue touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
             html+= "    </div>";
             html+= "    <div class='twitter-share-container'>";
-            html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
-            html+= "        <img width='30px' height='30px' onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
+            html+= "        <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
+            html+= "        <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "    </div>";
             html+= "    <div class='share-text'><p>Share your results</p></div>";
-            //html+= "    <img width='30px' height='30px' class='refresh-btn touchable' onclick=" + onclickRefresh + " src='" + static_domain + "/icon/refresh.png'></img>";
+            //html+= "    <img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + static_domain + "/icon/refresh.png'></img>";
             html+= "</div>";
         return html;
     }

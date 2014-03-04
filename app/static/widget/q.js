@@ -11,8 +11,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	// var domain = 'http://127.0.0.1:8080';
-	// var static_domain = 'http://127.0.0.1:8080';
+	//var domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
+	//var static_domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
 	
 	var domain = 'http://quizwidget-petri.dotcloud.com';
 	var static_domain = 'http://quiz.huffingtonpost.com';
@@ -28,10 +28,11 @@
 
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
 	var scripts 	= [
-						//(domain + "/widget/swipe.js"),
-					   	(domain + "/widget/quiz-object.js"),
+						//(static_domain + "/widget/swipe.js"),
+					   	(static_domain + "/widget/quiz-object.js"),
+					   	(static_domain + "/widget/btn-master.js"),
 					   ];
-	var stylesheets = [(domain + "/widget/widget.css")];
+	var stylesheets = [(static_domain + "/widget/widget.css")];
 
 
 	var setupTwitter = function() {
