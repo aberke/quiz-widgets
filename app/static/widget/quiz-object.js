@@ -26,21 +26,6 @@ var HuffpostLabsSlidesCntl = function(container) {
         slides[slides.length - 1].innerHTML = content;
     }
 
-    var AnimationStep = 4; // keep it a factor of 100
-    var AnimationInterval = 15; //milliseconds
-    function animateUp(element, targetTop, callback) {
-        var currTop = percentToNumber(element.style.top);
-        if (currTop <= targetTop){
-            if (callback) { callback(); }
-            return;
-        }
-        
-        element.style.top = (currTop - AnimationStep) + "%";
-        window.setTimeout(function() {
-            animateUp(element, targetTop, callback);
-        }, AnimationInterval);
-    }
-
     var init = function() {
         slides = container.getElementsByClassName('slide');
         for(var i=0; i<slides.length; i++) {
@@ -52,8 +37,7 @@ var HuffpostLabsSlidesCntl = function(container) {
         nextSlide = slides[currSlideIndex + 1];
         currSlide.style.top = '0%';
     }
-    init();
-    return { transitionNext: transitionNext, updateLastSlide: updateLastSlide };
+    return { transitionNext: transitionNext, updateLastSlide: updateLastSlide, init: init };
 }
 
 var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallback, completedCallback) {
@@ -113,6 +97,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
     function setupSlides() {
         slidesCntl = new HuffpostLabsSlidesCntl(container);
+        slidesCntl.init();
     }
     function createOutcomeMap(outcomeList) {
         map = {};
@@ -134,6 +119,14 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         handleMobile();
 
         container.style.display = 'block';
+    }
+    function refresh() {
+        console.log('refresh')
+        leadingOutcome = null;
+        chosenAnswers = [];
+        currQuestionIndex = 0;
+        outcomeMap = createOutcomeMap(quizData.outcomeList);
+        slidesCntl.init();
     }
 
     function handleMobile() {
@@ -171,9 +164,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         stylesheet.innerHTML += rule;
     }
 
-    function refresh() {
-        console.log('refresh')
-    }
     function shareQuizFB() {
         fbShareQuiz(quizData);
     }
@@ -275,7 +265,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "        <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "    </div>";
             html+= "    <div class='share-text'><p>Share your results</p></div>";
-            //html+= "    <img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + static_domain + "/icon/refresh.png'></img>";
+            html+= "    <img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + static_domain + "/icon/refresh.png'></img>";
             html+= "</div>";
         return html;
     }

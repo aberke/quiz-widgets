@@ -16,10 +16,9 @@ Notes
 
 before next meeting
 - share from every slide
-- start over button (customizable with icon)
+- start over button customizable with icon
 - tie outcome
 - be able to weight different outcomes
-- ability to link shares back to given URL
 
 design feedback
 ===
@@ -33,6 +32,7 @@ Changes since meeting with editors
 - more mobile friendly buttons (with accomanying library)
 - photo credit shows on hover
 - ability to customize the quiz share link-back via the /social page
+- refresh button at end of quiz
 
 
 
