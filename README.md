@@ -1,7 +1,18 @@
 quiz-widgets
 ============
+<img src="http://www.cosgrovecare.org.uk/wp-content/uploads/2013/08/Quiz_button-small.png"
+ alt="quiz-widget logo" align="right" />
 
 Quiz Widget App -- Let's go viral
+
+<http://quizwidget-petri.dotcloud.com>
+
+Who's your spirit hacker?
+===
+<http://www.huffingtonpost.com/2014/02/27/quiz_n_4869792.html>
+
+Notes
+===
 
 before next meeting
 - share from every slide
