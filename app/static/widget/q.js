@@ -11,8 +11,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	//var domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
-	//var static_domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
+	// var domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
+	// var static_domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
 	
 	var domain = 'http://quizwidget-petri.dotcloud.com';
 	var static_domain = 'http://quiz.huffingtonpost.com';
@@ -37,7 +37,7 @@
 
 	var setupTwitter = function() {
 		window.twitterShare = function(quiz, text) {
-			var twitterURL = 'https://twitter.com/share?url=' + window.location.href + '&text=' + (text || quiz.title) + '&via=HuffPostCode&hashtags=huffpostQuiz';
+			var twitterURL = 'https://twitter.com/share?url=' + (quiz.share.link || window.location.href) + '&text=' + (text || quiz.title) + '&via=HuffPostCode&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
 			PUT("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
 
@@ -98,7 +98,7 @@
 				method: 'feed',
 				name: quiz.title,
 				picture: (quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
-				link: window.location.href,
+				link: (quizShare.link || window.location.href),
 				caption: (quizShare.caption || 'Find out..'),
 				description: (quizShare.description || ''),
 			}, 
@@ -118,7 +118,7 @@
 				method: 'feed',
 				name: quiz.title,
 				picture: (outcomeShare.pic_url || outcome.pic_url || quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
-				link: window.location.href,
+				link: (quizShare.link || window.location.href),
 				caption: (outcomeShare.caption || 'I got: ' + outcome.text),
 				description: (outcomeShare.description || quizShare.description || ''),
 			}, 

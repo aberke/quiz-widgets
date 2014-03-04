@@ -33,9 +33,10 @@ var shareSchema = new Schema({
 	caption: 			{type: String, default: null},
 	pic_url: 			{type: String, default: null},
 	description:  		{type: String, default: null},
+	link: 		 		{type: String, default: null},
 	/* for stats */
-	fbCount: 	{ type: Number, default: 0},
-	twitterCount:{ type: Number, default: 0},
+	fbCount: 			{type: Number, default: 0},
+	twitterCount: 		{type: Number, default: 0},
 })
 var quizSchema = new Schema({
 	_user: 		  		{type: ObjectId, ref: 'User', default: null},
@@ -104,6 +105,7 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 		caption: 	(shareData.caption 		|| null),
 		description:(shareData.description  || null),
 		pic_url: 	(shareData.pic_url 		|| null),
+		link:  		(shareData.link 		|| null),
 	});
 	share.save(function(err) {
 		if (err) { return callback(err, null); }

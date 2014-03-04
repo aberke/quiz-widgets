@@ -27,6 +27,15 @@ design feedback
 - retake button or back button -- funny retake icon (mystery)
 - be able to share from every slide -- sometimes i'm inspired to share RIGHT NOW
 
+Changes since meeting with editors
+===
+
+- more mobile friendly buttons (with accomanying library)
+- photo credit shows on hover
+- ability to customize the quiz share link-back via the /social page
+
+
+
 TODO
 ====
 

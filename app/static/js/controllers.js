@@ -93,6 +93,7 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
+		UIService.setupPopovers();
 	}
 	init();
 }

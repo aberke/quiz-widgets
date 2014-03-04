@@ -60,7 +60,8 @@ var PUTquizShare  = function(req, res) {
 		else {
 			quiz.share.caption 	  = shareData.caption;
 			quiz.share.pic_url 	  = shareData.pic_url;
-			quiz.share.description = shareData.description;
+			quiz.share.link 	  = shareData.link;
+			quiz.share.description= shareData.description;
 			quiz.share.save(function(err) {
 				if (err){ return res.send(500, util.handleError(err)); }
 				res.send(quiz.share);
