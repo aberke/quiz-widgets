@@ -183,15 +183,29 @@
 	height: 100%;
 	left: 0%;
 	width: 100%;
-	background-color: rgba(0,0,0,0.4);
-	border-top: 1px solid white;
+}
+.huffpostlabs-quiz .question-share-container {
+	height: 8%;
+}
+.huffpostlabs-quiz .previous-btn {
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	float: left;
+	background: url(../icon/undo.png) no-repeat center center;
+	/*background: url('http://quiz.huffingtonpost.com/icon/undo.png');*/
+}
+.huffpostlabs-quiz .question-share-container .fb-share-container, .huffpostlabs-quiz .question-share-container .twitter-share-container {
+	float: right;
 }
 .huffpostlabs-quiz .question-container {
 	border-bottom: none;
-	height: 49%; /* sometimes the border hides if this is 50% */
+	height: 42%; /* sometimes the border hides if this is 50% */
+	border-top: solid 1px white;
 	border-bottom: 1px solid white;
 	border-left: 1px solid white;
 	border-right: 1px solid white;
+	background-color: rgba(0,0,0,0.4);
 }
 .huffpostlabs-quiz .question-text {
 	padding: 0.5em;
@@ -206,36 +220,41 @@
 	position: absolute;
 	left: 0;
 	right: 0;
+	background-color: rgba(0,0,0,0.4);
 }
 
 .huffpostlabs-quiz .answer-container {
 	height: 100%;
 	width: 50%;
+	min-width: 25%;
 	display: inline-block;
-	position: absolute;
 
 	/* background: url('pic_url') */
 	background-size: 50%;
 	background-repeat: no-repeat;
 	background-position: right bottom;
+	border-left: 1px solid white;
+	position: relative;
 }
+/*.huffpostlabs-quiz .answers-container.q3 .answer-container {
+	width: 33%;
+}
+.huffpostlabs-quiz .answers-container.q4 .answer-container {
+	width: 25%;
+}*/
 .huffpostlabs-quiz .answer-container:hover,
 .huffpostlabs-quiz .answer-container.selected,
 .huffpostlabs-quiz .answer-container:active {
 	background-color: rgba(255,255,255,0.2);
 	cursor: pointer;
 }
-.huffpostlabs-quiz .answer-1-container {
-	border-right: 1px solid white;
-	left: 0;
-}
-.huffpostlabs-quiz .answer-2-container {
-	right: 0;
+.huffpostlabs-quiz .answer-container:first-child {
+	border-left: 0px solid white;
 }
 .huffpostlabs-quiz .answer-text {
 	margin: 0.8em;
 }
-.huffpostlabs-quiz .answer-container img {
+.huffpostlabs-quiz .answer-container.cover img {
 	max-width: 50%;
 	max-height: 70%;
     float:right;
@@ -243,6 +262,17 @@
     bottom:0;
     right:0;
     clear:right
+}
+
+.huffpostlabs-quiz .answer-container.bottom-right img {
+	max-width: 100%;
+	max-height: 100%;
+	display: block;
+    margin: 0 auto;
+}
+
+.huffpostlabs-quiz .answer-container.bottom-right h3.answer-text{
+	display: none;
 }
 .huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
