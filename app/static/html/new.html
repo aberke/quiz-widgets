@@ -1,24 +1,9 @@
 <!-- new quiz creation page -->
 
 
-<div id='new-page' class='view'>
-	
-	<section id='instructions'>
-		<button class='btn btn-default' ng-show="!showInstructions" ng-click="showInstructions=true">Instructions</button>
-		<button class='btn btn-default' ng-show="showInstructions" ng-click="showInstructions=false">Hide Instructions</button>
-		<div class='instructions-text' ng-show="showInstructions">
-			<p>Here's how it works:</p>
-			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
-			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
-			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
-			<p>Full size quiz widget dimensions: 550px x 425px</p>
-			<p>Mobile size quiz widget dimensions: 300px x 270px</p>
+<div id='new-page' class='view row'>
 
-			<p>After you create the quiz you can customize how it is shared on Facebook</p>
-
-			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p.
-		</div>
-	</section>
+<div id='build-container' class='col-md-9'>
 
 	<!-- ********************* set-title *********************  -->
 	<section id='set-title'>
@@ -26,7 +11,7 @@
 		<input id='quiz-title' placeholder="Title of your quiz" type='text' ng-model='quiz.title' />
 
 		<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image is also used as a thumbnail when sharing to social networks.  
-		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image URL</label>
+		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image/GIF URL</label>
 		<input ng-change="updateQuizPic()" id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
 
 		<span ng-show="quiz.pic_url">
@@ -34,20 +19,25 @@
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz" id='build-title'>
+		<div class="huffpostlabs-quiz" ng-class="viewMobile" id='build-title'>
 			<div class="slides-container">
 				<div class="slide title-container" style="top: 0%;">
-					<div class="filler-left">
-						<img src="/icon/white-square.png" class="filler-square">
-					</div>
+					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
 					<div class="title-content">
 						<h1 class="title">{{quiz.title || "YOUR TITLE HERE"}}</h1>
-					<div class="share-container">
-						<img class="share fb-share-btn" src="/designs/images/facebook.png">
-						<img class="share" src="/designs/images/twitter.png">
-					</div>
-					<div class="start-container touchable">
-						<h2 class="start-text">START</h2>
+						<div class="share-container">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
+						</div>
+						<div class="start-container touchable">
+							<h2 class="start-text">START</h2>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -64,18 +54,26 @@
 			<p class='bold display-inline'>{{outcome.index}}.</p>
 			<button ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger delete-outcome-btn'>X</button>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{outcome.text}}</h1>
+							<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
-							<img class="fb-share-btn share touchable" src="/designs/images/facebook.png">
-							<img class="share touchable" src="/designs/images/twitter.png">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
 							<div class="share-text">
 								<p>Share your results</p>
 							</div>
+							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
 						</div>
 					</div>
 				</div>
@@ -91,7 +89,7 @@
 			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
 
 			<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image will also be used as a thumbnail when sharing result to social networks.
-			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image URL</label>
+			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image/GIF URL</label>
 			<input id='new-outcome-pic-url' type="url" ng-model="new_outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
 
 			<span ng-show="new_outcome.pic_url">
@@ -99,18 +97,26 @@
 				<input id='new-outcome-pic-credit' type='text' ng-model='new_outcome.pic_credit' />
 			</span>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{new_outcome.text}}</h1>
+							<span class="photo-credit">{{new_outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
-							<img class="fb-share-btn share touchable" src="/designs/images/facebook.png">
-							<img class="share touchable" src="/designs/images/twitter.png">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
 							<div class="share-text">
 								<p>Share your results</p>
 							</div>
+							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
 						</div>
 					</div>
 				</div>
@@ -129,7 +135,7 @@
 			<p class='display-inline bold'>{{question.index}}.</p>
 			<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger delete-question-btn'>X</button>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide question-answers-container">
 						<div class="question-container">
@@ -163,7 +169,7 @@
 				<label>Answer 1 Text:</label>
 				<input id='new-question-answer1-text' type='text' ng-model='new_question.answer1.text' required >
 
-				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 1 Image URL</label>
+				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 1 Image/GIF URL</label>
 				<input id='new-question-answer1-pic-url' type="url" ng-model="new_question.answer1.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" >
 	
 				<span ng-show="new_question.answer1.pic_url">
@@ -184,7 +190,7 @@
 				<label>Answer 2 Text:</label>
 				<input id='new-question-answer2-text' required type='text' ng-model='new_question.answer2.text' >
 
-				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 2 Image URL</label>
+				<label class="popover-hover" data-original-title="Image/GIF URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 2 Image/GIF URL</label>
 				<input id='new-question-answer2-pic-url' type="url" ng-model="new_question.answer2.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" >
 
 				<span ng-show="new_question.answer2.pic_url">
@@ -198,7 +204,7 @@
 				</select>
 			</div>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide question-answers-container">
 						<div class="question-container">
@@ -222,6 +228,40 @@
 	</section> <!-- ********************* set-questions *********************  -->
 
 
+	<!-- ********************* set-refresh-icon *********************  -->
+	<section id='set-refresh-icon'>
+		<button ng-click="showSetRefreshIcon=true" ng-disabled="showSetRefreshIcon" class='btn btn-sm btn-success'>Customize Refresh Icon</button>
+		<p ng-show="!showSetRefreshIcon" class='inline-block btn-helper'>optional</p>
+
+		<div ng-show="showSetRefreshIcon">
+			<p class='instructions-text'>
+				You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
+				Dimensions: 30x30
+			</p>
+			<div class='huffpostlabs-quiz' ng-class="viewMobile">
+				<div class='outcome-container'>
+					<div class="share-container">
+						<div class="fb-share-container">
+							<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">
+							<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">
+						</div>
+						<div class="twitter-share-container">
+							<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+							<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+						</div>
+						<div class="share-text"><p>Share your results</p></div>
+						<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
+					</div>
+				</div>
+			</div>
+
+			<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
+			<input id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
+
+			<button ng-click="showSetRefreshIcon=false;quiz.refresh_icon_url=null" class='btn btn-sm btn-danger'>Cancel</button>
+			<button ng-click="showSetRefreshIcon=false;" class='btn btn-sm btn-success'>OK</button>
+		</div>
+	</section> <!-- ********************* set-refresh-icon *********************  -->
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>
@@ -235,7 +275,34 @@
 		<button ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
 	</section> <!-- ********************* set-complete *********************  -->
 
+</div> <!-- #build-container col-md-9 -->
 
+<div class='col-md-3'>
+	
+	<button ng-show="viewMobile!='mobile'" ng-click="viewMobile='mobile'" class='btn btn-default'>View Mobile Version</button>
+	<button ng-show="viewMobile" ng-click="viewMobile=''" class='btn btn-default'>View Non-Mobile Version</button>
+
+	<section id='instructions'>
+		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>
+		<button class='btn btn-default' ng-show="showInstructions!=false" ng-click="showInstructions=false">Hide Instructions</button>
+		<div class='instructions-text' ng-show="showInstructions!=false">
+			<p>Here's how it works:</p>
+			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
+			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
+			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
+			<p>Quiz dimensions:
+				<ul>
+					<li>Full size: 550px x 425px</li>
+					<li>Mobile size: 300px x 270px</li>
+				</ul>
+			</p>
+
+			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p>
+
+			<p>After you create the quiz you can customize how it is shared on Facebook</p>
+		</div>
+	</section>
+</div> <!-- col-md-3 on the right -->
 
 <link href="/widget/widget.css" rel="stylesheet">
 </div>

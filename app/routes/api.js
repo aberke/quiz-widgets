@@ -15,6 +15,8 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/quiz/:id', GETquiz);
 	app.delete('/api/quiz/:id', DELETEquiz);
 	app.put('/api/quiz/:id/share', PUTquizShare);
+	app.put('/api/quiz/:id/increment-started-count', PUTquizIncrementStartedCount);
+	app.put('/api/quiz/:id/increment-completed-count', PUTquizIncrementCompletedCount);
 
 	app.get('/api/outcome/all', GETallOutcomes);
 	app.get('/api/outcome/:id', GEToutcome);
@@ -24,6 +26,8 @@ exports.registerEndpoints = function (app) {
 	app.put('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 
 	/* JSONP hacks -- these are GET requests because they're with JSONP */
+	app.get('/api/quiz/:id/increment-started-count', PUTquizIncrementStartedCount);
+	app.get('/api/quiz/:id/increment-completed-count', PUTquizIncrementCompletedCount);
 	app.get('/api/outcome/:id/increment-count', PUToutcomeIncrementCount);
 	app.get('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 	app.get('/api/share/:id/increment-fb-count', PUTshareIncrementFBCount);
@@ -56,7 +60,8 @@ var PUTquizShare  = function(req, res) {
 		else {
 			quiz.share.caption 	  = shareData.caption;
 			quiz.share.pic_url 	  = shareData.pic_url;
-			quiz.share.description = shareData.description;
+			quiz.share.link 	  = shareData.link;
+			quiz.share.description= shareData.description;
 			quiz.share.save(function(err) {
 				if (err){ return res.send(500, util.handleError(err)); }
 				res.send(quiz.share);
@@ -88,6 +93,30 @@ var PUToutcomeShare = function(req, res) {
 				res.send(share);
 			});
 		}
+	});
+}
+var PUTquizIncrementCompletedCount = function(req, res) {
+	console.log('PUTquizIncrementCompletedCount', req.params.id)
+	models.findQuizPartial(req.params.id, function(err, quiz) {
+		if (err || !quiz) { return res.send(500); }
+
+		quiz.completedCount = quiz.completedCount + 1;
+		quiz.save(function(err) {
+			if (err) { return res.send(500, util.handleError(err)); }
+			res.jsonp(200);
+		});
+	});
+}
+var PUTquizIncrementStartedCount = function(req, res) {
+	console.log('PUTquizIncrementCompletedCount', req.params.id)
+	models.findQuizPartial(req.params.id, function(err, quiz) {
+		if (err || !quiz) { return res.send(500); }
+
+		quiz.startedCount = quiz.startedCount + 1;
+		quiz.save(function(err) {
+			if (err) { return res.send(500, util.handleError(err)); }
+			res.jsonp(200);
+		});
 	});
 }
 var PUTshareIncrementTwitterCount = function(req, res) {

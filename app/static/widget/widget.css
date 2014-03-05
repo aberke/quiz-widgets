@@ -39,10 +39,11 @@
 	height: 425px;
   	display: block;
   	position: relative;
-  	z-index: 1; /* to go around the background image of -1 */
+  	z-index: 0; /* to go around the background image of -1 */
 	background-color: black;
 
-}.huffpostlabs-quiz::after{
+}
+.huffpostlabs-quiz::after{
 	content: "";
 	opacity: 0.5;
 	background-repeat: no-repeat;
@@ -58,17 +59,15 @@
 	position: absolute;
 	z-index: -1;
 }
-/*.quiz-53039d7f218ff31f2ae49c54::after {
-	background-image: url("/designs/images/bg.png");
-}*/
-.slide {
+
+.huffpostlabs-quiz .slide {
 	-webkit-transition: all 0.3s ease;                  
     -moz-transition: all 0.3s ease;                 
     -o-transition: all 0.3s ease;   
     -ms-transition: all 0.3s ease;          
     transition: all 0.3s ease;
 }
-.slides-container {
+.huffpostlabs-quiz .slides-container {
 	position: absolute;
 	top: 2%;
 	bottom: 2%;
@@ -189,7 +188,7 @@
 }
 .huffpostlabs-quiz .question-container {
 	border-bottom: none;
-	height: 50%;
+	height: 49%; /* sometimes the border hides if this is 50% */
 	border-bottom: 1px solid white;
 	border-left: 1px solid white;
 	border-right: 1px solid white;
@@ -200,7 +199,7 @@
 	font-weight: 100;
 }
 .huffpostlabs-quiz .answers-container {
-	height: 50%;
+	height: 49%; /* sometimes the border hides if this is 50% */
 	border: 1px solid white;
 	border-top: 0;
 	display: inline-flex;
@@ -236,7 +235,7 @@
 .huffpostlabs-quiz .answer-text {
 	margin: 0.8em;
 }
-.answer-container img {
+.huffpostlabs-quiz .answer-container img {
 	max-width: 50%;
 	max-height: 70%;
     float:right;
@@ -245,7 +244,7 @@
     right:0;
     clear:right
 }
-span.photo-credit{
+.huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
 	position: absolute;
 	display: block;
@@ -257,7 +256,7 @@ span.photo-credit{
 	font-weight: normal;
 	display: none;
 }
-.slide:hover span.photo-credit{
+.huffpostlabs-quiz .slide:hover span.photo-credit{
 	display: block;
 }
 .huffpostlabs-quiz.mobile .answer-text {
@@ -343,7 +342,6 @@ span.photo-credit{
 
 .huffpostlabs-quiz img.share:hover,
 .huffpostlabs-quiz img.share:active,
-.huffpostlabs-quiz img.share.selected,
 .huffpostlabs-quiz .touchable:hover {
 	opacity: 0.7;
 	cursor: pointer;
@@ -368,6 +366,11 @@ span.photo-credit{
 
 
 
+
+
+
+
+/* --------- OLD VERSION BELOW ------ */
 
 
 /* swipe related styles */

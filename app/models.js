@@ -33,9 +33,10 @@ var shareSchema = new Schema({
 	caption: 			{type: String, default: null},
 	pic_url: 			{type: String, default: null},
 	description:  		{type: String, default: null},
+	link: 		 		{type: String, default: null},
 	/* for stats */
-	fbCount: 	{ type: Number, default: 0},
-	twitterCount:{ type: Number, default: 0},
+	fbCount: 			{type: Number, default: 0},
+	twitterCount: 		{type: Number, default: 0},
 })
 var quizSchema = new Schema({
 	_user: 		  		{type: ObjectId, ref: 'User', default: null},
@@ -46,6 +47,7 @@ var quizSchema = new Schema({
 	questionList: 		[{ type: ObjectId, ref: 'Question' }],
 	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
 	share: 				{type: ObjectId, ref: 'Share', default: null},
+	refresh_icon_url: 	{type: String, default: null},
 	
 	startedCount: 		{ type: Number, default: 0},
 	completedCount: 	{ type: Number, default: 0},
@@ -68,12 +70,13 @@ var outcomeSchema = new Schema({
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
 var answerSchema = new Schema({
-	_question:  {type: ObjectId, ref: 'Question'},
-	_outcome: 	{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
-	text:   	String,
-	pic_url: 	String,
-	pic_credit: {type: String, default: null},
-	count:  	{ type: Number, default: 0}, // number of times it's been picked
+	_question:  	{type: ObjectId, ref: 'Question'},
+	_outcome: 		{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
+	text:   		String,
+	pic_url: 		String,
+	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'full'
+	pic_credit: 	{type: String, default: null},
+	count:  		{ type: Number, default: 0}, // number of times it's been picked
 });
 
 exports.User 	 = User  	= mongoose.model('User', userSchema);
@@ -89,8 +92,9 @@ var newAnswer = function(answerData, question, outcomeDict) {
 		_question:  question,
 		_outcome: 	outcomeDict[answerData.outcome.index], // the outcome it adds a point to if selected
 		text:   	answerData.text,
-		pic_url: 	(answerData.pic_url 	  || null),
-		pic_credit: (answerData.pic_credit || null),
+		pic_url: 	(answerData.pic_url   || null),
+		pic_credit: (answerData.pic_credit|| null),
+		pic_style:  (answerData.pic_style || "bottom-right"),
 	});
 	return answer;
 }
@@ -102,6 +106,7 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 		caption: 	(shareData.caption 		|| null),
 		description:(shareData.description  || null),
 		pic_url: 	(shareData.pic_url 		|| null),
+		link:  		(shareData.link 		|| null),
 	});
 	share.save(function(err) {
 		if (err) { return callback(err, null); }
@@ -124,9 +129,10 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 	*/
 	var newQuiz = new Quiz({
 		//_user: ?
-		title: 		quizData.title,
-		pic_url: 	(quizData.pic_url 	 || null),
-		pic_credit: (quizData.pic_credit || null),
+		title: 				quizData.title,
+		pic_url: 			(quizData.pic_url 	 		|| null),
+		pic_credit: 		(quizData.pic_credit 		|| null),
+		refresh_icon_url: 	(quizData.refresh_icon_url 	|| null),
 	});
 	var newShare = new Share({_quiz: newQuiz});
 	newShare.save();
@@ -175,7 +181,14 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		callback(null, newQuiz)
 	});
 }
-
+exports.findQuizPartial = function(quizID, callback) {
+	/* I don't care about populating -- return just quiz */
+	Quiz.findById(quizID).exec(function (err, data) {
+		if (err || !data) { return callback(new Error('Error in models.findQuizPartial'), null); }
+		
+		callback(null, data);
+	});
+}
 exports.findQuiz = function(quizID, callback) {
 	/* get FULLY POPULATED quiz */
 	Quiz.findById(quizID)
@@ -199,7 +212,7 @@ exports.findQuiz = function(quizID, callback) {
 			Quiz.populate(quiz, options, function(err, data) {
 				if (err || !data) { return callback(new Error('Error in models.findQuiz'), null); }
 				
-				callback(null, quiz)
+				callback(null, quiz);
 			});
 	});
 }
