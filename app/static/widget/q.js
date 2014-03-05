@@ -2,8 +2,6 @@
 	
 	This is pure javascript - no jQuery
 
-
-	jyxbzpbotltjqjfh
 */
 
 
@@ -30,7 +28,7 @@
 	var scripts 	= [
 						//(static_domain + "/widget/swipe.js"),
 					   	(static_domain + "/widget/quiz-object.js"),
-					   	(static_domain + "/widget/btn-master.js"),
+					   	"http://aberke.github.io/huffpostlabs-btn/btn-master.js",
 					   ];
 	var stylesheets = [(static_domain + "/widget/widget.css")];
 
