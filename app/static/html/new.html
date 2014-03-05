@@ -1,28 +1,9 @@
 <!-- new quiz creation page -->
 
 
-<div id='new-page' class='view'>
-	
-	<section id='instructions'>
-		<button class='btn btn-default' ng-show="!showInstructions" ng-click="showInstructions=true">Instructions</button>
-		<button class='btn btn-default' ng-show="showInstructions" ng-click="showInstructions=false">Hide Instructions</button>
-		<div class='instructions-text' ng-show="showInstructions">
-			<p>Here's how it works:</p>
-			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
-			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
-			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
-			<p>Quiz dimensions:
-				<ul>
-					<li>Full size: 550px x 425px</li>
-					<li>Mobile size: 300px x 270px</li>
-				</ul>
-			</p>
+<div id='new-page' class='view row'>
 
-			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p>
-
-			<p>After you create the quiz you can customize how it is shared on Facebook</p>
-		</div>
-	</section>
+<div id='build-container' class='col-md-9'>
 
 	<!-- ********************* set-title *********************  -->
 	<section id='set-title'>
@@ -38,7 +19,7 @@
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz" id='build-title'>
+		<div class="huffpostlabs-quiz" ng-class="viewMobile" id='build-title'>
 			<div class="slides-container">
 				<div class="slide title-container" style="top: 0%;">
 					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
@@ -73,7 +54,7 @@
 			<p class='bold display-inline'>{{outcome.index}}.</p>
 			<button ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger delete-outcome-btn'>X</button>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
@@ -116,7 +97,7 @@
 				<input id='new-outcome-pic-credit' type='text' ng-model='new_outcome.pic_credit' />
 			</span>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
@@ -154,7 +135,7 @@
 			<p class='display-inline bold'>{{question.index}}.</p>
 			<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger delete-question-btn'>X</button>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide question-answers-container">
 						<div class="question-container">
@@ -217,7 +198,7 @@
 				</select>
 			</div>
 
-			<div class="huffpostlabs-quiz">
+			<div class="huffpostlabs-quiz" ng-class="viewMobile">
 				<div class="slides-container">
 					<div class="slide question-answers-container">
 						<div class="question-container">
@@ -251,7 +232,7 @@
 				You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
 				Dimensions: 30x30
 			</p>
-			<div class='huffpostlabs-quiz'>
+			<div class='huffpostlabs-quiz' ng-class="viewMobile">
 				<div class='outcome-container'>
 					<div class="share-container">
 						<div class="fb-share-container">
@@ -288,7 +269,34 @@
 		<button ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
 	</section> <!-- ********************* set-complete *********************  -->
 
+</div> <!-- #build-container col-md-9 -->
 
+<div class='col-md-3'>
+	
+	<button ng-show="viewMobile!='mobile'" ng-click="viewMobile='mobile'" class='btn btn-default'>View Mobile Version</button>
+	<button ng-show="viewMobile" ng-click="viewMobile=''" class='btn btn-default'>View Non-Mobile Version</button>
+
+	<section id='instructions'>
+		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>
+		<button class='btn btn-default' ng-show="showInstructions!=false" ng-click="showInstructions=false">Hide Instructions</button>
+		<div class='instructions-text' ng-show="showInstructions!=false">
+			<p>Here's how it works:</p>
+			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
+			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
+			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
+			<p>Quiz dimensions:
+				<ul>
+					<li>Full size: 550px x 425px</li>
+					<li>Mobile size: 300px x 270px</li>
+				</ul>
+			</p>
+
+			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p>
+
+			<p>After you create the quiz you can customize how it is shared on Facebook</p>
+		</div>
+	</section>
+</div> <!-- col-md-3 on the right -->
 
 <link href="/widget/widget.css" rel="stylesheet">
 </div>

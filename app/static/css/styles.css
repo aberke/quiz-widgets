@@ -116,7 +116,7 @@ section#preview #preview-text-container img{
 
 /********************** new-page ******************/
 
-#new-page section {
+#new-page #build-container section {
 	width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
@@ -173,6 +173,7 @@ section#preview #preview-text-container img{
 }
 #new-page #instructions .btn {
 	font-weight: bold;
+	margin-top: 20px;
 }
 #new-page section#set-refresh-icon .huffpostlabs-quiz {
 	height: 50px;

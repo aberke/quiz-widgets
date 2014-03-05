@@ -22,7 +22,6 @@ before next meeting
 design feedback
 ===
 
-- retake button or back button -- funny retake icon (mystery)
 - be able to share from every slide -- sometimes i'm inspired to share RIGHT NOW
 
 Changes since meeting with editors
@@ -32,7 +31,7 @@ Changes since meeting with editors
 - photo credit shows on hover
 - ability to customize the quiz share link-back via the /social page
 - refresh button at end of quiz -- it can be customized on the /new page (with GIFs too!)
-
+- on /new page can toggle between previewing mobile and non-mobile version
 
 
 TODO
