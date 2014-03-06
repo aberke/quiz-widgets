@@ -10,7 +10,7 @@
 		<label><i class='required-star'>*</i>Title</label>
 		<input id='quiz-title' placeholder="Title of your quiz" type='text' ng-model='quiz.title' />
 
-		<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image is also used as a thumbnail when sharing to social networks.  
+		<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image is also used as a thumbnail when sharing to social networks.  
 		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image/GIF URL</label>
 		<input ng-change="updateQuizPic()" id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
 
@@ -19,7 +19,7 @@
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz" ng-class="viewMobile" id='build-title'>
+		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}" id='build-title'>
 			<div class="slides-container">
 				<div class="slide title-container" style="top: 0%;">
 					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
@@ -54,7 +54,7 @@
 			<p class='bold display-inline'>{{outcome.index}}.</p>
 			<button ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger delete-outcome-btn'>X</button>
 
-			<div class="huffpostlabs-quiz" ng-class="viewMobile">
+			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
@@ -97,7 +97,7 @@
 				<input id='new-outcome-pic-credit' type='text' ng-model='new_outcome.pic_credit' />
 			</span>
 
-			<div class="huffpostlabs-quiz" ng-class="viewMobile">
+			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
@@ -135,7 +135,7 @@
 			<p class='display-inline bold'>{{question.index}}.</p>
 			<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger delete-question-btn'>X</button>
 
-			<div class="huffpostlabs-quiz" ng-class="viewMobile">
+			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide question-answers-container">
 						<div class="question-container">
@@ -155,52 +155,37 @@
 
 		</div>
 
-		<button ng-disabled="quiz.outcomeList.length==0||showAddNewQuestion" ng-click="showAddNewQuestion=true" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
+		<button ng-disabled="quiz.outcomeList.length==0||showAddNewQuestion" ng-click="showAddNewQuestion=true;new_question={'answerList':[{'index':1}, {'index':2}]}" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
 		<p ng-show="quiz.outcomeList.length==0" class='inline-block btn-helper'>First create the outcomes</p>
 
-		<div ng-show="showAddNewQuestion" ng-model='new_question'>
+		<div ng-show="showAddNewQuestion" ng-model="new_question">
+			NEW QUESTION: {{new_question}}
 			<label>Question Text:</label>
 			<input id='new-question-text' type='text' ng-model='new_question.text' required >
 
-			<div id='new-question-answer-1'>
+			<div class='new-answer' ng-repeat="a in new_question.answerList">
+				<label class='new-answer-label'>Answer {{a.index}}</label>
+				<div class='new-answer-inputs'>
+					<input id='new-answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
 
-				<label>Answer 1 Text:</label>
-				<input id='new-question-answer1-text' type='text' ng-model='new_question.answer1.text' required >
+					<input class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
 
-				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 1 Image/GIF URL</label>
-				<input id='new-question-answer1-pic-url' type="url" ng-model="new_question.answer1.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" >
-	
-				<span ng-show="new_question.answer1.pic_url">
-					<label>Photo Credit</label>
-					<input id='new-question-answer1-pic-credit' type='text' ng-model='new_question.answer1.pic_credit' />
-				</span>
+					<span ng-show="a.pic_url">
+						<input placeholder='PHOTO CREDIT' class='new-answer-pic-credit' type='text' ng-model='a.pic_credit' />
+						
+						<select class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover']" >
+							<option value="">IMAGE/GIF STYLING</option>
+						</select>
+					</span>
 
-				<label class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="When a user selects this answer, a point will be added towards this outcome.">Outcome</label>
-				<select ng-required ng-model='new_question.answer1.outcome' id='new-question-answer1-outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList" >
-					<option value="">SELECT</option>
-				</select>
+					<select id='new-answer-{{a.index}}-outcome' class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a.outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList" >
+						<option value="">OUTCOME</option>
+					</select>
+				</div>
 			</div>
-				
-			<div id='new-question-answer-2'>
+			<button ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
 
-				<label>Answer 2 Text:</label>
-				<input id='new-question-answer2-text' required type='text' ng-model='new_question.answer2.text' >
-
-				<label class="popover-hover" data-original-title="Image/GIF URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Answer 2 Image/GIF URL</label>
-				<input id='new-question-answer2-pic-url' type="url" ng-model="new_question.answer2.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png" >
-
-				<span ng-show="new_question.answer2.pic_url">
-					<label>Photo Credit</label>
-					<input id='new-question-answer2-pic-credit' type='text' ng-model='new_question.answer2.pic_credit' />
-				</span>
-
-				<label class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="left" data-content="When a user selects this answer, a point will be added towards this outcome.">Outcome</label>
-				<select ng-required ng-model='new_question.answer2.outcome' id='new-question-answer2-outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList" >
-					<option value="">SELECT</option>
-				</select>
-			</div>
-
-			<div class="huffpostlabs-quiz" ng-class="viewMobile">
+			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide question-answers-container">
 						<div class="question-container">
@@ -218,7 +203,7 @@
 				</div>
 			</div>
 
-			<button ng-click="showAddNewQuestion=false;new_question={}" class='btn btn-sm btn-danger'>Cancel</button>
+			<button ng-click="showAddNewQuestion=false" class='btn btn-sm btn-danger'>Cancel</button>
 			<button ng-click="addNewQuestion(new_question)" id='add-question-btn' class='btn btn-sm btn-success'>Done</button>
 		</div>
 	</section> <!-- ********************* set-questions *********************  -->
@@ -234,7 +219,7 @@
 				You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
 				Dimensions: 30x30
 			</p>
-			<div class='huffpostlabs-quiz' ng-class="viewMobile">
+			<div class='huffpostlabs-quiz' ng-class="{'mobile':viewMobile}">
 				<div class='outcome-container'>
 					<div class="share-container">
 						<div class="fb-share-container">
@@ -251,11 +236,11 @@
 				</div>
 			</div>
 
-			<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="left" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
+			<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
 			<input id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
 
 			<button ng-click="showSetRefreshIcon=false;quiz.refresh_icon_url=null" class='btn btn-sm btn-danger'>Cancel</button>
-			<button ng-click="showSetRefreshIcon=false;" class='btn btn-sm btn-success'>OK</button>
+			<button ng-click="showSetRefreshIcon=false" class='btn btn-sm btn-success'>OK</button>
 		</div>
 	</section> <!-- ********************* set-refresh-icon *********************  -->
 
@@ -275,8 +260,8 @@
 
 <div class='col-md-3'>
 	
-	<button ng-show="viewMobile!='mobile'" ng-click="viewMobile='mobile'" class='btn btn-default'>View Mobile Version</button>
-	<button ng-show="viewMobile" ng-click="viewMobile=''" class='btn btn-default'>View Non-Mobile Version</button>
+	<button ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
+	<button ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
 	<section id='instructions'>
 		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>

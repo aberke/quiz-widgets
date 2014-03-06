@@ -164,6 +164,19 @@ section#preview #preview-text-container img{
 	margin: 10px auto;
 }
 
+#new-page .new-answer {
+	width: 100%;
+}
+#new-page .new-answer .new-answer-label {
+	padding: 5px 0;
+	border-bottom: 3px solid lavenderblush;
+}
+#new-page .new-answer-inputs input,
+#new-page .new-answer-inputs select {
+	width: 48%;
+	margin-bottom: 10px;
+}
+
 #new-page #new-question-answer-1, #new-page #new-question-answer-2 {
 	width: 265px;
 	display: inline-block;

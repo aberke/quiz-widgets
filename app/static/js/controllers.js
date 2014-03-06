@@ -152,23 +152,25 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 		}
 	}
 	$scope.addNewQuestion = function(new_question) {
-		FormService.removeAllErrors();
-		var err1 = FormService.checkInput([ 'new-question-text']);
-		var m1 = ($scope.new_question && $scope.new_question.answer1) ? $scope.new_question.answer1.outcome : null;
-		var m2 = ($scope.new_question && $scope.new_question.answer2) ? $scope.new_question.answer2.outcome : null;
-		
+		console.log('addNewQuestion', new_question)
 
-		var err2 = FormService.checkModel([ {'model':m1,'elementID':'new-question-answer1-outcome'},
-									 		{'model':m2,'elementID':'new-question-answer2-outcome'},
-											]);
-		if (err1 || err2) { return false; }
+		FormService.removeAllErrors();
+		var err = FormService.checkInput([ 'new-question-text']);
+
+		for (var i=0; i<new_question.answerList.length; i++) {
+			var model = ($scope.new_question.answerList[i].outcome || null);
+			if (FormService.checkModel([ {'model':model,'elementID':'new-answer-' + (i+1) + '-outcome'}])) {
+				err = true;
+			}
+		}
+		if (err) { return false; }
 
 		$scope.showAddNewQuestion = false;
 
 		new_question['index'] = $scope.quiz.questionList.length + 1;
 		$scope.quiz.questionList.push(new_question);
 
-		$scope.new_question = {};
+		$scope.showAddNewQuestion=false;
 	}
 	$scope.createQuiz = function() {
 		console.log('createQuiz', $scope.quiz)

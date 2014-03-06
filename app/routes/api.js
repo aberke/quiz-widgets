@@ -8,7 +8,10 @@ var util 		= require('./../util.js'),
 
 exports.registerEndpoints = function (app) {
 	app.get('/api/user/all', GETallUsers);
+
+
 	app.get('/api/question/all', GETallQuestions);
+	app.get('/api/question/:id', GETQuestion);
 
 	app.post('/api/quiz', POSTquiz);
 	app.get('/api/quiz/all', GETallQuizes);
@@ -202,6 +205,12 @@ var GEToutcome = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err) return res.send(500, util.handleError(err));
 		res.send(200, outcome);
+	});
+}
+var GETQuestion = function(req, res) {
+	models.findQuestion(req.params.id, function(err, question) {
+		if (err) return res.send(500, util.handleError(err));
+		res.send(200, question);
 	});
 }
 
