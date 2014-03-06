@@ -57,24 +57,27 @@ var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
 	index: 		 Number, // questions are ordered
 	text:  		 String,
+	/* list of answers -- keeping answer1 and answer2 fields for backwards compatibility */
 	answer1: 	 { type: ObjectId, ref: 'Answer'},
 	answer2: 	 { type: ObjectId, ref: 'Answer'},
+	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
 var outcomeSchema = new Schema({
 	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
 	share: 		 {type: ObjectId, ref: 'Share', default: null},
 	index: 		 Number, // ordered
 	text:   	 String,
-	pic_url: 	 String,
+	pic_url: 	 {type: String, default: null},
 	pic_credit:  {type: String, default: null},
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
 var answerSchema = new Schema({
 	_question:  	{type: ObjectId, ref: 'Question'},
 	_outcome: 		{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
+	index: 		 	Number, // ordered
 	text:   		String,
-	pic_url: 		String,
-	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'full'
+	pic_url: 		{type: String, default: null},
+	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover'
 	pic_credit: 	{type: String, default: null},
 	count:  		{ type: Number, default: 0}, // number of times it's been picked
 });
@@ -91,6 +94,7 @@ var newAnswer = function(answerData, question, outcomeDict) {
 	var answer = new Answer({
 		_question:  question,
 		_outcome: 	outcomeDict[answerData.outcome.index], // the outcome it adds a point to if selected
+		index: 		(answerData.index),
 		text:   	answerData.text,
 		pic_url: 	(answerData.pic_url   || null),
 		pic_credit: (answerData.pic_credit|| null),
@@ -163,14 +167,27 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			index: 		 questionData.index, // ordered
 			text:   	 questionData.text,
 		});
+		console.log('questionData', i, questionData,'\n\nnewQuestion:\n', newQuestion)
 
-		var newAnswer1 = newAnswer(questionData.answer1, newQuestion, outcomeDict);
-		newAnswer1.save();
-		newQuestion.answer1 = newAnswer1;
+		for (var j=0; j<questionData.answerList.length; j++) {
+			console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
+			var answerData = questionData.answerList[j];
+			var newA = newAnswer(answerData, newQuestion, outcomeDict);
+			newA.save();
+			newQuestion.answerList.push(newA);
+		}
 
-		var newAnswer2 = newAnswer(questionData.answer2, newQuestion, outcomeDict);
-		newAnswer2.save();
-		newQuestion.answer2 = newAnswer2;
+		newQuestion.save(function(err) {
+			// for (var j=0; j<questionData.answerList.length; j++) {
+			// 	console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
+			// 	var answerData = questionData.answerData[j];
+			// 	var newA = newAnswer(answerData, newQuestion, outcomeDict);
+			// 	newA.save();
+			// 	newQuestion.answerList.push(newA);
+			// }
+		console.log('\nnewQuestion after saving with answers:\n', newQuestion)
+		});
+
 
 		newQuestion.save();
 		newQuiz.questionList.push(newQuestion);
@@ -190,31 +207,82 @@ exports.findQuizPartial = function(quizID, callback) {
 	});
 }
 exports.findQuiz = function(quizID, callback) {
-	/* get FULLY POPULATED quiz */
+	/* get FULLY POPULATED quiz 
+
+		- Tricky situation: 
+			a quiz has a questionList.  
+			Each question in the questionList has an answerList
+			Cannot populate both the questionList and each answerList all at once
+
+		- Work around below:
+			after populating the questionList, populate each answerList in a for loop
+			only return the Quiz object once all populate calls have been executed
+	*/
+	var numCalled = 0; // tally up the number of mongo functions we're waiting on before can call callback
+	var totalCalls = 0; // +1 for each question in questionList and quiz.outcomeList.share
+	/* complete callback when all calls have executed OR when there is an error */
+	var call = function(err, data) {
+		numCalled += 1;
+		if ((numCalled >= totalCalls) || err) {
+			callback(err, data);
+		}
+	}
+
 	Quiz.findById(quizID)
-		.populate('outcomeList')
 		.populate('questionList')
+		.populate('outcomeList')
 		.populate('share')
 		.exec(function(err, quiz) {
 			if (err || !quiz) { return callback(new Error('Error in models.findQuiz'), null); }
-
-			var options = [{
-				path: 'questionList.answer1',
-				model: 'Answer'
-			},{
-				path: 'questionList.answer2',
-				model: 'Answer'
-			},{
-				path: 'outcomeList.share',
-				model: 'Share'
-			}];
-
-			Quiz.populate(quiz, options, function(err, data) {
-				if (err || !data) { return callback(new Error('Error in models.findQuiz'), null); }
-				
-				callback(null, quiz);
+			
+			totalCalls += 1;
+			Quiz.populate(quiz, { path: 'outcomeList.share', model: 'Share' }, function(err, data) {
+				call(err, quiz);
 			});
+			
+			for (var i=0; i<quiz.questionList.length; i++) {
+				 /* i set outside the scope of this iteration in loop 
+				 	-- but I want the index for when I push on to questionList when populate fully executed 
+					TODO: take out once data migration complete, right?
+				 */
+				var index = i;
+
+				totalCalls += 1;
+				var options = [{ /* support backwards compatibility with answer1 and answer2... */
+					path: 'answer1', /* TODO: take out once data migration complete */
+					model: 'Answer'
+				},{
+					path: 'answer2', /* TODO: take out once data migration complete */
+					model: 'Answer'
+				},{
+					path: 'answerList',
+					model: 'Answer'
+				}];			
+				Question.populate(quiz.questionList[index], options, function(err, question) {
+					/* start the data migration 
+						-- once this is called once for each I can get rid of handling answer1 and answer2 and take out of schema */
+					if (question.answer1) {  /* TODO: take out once data migration complete */
+						quiz.questionList[index].answerList.push(question.answer1);
+						quiz.questionList[index].answer1 = null;
+					}
+					if (question.answer2) { /* TODO: take out once data migration complete */
+						quiz.questionList[index].answerList.push(question.answer2);
+						quiz.questionList[index].answer2 = null;
+					}
+					quiz.questionList[index].save(); /* TODO: take out once data migration complete */
+					quiz.save(); /* TODO: take out once data migration complete */
+					call(err, quiz); 
+				});
+			}
 	});
+}
+exports.findQuestion = function(questionID, callback) {
+	Question.findById(questionID)
+		.populate('answerList')
+		.exec(function(err, question) {
+			if (err || !question) { return callback(new Error('Error in models.findQuestion'), null); }
+			callback(null, question);
+		});
 }
 exports.findOutcome = function(outcomeID, callback) {
 	Outcome.findById(outcomeID)
@@ -255,6 +323,7 @@ exports.allQuestions = function(callback){
 	Question.find()
 		.populate('answer1')
 		.populate('answer2')
+		.populate('answerList')
 		.exec(callback);
 };
 exports.allOutcomes = function(callback){
