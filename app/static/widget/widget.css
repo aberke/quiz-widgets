@@ -202,11 +202,10 @@
 	height: 30px;
 	cursor: pointer;
 	float: left;
-	background: url('http://quiz.huffingtonpost.com/icon/googleplus.png') no-repeat center center;
-	/*background: url('http://quiz.huffingtonpost.com/icon/undo.png');*/
+	background: url('http://quiz.huffingtonpost.com/icon/undo.png') no-repeat center center;
 }
 .huffpostlabs-quiz .question-share-container .fb-share-container, .huffpostlabs-quiz .question-share-container .twitter-share-container {
-	/*float: right;*/
+	float: right;
 }
 .huffpostlabs-quiz .question-container {
 

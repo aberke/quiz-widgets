@@ -72,10 +72,15 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         slidesCntl.transitionNext();
         startedCallback(quizData);
     }
-    function goBackToPrevious() {
+    function previous() { /* inverse of answer */
         slidesCntl.transitionPrev();
+        if (chosenAnswers.length) {
+            currQuestionIndex -= 1; /* start button doesn't increment it */
+            var previousAnswer = chosenAnswers.pop();
+            console.log('previousAnswer', previousAnswer, 'chosenAnswers', chosenAnswers)
+            decrementOutcome(previousAnswer._outcome); /* decrement after transition because it is expensive iteration and it doesn't matter if user sees previous slide first */
+        }
     }
-
     function answer(huffpostLabsBtn) { /* the onclick handler is on the huffpostLabsBtn marked with the data-huffpostlabs-btn tag */
         // TODO element.onclick = null;
         var index = huffpostLabsBtn.element.getAttribute('data-quiz-answer');
@@ -84,7 +89,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function chooseAnswer(answer) {
         chosenAnswers.push(answer);
-        incrementOutcome(answer._outcome);
+        console.log('chooseAnswer chosenAnswers', chosenAnswers)
+        incrementOutcome(answer._outcome); /* increment before transition because next slide might be outcome slide */
         currQuestionIndex += 1;
         slidesCntl.transitionNext();
 
@@ -100,6 +106,16 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             slidesCntl.updateLastSlide(outcomeContentHTML(o));
         }
         return leadingOutcome;
+    }
+    function decrementOutcome(outcomeID) {
+        console.log('decrementOutcome')
+        outcomeMap[outcomeID].points -= 1;
+        for (var outcomeID in outcomeMap) {
+            if (outcomeMap[outcomeID].points > leadingOutcome.points) {
+                leadingOutcome = outcomeMap[outcomeID];
+            }
+        }
+        console.log('outcomeMap', outcomeMap, 'leadingOutcome', leadingOutcome)
     }
 
     function setupSlides() {
@@ -130,7 +146,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     function refresh() {
         console.log('refresh')
         leadingOutcome = null;
-        chosenAnswers = [];
+        chosenAnswers = [];  /* array of answer objects */
         currQuestionIndex = 0;
         outcomeMap = createOutcomeMap(quizData.outcomeList);
         slidesCntl.init();
@@ -236,11 +252,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         var onclickShareFB = "quizWidgets['" + quizID + "'].shareQuizFB()";
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
 
-        //var onclickPrevBtn = "quizWidgets['" + quizID + "'].goBackToPrevious(this)";
+        var onclickPrevBtn = "quizWidgets['" + quizID + "'].previous(this)";
 
         var html = "<div class='slide'>";
             html+= "    <div class='question-share-container'>";
-            //html+= "        <div class='previous-btn' onclick=" + onclickPrevBtn + "></div>";
+            html+= "        <div class='previous-btn' onclick=" + onclickPrevBtn + "></div>";
             html+= "        <div class='fb-share-container'>";
             html+= "            <img width='30px' height='30px' class='share fb-share-btn touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon.png'></img>";
             html+= "            <img width='30px' height='30px' class='share fb-share-btn-blue touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";
@@ -301,7 +317,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
     init();
     return{ startQuiz: startQuiz,
-            goBackToPrevious: goBackToPrevious,
+            previous: previous,
             answer:   answer,
 
             refresh:            refresh,

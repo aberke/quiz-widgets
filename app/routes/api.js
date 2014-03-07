@@ -100,7 +100,6 @@ var PUToutcomeShare = function(req, res) {
 	});
 }
 var PUTquizIncrementCompletedCount = function(req, res) {
-	console.log('PUTquizIncrementCompletedCount', req.params.id)
 	models.findQuizPartial(req.params.id, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
 
@@ -112,7 +111,6 @@ var PUTquizIncrementCompletedCount = function(req, res) {
 	});
 }
 var PUTquizIncrementStartedCount = function(req, res) {
-	console.log('PUTquizIncrementCompletedCount', req.params.id)
 	models.findQuizPartial(req.params.id, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
 
@@ -124,7 +122,6 @@ var PUTquizIncrementStartedCount = function(req, res) {
 	});
 }
 var PUTshareIncrementTwitterCount = function(req, res) {
-	console.log('PUTshareIncrementTwitterCount', req.params.id)
 	models.findShare(req.params.id, function(err, share) {
 		if (err || !share) { return res.send(500); }
 
@@ -136,7 +133,6 @@ var PUTshareIncrementTwitterCount = function(req, res) {
 	});
 }
 var PUTshareIncrementFBCount = function(req, res) {
-	console.log('PUTshareIncrementFBCount', req.params.id)
 	models.findShare(req.params.id, function(err, share) {
 		if (err || !share) { return res.send(500); }
 
@@ -198,7 +194,7 @@ var GETallUsers = function(req, res){
 var GETallOutcomes = function(req, res) {
 	models.allOutcomes(function (err, outcomes) {
 		if (err) return res.send(util.handleError(err));
-	})
+	});
 }
 
 

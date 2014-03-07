@@ -9,11 +9,11 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	// var domain = 'http://4d731c8b.ngrok.com';//'http://127.0.0.1:8080';
-	// var static_domain = 'http://4d731c8b.ngrok.com';//'http://127.0.0.1:8080';
+	var domain = 'http://4d731c8b.ngrok.com';//'http://127.0.0.1:8080';
+	var static_domain = 'http://4d731c8b.ngrok.com';//'http://127.0.0.1:8080';
 	
-	var domain = 'http://quizwidget-petri.dotcloud.com';
-	var static_domain = 'http://quiz.huffingtonpost.com';
+	// var domain = 'http://quizwidget-petri.dotcloud.com';
+	// var static_domain = 'http://quiz.huffingtonpost.com';
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
 			Only use it for static assets...  not JSONP requests.. right?
