@@ -14,23 +14,23 @@ Who's your spirit hacker?
 Notes
 ---
 
-before next meeting
-- share from every slide
+requests
 - tie outcome
 - be able to weight different outcomes
 
-design feedback
----
-
-- be able to share from every slide -- sometimes i'm inspired to share RIGHT NOW
 
 Changes since meeting with editors
 ---
 
+- Each question can have 2-4 answers! 
+	- still working on ability to create unlimited number of answers (it's a styling issue)
+- ability to customize image positioning for each answer on the /new page
+- sharing buttons on every question
 - more mobile friendly buttons (with accomanying library)
 - photo credit shows on hover
 - ability to customize the quiz share link-back via the /social page
-- refresh button at end of quiz -- it can be customized on the /new page (with GIFs too!)
+- refresh button at end of quiz 
+	- it can be customized on the /new page (with GIFs too!)
 - on /new page can toggle between previewing mobile and non-mobile version
 
 
@@ -39,7 +39,9 @@ TODO
 
 - on /new page shouldn't be able to take away an outcome that an answer points to
 - editable!
-- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
+- Deal with Mongo Issues:
+	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
+	- there are orphaned documents because previously was not correctly handling DELETEquiz.  There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
 - in widget:
 	add other share options -- embed currently commented out (it is also hidden on mobile by the css)
 - facebook app still in development mode
@@ -48,6 +50,12 @@ TODO
 - write api tests
 - write e2e tests
 - make nice 404
+
+Styling TODO for Wenting
+---
+- QA styles on each browser
+	- font doensn't look right on firefox
+- Design for unlimited answers
 
 Further Ideas
 ---

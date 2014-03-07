@@ -142,6 +142,12 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 			$scope.quiz.outcomeList[i].index = i + 1;
 		}
 	}
+	$scope.removeNewAnswer = function(index) {
+		$scope.new_question.answerList.splice(index-1, 1);
+		for (var i=index-1; i<$scope.new_question.answerList.length; i++) {
+			$scope.new_question.answerList[i].index = i + 1;
+		}
+	}
 	$scope.removeQuestion = function(question) {
 
 		$scope.quiz.questionList.splice(question.index-1, 1); // question.index is not zero-indexed

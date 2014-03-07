@@ -102,7 +102,7 @@ section#preview #preview-text-container img{
 #quiz-page th,#quiz-page label {
 	color: purple;
 }
-#quiz-page td.text {
+#quiz-page .text {
 	color: gray;
 }
 #quiz-page #stats .number {
@@ -139,7 +139,9 @@ section#preview #preview-text-container img{
 #new-page #outcomes {
 	margin-bottom: 10px;
 }
-#new-page .delete-outcome-btn, #new-page .delete-question-btn {
+#new-page .delete-outcome-btn,
+#new-page .delete-new-answer-btn,
+#new-page .delete-question-btn {
 	float: right;
 }
 

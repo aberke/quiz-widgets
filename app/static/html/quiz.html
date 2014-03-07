@@ -69,20 +69,22 @@
 		        <tr>
 		            <th>Question</th>
 		            <th>Answer 1</th>
-		            <th>Answer 1 Count</th>
 		            <th>Answer 2</th>
-		            <th>Answer 2 Count</th>
+		            <th>Answer 3</th>
+		            <th>Answer 4</th>
 		        </tr>
 		    </thead>
 		    <tbody>
 		        <tr ng-repeat="q in quiz.questionList">
 		            
 		            <td class="text">{{q.text}}</td>
-		            <td class="text">{{q.answer1.text}}</td>
-		            <td class="number">{{q.answer1.count}}</td>
 
-		            <td class="text">{{q.answer2.text}}</td>
-		            <td class="number">{{q.answer2.count}}</td>
+		            <td ng-repeat="a in q.answerList">
+		            	<span class='number'>{{a.count}}: </span><span class='text'>{{a.text}}</span>
+		            </td>
+
+		            <!-- <td class="text">{{q.answerList[1].text + ': ' q.answer}}</td>
+		            <td class="number">{{q.answer1.count}}</td> -->
 		        </tr>
 		    </tbody>
 		</table>

@@ -9,8 +9,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	var domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
-	var static_domain = 'http://1fc074fc.ngrok.com';//'http://127.0.0.1:8080';
+	var domain = 'http://4d731c8b.ngrok.com';//'http://127.0.0.1:8080';
+	var static_domain = 'http://4d731c8b.ngrok.com';//'http://127.0.0.1:8080';
 	
 	// var domain = 'http://quizwidget-petri.dotcloud.com';
 	// var static_domain = 'http://quiz.huffingtonpost.com';
@@ -26,7 +26,6 @@
 
 	/* these lists of dependencies are pushed to when handling mobile and IE checks */
 	var scripts 	= [
-						//(static_domain + "/widget/swipe.js"),
 					   	(static_domain + "/widget/quiz-object.js"),
 					   	"http://aberke.github.io/huffpostlabs-btn/btn-master.js",
 					   ];
@@ -143,7 +142,6 @@
 			PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
 		}
 	}
-
 
 	function load_quiz_info(quizID, container){
 		GET("/api/quiz/" + quizID, function(data) {

@@ -77,7 +77,7 @@ var answerSchema = new Schema({
 	index: 		 	Number, // ordered
 	text:   		String,
 	pic_url: 		{type: String, default: null},
-	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover'
+	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
 	pic_credit: 	{type: String, default: null},
 	count:  		{ type: Number, default: 0}, // number of times it's been picked
 });
@@ -88,6 +88,53 @@ exports.Share 	 = Share 	= mongoose.model('Share', shareSchema);
 exports.Answer   = Answer 	= mongoose.model('Answer', answerSchema);
 exports.Question = Question = mongoose.model('Question', questionSchema);
 exports.Outcome  = Outcome  = mongoose.model('Outcome', outcomeSchema);
+
+
+var deleteQuestion = function(questionID, callback) {
+	var otherComplete = false;
+	/* delete all its answers too */
+	Answer.remove({ _question: questionID}, function(err) {
+		if (err || otherComplete) { return callback(err); }
+		otherComplete = true;
+	});
+	Question.remove({ _id: questionID}, function(err) {
+		if (err || otherComplete) { return callback(err); }
+		otherComplete = true;
+	});
+}
+
+exports.deleteQuiz = function(quizID, callback) {
+	var numCalled = 0; // tally up the number of mongo functions we're waiting on before can call callback
+	var totalCalls = 0; // +1 for each question in questionList and quiz.outcomeList.share
+	/* complete callback when all calls have executed OR when there is an error */
+	var call = function(err) {
+		numCalled += 1;
+		if ((numCalled >= totalCalls) || err) {
+			callback(err);
+		}
+	}
+
+	/* delete all the questions and the answers */
+	Question.find({ _quiz: quizID})
+			.exec(function(err, questions) {
+				for (var i=0; i<questions.length; i++) {
+					totalCalls += 1;
+					deleteQuestion(questions[i]._id, call);
+				}
+			});
+	Outcome.find({ _quiz: quizID})
+			.exec(function(err, outcomes) {
+				for (var j=0; j<outcomes.length; j++) {
+					totalCalls += 2; // itself and its share
+					Share.remove({ _outcome: outcomes[j]._id}, call);
+					outcomes[j].remove(call);
+				}
+			});
+	totalCalls += 2;
+	Share.remove({ _quiz: quizID }, call);
+	Quiz.remove({ _id: quizID }, call);
+}
+
 
 
 var newAnswer = function(answerData, question, outcomeDict) {
@@ -167,7 +214,6 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			index: 		 questionData.index, // ordered
 			text:   	 questionData.text,
 		});
-		console.log('questionData', i, questionData,'\n\nnewQuestion:\n', newQuestion)
 
 		for (var j=0; j<questionData.answerList.length; j++) {
 			console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
@@ -178,18 +224,8 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		}
 
 		newQuestion.save(function(err) {
-			// for (var j=0; j<questionData.answerList.length; j++) {
-			// 	console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
-			// 	var answerData = questionData.answerData[j];
-			// 	var newA = newAnswer(answerData, newQuestion, outcomeDict);
-			// 	newA.save();
-			// 	newQuestion.answerList.push(newA);
-			// }
-		console.log('\nnewQuestion after saving with answers:\n', newQuestion)
+			console.log('\nnewQuestion:\n', newQuestion)
 		});
-
-
-		newQuestion.save();
 		newQuiz.questionList.push(newQuestion);
 	}
 	console.log('\n\n***************\nnewQuiz', newQuiz)
@@ -241,41 +277,41 @@ exports.findQuiz = function(quizID, callback) {
 			});
 			
 			for (var i=0; i<quiz.questionList.length; i++) {
-				 /* i set outside the scope of this iteration in loop 
-				 	-- but I want the index for when I push on to questionList when populate fully executed 
-					TODO: take out once data migration complete, right?
-				 */
-				var index = i;
-
 				totalCalls += 1;
-				var options = [{ /* support backwards compatibility with answer1 and answer2... */
-					path: 'answer1', /* TODO: take out once data migration complete */
-					model: 'Answer'
-				},{
-					path: 'answer2', /* TODO: take out once data migration complete */
-					model: 'Answer'
-				},{
-					path: 'answerList',
-					model: 'Answer'
-				}];			
-				Question.populate(quiz.questionList[index], options, function(err, question) {
-					/* start the data migration 
-						-- once this is called once for each I can get rid of handling answer1 and answer2 and take out of schema */
-					if (question.answer1) {  /* TODO: take out once data migration complete */
-						quiz.questionList[index].answerList.push(question.answer1);
-						quiz.questionList[index].answer1 = null;
-					}
-					if (question.answer2) { /* TODO: take out once data migration complete */
-						quiz.questionList[index].answerList.push(question.answer2);
-						quiz.questionList[index].answer2 = null;
-					}
-					quiz.questionList[index].save(); /* TODO: take out once data migration complete */
-					quiz.save(); /* TODO: take out once data migration complete */
-					call(err, quiz); 
-				});
+				populateQuestionListHelper(quiz, i, call);
 			}
 	});
 }
+/* helper to findQuiz */
+var populateQuestionListHelper = function(quiz, questionListIndex, callback) {
+	var options = [{ /* support backwards compatibility with answer1 and answer2... */
+		path: 'answer1', /* TODO: take out once data migration complete */
+		model: 'Answer'
+	},{
+		path: 'answer2', /* TODO: take out once data migration complete */
+		model: 'Answer'
+	},{
+		path: 'answerList',
+		model: 'Answer'
+	}];	
+	Question.populate(quiz.questionList[questionListIndex], options, function(err, question) {
+		/* start the data migration 
+			-- once this is called once for each I can get rid of handling answer1 and answer2 and take out of schema */
+		if (question.answer1) {  /* TODO: take out once data migration complete */
+			quiz.questionList[questionListIndex].answerList.push(question.answer1);
+			quiz.questionList[questionListIndex].answer1 = null;
+		}
+		if (question.answer2) { /* TODO: take out once data migration complete */
+			quiz.questionList[questionListIndex].answerList.push(question.answer2);
+			quiz.questionList[questionListIndex].answer2 = null;
+		}
+		quiz.questionList[questionListIndex].save(); /* TODO: take out once data migration complete */
+		quiz.save(); /* TODO: take out once data migration complete */
+		callback(err, quiz);	
+	});
+}
+
+
 exports.findQuestion = function(questionID, callback) {
 	Question.findById(questionID)
 		.populate('answerList')
