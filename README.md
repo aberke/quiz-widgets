@@ -37,13 +37,15 @@ Changes since meeting with editors
 TODO
 ---
 
+- fix: refresh button jenky on mobile
 - on /new page shouldn't be able to take away an outcome that an answer points to
 - editable!
+- customize styling for outcomes?
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
-	- there are orphaned documents because previously was not correctly handling DELETEquiz.  There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
-- in widget:
-	add other share options -- embed currently commented out (it is also hidden on mobile by the css)
+	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
+- add other share options 
+	- embed currently commented out (it is also hidden on mobile by the css)
 - facebook app still in development mode
 - handle case of tie
 - deal with resize event?
@@ -54,6 +56,7 @@ TODO
 Styling TODO for Wenting
 ---
 - QA styles on each browser
+	- use ngrok to test on phones too
 	- font doensn't look right on firefox
 - Design for unlimited answers
 
