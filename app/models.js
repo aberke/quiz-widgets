@@ -109,7 +109,6 @@ exports.deleteQuiz = function(quizID, callback) {
 	/* complete callback when all calls have executed OR when there is an error */
 	var call = function(err) {
 		numCalled += 1;
-		console.log('\n\ncall', numCalled, ' vs ', totalCalls)
 		if ((numCalled >= totalCalls) || err) {
 			callback(err);
 		}
@@ -118,8 +117,6 @@ exports.deleteQuiz = function(quizID, callback) {
 	/* delete all the questions and the answers */
 	Question.find({ _quiz: quizID})
 			.exec(function(err, questions) {
-				console.log('questions', questions);
-
 				for (var i=0; i<questions.length; i++) {
 					totalCalls += 1;
 					deleteQuestion(questions[i]._id, call);

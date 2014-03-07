@@ -225,20 +225,9 @@ var GETQuestion = function(req, res) {
 
 
 var DELETEquiz = function(req, res) {
-
 	models.deleteQuiz(req.params.id, function(err) {
-		if (err) { return res.json(500, {error: handleError(err)}); }
+		if (err) { return res.json(500, {error: util.handleError(err)}); }
 		res.json(200);
 	});
-
-	// models.findQuiz(req.params.id, function(err, quiz) {
-	// 	if (err) return res.send(500, util.handleError(err));
-
-		
-	// 	quiz.remove(function (err) {
-	// 		if (err) { return res.json(500, {error: handleError(err)}); }
-	// 		res.json(200);
-	// 	});
-	// });
 }
 
