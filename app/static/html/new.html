@@ -88,7 +88,7 @@
 			<label><i class='required-star'>*</i>Text:</label>
 			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
 
-			<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="left" data-content="This image will also be used as a thumbnail when sharing result to social networks.
+			<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image will also be used as a thumbnail when sharing result to social networks.
 			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image/GIF URL</label>
 			<input id='new-outcome-pic-url' type="url" ng-model="new_outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
 
@@ -128,7 +128,7 @@
 	</section> <!-- ********************* set-outcomes *********************  -->
 
 	<!-- ********************* set-questions *********************  -->
-	<section id='set-questions'>
+	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can currently have 2-4 answers.  We are in the process of making this number unlimited.">
 		<h3>Questions</h3>
 
 		<div id="questions" ng-repeat="question in quiz.questionList">
@@ -137,16 +137,26 @@
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-					<div class="slide question-answers-container">
-						<div class="question-container">
-							<h2 class="question-text">{{question.text}}</h2>
-						</div>
-						<div class="answers-container">
-							<div style="background-image: url({{question.answer1.pic_url}})" class="touchable answer-1-container answer-container">
-								<h3 class="answer-text">{{question.answer1.text}}</h3>
+					<div class="slide">
+						<div class="question-share-container">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
 							</div>
-							<div style="background-image: url({{question.answer2.pic_url}})" class="touchable answer-2-container answer-container">
-								<h3 class="answer-text">{{question.answer2.text}}</h3>
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class='twitter-share-btn share touchable' src="http://quiz.huffingtonpost.com/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+							</div>
+						</div>
+						<div class="question-answers-container">
+							<div class="question-container">
+								<h2 class="question-text">{{question.text}}</h2>
+							</div>
+							<div class="answers-container total-answers-{{question.answerList.length}}">
+								<div ng-repeat="ans in question.answerList" class="touchable answer-container {{ans.pic_style || 'bottom-right'}}" ng-class="{{ans.pic_style || 'bottom-right'}}" style="background-image: url({{ans.pic_url}})">
+									<h3 class="answer-text">{{ans.text}}</h3>
+									<span class="photo-credit">{{ans.pic_credit}}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -159,12 +169,12 @@
 		<p ng-show="quiz.outcomeList.length==0" class='inline-block btn-helper'>First create the outcomes</p>
 
 		<div ng-show="showAddNewQuestion" ng-model="new_question">
-			NEW QUESTION: {{new_question}}
 			<label>Question Text:</label>
 			<input id='new-question-text' type='text' ng-model='new_question.text' required >
 
 			<div class='new-answer' ng-repeat="a in new_question.answerList">
-				<label class='new-answer-label'>Answer {{a.index}}</label>
+				<label class='new-answer-label'>Answer {{a.index}}<button ng-show="new_question.answerList.length>2" ng-click="removeNewAnswer(a.index)" class='btn btn-xs btn-danger delete-new-answer-btn'>X</button></label>
+				
 				<div class='new-answer-inputs'>
 					<input id='new-answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
 
@@ -173,7 +183,7 @@
 					<span ng-show="a.pic_url">
 						<input placeholder='PHOTO CREDIT' class='new-answer-pic-credit' type='text' ng-model='a.pic_credit' />
 						
-						<select class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover']" >
+						<select class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
 							<option value="">IMAGE/GIF STYLING</option>
 						</select>
 					</span>
@@ -183,20 +193,30 @@
 					</select>
 				</div>
 			</div>
-			<button ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
+			<button ng-show="new_question.answerList.length<4" ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-					<div class="slide question-answers-container">
-						<div class="question-container">
-							<h2 class="question-text">{{new_question.text}}</h2>
-						</div>
-						<div class="answers-container">
-							<div style="background-image: url({{new_question.answer1.pic_url}})" class="touchable answer-1-container answer-container">
-								<h3 class="answer-text">{{new_question.answer1.text}}</h3>
+					<div class="slide">
+						<div class="question-share-container">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
 							</div>
-							<div style="background-image: url({{new_question.answer2.pic_url}})" class="touchable answer-2-container answer-container">
-								<h3 class="answer-text">{{new_question.answer2.text}}</h3>
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class='twitter-share-btn share touchable' src="http://quiz.huffingtonpost.com/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+							</div>
+						</div>
+						<div class="question-answers-container">
+							<div class="question-container">
+								<h2 class="question-text">{{new_question.text}}</h2>
+							</div>
+							<div class="answers-container total-answers-{{new_question.answerList.length}}">
+								<div ng-repeat="ans in new_question.answerList" class="touchable answer-container {{ans.pic_style || 'bottom-right'}}" ng-class="{{ans.pic_style || 'bottom-right'}}" style="background-image: url({{ans.pic_url}})">
+									<h3 class="answer-text">{{ans.text}}</h3>
+									<span class="photo-credit">{{ans.pic_credit}}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -254,6 +274,7 @@
 			<p ng-show="!quiz.questionList.length">At least 1 Question</p>
 
 		<button ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
+		<p class='inline-block btn-helper'>First preview the mobile version!</p>
 	</section> <!-- ********************* set-complete *********************  -->
 
 </div> <!-- #build-container col-md-9 -->
@@ -271,6 +292,9 @@
 			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
 			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
 			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
+
+			<p>Questions can currently have 2-4 answers.  We are in the process of making this number unlimited.</p>
+
 			<p>Quiz dimensions:
 				<ul>
 					<li>Full size: 550px x 425px</li>

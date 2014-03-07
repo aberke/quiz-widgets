@@ -10,6 +10,7 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/user/all', GETallUsers);
 
 
+	app.get('/api/answer/all', GETallAnswers);
 	app.get('/api/question/all', GETallQuestions);
 	app.get('/api/question/:id', GETQuestion);
 
@@ -170,6 +171,12 @@ var PUTanswerIncrementCount = function(req, res) {
 }
 
 
+var GETallAnswers = function(req, res){
+	models.allAnswers(function (err, answers){
+		if (err) return res.send(util.handleError(err));
+		res.send(answers);
+	});
+};
 var GETallQuestions = function(req, res){
 	models.allQuestions(function (err, questions){
 		if (err) return res.send(util.handleError(err));
@@ -218,13 +225,20 @@ var GETQuestion = function(req, res) {
 
 
 var DELETEquiz = function(req, res) {
-	models.findQuiz(req.params.id, function(err, quiz) {
-		if (err) return res.send(500, util.handleError(err));	
-		
-		quiz.remove(function (err) {
-			if (err) { return res.json(500, {error: handleError(err)}); }
-			res.json(200);
-		});
+
+	models.deleteQuiz(req.params.id, function(err) {
+		if (err) { return res.json(500, {error: handleError(err)}); }
+		res.json(200);
 	});
+
+	// models.findQuiz(req.params.id, function(err, quiz) {
+	// 	if (err) return res.send(500, util.handleError(err));
+
+		
+	// 	quiz.remove(function (err) {
+	// 		if (err) { return res.json(500, {error: handleError(err)}); }
+	// 		res.json(200);
+	// 	});
+	// });
 }
 
