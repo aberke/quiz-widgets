@@ -342,6 +342,7 @@
 .huffpostlabs-quiz .fb-share-container,
 .huffpostlabs-quiz .twitter-share-container {
 	display: inline-block;
+	margin-left: 4px;
 }
 .huffpostlabs-quiz .fb-share-container img.fb-share-btn-blue,
 .huffpostlabs-quiz .twitter-share-container img.twitter-share-btn-blue{
