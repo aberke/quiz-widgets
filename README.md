@@ -32,14 +32,15 @@ Changes since meeting with editors
 - refresh button at end of quiz 
 	- it can be customized on the /new page (with GIFs too!)
 - on /new page can toggle between previewing mobile and non-mobile version
+- back button
 
 
 TODO
 ---
 
-- back button
+
+- give outcomes a description
 - fix: refresh button jenky on mobile
-- on /new page shouldn't be able to take away an outcome that an answer points to
 - editable!
 - customize styling for outcomes?
 - Deal with Mongo Issues:
@@ -81,5 +82,15 @@ To use the button master when writing widget code:
 
 
 necessary e2e tests
-===
+---
+
+neccessary api tests
+---
+
+- on creating question, make sure answers point to valid outcomes
+	- outcome exists and belongs to the quiz that the question belongs to
+
+
+
+
 

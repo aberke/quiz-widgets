@@ -52,7 +52,10 @@
 
 		<div id="outcomes" ng-repeat="outcome in quiz.outcomeList">
 			<p class='bold display-inline'>{{outcome.index}}.</p>
-			<button ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger delete-outcome-btn'>X</button>
+
+			<p ng-show="outcome.answerList.length==1" class='display-inline remove-outcome btn-helper'>1 answer references this outcome</p>
+			<p ng-show="outcome.answerList.length>1" class='display-inline remove-outcome btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
+			<button ng-show="outcome.answerList.length==0" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
@@ -139,6 +142,7 @@
 				<div class="slides-container">
 					<div class="slide">
 						<div class="question-share-container">
+							<div class='previous-btn'></div>
 							<div class="fb-share-container">
 								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
 								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
@@ -188,7 +192,7 @@
 						</select>
 					</span>
 
-					<select id='new-answer-{{a.index}}-outcome' class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a.outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList" >
+					<select id='new-answer-{{a.index}}-outcome' class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a.outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList">
 						<option value="">OUTCOME</option>
 					</select>
 				</div>
@@ -199,6 +203,7 @@
 				<div class="slides-container">
 					<div class="slide">
 						<div class="question-share-container">
+							<div class='previous-btn'></div>
 							<div class="fb-share-container">
 								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
 								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
