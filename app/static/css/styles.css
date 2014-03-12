@@ -150,7 +150,7 @@ section#preview #preview-text-container img{
 	display: block;
 	margin-top: 5px;
 }
-#new-page input, #new-page select {
+#new-page input, #new-page select, #new-page textarea {
 	padding: 3px 8px;
 	width: 100%;
 	border: 2px solid lightblue;

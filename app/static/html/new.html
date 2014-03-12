@@ -93,7 +93,7 @@
 			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
 
 			<label>Description:</label>
-			<input id='new-outcome-description' type='text' ng-model='new_outcome.description' />
+			<textarea id='new-outcome-description' ng-model='new_outcome.description'></textarea>
 
 			<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image will also be used as a thumbnail when sharing result to social networks.
 			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image/GIF URL</label>
@@ -109,7 +109,7 @@
 					<div class="slide outcome-container">
 						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{new_outcome.text}}</h1>
-							<p class="outcome-description">{{outcome.description}}</p>
+							<p class="outcome-description">{{new_outcome.description}}</p>
 							<span class="photo-credit">{{new_outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
