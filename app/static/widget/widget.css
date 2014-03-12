@@ -224,8 +224,18 @@
 	border-bottom: 1px solid white;
 	display: inline-flex;
 	position: absolute;
+	overflow-y: auto;
 }
 
+.huffpostlabs-quiz .answers-container.total-answers-more {
+	display: block;
+}
+
+.huffpostlabs-quiz .answers-container.total-answers-more .answer-container {
+	min-width: 50%;
+	height: 25%;
+	border-bottom: solid 1px #ffffff;
+}
 .huffpostlabs-quiz .answer-container {
 	height: 100%;
 	display: inline-block;
