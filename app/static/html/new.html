@@ -202,7 +202,7 @@
 					</select>
 				</div>
 			</div>
-			<button ng-show="new_question.answerList.length<4" ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
+			<button ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
