@@ -67,6 +67,7 @@ var outcomeSchema = new Schema({
 	share: 		 {type: ObjectId, ref: 'Share', default: null},
 	index: 		 Number, // ordered
 	text:   	 String,
+	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
 	pic_credit:  {type: String, default: null},
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
@@ -196,6 +197,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			_quiz:  	 newQuiz,
 			index: 		 outcomeData.index, // ordered
 			text:   	 outcomeData.text,
+			description: (outcome.description 	 || null),
 			pic_url: 	 (outcomeData.pic_url 	 || null),
 			pic_credit:  (outcomeData.pic_credit || null),
 		});

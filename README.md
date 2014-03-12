@@ -38,8 +38,8 @@ Changes since meeting with editors
 TODO
 ---
 
-
 - give outcomes a description
+
 - fix: refresh button jenky on mobile
 - editable!
 - customize styling for outcomes?
