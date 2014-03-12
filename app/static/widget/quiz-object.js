@@ -213,10 +213,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
             html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "            </div>";
-            // html+= "            <span class='embed-code'>";
-            // html+= "                <input value='" + static_domain + .... + "' >";
-            // html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
-            // html+= "            </span>";
+            html+= "            <span class='embed-code'>";
+            html+= "                <input value='" + static_domain + "' >";
+            html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
+            html+= "            </span>";
             html+= "        </div>";
             html+= "        <div class='start-container touchable' data-huffpostlabs-btn onclick=" + onclickStart + ">";
             html+= "            <h2 class='start-text'>START</h2>";
@@ -266,9 +266,9 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "        <div class='question-container'>";
             html+= "            <h2 class='question-text'>" +  question.text + "</h2>";
             html+= "        </div>";
-            html+= "        <div class='answers-container total-answers-" + question.answerList.length + "' >";
+            html+= "        <div class='answers-container total-answers-" + ((question.answerList.length < 5) ? question.answerList.length : 'more') + "' >";
 
-        for (var i=0; (i<question.answerList.length && i<4); i++) {
+        for (var i=0; i<question.answerList.length; i++) {
             var a = question.answerList[i];
             html+= "            <div data-quiz-answer=" + i + " data-huffpostlabs-btn onclick=" + onclickAnswer + " " + answerAddImage(a) + " class='touchable answer-container " + a.pic_style + "'>";
             html+= "                <h3 class='answer-text'>" + (a.text || "") + "</h3>";

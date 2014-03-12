@@ -197,7 +197,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			_quiz:  	 newQuiz,
 			index: 		 outcomeData.index, // ordered
 			text:   	 outcomeData.text,
-			description: (outcome.description 	 || null),
+			description: (outcomeData.description 	 || null),
 			pic_url: 	 (outcomeData.pic_url 	 || null),
 			pic_credit:  (outcomeData.pic_credit || null),
 		});

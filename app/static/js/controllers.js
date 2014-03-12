@@ -190,6 +190,10 @@ function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
 	}
 	$scope.createQuiz = function() {
 		console.log('createQuiz', $scope.quiz)
+		/* get rid of the circular json -- take out outcome.answerList's */
+		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
+			$scope.quiz.outcomeList[i].answerList = null;
+		}
 
 		HTTPService.POST('/api/quiz', $scope.quiz).then(function(data) {
 			console.log('data', data)
