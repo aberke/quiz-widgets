@@ -199,6 +199,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         var onclickStart = "quizWidgets['" + quizID + "'].startQuiz(this)";
         var onclickShareFB = "quizWidgets['" + quizID + "'].shareQuizFB()";
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
+        var embedString = '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>';
         
         var html = "<div class='slide title-container'>";
             html+= "    <span class='photo-credit'>" + (quizData.pic_credit || "") + "</span>";
@@ -214,7 +215,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "            </div>";
             html+= "            <span class='embed-code'>";
-            html+= "                <input value='" + static_domain + "' >";
+            html+= "                <input value='" + embedString + "' >";
             html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
             html+= "            </span>";
             html+= "        </div>";
