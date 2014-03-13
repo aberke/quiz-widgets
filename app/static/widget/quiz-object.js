@@ -65,6 +65,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     var leadingOutcome = null;
     var chosenAnswers = [];
 
+    function reloadData(data) {
+        quizData = data;
+        refresh();
+    }
+
     function startQuiz(element) {
         element.onclick = null;
         slidesCntl.transitionNext();
@@ -326,5 +331,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             shareOutcomeFB:     shareOutcomeFB,
             shareQuizTwitter:   shareQuizTwitter,
             shareOutcomeTwitter:shareOutcomeTwitter,
+
+            reloadData: reloadData,
             };
 }
