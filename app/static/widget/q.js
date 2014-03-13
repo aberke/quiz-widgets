@@ -27,7 +27,6 @@
 
 	var scripts 	= [
 					   	(static_domain + "/widget/quiz-object.js"),
-					   	(static_domain + "/widget/iscroll.js"),
 					   	"http://aberke.github.io/huffpostlabs-btn/btn-master.js",
 					   ];
 	var stylesheets = [(static_domain + "/widget/widget.css")];

@@ -259,13 +259,13 @@
 .huffpostlabs-quiz .answer-container.bottom-right img{
 	background-position: bottom right;
 }
-.huffpostlabs-quiz .answer-container.cover img{
-	min-width: 100%;
-	min-height: 100%;
+.huffpostlabs-quiz .answer-container.cover{
+	background-size: cover;
+	background-position: center center;
 }
-.huffpostlabs-quiz .answer-container.contain img{
-	max-width: 100%;
-	max-height: 100%;
+.huffpostlabs-quiz .answer-container.contain{
+	background-size: contain;
+	background-position: bottom center;
 }
 
 .huffpostlabs-quiz .answers-container.total-answers-2 .answer-container {
