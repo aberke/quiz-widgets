@@ -65,10 +65,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     var leadingOutcome = null;
     var chosenAnswers = [];
 
-    function reloadData(data) {
-        quizData = data;
-        refresh();
-    }
 
     function startQuiz(element) {
         element.onclick = null;
@@ -141,6 +137,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         handleMobile();
 
         container.style.display = 'block';
+    }
+    function reloadData(data) {
+        quizData = data;
+        init();
     }
     function refresh() {
         console.log('refresh')
