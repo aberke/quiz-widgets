@@ -11,12 +11,6 @@ Who's your spirit hacker?
 ---
 <http://www.huffingtonpost.com/2014/02/27/quiz_n_4869792.html>
 
-Notes
----
-
-requests
-- tie outcome
-- be able to weight different outcomes
 
 
 Changes since meeting with editors
@@ -36,11 +30,12 @@ Changes since meeting with editors
 since last email
 ---
 - back button
+- outcomes have descriptions
+- can go back and edit your quizzes
 
 coming soon
 ---
 - embed code as sharing option
-- outcomes have descriptions
 
 
 TODO
@@ -52,7 +47,9 @@ TODO
 - finish e2e tests for /edit and /new
 - put user feedback on /social page
 	- no user feedback when stuff is saved -- its jarring
-- make script loading via HTTPS -- so that it shows up in livepreview
+- make script loading via HTTPS 
+	- so that it shows up in livepreview
+	- ask Piya about it
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
 - customize styling for outcomes?
