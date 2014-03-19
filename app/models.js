@@ -55,17 +55,17 @@ var quizSchema = new Schema({
 });
 var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
-	index: 		 Number, // questions are ordered
+	index: 		 Number, // questions are ordered -- deprecating -- let quiz.questionList handle
 	text:  		 String,
 	/* list of answers -- keeping answer1 and answer2 fields for backwards compatibility */
-	answer1: 	 { type: ObjectId, ref: 'Answer'},
-	answer2: 	 { type: ObjectId, ref: 'Answer'},
+	// answer1: 	 { type: ObjectId, ref: 'Answer'},
+	// answer2: 	 { type: ObjectId, ref: 'Answer'},
 	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
 var outcomeSchema = new Schema({
 	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
 	share: 		 {type: ObjectId, ref: 'Share', default: null},
-	index: 		 Number, // ordered
+	index: 		 Number, // ordered -- deprecating -- let quiz.outcomeList handle
 	text:   	 String,
 	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
@@ -75,7 +75,6 @@ var outcomeSchema = new Schema({
 var answerSchema = new Schema({
 	_question:  	{type: ObjectId, ref: 'Question'},
 	_outcome: 		{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
-	index: 		 	Number, // ordered
 	text:   		String,
 	pic_url: 		{type: String, default: null},
 	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
@@ -90,6 +89,35 @@ exports.Answer   = Answer 	= mongoose.model('Answer', answerSchema);
 exports.Question = Question = mongoose.model('Question', questionSchema);
 exports.Outcome  = Outcome  = mongoose.model('Outcome', outcomeSchema);
 
+
+
+exports.deleteOutcome = function(outcomeID, callback) {
+	/* will Share.remove return an error if outcome doesn't own a share? */
+	Share.remove({ _outcome: outcomeID}, function (err) { console.log('Share.remove err:', err); });
+	Outcome.remove({ _id: outcomeID}, callback);
+}
+exports.deleteQuestion = function(questionID, callback) {
+	/* removes answers then, on success, the question */
+	Answer.remove({ _question: questionID}, function(err) {
+		if (err) { return callback(err); }
+		Question.remove({ _id: questionID}, callback);
+	});
+};
+exports.deleteAnswer = function(answerID, callback) {
+	Answer.findOne({ _id: answerID })
+		.populate('_question')
+		.exec(function(err, answer) {
+            if (err) { return callback(err); }
+
+            var index = answer._question.answerList.indexOf(answer._id);
+            if (index == -1) { return callback(err); }
+            answer._question.answerList.splice(index, 1);
+            answer._question.save(function(err) {
+            	if (err) { return callback(err); }
+            	answer.remove(callback);
+            });
+		});
+};
 
 var deleteQuestion = function(questionID, callback) {
 	var otherComplete = false;
@@ -137,18 +165,21 @@ exports.deleteQuiz = function(quizID, callback) {
 }
 
 
-
-var newAnswer = function(answerData, question, outcomeDict) {
+/* doesn't handle saving answer */
+var addAnswer = exports.addAnswer = function(answerData, question, callback) {
 	var answer = new Answer({
 		_question:  question,
-		_outcome: 	outcomeDict[answerData.outcome.index], // the outcome it adds a point to if selected
-		index: 		(answerData.index),
+		_outcome: 	answerData._outcome, // the outcome it adds a point to if selected
 		text:   	answerData.text,
 		pic_url: 	(answerData.pic_url   || null),
 		pic_credit: (answerData.pic_credit|| null),
 		pic_style:  (answerData.pic_style || "bottom-right"),
 	});
-	return answer;
+	question.answerList.push(answer);
+	question.save();
+	answer.save(function(err) {
+		if (callback) { callback(err, answer); }
+	});
 }
 exports.newShare = function(quiz, outcome, shareData, callback) { // callback: function(err, data)
 	/* a share is owned by either a quiz or an outcome.  so either quiz or outcome is null */
@@ -164,6 +195,38 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 		if (err) { return callback(err, null); }
 		callback(null, share);
 	});
+}
+
+/* doesn't save outcome or add share -- just does the construction */
+var constructOutcome = function(outcomeData) {
+	var new_outcome = new Outcome({
+		_quiz:  	 outcomeData._quiz,
+		index: 		 outcomeData.index, // ordered
+		text:   	 outcomeData.text,
+		description: (outcomeData.description 	 || null),
+		pic_url: 	 (outcomeData.pic_url 	 || null),
+		pic_credit:  (outcomeData.pic_credit || null),
+	});
+	return new_outcome;
+}
+exports.newOutcome = function(outcomeData, callback) {
+	var new_outcome = constructOutcome(outcomeData);
+	var newOutcomeShare = new Share({_outcome: new_outcome});
+	newOutcomeShare.save(function(err) {
+		if (err) { return callback(err, null); }
+
+		new_outcome.share = newOutcomeShare;
+		new_outcome.save(function(err) {
+			callback(err, new_outcome);
+		});
+	});
+}
+exports.newQuestion = function(questionData, callback) {
+	var new_question = new Question({
+		_quiz: 		questionData._quiz,
+		text: 		questionData.text,
+	});
+	new_question.save(function(err) { callback(err, new_question); });
 }
 
 exports.newQuiz = function(quizData, callback) { // callback: function(err, data)
@@ -193,21 +256,14 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 	var outcomeDict = {}; // maps {index: outcome} since answerData just has the index
 	for (var i=0; i<quizData.outcomeList.length; i++) {
 		var outcomeData = quizData.outcomeList[i];
-		var newOutcome = new Outcome({
-			_quiz:  	 newQuiz,
-			index: 		 outcomeData.index, // ordered
-			text:   	 outcomeData.text,
-			description: (outcomeData.description 	 || null),
-			pic_url: 	 (outcomeData.pic_url 	 || null),
-			pic_credit:  (outcomeData.pic_credit || null),
-		});
-		outcomeDict[outcomeData.index] = newOutcome;
-		newQuiz.outcomeList.push(newOutcome);
-
+		outcomeData._quiz = newQuiz;
+		var newOutcome = constructOutcome(outcomeData);
 		var newOutcomeShare = new Share({_outcome: newOutcome});
 		newOutcomeShare.save();
 		newOutcome.share = newOutcomeShare;
 		newOutcome.save();
+		outcomeDict[outcomeData.index] = newOutcome;
+		newQuiz.outcomeList.push(newOutcome);
 	}
 	for (var i=0; i<quizData.questionList.length; i++) {
 		var questionData = quizData.questionList[i];
@@ -220,9 +276,8 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		for (var j=0; j<questionData.answerList.length; j++) {
 			console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
 			var answerData = questionData.answerList[j];
-			var newA = newAnswer(answerData, newQuestion, outcomeDict);
-			newA.save();
-			newQuestion.answerList.push(newA);
+			answerData._outcome = outcomeDict[answerData._outcome.index];
+			addAnswer(answerData, newQuestion); // handles question.answerList.push and answer.save
 		}
 
 		newQuestion.save(function(err) {

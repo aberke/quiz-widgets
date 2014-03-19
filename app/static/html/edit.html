@@ -1,0 +1,268 @@
+<!-- quiz edit page -->
+
+<div id='edit-page' class='view row'>
+
+<div id='build-container' class='col-md-9'>
+
+	<section id='preview-widget'>
+		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}" id="{{quiz._id}}"></div>
+		<script src="/widget/q.js"></script>
+	</section>
+
+	<!-- ********************* set-title *********************  -->
+	<section id='set-title'>
+		<label><i class='required-star'>*</i>Title</label>
+		<input id='quiz-title' placeholder="Title of your quiz" type='text' ng-model='quiz.title' />
+
+		<label class="popover-hover" data-original-title="Quiz Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image is also used as a thumbnail when sharing to social networks.  
+		Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  If it's a large image it will take a while to load.">Image/GIF URL</label>
+		<input id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
+
+		<span ng-show="quiz.pic_url || quiz.pic_credit">
+			<label>Photo Credit</label>
+			<input ng-change="quiz.saved='unsaved'" id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
+		</span>
+
+		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
+			<div class="slides-container">
+				<div class="slide title-container" style="top: 0%;">
+					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
+					<div class="title-content">
+						<h1 class="title">{{quiz.title || "YOUR TITLE HERE"}}</h1>
+						<div class="share-container">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>
+							<span class="embed-code">
+								<input value="&lt;div class=&quot;huffpostlabs-quiz&quot; id=&quot;SOME-LONG-ID&quot;&gt;&lt;/div&gt;&lt;script src=&quot;http://quiz.huffingtonpost.com/widget/q.js&quot;&gt;&lt;/script&gt;">
+								<img src="/icon/embed.png">
+							</span>       
+						</div>
+						<div class="start-container touchable">
+							<h2 class="start-text">START</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE</button>
+		<p ng-class="{'error': (quiz.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{quiz.saved}}</p>
+
+	</section> <!-- ********************* set-title *********************  -->
+
+
+	<!-- ********************* set-outcomes *********************  -->
+	<section id='set-outcomes'>
+		<h3>Outcomes</h3>
+
+		<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
+			<p class='bold display-inline'>{{$index + 1}}.</p>
+
+			<div class='remove-edit-btns'>
+				<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
+				<p ng-show="outcome.answerList.length>1" class='display-inline btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
+				<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
+				
+				<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
+				<button ng-show="outcome.editing" ng-click="outcome.editing=false" class='btn btn-xs btn-warning'> - </button>
+
+				<button ng-show="outcome.editing" ng-disabled="outcome.saved!='unsaved'" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success edit-outcome'>SAVE</button>
+			</div>
+
+			<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
+				<label><i class='required-star'>*</i>Text:</label>
+				<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
+
+				<label>Description:</label>
+				<textarea ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
+
+				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image will also be used as a thumbnail when sharing result to social networks.
+				Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use a small image for better performance">Image/GIF URL</label>
+				<input ng-change="outcome.saved='unsaved'" id='outcome-pic-url' type="url" ng-model="outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
+
+				<span ng-show="outcome.pic_url">
+					<label>Photo Credit</label>
+					<input ng-change="outcome.saved='unsaved'" id='new-outcome-pic-credit' type='text' ng-model='outcome.pic_credit' />
+				</span>
+			</span>
+
+			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
+				<div class="slides-container">
+					<div class="slide outcome-container">
+						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
+							<h1 class="outcome-text">{{outcome.text}}</h1>
+							<h3 class="outcome-description">{{outcome.description}}</h3>
+							<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
+						</div>
+						<div class="share-container">
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+							</div>            
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+							</div>        
+							<div class="share-text">
+								<p>Share your results</p>
+							</div>
+							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<button ng-click="quiz.outcomeList.push({new:true,editing:true,saved:'unsaved'})" id='add-outcome-btn' class='btn btn-sm btn-success'>+ Add New Outcome</button>
+		
+	</section> <!-- ********************* set-outcomes *********************  -->
+
+	<!-- ********************* set-questions *********************  -->
+	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="A quiz must have at least 1 question.  Questions can currently have 2-4 answers.  We are in the process of making this number unlimited.">
+		<h3>Questions</h3>
+
+		<div class="question index-{{$index}}" ng-class="{editing: question.editing}" ng-repeat="question in quiz.questionList">
+			<p class='display-inline bold'>{{$index + 1}}.</p>
+
+			<div class='remove-edit-btns'>
+				<button ng-show="$index>=1" ng-click="removeQuestion(question)" class='btn btn-xs btn-danger remove-question'>X</button>
+				<button ng-disabled="question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
+				<button ng-show="question.saved=='editing'||question.saved=='unsaved'||question.saved=='saving'" ng-disabled="question.saved!='unsaved'" ng-click="saveQuestion(question)" class='btn btn-xs btn-success save-question'>SAVE</button>
+				<p ng-show="question.saved!='editing'" ng-class="{'error': (question.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{question.saved}}</p>
+			</div>
+
+			<div ng-show="question.editing">
+				<label>Question Text:</label>
+				<input ng-change="question.saved='unsaved'" class='question-text' type='text' ng-model='question.text' required ng-class="{error: question.error.text}">
+
+				<div class='answer' ng-repeat="a in question.answerList">
+					<div class='remove-edit-btns'>
+						<button ng-show="$index>1" ng-click="removeAnswer(question,a)" class='btn btn-xs btn-danger delete-new-answer-btn'>X</button>
+						<p ng-show="a.saved!='editing'" ng-class="{'error': (a.saved=='error')}" class='inline-block btn-helper'>{{a.saved}}</p>
+					</div>
+					<label class='answer-label'>Answer {{$index + 1}}</label>
+					
+					<div class='answer-inputs'>
+						<input ng-change="a.saved='unsaved';question.saved='unsaved'" id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
+
+						<input ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
+
+						<span ng-show="a.pic_url">
+							<input placeholder='PHOTO CREDIT' class='answer-pic-credit' type='text' ng-model='a.pic_credit' ng-change="a.saved='unsaved';question.saved='unsaved'"/>
+							
+							<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
+								<option value="">IMAGE/GIF STYLING</option>
+							</select>
+						</span>
+
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as o.text for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+							<option value="">{{outcomeMap[a._outcome].text || a._outcome.text || 'OUTCOME'}}</option>
+						</select>
+					</div>
+				</div>
+				<button ng-show="question.answerList.length<4" ng-click="question.answerList.push({new:true,'saved':'unsaved'})" class='btn btn-sm btn-success add-answer-btn'>+ Answer</button>
+			</div>
+
+			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
+				<div class="slides-container">
+					<div class="slide">
+						<div class="question-share-container">
+							<div class='previous-btn'></div>
+							<div class="fb-share-container">
+								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
+								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
+							</div>
+							<div class="twitter-share-container">
+								<img width="30px" height="30px" class='twitter-share-btn share touchable' src="http://quiz.huffingtonpost.com/icon/twitter-icon.png">
+								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+							</div>
+						</div>
+						<div class="question-answers-container">
+							<div class="question-container">
+								<h2 class="question-text">{{question.text}}</h2>
+							</div>
+							<div class="answers-container total-answers-{{question.answerList.length}}">
+								<div ng-repeat="ans in question.answerList" class="touchable answer-container {{ans.pic_style || 'bottom-right'}}" ng-class="{{ans.pic_style || 'bottom-right'}}" style="background-image: url({{ans.pic_url}})">
+									<h3 class="answer-text">{{ans.text}}</h3>
+									<span class="photo-credit">{{ans.pic_credit}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<button ng-disabled="!quiz.outcomeList.length" ng-click="quiz.questionList.push({new:true,saved:'unsaved', editing:true, answerList:[{}, {}] })" id='add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
+		<p ng-show="!quiz.outcomeList.length" class='inline-block btn-helper'>First create the outcomes</p>
+
+	</section> <!-- ********************* set-questions *********************  -->
+
+
+	<!-- ********************* set-refresh-icon *********************  -->
+	<section id='set-refresh-icon'>
+
+		<div class='huffpostlabs-quiz' ng-class="{'mobile':viewMobile}">
+			<div class='outcome-container'>
+				<div class="share-container">
+					<div class="fb-share-container">
+						<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">
+						<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">
+					</div>
+					<div class="twitter-share-container">
+						<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+						<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+					</div>
+					<div class="share-text"><p>Share your results</p></div>
+					<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
+				</div>
+			</div>
+		</div>
+		<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
+		<input ng-change="quiz.saved='unsaved'" id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
+
+		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE</button>
+		<p ng-class="{'error': (quiz.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{quiz.saved}}</p>
+	</section> <!-- ********************* set-refresh-icon *********************  -->
+
+
+</div> <!-- #build-container col-md-9 -->
+
+<div class='col-md-3'>
+	
+	<button ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
+	<button ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
+
+	<section id='instructions'>
+		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>
+		<button class='btn btn-default' ng-show="showInstructions!=false" ng-click="showInstructions=false">Hide Instructions</button>
+		<div class='instructions-text' ng-show="showInstructions!=false">
+			<p>Here's how it works:</p>
+			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
+			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
+			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
+
+			<p>Questions can currently have 2-4 answers.  We are in the process of making this number unlimited.</p>
+
+			<p>Quiz dimensions:
+				<ul>
+					<li>Full size: 550px x 425px</li>
+					<li>Mobile size: 300px x 270px</li>
+				</ul>
+			</p>
+
+			<p>YOU ARE HELD RESPONSIBLE FOR ADHERING TO PHOTO STANDARDS AND ATTRIBUTING CREDIT.</p>
+
+			<p>After you create the quiz you can customize how it is shared on Facebook</p>
+		</div>
+	</section>
+</div> <!-- col-md-3 on the right -->
+
+<link href="/widget/widget.css" rel="stylesheet">
+</div>

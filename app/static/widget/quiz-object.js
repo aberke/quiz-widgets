@@ -219,10 +219,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
             html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "            </div>";
-            html+= "            <span class='embed-code'>";
-            html+= "                <input value='" + embedString + "' >";
-            html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
-            html+= "            </span>";
+            // html+= "            <span class='embed-code'>";
+            // html+= "                <input value='" + embedString + "' >";
+            // html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
+            // html+= "            </span>";
             html+= "        </div>";
             html+= "        <div class='start-container touchable' data-huffpostlabs-btn onclick=" + onclickStart + ">";
             html+= "            <h2 class='start-text'>START</h2>";
@@ -270,7 +270,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
             html+= "    <div class='question-answers-container'>";
             html+= "        <div class='question-container'>";
-            html+= "            <h2 class='question-text'>" +  question.text + "</h2>";
+            html+= "            <h2 class='question-text'>" + (question.text || "") + "</h2>";
             html+= "        </div>";
             html+= "        <div class='answers-container total-answers-" + ((question.answerList.length < 5) ? question.answerList.length : 'more') + "' >";
 
@@ -288,7 +288,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function outcomeContentHTML(outcome) {
         var html = "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
-            html+= "    <p class='outcome-description'>" + (outcome.description || "") + "</p>";
+            html+= "    <h3 class='outcome-description'>" + (outcome.description || "") + "</h3>";
             html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
         return html;
     }

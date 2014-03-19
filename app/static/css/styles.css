@@ -7,6 +7,9 @@
 input.error, select.error, textarea.error, input.ng-invalid {
 	border-color: red;
 }
+p.error {
+	color: red;
+}
 
 .btn-helper { color: gray; }
 
@@ -114,21 +117,27 @@ section#preview #preview-text-container img{
 /********************** quiz-page above ******************/
 
 
-/********************** new-page ******************/
+/********************** new-page and edit-page ******************/
 
-#new-page #build-container section {
+#new-page #build-container section,
+#edit-page #build-container section{
 	width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
 }
-#new-page .required-star {
+#new-page .required-star,
+#edit-page .required-star{
 	color: red;
 	margin-right: 5px;
 }
 #new-page section#set-title, 
 #new-page section#set-outcomes, 
 #new-page section#set-questions, 
-#new-page section#set-sharing{
+#new-page section#set-sharing,
+#edit-page section#set-title, 
+#edit-page section#set-outcomes, 
+#edit-page section#set-questions, 
+#edit-page section#set-sharing{
 	border-bottom: 1px solid lightgray;
 }
 .instructions-text {
@@ -136,81 +145,107 @@ section#preview #preview-text-container img{
 	color: gray;
 }
 
-#new-page #outcomes {
+#new-page .outcome,
+#edit-page .outcome {
 	margin-bottom: 10px;
+}
+#edit-page .outcome.editing,
+#edit-page .question.editing {
+	border-top: 1px solid lightblue;
+	bor der-bottom: 1px solid lightblue;
+	margin: 20px 0;
+	padding: 20px 0;
 }
 #new-page .remove-outcome,
 #new-page .delete-new-answer-btn,
-#new-page .delete-question-btn {
+#new-page .delete-question-btn,
+#edit-page .remove-outcome,
+#edit-page .delete-new-answer-btn,
+#edit-page .delete-question-btn {
 	float: right;
+}
+#new-page .remove-edit-btns p.btn-helper,
+#edit-page .remove-edit-btns p.btn-helper {
+	float: left;
+}
+#new-page .remove-edit-btns,
+#edit-page .remove-edit-btns {
+	float: right;
+}
+#new-page .remove-edit-btns .btn,
+#edit-page .remove-edit-btns .btn{
+	float: right;
+	margin: 0 5px;
 }
 
 
-#new-page label {
+#new-page label,
+#edit-page label {
 	display: block;
 	margin-top: 5px;
 }
-#new-page input, #new-page select, #new-page textarea {
+#new-page input, #new-page select, #new-page textarea,
+#edit-page input, #edit-page select, #edit-page textarea {
 	padding: 3px 8px;
 	width: 100%;
 	border: 2px solid lightblue;
 }
-#new-page select {
+#new-page .embed-code input,
+#edit-page .embed-code input{ /* widget.css was overridden */
+	width: auto;
+	border: 1px solid white;
+	color: white;
+}
+#new-page select,
+#edit-page select {
 	font-size: 16px;
 }
 #new-page input.error,
-#new-page select.error {
+#new-page select.error,
+#edit-page input.error,
+#edit-page select.error {
 	border: 3px solid red;
 }
-#new-page .huffpostlabs-quiz {
+#new-page .huffpostlabs-quiz,
+#edit-page .huffpostlabs-quiz {
 	margin: 10px auto;
 }
 
-#new-page .new-answer {
+#new-page .new-answer,
+#edit-page .answer {
 	width: 100%;
 }
-#new-page .new-answer .new-answer-label {
+#new-page .answer .answer-label,
+#edit-page .answer .answer-label {
 	padding: 5px 0;
 	border-bottom: 3px solid lavenderblush;
 }
-#new-page .new-answer-inputs input,
-#new-page .new-answer-inputs select {
+#new-page .answer-inputs input,
+#new-page .answer-inputs select,
+#edit-page .answer-inputs input,
+#edit-page .answer-inputs select {
 	width: 48%;
 	margin-bottom: 10px;
 }
-
-#new-page #new-question-answer-1, #new-page #new-question-answer-2 {
-	width: 265px;
-	display: inline-block;
-}
-#new-page #new-question-answer-1 {
-	margin-right: 15px;
-}
-#new-page #instructions .btn {
+#new-page #instructions .btn,
+#edit-page #instructions .btn {
 	font-weight: bold;
 	margin-top: 20px;
 }
-#new-page section#set-refresh-icon .huffpostlabs-quiz {
+#new-page section#set-refresh-icon .huffpostlabs-quiz,
+#edit-page section#set-refresh-icon .huffpostlabs-quiz {
 	height: 50px;
 	padding: 2%;
 }
-#new-page section#set-refresh-icon input {
+#new-page section#set-refresh-icon input,
+#edit-page section#set-refresh-icon input {
 	margin-bottom: 10px;
-}
-#new-page #set-sharing h3 {
-	display: inline-block;
-	vertical-align: middle;
-	margin: 0;
-	padding: 0;
-}
-#new-page #set-sharing #fb-share-example {
-	margin: 20px 0;
 }
 #new-page #set-complete p {
 	margin-left: 30px;
 	color: gray;
 }
-/********************** new-page above ******************/
+/********************** new-page and edit-page above ******************/
 
 
 /********************** social-page  ******************/

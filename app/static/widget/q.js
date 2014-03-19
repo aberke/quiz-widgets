@@ -9,7 +9,7 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	var domain = 'http://5e51ffe5.ngrok.com';//'http://127.0.0.1:8080';
+	var domain = 'http://127.0.0.1:8080';
 	var static_domain = domain;
 	
 	// var domain = 'http://quizwidget-petri.dotcloud.com';
@@ -116,7 +116,7 @@
 				picture: (outcomeShare.pic_url || outcome.pic_url || quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
 				link: (quizShare.link || window.location.href),
 				caption: (outcomeShare.caption || 'I got: ' + outcome.text),
-				description: (outcomeShare.description || quizShare.description || ''),
+				description: (outcomeShare.description || outcome.description || quizShare.description || ''),
 			}, 
 			function(response) {
 				if (response && response.post_id) {

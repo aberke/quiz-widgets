@@ -313,6 +313,9 @@
 	font-family: Arvo-Bold;
 	padding: 0.5em;
 }
+.huffpostlabs-quiz .outcome-description {
+	padding: 20px;
+}
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;
 	bottom: 0;

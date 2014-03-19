@@ -9,10 +9,10 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 
 	.config(function($provide) {
 	
-		// register services 
-		$provide.factory('HTTPService', HTTPService);
+		// register services
 		$provide.factory('UIService', UIService);
+		$provide.factory('HTTPService', HTTPService);
 		$provide.factory('FormService', FormService);
+		$provide.factory('WidgetService', WidgetService);
 
 	});
-		

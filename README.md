@@ -32,22 +32,34 @@ Changes since meeting with editors
 - refresh button at end of quiz 
 	- it can be customized on the /new page (with GIFs too!)
 - on /new page can toggle between previewing mobile and non-mobile version
+
+since last email
+---
 - back button
+
+coming soon
+---
+- embed code as sharing option
+- outcomes have descriptions
 
 
 TODO
 ---
 
-- give outcomes a description
+- /edit
+	- clear out image from quiz successfully
 
-- fix: refresh button jenky on mobile
-- editable!
+- finish e2e tests for /edit and /new
+- make script loading via HTTPS -- so that it shows up in livepreview
+- make nicer instructions on /new and /edit
+	- highlight on hover over item on left side
 - customize styling for outcomes?
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
 	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
 - add other share options 
-	- embed currently commented out (it is also hidden on mobile by the css)
+	- embed currently not functional
+	- mail should be easy
 - facebook app still in development mode
 - handle case of tie
 - deal with resize event?

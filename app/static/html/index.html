@@ -1,8 +1,8 @@
 <div id='index-page'>
 
   <section id='mvp-explainer'>    
-    <button class='btn btn-default btn-sm mvp-btn' ng-show="hideExplainer" ng-click="hideExplainer=false">Feedback Please</button>
-    <button class='btn btn-default btn-sm mvp-btn' ng-show="!hideExplainer" ng-click="hideExplainer=true">Hide</button>
+    <button id='show-explainer-text-btn' class='btn btn-default btn-sm mvp-btn' ng-show="hideExplainer" ng-click="hideExplainer=false">Feedback Please</button>
+    <button id='hide-explainer-text-btn' class='btn btn-default btn-sm mvp-btn' ng-show="!hideExplainer" ng-click="hideExplainer=true">Hide</button>
     <div id='mvp-text-container' ng-show="!hideExplainer">
       <p><a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20App%20BUG Report]">Please report bugs.</a></p>
       <p>No design or product review has been done yet - so I would love to hear from you how this product could be better.</p>
@@ -13,7 +13,6 @@
         <li><p>Ability to edit quizzes</p></li>
         <li><p>More exciting outcome transition.</p></li>
         <li><p>Ability to go back and edit quizzes.</p></li>
-        <li><p>"Previous" button to go back to previous question</p></li>
         <li><p>Ability to weight outcomes</p></li>
         <li><p>Outcome explanations to accompany text</p></li>
       </ul>
@@ -42,7 +41,8 @@
         <pre>&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;
 &lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;</pre>
 
-        <a ng-href="/quiz/{{q._id}}" class='display-block btn btn-sm btn-warning'><h5>View More</h5></a>
+        <a ng-href="/quiz/{{q._id}}" class='display-block btn btn-sm btn-warning'><h5>View Stats</h5></a>
+        <a ng-href="/edit/{{q._id}}" class='display-block btn btn-sm btn-danger'><h5>Edit</h5></a>
         <a ng-href="/social/{{q._id}}" class='display-block btn btn-sm btn-info'><h5>Customize Sharing</h5></a>
       </div>
 
