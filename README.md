@@ -50,6 +50,8 @@ TODO
 	- clear out image from quiz successfully
 
 - finish e2e tests for /edit and /new
+- put user feedback on /social page
+	- no user feedback when stuff is saved -- its jarring
 - make script loading via HTTPS -- so that it shows up in livepreview
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
