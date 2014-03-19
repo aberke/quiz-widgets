@@ -144,6 +144,7 @@ var PUTanswer = function(req, res) {
 		answer.text 	  = answerData.text;
 		answer.pic_url 	  = answerData.pic_url;
 		answer.pic_credit = answerData.pic_credit;
+		answer.pic_style  = answerData.pic_style;
 		answer._outcome   = answerData._outcome;
 		answer.save(function(err) {
 			if (err) { res.send(500, util.handleError(err)); }
