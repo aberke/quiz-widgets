@@ -9,15 +9,20 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	// var domain = 'http://127.0.0.1:8080';
-	// var static_domain = domain;
-	
-	var domain = 'http://quizwidget-petri.dotcloud.com';
-	var static_domain = 'http://quiz.huffingtonpost.com';
+	var domain = 'http://127.0.0.1:8080';
+	// var domain = 'http://quizwidget-petri.dotcloud.com';
+
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
-			Only use it for static assets...  not JSONP requests.. right?
+			Only use it for GET requests on foreign host
+			- if on our own host, we care to see changes right away, not cache
 	 */
+	var static_domain = 'http://quiz.huffingtonpost.com';
+	if (window.location.origin == domain) {
+		static_domain = domain;
+	}
+
+
 
 
 	this.quizWidgets = {};
