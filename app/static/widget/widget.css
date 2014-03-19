@@ -228,6 +228,7 @@
 	display: inline-flex;
 	position: absolute;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 .huffpostlabs-quiz .answer-container img {
 	max-width: 50%;
@@ -257,7 +258,8 @@
 	float: left;
 }
 .huffpostlabs-quiz .answer-container.bottom-right img{
-	background-position: bottom right;
+	max-width: 50%;
+	max-height: 70%;
 }
 .huffpostlabs-quiz .answer-container.cover{
 	background-size: cover;

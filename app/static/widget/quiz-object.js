@@ -65,6 +65,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     var leadingOutcome = null;
     var chosenAnswers = [];
 
+
     function startQuiz(element) {
         element.onclick = null;
         slidesCntl.transitionNext();
@@ -137,6 +138,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
         container.style.display = 'block';
     }
+    function reloadData(data) {
+        quizData = data;
+        init();
+    }
     function refresh() {
         console.log('refresh')
         leadingOutcome = null;
@@ -191,14 +196,25 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     function shareQuizTwitter() {
         twitterShare(quizData);
     }
+    function embedCode() {
+        //codeEmbed(quizData);
+        window.prompt("Copy to clipboard: Copy(Ctrl+C), Enter", 
+        '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
+    }
     function shareOutcomeTwitter() {
         var text = 'I got: ' + leadingOutcome.text + ' -- ' + quizData.title;
         twitterShare(quizData, text);
     }
+    function copyToClipboard(text) {
+      window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+    }
+
     function titleContainerHTML() {
         var onclickStart = "quizWidgets['" + quizID + "'].startQuiz(this)";
         var onclickShareFB = "quizWidgets['" + quizID + "'].shareQuizFB()";
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
+        var onclickEmbedCode = "quizWidgets['" + quizID + "'].embedCode()";
+        
         var embedString = '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>';
         
         var html = "<div class='slide title-container'>";
@@ -216,7 +232,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "            </div>";
             html+= "            <span class='embed-code'>";
             html+= "                <input value='" + embedString + "' >";
-            html+= "                <img src='" + static_domain + "/icon/embed.png'></img>";
+            html+= "                <img src='" + static_domain + "/icon/embed.png' onclick=" + onclickEmbedCode + "></img>";
             html+= "            </span>";
             html+= "        </div>";
             html+= "        <div class='start-container touchable' data-huffpostlabs-btn onclick=" + onclickStart + ">";
@@ -281,7 +297,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
             html+= "    <div class='question-answers-container'>";
             html+= "        <div class='question-container'>";
-            html+= "            <h2 class='question-text'>" +  question.text + "</h2>";
+            html+= "            <h2 class='question-text'>" + (question.text || "") + "</h2>";
             html+= "        </div>";
             html+= "        <div class='answers-container total-answers-" + ((question.answerList.length < 5) ? question.answerList.length : 'more') + "' >";
 
@@ -300,7 +316,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function outcomeContentHTML(outcome) {
         var html = "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
-            html+= "    <p class='outcome-description'>" + (outcome.description || "") + "</p>";
+            html+= "    <h3 class='outcome-description'>" + (outcome.description || "") + "</h3>";
             html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
         return html;
     }
@@ -342,6 +358,9 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             shareQuizFB:        shareQuizFB,
             shareOutcomeFB:     shareOutcomeFB,
             shareQuizTwitter:   shareQuizTwitter,
+            embedCode:          embedCode,
             shareOutcomeTwitter:shareOutcomeTwitter,
+
+            reloadData: reloadData,
             };
 }

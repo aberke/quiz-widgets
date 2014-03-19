@@ -53,7 +53,7 @@
 				<li>Picture for share outcome: The outcome image if provided, otherwise defaults to the value above.</li>
 				<li>Caption for share quiz: "Find out..."</li>
 				<li>Caption for share outcome: "I got: {Outcome Text}"</li>
-				<li>Description: Pulled from the metadata of whichever page the share post is made from.</li>
+				<li>Description: Outcome's description if provided, otherwise pulled from the metadata of whichever page the share post is made from.</li>
 			</ul>
 		</div>
 	</section>
@@ -107,11 +107,10 @@
 				<input id='outcome-share-pic-url' type="url" ng-model="outcome.share.pic_url" placeholder="{{outcome.share.pic_url || outcome.pic_url}}">
 
 				<label>Description</label>
-				<input id='outcome-share-description' placeholder="{{outcome.share.description}}" type='text' ng-model='outcome.share.description' />
+				<input id='outcome-share-description' placeholder="{{outcome.description || outcome.share.description}}" type='text' ng-model='outcome.share.description' />
 
 				<button ng-click="saveOutcomeShare(outcome)" class='btn btn-sm btn-success'>SAVE</button>
 			</div>
-
 		</div>
 
 	</section>

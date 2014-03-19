@@ -19,7 +19,7 @@
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}" id='build-title'>
+		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 			<div class="slides-container">
 				<div class="slide title-container" style="top: 0%;">
 					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
@@ -33,7 +33,11 @@
 							<div class="twitter-share-container">
 								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
 								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
-							</div>        
+							</div>
+							<span class="embed-code">
+								<input value="&lt;div class=&quot;huffpostlabs-quiz&quot; id=&quot;SOME-LONG-ID&quot;&gt;&lt;/div&gt;&lt;script src=&quot;http://quiz.huffingtonpost.com/widget/q.js&quot;&gt;&lt;/script&gt;">
+								<img src="/icon/embed.png">
+							</span>       
 						</div>
 						<div class="start-container touchable">
 							<h2 class="start-text">START</h2>
@@ -53,16 +57,18 @@
 		<div id="outcomes" ng-repeat="outcome in quiz.outcomeList">
 			<p class='bold display-inline'>{{outcome.index}}.</p>
 
-			<p ng-show="outcome.answerList.length==1" class='display-inline remove-outcome btn-helper'>1 answer references this outcome</p>
-			<p ng-show="outcome.answerList.length>1" class='display-inline remove-outcome btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
-			<button ng-show="outcome.answerList.length==0" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
+			<div class='remove-edit-btns'>
+				<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
+				<p ng-show="outcome.answerList.length>1" class='display-inline btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
+				<button ng-show="outcome.answerList.length==0" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger'>X</button>
+			</div>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide outcome-container">
 						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{outcome.text}}</h1>
-							<p class="outcome-description">{{outcome.description}}</p>
+							<h3 class="outcome-description">{{outcome.description}}</h3>
 							<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
@@ -109,7 +115,7 @@
 					<div class="slide outcome-container">
 						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
 							<h1 class="outcome-text">{{new_outcome.text}}</h1>
-							<p class="outcome-description">{{new_outcome.description}}</p>
+							<h3 class="outcome-description">{{new_outcome.description}}</h3>
 							<span class="photo-credit">{{new_outcome.pic_credit || ""}}</span>
 						</div>
 						<div class="share-container">
@@ -141,7 +147,9 @@
 
 		<div id="questions" ng-repeat="question in quiz.questionList">
 			<p class='display-inline bold'>{{question.index}}.</p>
-			<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger delete-question-btn'>X</button>
+			<div class='remove-edit-btns'>
+				<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger'>X</button>
+			</div>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
@@ -184,8 +192,8 @@
 			<div class='new-answer' ng-repeat="a in new_question.answerList">
 				<label class='new-answer-label'>Answer {{a.index}}<button ng-show="new_question.answerList.length>2" ng-click="removeNewAnswer(a.index)" class='btn btn-xs btn-danger delete-new-answer-btn'>X</button></label>
 				
-				<div class='new-answer-inputs'>
-					<input id='new-answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
+				<div class='answer-inputs'>
+					<input id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
 
 					<input class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
 
@@ -197,12 +205,12 @@
 						</select>
 					</span>
 
-					<select id='new-answer-{{a.index}}-outcome' class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a.outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList">
+					<select id='new-answer-{{a.index}}-outcome' class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList">
 						<option value="">OUTCOME</option>
 					</select>
 				</div>
 			</div>
-			<button ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
+			<button ng-show="new_question.answerList.length<4" ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
@@ -276,14 +284,14 @@
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>
-		<h3 ng-show="quiz.title&&quiz.questionList.length&&quiz.outcomeList.length">Okay it's ready</h3>
+		<h3 id='ready-text' ng-show="quiz.title&&quiz.questionList.length&&quiz.outcomeList.length">Okay it's ready</h3>
 		
-		<h3 ng-show="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length">Still Required:</h3>
-			<p ng-show="!quiz.title">Title</p>
-			<p ng-show="!quiz.outcomeList.length">At least 1 Outcome</p>
-			<p ng-show="!quiz.questionList.length">At least 1 Question</p>
+		<h3 id='still-required-text' ng-show="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length">Still Required:</h3>
+			<p id='still-required-title' ng-show="!quiz.title">Title</p>
+			<p id='still-required-outcome' ng-show="!quiz.outcomeList.length">At least 1 Outcome</p>
+			<p id='still-required-question' ng-show="!quiz.questionList.length">At least 1 Question</p>
 
-		<button ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
+		<button id='create-quiz-btn' ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
 		<p class='inline-block btn-helper'>First preview the mobile version!</p>
 	</section> <!-- ********************* set-complete *********************  -->
 
@@ -291,8 +299,8 @@
 
 <div class='col-md-3'>
 	
-	<button ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
-	<button ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
+	<button id='view-mobile-btn' ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
+	<button id='view-non-mobile-btn' ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
 	<section id='instructions'>
 		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>
