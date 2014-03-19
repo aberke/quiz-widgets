@@ -17,8 +17,15 @@
 	// var static_domain = 'http://quiz.huffingtonpost.com';
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
-			Only use it for static assets...  not JSONP requests.. right?
+			Only use it for GET requests on foreign host
+			- if on our own host, we care to see changes right away, not cache
 	 */
+	var static_domain = 'http://quiz.huffingtonpost.com';
+	if (window.location.origin == domain) {
+		static_domain = domain;
+	}
+
+
 
 
 	this.quizWidgets = {};
@@ -117,7 +124,7 @@
 				picture: (outcomeShare.pic_url || outcome.pic_url || quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
 				link: (quizShare.link || window.location.href),
 				caption: (outcomeShare.caption || 'I got: ' + outcome.text),
-				description: (outcomeShare.description || quizShare.description || ''),
+				description: (outcomeShare.description || outcome.description || quizShare.description || ''),
 			}, 
 			function(response) {
 				if (response && response.post_id) {

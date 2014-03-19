@@ -38,14 +38,14 @@ api_routes.registerEndpoints(app);
 
 
 app.get('/', 			basicAuth, main_routes.serveBase);
-app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
 app.get('/new', 		basicAuth, main_routes.serveBase);
+app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
+app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
 app.get('/social/:id',  basicAuth, main_routes.serveBase);
-app.get('/s', function(req, res) {
-	res.sendfile('static/s.html')
+
+app.get('/err', function(req, res) {
+	res.send(500, {'err': "FAKE ERROR"})
 });
-
-
 
 
 

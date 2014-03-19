@@ -337,10 +337,14 @@
 	padding: 0.5em;
 }
 .huffpostlabs-quiz .outcome-description {
+<<<<<<< HEAD
 	color: white;
 	font-family: Arvo-Bold;
 	padding: 0 3em;
 	font-size: 14px;
+=======
+	padding: 20px;
+>>>>>>> 9deacf26b721d99544d3ad8ed4927fd03459d780
 }
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;
