@@ -178,6 +178,8 @@ describe('quiz widget edit page', function() {
 
     it ('Should successfully save changes to quiz refresh icon', function() {
     	var section = element(by.id('set-refresh-icon'));
+    	/* this section is initially hidden */
+    	section.element(by.css('.hide-show-btn')).click();
     	var save_btn = section.element(by.tagName('button'));
 		var saved_status_text = section.element(by.css('.saved-status-text'));
 
