@@ -242,14 +242,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= " </div>";
         return html;
     }
-    /* TODO: TAKE OUT */
-    function answerStyleString(answer) {
-        var styleString = "";
-        if (answer.pic_url) {
-            styleString = "background-image: url(" + answer.pic_url + ")";
-        }
-        return styleString;
-    }
     function answerAddImage(answer) {
         if (answer.pic_url) {
             if(answer.pic_style == 'bottom-right') {

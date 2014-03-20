@@ -342,7 +342,10 @@
 	color: white;
 	font-family: Arvo-Bold;
 	padding: 0 3em;
+<<<<<<< HEAD
 	font-size: 14px;
+=======
+>>>>>>> 8915abbeb8ae8107da1332eca1d747d003ddda72
 }
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;

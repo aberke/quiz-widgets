@@ -235,6 +235,10 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 				changeFunction($scope.quiz)
 			);
 		}
+		$scope.$watch(
+			'quiz.pic_url',
+			function() { UIService.updateQuizPic($scope.quiz.pic_url); }
+		);
 	}
 
 	var reloadQuiz = function() {
