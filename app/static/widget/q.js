@@ -9,15 +9,10 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-<<<<<<< HEAD
 	 var domain = 'http://127.0.0.1:8080';
 	//var domain = "http://4e5661f.ngrok.com";
 	//var domain = 'http://quizwidget-petri.dotcloud.com';
-=======
-	var domain = 'http://127.0.0.1:8080';
-	// var domain = 'http://quizwidget-petri.dotcloud.com';
 
->>>>>>> 8915abbeb8ae8107da1332eca1d747d003ddda72
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
 			Only use it for GET requests on foreign host
