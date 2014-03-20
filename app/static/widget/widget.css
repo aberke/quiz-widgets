@@ -291,6 +291,9 @@
 .huffpostlabs-quiz .answer-text {
 	margin: 0.8em;
 }
+.huffpostlabs-quiz .answer-text.long-text{
+	color: red; /*TODO*/
+}
 .huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
 	position: absolute;
@@ -337,6 +340,9 @@
 	color: white;
 	font-family: Arvo-Bold;
 	padding: 0.5em;
+}
+.huffpostlabs-quiz .outcome-text.long-text {
+	color: red;  /*TODO*/
 }
 .huffpostlabs-quiz .outcome-description {
 	color: white;
