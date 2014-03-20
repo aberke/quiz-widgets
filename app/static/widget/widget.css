@@ -109,6 +109,9 @@
 }
 .huffpostlabs-quiz h3 {
 	font-size: 1.5em;
+	position: relative;
+	z-index: 999;
+	word-wrap: break-word;
 }
 .huffpostlabs-quiz.mobile h3 {
 	font-size: 1.2em;
@@ -224,8 +227,27 @@
 	border-bottom: 1px solid white;
 	display: inline-flex;
 	position: absolute;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.huffpostlabs-quiz .answer-container img {
+	max-width: 50%;
+	max-height: 70%;
+	float:right;
+	position:absolute;
+	bottom:0;
+	right:0;
+	clear:right
+ }
+.huffpostlabs-quiz .answers-container.total-answers-more {
+	display: block;
 }
 
+.huffpostlabs-quiz .answers-container.total-answers-more .answer-container {
+	min-width: 50%;
+	height: 25%;
+	border-bottom: solid 1px #ffffff;
+}
 .huffpostlabs-quiz .answer-container {
 	height: 100%;
 	display: inline-block;
@@ -235,14 +257,17 @@
 	position: relative;
 	float: left;
 }
-.huffpostlabs-quiz .answer-container.bottom-right{
-	background-position: bottom right;
+.huffpostlabs-quiz .answer-container.bottom-right img{
+	max-width: 50%;
+	max-height: 70%;
 }
 .huffpostlabs-quiz .answer-container.cover{
 	background-size: cover;
+	background-position: center center;
 }
 .huffpostlabs-quiz .answer-container.contain{
 	background-size: contain;
+	background-position: bottom center;
 }
 
 .huffpostlabs-quiz .answers-container.total-answers-2 .answer-container {
@@ -265,6 +290,12 @@
 }
 .huffpostlabs-quiz .answer-text {
 	margin: 0.8em;
+}
+.huffpostlabs-quiz .answer-text.long-text{
+	font-size: 1.2em;
+}
+.huffpostlabs-quiz.mobile .answer-text.long-text{
+	font-size: 0.8em;
 }
 .huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
@@ -313,8 +344,17 @@
 	font-family: Arvo-Bold;
 	padding: 0.5em;
 }
+.huffpostlabs-quiz .outcome-text.long-text {
+	font-size: 2em;  /*TODO*/
+}
+.huffpostlabs-quiz.mobile .outcome-text.long-text {
+	font-size: 1.2em;  /*TODO*/
+}
 .huffpostlabs-quiz .outcome-description {
-	padding: 0.5em;
+	color: white;
+	font-family: Arvo-Bold;
+	padding: 0 3em;
+	font-size: 14px;
 }
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;
