@@ -143,6 +143,11 @@ section#preview #preview-text-container img{
 .instructions-text {
 	padding: 10px;
 	color: gray;
+	font-style: normal;
+}
+
+#edit-page .hide-show-btn {
+	margin-right: 10px;
 }
 
 #new-page .outcome,

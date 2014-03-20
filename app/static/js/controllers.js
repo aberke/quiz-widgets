@@ -7,6 +7,10 @@ function MainCntl($scope, $location) {
 
 	$scope.user = null;
 
+	$scope.scrollToTop = function() {
+		document.body.scrollTop = document.documentElement.scrollTop = 0;
+	}
+
 
 	$scope.newPage = function(){
 		$location.path('/new');
@@ -217,7 +221,6 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 	
 	*/
 	$scope.outcomeMap;
-	$scope.viewMobile = true;
 
 	var setWatchers = function() {
 		function changeFunction(object, callback) {
