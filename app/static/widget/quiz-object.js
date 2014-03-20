@@ -231,17 +231,25 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= " </div>";
         return html;
     }
-    /* TODO: TAKE OUT */
-    function answerStyleString(answer) {
-        var styleString = "";
-        if (answer.pic_url) {
-            styleString = "background-image: url(" + answer.pic_url + ")";
-        }
-        return styleString;
-    }
     function answerAddImage(answer) {
         if (answer.pic_url) {
-            return "style='background-image:url(" + answer.pic_url + ")'";
+            if(answer.pic_style == 'bottom-right') {
+                return "<img src='" + answer.pic_url + "'/>";
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
+    function answerAddBackgroundImage(answer) {
+        if (answer.pic_url) {
+            console.log(answer.pic_style == 'bottom-right');
+            if(answer.pic_style == 'bottom-right') {
+                return "";
+            } else {
+                return "style='background-image:url(" + answer.pic_url + ")'";
+            }
         } else {
             return "";
         }
@@ -276,7 +284,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
         for (var i=0; i<question.answerList.length; i++) {
             var a = question.answerList[i];
-            html+= "            <div data-quiz-answer=" + i + " data-huffpostlabs-btn onclick=" + onclickAnswer + " " + answerAddImage(a) + " class='touchable answer-container " + a.pic_style + "'>";
+            html+= "            <div data-quiz-answer=" + i + " data-huffpostlabs-btn onclick=" + onclickAnswer + " " + answerAddBackgroundImage(a) + " class='touchable answer-container " + a.pic_style + "'>";
+            html+= "                " + answerAddImage(a);
             html+= "                <h3 class='answer-text'>" + (a.text || "") + "</h3>";
             html+= "                <span class='photo-credit'>" + (a.pic_credit || "") + "</span>";
             html+= "            </div>";

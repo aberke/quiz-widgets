@@ -109,6 +109,9 @@
 }
 .huffpostlabs-quiz h3 {
 	font-size: 1.5em;
+	position: relative;
+	z-index: 999;
+	word-wrap: break-word;
 }
 .huffpostlabs-quiz.mobile h3 {
 	font-size: 1.2em;
@@ -224,8 +227,26 @@
 	border-bottom: 1px solid white;
 	display: inline-flex;
 	position: absolute;
+	overflow-y: auto;
+}
+.huffpostlabs-quiz .answer-container img {
+	max-width: 50%;
+	max-height: 70%;
+	float:right;
+	position:absolute;
+	bottom:0;
+	right:0;
+	clear:right
+ }
+.huffpostlabs-quiz .answers-container.total-answers-more {
+	display: block;
 }
 
+.huffpostlabs-quiz .answers-container.total-answers-more .answer-container {
+	min-width: 50%;
+	height: 25%;
+	border-bottom: solid 1px #ffffff;
+}
 .huffpostlabs-quiz .answer-container {
 	height: 100%;
 	display: inline-block;
@@ -235,14 +256,16 @@
 	position: relative;
 	float: left;
 }
-.huffpostlabs-quiz .answer-container.bottom-right{
+.huffpostlabs-quiz .answer-container.bottom-right img{
 	background-position: bottom right;
 }
 .huffpostlabs-quiz .answer-container.cover{
 	background-size: cover;
+	background-position: center center;
 }
 .huffpostlabs-quiz .answer-container.contain{
 	background-size: contain;
+	background-position: bottom center;
 }
 
 .huffpostlabs-quiz .answers-container.total-answers-2 .answer-container {
@@ -314,7 +337,9 @@
 	padding: 0.5em;
 }
 .huffpostlabs-quiz .outcome-description {
-	padding: 0.5em;
+	color: white;
+	font-family: Arvo-Bold;
+	padding: 0 3em;
 }
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;
