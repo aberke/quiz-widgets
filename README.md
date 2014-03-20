@@ -41,15 +41,12 @@ coming soon
 TODO
 ---
 
-- /edit
-	- clear out image from quiz successfully
 
 - finish e2e tests for /edit and /new
+	- e2e tests for outcomes
 - put user feedback on /social page
 	- no user feedback when stuff is saved -- its jarring
-- make script loading via HTTPS 
-	- so that it shows up in livepreview
-	- ask Piya about it
+
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
 - customize styling for outcomes?
@@ -65,6 +62,8 @@ TODO
 - write api tests
 - write e2e tests
 - make nice 404
+
+- put widget in a custom web component?
 
 Styling TODO for Wenting
 ---
@@ -101,7 +100,12 @@ neccessary api tests
 - on creating question, make sure answers point to valid outcomes
 	- outcome exists and belongs to the quiz that the question belongs to
 
+Unresolved Issues
+---
 
+- Quizzes will not show up in MT live preview
+	- MT is under HTTPS
+	- quizzes must stay under HTTP so they can load in their arbitrary assets
 
 
 

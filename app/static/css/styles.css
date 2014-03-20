@@ -160,7 +160,6 @@ section#preview #preview-text-container img{
 #new-page .delete-new-answer-btn,
 #new-page .delete-question-btn,
 #edit-page .remove-outcome,
-#edit-page .delete-new-answer-btn,
 #edit-page .delete-question-btn {
 	float: right;
 }

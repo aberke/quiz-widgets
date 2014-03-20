@@ -69,7 +69,7 @@
 				<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
 				
 				<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
-				<button ng-show="outcome.editing" ng-click="outcome.editing=false" class='btn btn-xs btn-warning'> - </button>
+				<button ng-show="outcome.editing&&outcome._id" ng-click="outcome.editing=false" class='btn btn-xs btn-warning'> - </button>
 
 				<button ng-show="outcome.editing" ng-disabled="outcome.saved!='unsaved'" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success edit-outcome'>SAVE</button>
 			</div>
@@ -126,12 +126,13 @@
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="A quiz must have at least 1 question.  Questions can currently have 2-4 answers.  We are in the process of making this number unlimited.">
 		<h3>Questions</h3>
 
-		<div class="question index-{{$index}}" ng-class="{editing: question.editing}" ng-repeat="question in quiz.questionList">
+		<div class="question index-{{$index}}" ng-class="{new:question.new, editing: question.editing}" ng-repeat="question in quiz.questionList">
 			<p class='display-inline bold'>{{$index + 1}}.</p>
 
 			<div class='remove-edit-btns'>
 				<button ng-show="$index>=1" ng-click="removeQuestion(question)" class='btn btn-xs btn-danger remove-question'>X</button>
-				<button ng-disabled="question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
+				<button ng-show="!question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
+				<button ng-show="question.editing&&question._id" ng-click="question.editing=false" class='btn btn-xs btn-warning hide-edit-question'> - </button>
 				<button ng-show="question.saved=='editing'||question.saved=='unsaved'||question.saved=='saving'" ng-disabled="question.saved!='unsaved'" ng-click="saveQuestion(question)" class='btn btn-xs btn-success save-question'>SAVE</button>
 				<p ng-show="question.saved!='editing'" ng-class="{'error': (question.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{question.saved}}</p>
 			</div>
@@ -142,8 +143,8 @@
 
 				<div class='answer' ng-repeat="a in question.answerList">
 					<div class='remove-edit-btns'>
-						<button ng-show="$index>1" ng-click="removeAnswer(question,a)" class='btn btn-xs btn-danger delete-new-answer-btn'>X</button>
-						<p ng-show="a.saved!='editing'" ng-class="{'error': (a.saved=='error')}" class='inline-block btn-helper'>{{a.saved}}</p>
+						<button ng-show="$index>1" ng-click="removeAnswer(question,a)" class='btn btn-xs btn-danger remove-answer'>X</button>
+						<p ng-class="{'error': (a.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{a.saved}}</p>
 					</div>
 					<label class='answer-label'>Answer {{$index + 1}}</label>
 					
@@ -160,7 +161,7 @@
 							</select>
 						</span>
 
-						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as o.text for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as o.text for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
 							<option value="">{{outcomeMap[a._outcome].text || a._outcome.text || 'OUTCOME'}}</option>
 						</select>
 					</div>
