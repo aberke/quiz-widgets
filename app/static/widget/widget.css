@@ -300,7 +300,7 @@
 /* for string > 200 */
 .huffpostlabs-quiz .answer-text.long-text.extra-long-text{
 	font-family: Arvo-Regular;
-	font-size: 1.0em;
+	font-size: 1em;
 }
 .huffpostlabs-quiz.mobile .answer-text.long-text.extra-long-text{
 	font-family: Arvo-Regular;
@@ -358,6 +358,15 @@
 }
 .huffpostlabs-quiz.mobile .outcome-text.long-text {
 	font-size: 1.2em;  /*TODO*/
+}
+/* for string > 200 */
+.huffpostlabs-quiz .outcome-text.long-text.extra-long-text{
+	font-family: Arvo-Regular;
+	font-size: 1.7em;
+}
+.huffpostlabs-quiz.mobile .outcome-text.long-text.extra-long-text{
+	font-family: Arvo-Regular;
+	font-size: 0.9em;
 }
 .huffpostlabs-quiz .outcome-description {
 	color: white;
