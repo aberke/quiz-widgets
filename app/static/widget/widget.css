@@ -297,6 +297,15 @@
 .huffpostlabs-quiz.mobile .answer-text.long-text{
 	font-size: 0.8em;
 }
+/* for string > 200 */
+.huffpostlabs-quiz .answer-text.long-text.extra-long-text{
+	font-family: Arvo-Regular;
+	font-size: 1.0em;
+}
+.huffpostlabs-quiz.mobile .answer-text.long-text.extra-long-text{
+	font-family: Arvo-Regular;
+	font-size: 0.7em;
+}
 .huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
 	position: absolute;
