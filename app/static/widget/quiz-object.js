@@ -286,7 +286,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             var a = question.answerList[i];
             html+= "            <div data-quiz-answer=" + i + " data-huffpostlabs-btn onclick=" + onclickAnswer + " " + answerAddBackgroundImage(a) + " class='touchable answer-container " + a.pic_style + "'>";
             html+= "                " + answerAddImage(a);
-            html+= "                <h3 class='answer-text'>" + (a.text || "") + "</h3>";
+            html+= "                <h3 class='answer-text" + ((a.text && a.text.length > 30) ? " long-text" : "") + "'>" + (a.text || "") + "</h3>";
             html+= "                <span class='photo-credit'>" + (a.pic_credit || "") + "</span>";
             html+= "            </div>";
         }
@@ -296,7 +296,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         return html;
     }
     function outcomeContentHTML(outcome) {
-        var html = "    <h1 class='outcome-text'>" + outcome.text + "</h1>";
+        var html = "    <h1 class='outcome-text" + ((outcome.text && outcome.text.length > 40) ? " long-text" : "") + "'>" + outcome.text + "</h1>";
             html+= "    <h3 class='outcome-description'>" + (outcome.description || "") + "</h3>";
             html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
         return html;
