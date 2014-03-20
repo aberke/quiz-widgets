@@ -292,7 +292,10 @@
 	margin: 0.8em;
 }
 .huffpostlabs-quiz .answer-text.long-text{
-	color: red; /*TODO*/
+	font-size: 1.2em;
+}
+.huffpostlabs-quiz.mobile .answer-text.long-text{
+	font-size: 0.8em;
 }
 .huffpostlabs-quiz span.photo-credit{
 	font-family: arial;
@@ -342,7 +345,10 @@
 	padding: 0.5em;
 }
 .huffpostlabs-quiz .outcome-text.long-text {
-	color: red;  /*TODO*/
+	font-size: 2em;  /*TODO*/
+}
+.huffpostlabs-quiz.mobile .outcome-text.long-text {
+	font-size: 1.2em;  /*TODO*/
 }
 .huffpostlabs-quiz .outcome-description {
 	color: white;
