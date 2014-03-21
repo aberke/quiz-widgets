@@ -57,9 +57,6 @@ var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
 	index: 		 Number, // questions are ordered -- deprecating -- let quiz.questionList handle
 	text:  		 String,
-	/* list of answers -- keeping answer1 and answer2 fields for backwards compatibility */
-	// answer1: 	 { type: ObjectId, ref: 'Answer'},
-	// answer2: 	 { type: ObjectId, ref: 'Answer'},
 	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
 var outcomeSchema = new Schema({
@@ -69,6 +66,7 @@ var outcomeSchema = new Schema({
 	text:   	 String,
 	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
+	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
 	pic_credit:  {type: String, default: null},
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
