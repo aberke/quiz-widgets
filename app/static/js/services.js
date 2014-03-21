@@ -9,110 +9,103 @@ var FormService = function() {
     return false;
   };
 
-  return {
+  /* helpers to keep error representation consistent -- used on new page */
+  this.removeAllErrors = function() {
+    /* first remove previous errors */
+    $('.error').removeClass('error');
+  };
+  this.addError = function(elt) {
+    elt.addClass('error');
+  };
 
-    /* helpers to keep error representation consistent */
-    removeAllErrors: function() {
-      /* first remove previous errors */
-      $('.error').removeClass('error');
-    },
-    addError: function(elt) {
-      elt.addClass('error');
-    },
-
-    /* handles checking if given input or select elements are empty and colors with class 'error' if so */
-    checkInput: function(elementIDsList) {
-      var error = false;
-      for(var i=0; i < elementIDsList.length; i++) {
-        var elt = $('#' + elementIDsList[i]);
-        if(!elt.val()) {
-          this.addError(elt);
-          error = true;
-        }
+  /* handles checking if given input or select elements are empty and colors with class 'error' if so */
+  this.checkInput = function(elementIDsList) {
+    var error = false;
+    for(var i=0; i < elementIDsList.length; i++) {
+      var elt = $('#' + elementIDsList[i]);
+      if(!elt.val()) {
+        this.addError(elt);
+        error = true;
       }
-      return error;
-    },
+    }
+    return error;
+  };
 
-    /* parameter: [{model: model, elementID: id} 
-        -- checks that given model is set and if not adds error class to element */
-    checkModel: function(modelElementIDList) {
-      error = false;
-      for (var i=0; i < modelElementIDList.length; i++) {
-        var model = modelElementIDList[i].model;
-        if (model == null || model == undefined || model =='') {
-          var elt = $('#' + modelElementIDList[i].elementID);
-          this.addError(elt);
-          error = true;
-        }
+  /* parameter: [{model: model, elementID: id} 
+      -- checks that given model is set and if not adds error class to element */
+  this.checkModel = function(modelElementIDList) {
+    error = false;
+    for (var i=0; i < modelElementIDList.length; i++) {
+      var model = modelElementIDList[i].model;
+      if (model == null || model == undefined || model =='') {
+        var elt = $('#' + modelElementIDList[i].elementID);
+        this.addError(elt);
+        error = true;
       }
-      return error;
-    },
+    }
+    return error;
+  };
 
-    /* model checking functions --------------------------------
-        -- return true if there is an error, false otherwise 
-    */
-    checkQuestionError: function(question) {
-      question.error = { 'any':false, 'text': false };
-      /* check that it has text */
-      if (checkModelError(question.text)) {
-        question.error.text = true;
+  /* model checking functions --------------------------------
+      -- return true if there is an error, false otherwise 
+  */
+  this.checkQuestionError = function(question) {
+    question.error = { 'any':false, 'text': false };
+    /* check that it has text */
+    if (checkModelError(question.text)) {
+      question.error.text = true;
+      question.error.any = true;
+    }
+    /* check each answer for error */
+    for (var i=0; i<question.answerList.length; i++) {
+      if (this.checkAnswerError(question.answerList[i])) {
         question.error.any = true;
       }
-      /* check each answer for error */
-      for (var i=0; i<question.answerList.length; i++) {
-        if (this.checkAnswerError(question.answerList[i])) {
-          question.error.any = true;
-        }
-      }
-      return question.error.any;
-    },
-    checkAnswerError: function(answer) {
-      answer.error = { 'any': false, '_outcome': false };
-      /* verify outcome is in outcomeMap */
-      if (!answer._outcome) {
-        answer.error.any = true;
-        answer.error._outcome = true;
-      }
-      return answer.error.any;
-    },
-    checkOutcomeError: function(outcome) {
-      outcome.error = { 'any': false, 'text': false };
+    }
+    return question.error.any;
+  };
+  this.checkAnswerError = function(answer) {
+    answer.error = { 'any': false, '_outcome': false };
+    /* verify outcome is in outcomeMap */
+    if (!answer._outcome) {
+      answer.error.any = true;
+      answer.error._outcome = true;
+    }
+    return answer.error.any;
+  };
+  this.checkOutcomeError = function(outcome) {
+    outcome.error = { 'any': false, 'text': false };
 
-      /* outcome must have text */
-      if (checkModelError(outcome.text)) { /* returns model.error value -- if outcome.text has error, then outcome should too */
-        outcome.error.text = true;
-        outcome.error.any  = true;
-      }
-      return outcome.error.any;
-    },
+    /* outcome must have text */
+    if (checkModelError(outcome.text)) { /* returns model.error value -- if outcome.text has error, then outcome should too */
+      outcome.error.text = true;
+      outcome.error.any  = true;
+    }
+    return outcome.error.any;
+  };
 
-    /* model checking functions above -------------------------------- */
-  }
+  /* model checking functions above -------------------------------- */
 }
 
 WidgetService = function() {
 
-  return {
+  this.setupOutcomeAnswerLists = function(quiz) {
+    /* give each outcome in outcomeList an answerList of answer _id's */
 
-    setupOutcomeAnswerLists: function(quiz) {
-      /* give each outcome in outcomeList an answerList of answer _id's */
-
-      var outcomeMap = {}; // {outcomeID: index in outcomeList}
-      for (var i=0; i<quiz.outcomeList.length; i++) {
-        var outcome = quiz.outcomeList[i];
-        outcome.answerList = [];
-        outcomeMap[outcome._id] = i;
+    var outcomeMap = {}; // {outcomeID: index in outcomeList}
+    for (var i=0; i<quiz.outcomeList.length; i++) {
+      var outcome = quiz.outcomeList[i];
+      outcome.answerList = [];
+      outcomeMap[outcome._id] = i;
+    }
+    /* create answerList for each outcome and push on answers */
+    for (var i=0; i<quiz.questionList.length; i++) {
+      var question = quiz.questionList[i];
+      for (var j=0; j<question.answerList.length; j++) {
+        var answer = question.answerList[j];
+        quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
       }
-      /* create answerList for each outcome and push on answers */
-      for (var i=0; i<quiz.questionList.length; i++) {
-        var question = quiz.questionList[i];
-        for (var j=0; j<question.answerList.length; j++) {
-          var answer = question.answerList[j];
-          quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
-        }
-      }
-    },
-
+    }
   };
 
 }
@@ -122,24 +115,18 @@ var UIService = function($timeout){
   var stylesheet = document.createElement('style');
   document.body.appendChild(stylesheet);
 
-  return {
-
-    setupPopovers: function() {
-      /* wait for angular to get back and render verified callers */
-      $timeout(function(){
-        $('.popover-hover').popover({trigger: 'hover'});
-      }, 3000);
-    },
-
-    addStyle: function(rule) {
-        stylesheet.innerHTML += rule;
-    },
-
-
-    updateQuizPic: function(pic_url) {
-      this.addStyle('.huffpostlabs-quiz::after {background-image: url(' + pic_url + ');}');
-    },
-  }
+  this.setupPopovers = function() {
+    /* wait for angular to get back and render verified callers */
+    $timeout(function(){
+      $('.popover-hover').popover({trigger: 'hover'});
+    }, 3000);
+  };
+  this.addStyle = function(rule) {
+      stylesheet.innerHTML += rule;
+  };
+  this.updateQuizPic = function(pic_url) {
+    this.addStyle('.huffpostlabs-quiz::after {background-image: url(' + pic_url + ');}');
+  };
 }
 
 var HTTPService = function($http, $q){
@@ -169,26 +156,23 @@ var HTTPService = function($http, $q){
   }
   HTTPServiceError.prototype = Error.prototype;
 
-  return {
 
     /* ---------- below functions return promises --------------------------- */
-    GETquiz: function(id, onSuccess, onError) {
-      return this.GET('/api/quiz/' + id);
-    },
+  this.GETquiz = function(id, onSuccess, onError) {
+    return this.GET('/api/quiz/' + id);
+  };
 
+  this.GET= function(url) {
+    return HTTP('GET', url, null);
+  };
+  this.POST= function(url, data) {
+    return HTTP('POST', url, data);
+  };
+  this.PUT= function(url, data) {
+    return HTTP('PUT', url, data);
+  };
+  this.DELETE= function(url) {
+    return HTTP('DELETE', url, null);
+  };
 
-    GET: function(url) {
-      return HTTP('GET', url, null);
-    },
-    POST: function(url, data) {
-      return HTTP('POST', url, data);
-    },
-    PUT: function(url, data) {
-      return HTTP('PUT', url, data);
-    },
-    DELETE: function(url) {
-      return HTTP('DELETE', url, null);
-    },
-
-  }
 };
