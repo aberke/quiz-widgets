@@ -372,7 +372,6 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 				WidgetService.setupOutcomeAnswerLists($scope.quiz);
 				question.editing = false;
 				question.saved = 'saved';
-				console.log($scope.quiz);
 			}
 		}
 		var questionCallback = function(questionData) {

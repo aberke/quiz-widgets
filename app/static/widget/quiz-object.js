@@ -255,8 +255,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function answerAddBackgroundImage(answer) {
         if (answer.pic_url) {
-            console.log(answer.pic_style == 'bottom-right');
-            if(answer.pic_style == 'bottom-right') {
+            if (answer.pic_style == 'bottom-right') {
                 return "";
             } else {
                 return "style='background-image:url(" + answer.pic_url + ")'";
