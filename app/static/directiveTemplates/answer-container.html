@@ -1,0 +1,3 @@
+<img ng-if="(!answer.pic_style||answer.pic_style=='bottom-right')&&answer.pic_url" ng-src="{{answer.pic_url}}" />
+<h3 ng-class="{'long-text':(answer.text&&answer.text.length>40), 'extra-long-text':(answer.text&&answer.text.length>200)}" class="answer-text">{{answer.text}}</h3>
+<span class="photo-credit">{{answer.pic_credit}}</span>
