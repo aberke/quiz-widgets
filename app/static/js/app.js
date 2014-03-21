@@ -7,7 +7,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 
 	})
 
-	.config(function($provide) {
+	.config(function($provide, $compileProvider) {
 	
 		// register services
 		$provide.service('UIService', UIService);
@@ -15,4 +15,6 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		$provide.service('FormService', FormService);
 		$provide.service('WidgetService', WidgetService);
 
+		// register directives
+		$compileProvider.directive('answerContainer', answerContainer);
 	});

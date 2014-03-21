@@ -43,6 +43,7 @@ TODO
 
 - fix styling on answer image -- /edit and /new don't match widget
 - use directives
+- customize styling for outcomes
 
 
 - finish e2e tests for /edit and /new
@@ -52,7 +53,6 @@ TODO
 
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
-- customize styling for outcomes?
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
 	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
