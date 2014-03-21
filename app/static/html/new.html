@@ -169,7 +169,7 @@
 							<div class="question-container">
 								<h2 class="question-text">{{question.text}}</h2>
 							</div>
-							<div ng-class="{'total-answers-more': (question.answerList.length > 4)}" class="answers-container total-answers-{{question.answerList.length}}">
+							<div ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (question.answerList.length > 4)}" class="answers-container total-answers-{{question.answerList.length}}">
 								<answer-container ng-repeat="answer in question.answerList"></answer-container>
 							</div>
 						</div>
@@ -227,7 +227,7 @@
 							<div class="question-container">
 								<h2 class="question-text">{{new_question.text}}</h2>
 							</div>
-							<div class="answers-container total-answers-{{new_question.answerList.length}}" ng-class="{'total-answers-more': (new_question.answerList.length > 4)}">
+							<div class="answers-container total-answers-{{new_question.answerList.length}}" ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (new_question.answerList.length > 4)}">
 								<answer-container ng-repeat="answer in new_question.answerList"></answer-container>
 							</div>
 						</div>
