@@ -307,7 +307,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         for (var i=0; i<question.answerList.length; i++) {
             var a = question.answerList[i];
             html+= "            <div data-quiz-answer=" + i + " data-huffpostlabs-btn onclick=" + onclickAnswer + " " + answerAddBackgroundImage(a) + " class='touchable answer-container " + a.pic_style + "'>";
-            html+= "                " + answerAddImage(a);
+            html+=                  answerAddImage(a);
             html+= "                <h3 class='answer-text" + textClass(a.text) + "'>" + (a.text || "") + "</h3>";
             html+= "                <span class='photo-credit'>" + (a.pic_credit || "") + "</span>";
             html+= "            </div>";

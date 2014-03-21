@@ -41,6 +41,9 @@ coming soon
 TODO
 ---
 
+- fix styling on answer image -- /edit and /new don't match widget
+- use directives
+
 
 - finish e2e tests for /edit and /new
 	- e2e tests for outcomes
