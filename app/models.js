@@ -63,7 +63,7 @@ var outcomeSchema = new Schema({
 	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
 	share: 		 {type: ObjectId, ref: 'Share', default: null},
 	index: 		 Number, // ordered -- deprecating -- let quiz.outcomeList handle
-	text:   	 String,
+	text:   	 {type: String, default: null},
 	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
 	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'

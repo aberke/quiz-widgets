@@ -320,10 +320,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function outcomeContentHTML(outcome) {
         var html = "";
+            html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + outcome.text + "</h1>";
         if ((outcome.pic_style == 'float-right') && outcome.pic_url) {
             html+= "    <img src=" + outcome.pic_url + " />"
         }
-            html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + outcome.text + "</h1>";
             html+= "    <h3 class='outcome-description'>" + (outcome.description || "") + "</h3>";
             html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
         return html;

@@ -15,7 +15,6 @@ var outcomeContainer = function() {
 	}
 	return {
 		restrict: 'E',
-		scope: {outcome: "=outcome"},
 		link: function(scope, element, attrs) {
 			console.log(scope)
 			var content = element[0].querySelector('.outcome-content');

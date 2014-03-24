@@ -47,51 +47,49 @@
 			</div>
 		</div>
 
-	</section> <!-- ********************* set-title *********************  -->
-
+	</section> 
+	<!-- ********************* set-title *********************  -->
 
 	<!-- ********************* set-outcomes *********************  -->
 	<section id='set-outcomes'>
-		<h3>Outcomes</h3>
-
-		<div id="outcomes" ng-repeat="outcome in quiz.outcomeList">
-			<p class='bold display-inline'>{{outcome.index}}.</p>
+		<h3>
+			<button ng-show="showingOutcomes" ng-click="hideOutcomes()" class='btn btn-default hide-show-btn'> - </button>
+			<button ng-show="!showingOutcomes" ng-click="showOutcomes()" class='btn btn-default hide-show-btn'> + </button>
+			Outcomes
+			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
+		</h3>
+		<span ng-show="showingOutcomes">
+		<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
+			<p class='bold display-inline'>{{$index + 1}}.</p>
 
 			<div class='remove-edit-btns'>
 				<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
 				<p ng-show="outcome.answerList.length>1" class='display-inline btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
-				<button ng-show="outcome.answerList.length==0" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger'>X</button>
+				<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
+				
+				<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
+				<button ng-show="outcome.editing" ng-click="outcome.editing=false" class='btn btn-xs btn-success'>OK</button>
 			</div>
 
-			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<outcome-container></outcome-container>
-				</div>
-			</div>
-		</div>
+			<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
+				<label>Text</label>
+				<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
 
+				<label>Description</label>
+				<textarea maxlength="250" ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
 
-		<button ng-disabled="showAddNewOutcome" ng-click="showAddNewOutcome=true" id='show-add-outcome-btn' class='btn btn-sm btn-success'>+ Add New Outcome</button>
-		
+				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image will also be used as a thumbnail when sharing result to social networks.
+				Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use a small image for better performance">Image/GIF URL</label>
+				<input ng-change="outcome.saved='unsaved'" id='outcome-pic-url' type="url" ng-model="outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
 
-		<div ng-show="showAddNewOutcome" ng-model='new_outcome'>
-			<label><i class='required-star'>*</i>Text:</label>
-			<input id='new-outcome-text' type='text' ng-model='new_outcome.text' />
+				<span ng-show="outcome.pic_url">
+					<label>Photo Credit</label>
+					<input ng-change="outcome.saved='unsaved'" id='new-outcome-pic-credit' type='text' ng-model='outcome.pic_credit' />
 
-			<label>Description:</label>
-			<textarea id='new-outcome-description' ng-model='new_outcome.description'></textarea>
-
-			<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image will also be used as a thumbnail when sharing result to social networks.
-			Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://'.  HINTS: Use an image with a transparent background. If it's a large image it will take a while to load.">Image/GIF URL</label>
-			<input id='new-outcome-pic-url' type="url" ng-model="new_outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
-
-			<span ng-show="new_outcome.pic_url">
-				<label>Photo Credit</label>
-				<input id='new-outcome-pic-credit' type='text' ng-model='new_outcome.pic_credit' />
-
-				<label>Image/GIF styling</label>
-				<select class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='new_outcome.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
-				</select>
+					<label>Image/GIF styling</label>
+					<select ng-change="outcome.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='outcome.pic_style' ng-options="s for s in ['bottom-right', 'float-right', 'cover', 'contain']" >
+					</select>
+				</span>
 			</span>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
@@ -99,20 +97,64 @@
 					<outcome-container></outcome-container>
 				</div>
 			</div>
-
-			<button ng-click="showAddNewOutcome=false;new_outcome={}" id='add-outcome-btn' class='btn btn-sm btn-danger'>Cancel</button>
-			<button ng-click="addNewOutcome(new_outcome)" id='add-outcome-btn' class='btn btn-sm btn-success'>Done</button>
 		</div>
+
+		<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
+		</span> <!-- hide-show-outcomes -->
+		
 	</section> <!-- ********************* set-outcomes *********************  -->
 
 	<!-- ********************* set-questions *********************  -->
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have unlimited answers, but we warn you that scroll bars do not show up on mobile until the user touches the screen (this is a web browser problem, not a quiz problem).">
-		<h3>Questions</h3>
+		<h3 class='display-inline'>
+			<button ng-show="showingQuestions" ng-click="hideQuestions()" class='btn btn-default hide-show-btn'> - </button>
+			<button ng-disabled="quiz.outcomeList.length==0" ng-show="!showingQuestions" ng-click="showQuestions()" class='btn btn-default hide-show-btn'> + </button>
+			Questions
+			<em class='instructions-text'>({{quiz.questionList.length}})</em>
+		</h3>
+		<p ng-show="quiz.outcomeList.length==0" class='inline-block instructions-text'>First create the outcomes</p>
 
-		<div id="questions" ng-repeat="question in quiz.questionList">
-			<p class='display-inline bold'>{{question.index}}.</p>
+		<span ng-show="showingQuestions">
+		<div class="question index-{{$index}}" ng-class="{new:question.new, editing: question.editing}" ng-repeat="question in quiz.questionList">
+			<p class='display-inline bold'>{{$index + 1}}.</p>
+
 			<div class='remove-edit-btns'>
-				<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger'>X</button>
+				<button ng-show="$index>=1" ng-click="removeQuestion(question)" class='btn btn-xs btn-danger remove-question'>X</button>
+				<button ng-show="!question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
+				<button ng-show="question.editing&&question._id" ng-click="question.editing=false" class='btn btn-xs btn-warning hide-edit-question'> - </button>
+				<button ng-show="question.saved=='editing'||question.saved=='unsaved'||question.saved=='saving'" ng-disabled="question.saved!='unsaved'" ng-click="saveQuestion(question)" class='btn btn-xs btn-success save-question'>SAVE</button>
+				<p ng-show="question.saved!='editing'" ng-class="{'error': (question.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{question.saved}}</p>
+			</div>
+
+			<div ng-show="question.editing">
+				<label>Question Text:</label>
+				<input ng-change="question.saved='unsaved'" class='question-text' type='text' ng-model='question.text' required ng-class="{error: question.error.text}">
+
+				<div class='answer' ng-repeat="a in question.answerList">
+					<div class='remove-edit-btns'>
+						<button ng-show="$index>1" ng-click="removeAnswer(question,a,$index)" class='btn btn-xs btn-danger remove-answer'>X</button>
+					</div>
+					<label class='answer-label'>Answer {{$index + 1}}</label>
+					
+					<div class='answer-inputs'>
+						<input ng-change="a.saved='unsaved';question.saved='unsaved'" id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
+
+						<input ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
+
+						<span ng-show="a.pic_url">
+							<input placeholder='PHOTO CREDIT' class='answer-pic-credit' type='text' ng-model='a.pic_credit' ng-change="a.saved='unsaved';question.saved='unsaved'"/>
+							
+							<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
+								<option value="">IMAGE/GIF STYLING</option>
+							</select>
+						</span>
+
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as o.text for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+							<option value="">{{a._outcome.text || 'OUTCOME'}}</option>
+						</select>
+					</div>
+				</div>
+				<button ng-show="question.answerList.length<4" ng-click="question.answerList.push({new:true,'saved':'unsaved'})" class='btn btn-sm btn-default btn-sm add-answer-btn'><strong>+ Answer</strong></button>
 			</div>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
@@ -133,7 +175,7 @@
 							<div class="question-container">
 								<h2 class="question-text">{{question.text}}</h2>
 							</div>
-							<div ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (question.answerList.length > 4)}" class="answers-container total-answers-{{question.answerList.length}}">
+							<div class="answers-container total-answers-{{question.answerList.length}}" ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (question.answerList.length > 4)}">
 								<answer-container ng-repeat="answer in question.answerList"></answer-container>
 							</div>
 						</div>
@@ -142,66 +184,8 @@
 			</div>
 
 		</div>
-
-		<button ng-disabled="quiz.outcomeList.length==0||showAddNewQuestion" ng-click="showAddNewQuestion=true;new_question={'answerList':[{'index':1}, {'index':2}]}" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
-		<p ng-show="quiz.outcomeList.length==0" class='inline-block btn-helper'>First create the outcomes</p>
-
-		<div ng-if="showAddNewQuestion" ng-model="new_question">
-			<label>Question Text:</label>
-			<input id='new-question-text' type='text' ng-model='new_question.text' required >
-
-			<div class='new-answer' ng-repeat="a in new_question.answerList">
-				<label class='new-answer-label'>Answer {{a.index}}<button ng-show="new_question.answerList.length>2" ng-click="removeNewAnswer(a.index)" class='btn btn-xs btn-danger delete-new-answer-btn'>X</button></label>
-				
-				<div class='answer-inputs'>
-					<input id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
-
-					<input class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
-
-					<span ng-show="a.pic_url">
-						<input placeholder='PHOTO CREDIT' class='new-answer-pic-credit' type='text' ng-model='a.pic_credit' />
-						
-						<select class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
-							<option value="">IMAGE/GIF STYLING</option>
-						</select>
-					</span>
-
-					<select id='new-answer-{{a.index}}-outcome' class="popover-hover" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o.index+'. '+o.text for o in quiz.outcomeList">
-						<option value="">OUTCOME</option>
-					</select>
-				</div>
-			</div>
-			<button ng-show="new_question.answerList.length<4" ng-click="new_question.answerList.push({'index':(new_question.answerList.length+1)})" class='btn btn-sm btn-success'>+ Answer</button>
-
-			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<div class="slide">
-						<div class="question-share-container">
-							<div class='previous-btn'></div>
-							<div class="fb-share-container">
-								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
-								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
-							</div>
-							<div class="twitter-share-container">
-								<img width="30px" height="30px" class='twitter-share-btn share touchable' src="http://quiz.huffingtonpost.com/icon/twitter-icon.png">
-								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
-							</div>
-						</div>
-						<div class="question-answers-container">
-							<div class="question-container">
-								<h2 class="question-text">{{new_question.text}}</h2>
-							</div>
-							<div class="answers-container total-answers-{{new_question.answerList.length}}" ng-class="total-answers-{{new_question.answerList.length}}" ng-class="{'total-answers-more': (new_question.answerList.length > 4)}">
-								<answer-container ng-repeat="answer in new_question.answerList"></answer-container>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<button ng-click="showAddNewQuestion=false" class='btn btn-sm btn-danger'>Cancel</button>
-			<button ng-click="addNewQuestion(new_question)" id='add-question-btn' class='btn btn-sm btn-success'>Done</button>
-		</div>
+		<button ng-disabled="quiz.questionList[quiz.questionList.length-1].editing" ng-click="addQuestion()" id='add-question-btn' class='btn btn-sm btn-default'>+ Give me more</button>
+	</span> <!-- hide/show questions -->
 	</section> <!-- ********************* set-questions *********************  -->
 
 

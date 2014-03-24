@@ -41,7 +41,8 @@ coming soon
 TODO
 ---
 
-- fix styling on answer image -- /edit and /new don't match widget
+- deal with linger image in background
+
 - use directives
 - customize styling for outcomes
 
