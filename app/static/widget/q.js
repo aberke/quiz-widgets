@@ -82,7 +82,7 @@
 		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
-	   if (!FB) {
+	   if (window.FB == undefined) {
 	   	console.log('!FB');
 		window.fbAsyncInit = function() {
 			FB.init({
