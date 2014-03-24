@@ -82,6 +82,8 @@
 		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
+	   if (window.FB == undefined) {
+	   	console.log('window.FB == undefined');
 		window.fbAsyncInit = function() {
 			FB.init({
 				appId      : appID,
@@ -90,6 +92,7 @@
 			});
 		};
 		(function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) {return;}js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/all.js";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+	   }
 		/* ------------- necessary setup straight from FB above ----------- */
 		
 

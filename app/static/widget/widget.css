@@ -319,6 +319,7 @@
 	font-size: 0.7em;
 }
 .huffpostlabs-quiz span.photo-credit{
+	font-size: 11px;
 	font-family: arial;
 	position: absolute;
 	display: block;
@@ -329,6 +330,9 @@
 	background-color: rgba(0,0,0,0.3);
 	font-weight: normal;
 	display: none;
+}
+.huffpostlabs-quiz.mobile span.photo-credit{
+	font-size: 8px;
 }
 .huffpostlabs-quiz .slide:hover span.photo-credit{
 	display: block;
