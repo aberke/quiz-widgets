@@ -132,6 +132,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 	}
 	$scope.addOutcome = function() {
 		$scope.quiz.outcomeList.push({editing:true, answerList:[]});
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 	}
 
 	$scope.removeOutcome = function(outcome) {
@@ -162,7 +163,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 		$scope.showingQuestions = false;
 	}
 	$scope.addQuestion = function() {
-		$scope.quiz.questionList.push({'answerList':[{},{},], 'editing':true,});
+		$scope.quiz.questionList.push({_id: Math.random(), 'answerList':[{},{},], 'editing':true,});
 	}
 	$scope.saveQuestion = function(question) {
 		if (FormService.checkQuestionError(question)) {
@@ -178,11 +179,14 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 		}
 		/* take all that question's answers out of their respective outcome.answerList's */
 		for (var i=0; i<question.answerList.length; i++) {
-			removeAnswer(question.answerList[i]);
+			$scope.removeAnswer(question, question.answerList[i], i);
 		}
 	}
+	$scope.addAnswer = function(question) {
+		question.answerList.push({_id: Math.random()});
+	}
 	$scope.removeAnswer = function(question,answer,index) {
-		$scope.quiz.answerList.splice(index, 1);
+		question.answerList.splice(index, 1);
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 	}
 	// $scope.addNewQuestion = function(new_question) {
