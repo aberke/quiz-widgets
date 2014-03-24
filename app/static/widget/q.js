@@ -9,8 +9,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	 var domain = 'http://127.0.0.1:8080';
-	//var domain = 'http://quizwidget-petri.dotcloud.com';
+	// var domain = 'http://127.0.0.1:8080';
+	var domain = 'http://quizwidget-petri.dotcloud.com';
 
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
@@ -82,6 +82,8 @@
 		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
+	   if (!FB) {
+	   	console.log('!FB');
 		window.fbAsyncInit = function() {
 			FB.init({
 				appId      : appID,
@@ -90,6 +92,7 @@
 			});
 		};
 		(function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) {return;}js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/all.js";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+	   }
 		/* ------------- necessary setup straight from FB above ----------- */
 		
 
