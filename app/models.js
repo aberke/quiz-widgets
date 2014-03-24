@@ -66,7 +66,7 @@ var outcomeSchema = new Schema({
 	text:   	 String,
 	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
-	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
+	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'
 	pic_credit:  {type: String, default: null},
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
@@ -201,8 +201,9 @@ var constructOutcome = function(outcomeData) {
 		_quiz:  	 outcomeData._quiz,
 		index: 		 outcomeData.index, // ordered
 		text:   	 outcomeData.text,
-		description: (outcomeData.description 	 || null),
+		description: (outcomeData.description|| null),
 		pic_url: 	 (outcomeData.pic_url 	 || null),
+		pic_style: 	 (outcomeData.pic_style  || "bottom-right"),
 		pic_credit:  (outcomeData.pic_credit || null),
 	});
 	return new_outcome;
@@ -272,7 +273,6 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		});
 
 		for (var j=0; j<questionData.answerList.length; j++) {
-			console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
 			var answerData = questionData.answerList[j];
 			answerData._outcome = outcomeDict[answerData._outcome.index];
 			addAnswer(answerData, newQuestion); // handles question.answerList.push and answer.save

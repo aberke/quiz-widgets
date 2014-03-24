@@ -1,0 +1,21 @@
+<div class="outcome-content" ng-class="(outcome.pic_style||'float-right')">
+	<img ng-if="(outcome.pic_style=='float-right')&&outcome.pic_url" ng-src="{{outcome.pic_url}}" />
+
+	<h1 ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text}}</h1>
+	<h3 class="outcome-description">{{outcome.description}}</h3>
+	<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
+</div>
+<div class="share-container">
+	<div class="fb-share-container">
+		<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
+		<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
+	</div>            
+	<div class="twitter-share-container">
+		<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+		<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
+	</div>        
+	<div class="share-text">
+		<p>Share your results</p>
+	</div>
+	<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
+</div>

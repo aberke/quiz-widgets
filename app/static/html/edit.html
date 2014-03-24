@@ -93,32 +93,16 @@
 				<span ng-show="outcome.pic_url">
 					<label>Photo Credit</label>
 					<input ng-change="outcome.saved='unsaved'" id='new-outcome-pic-credit' type='text' ng-model='outcome.pic_credit' />
+
+					<label>Image/GIF styling</label>
+					<select ng-change="outcome.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='outcome.pic_style' ng-options="s for s in ['bottom-right', 'float-right', 'cover', 'contain']" >
+					</select>
 				</span>
 			</span>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-					<div class="slide outcome-container">
-						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
-							<h1 ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text}}</h1>
-							<h3 class="outcome-description">{{outcome.description}}</h3>
-							<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
-						</div>
-						<div class="share-container">
-							<div class="fb-share-container">
-								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
-								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
-							</div>            
-							<div class="twitter-share-container">
-								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
-							</div>        
-							<div class="share-text">
-								<p>Share your results</p>
-							</div>
-							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
-						</div>
-					</div>
+					<outcome-container></outcome-container>
 				</div>
 			</div>
 		</div>

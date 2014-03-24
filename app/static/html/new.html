@@ -65,27 +65,7 @@
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-					<div class="slide outcome-container">
-						<div style="background-image: url({{outcome.pic_url}})" class="outcome-content">
-							<h1 ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text}}</h1>
-							<h3 class="outcome-description">{{outcome.description}}</h3>
-							<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
-						</div>
-						<div class="share-container">
-							<div class="fb-share-container">
-								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
-								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
-							</div>            
-							<div class="twitter-share-container">
-								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
-							</div>        
-							<div class="share-text">
-								<p>Share your results</p>
-							</div>
-							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
-						</div>
-					</div>
+					<outcome-container></outcome-container>
 				</div>
 			</div>
 		</div>
@@ -108,31 +88,15 @@
 			<span ng-show="new_outcome.pic_url">
 				<label>Photo Credit</label>
 				<input id='new-outcome-pic-credit' type='text' ng-model='new_outcome.pic_credit' />
+
+				<label>Image/GIF styling</label>
+				<select class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='new_outcome.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
+				</select>
 			</span>
 
 			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-					<div class="slide outcome-container">
-						<div style="background-image: url({{new_outcome.pic_url}})" class="outcome-content">
-							<h1 ng-class="{'long-text':(new_outcome.text&&new_outcome.text.length>40), 'extra-long-text':(new_outcome.text&&new_outcome.text.length>200)}" class="outcome-text">{{new_outcome.text}}</h1>
-							<h3 class="outcome-description">{{new_outcome.description}}</h3>
-							<span class="photo-credit">{{new_outcome.pic_credit || ""}}</span>
-						</div>
-						<div class="share-container">
-							<div class="fb-share-container">
-								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
-								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
-							</div>            
-							<div class="twitter-share-container">
-								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
-							</div>        
-							<div class="share-text">
-								<p>Share your results</p>
-							</div>
-							<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
-						</div>
-					</div>
+					<outcome-container></outcome-container>
 				</div>
 			</div>
 
@@ -182,7 +146,7 @@
 		<button ng-disabled="quiz.outcomeList.length==0||showAddNewQuestion" ng-click="showAddNewQuestion=true;new_question={'answerList':[{'index':1}, {'index':2}]}" id='show-add-question-btn' class='btn btn-sm btn-success'>+ Add New Question</button>
 		<p ng-show="quiz.outcomeList.length==0" class='inline-block btn-helper'>First create the outcomes</p>
 
-		<div ng-show="showAddNewQuestion" ng-model="new_question">
+		<div ng-if="showAddNewQuestion" ng-model="new_question">
 			<label>Question Text:</label>
 			<input id='new-question-text' type='text' ng-model='new_question.text' required >
 
@@ -227,7 +191,7 @@
 							<div class="question-container">
 								<h2 class="question-text">{{new_question.text}}</h2>
 							</div>
-							<div class="answers-container total-answers-{{new_question.answerList.length}}" ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (new_question.answerList.length > 4)}">
+							<div class="answers-container total-answers-{{new_question.answerList.length}}" ng-class="total-answers-{{new_question.answerList.length}}" ng-class="{'total-answers-more': (new_question.answerList.length > 4)}">
 								<answer-container ng-repeat="answer in new_question.answerList"></answer-container>
 							</div>
 						</div>
