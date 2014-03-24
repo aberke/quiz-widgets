@@ -1,4 +1,11 @@
-/* new design */
+/* labs credit at bottom of widgets */
+p#labs-credit{
+	text-align: right;
+}
+p#labs-credit a{
+	color: gray;
+	font-style: italic;
+}
 
 
 /* ---------------- FONTS ----------- */
