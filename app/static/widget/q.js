@@ -265,6 +265,10 @@
 		withStyleSheets(stylesheets);
 		withScripts(scripts, callback);
 	}
+	function disablePinterestBullshit(container) {
+		/* Huffpost decided it was a great idea to make EVERY IMAGE PINABLE - no thanks, especially not on the images that are actually my facebook buttons... awkward.. */
+		container.className += " no-pin";
+	}
 
 	// load dependencies before calling main
 	function main(){
@@ -283,6 +287,7 @@
 			if (quizID) {
 				load_quiz_info(quizID, container);
 			}
+			disablePinterestBullshit(container);
 		}
 	}
 	loadDependencies(main);
