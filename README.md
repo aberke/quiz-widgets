@@ -42,6 +42,11 @@ coming soon
 TODO
 ---
 
+- fix for trivia option (Nick on the politics team would like this)
+	- option to have 1 answer
+	- assign arbitrary number of points to outcome
+- .no-pin
+	- wrap quizzes in it
 - youyoung's bugs
 - deal with possibility that twitter share link could be too long
 - on sharing page let them put in bitly link for sharing -- or automatically create one

@@ -10,7 +10,9 @@ function MainCntl($scope, $location) {
 	$scope.scrollToTop = function() {
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}
-
+	$scope.scrollToById = function(eltID) {
+		document.getElementById(eltID).scrollIntoView(true);
+	}
 
 	$scope.newPage = function(){
 		$location.path('/new');
@@ -219,6 +221,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 	}
 	$scope.saveQuestion = function(question) { // also called by createQuiz
 		if (!saveQuestion(question)) { return false; }
+		$scope.quiz.error.question = false;
 		/* add answers out of their respective outcome.answerList's */
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		return true;
@@ -266,7 +269,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 			return false;
 		}
 		/* ready to post quiz */
-		return false;
 		HTTPService.POST('/api/quiz', $scope.quiz).then(function(data) {
 			$scope.quiz.saved = 'saved';
 			console.log('POSTED QUIZ',$scope.quiz,'got back data', data);

@@ -69,7 +69,7 @@
 				<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
 				
 				<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
-				<button ng-show="outcome.editing" ng-click="outcome.editing=false" class='btn btn-xs btn-success'>OK</button>
+				<button ng-show="outcome.editing" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success'>OK</button>
 			</div>
 
 			<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
@@ -148,7 +148,7 @@
 							</select>
 						</span>
 
-						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | filter: {new:'!true', error.any:'false'}" ng-class="{'error':a.error._outcome}">
 							<option value="">{{a._outcome.text || 'OUTCOME'}}</option>
 						</select>
 					</div>
@@ -225,17 +225,26 @@
 
 	<!-- ********************* set-complete *********************  -->
 	<section id='set-complete'>
-		<h3 id='ready-text' ng-show="quiz.title&&quiz.questionList.length&&quiz.outcomeList.length">Okay it's ready</h3>
+		<h3 id='ready-text' ng-show="quiz.title&&quiz.questionList.length&&quiz.outcomeList.length">Ready, set...</h3>
 		
 		<h3 id='still-required-text' ng-show="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length">Still Required:</h3>
 			<p id='still-required-title' ng-show="!quiz.title">Title</p>
 			<p id='still-required-outcome' ng-show="!quiz.outcomeList.length">At least 1 Outcome</p>
 			<p id='still-required-question' ng-show="!quiz.questionList.length">At least 1 Question</p>
-			<p class='error' ng-show="quiz.error.question">You've got some issues with your questions -- go fix them</p>
-			<p class='error' ng-show="quiz.error.outcome">Not so fast.  You've got some empty outcomes</p>
+
+			<!-- error text and fix buttons -->
+			<p class='error' ng-show="quiz.error.question">
+				<button ng-click="scrollToById('set-questions')" class='btn btn-xs btn-danger'>FIX</button>
+				You've got some issues with your questions
+			</p>
+			<p class='error' ng-show="quiz.error.outcome">
+				<button ng-click="scrollToById('set-outcomes')" class='btn btn-xs btn-danger'>FIX</button>
+				Not so fast.  You've got some empty outcomes
+			</p>
+
 			<p class='instructions-text' ng-show="quiz.saved">{{quiz.saved}}</p>
 
-		<button id='create-quiz-btn' ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length||quiz.saved=='saving'" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
+		<button id='create-quiz-btn' ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length||quiz.saved=='saving'||quiz.error.outcome||quiz.error.question" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
 		<p class='inline-block btn-helper'>First preview the mobile version!</p>
 	</section> <!-- ********************* set-complete *********************  -->
 

@@ -102,7 +102,11 @@ WidgetService = function() {
       var question = quiz.questionList[i];
       for (var j=0; j<question.answerList.length; j++) {
         var answer = question.answerList[j];
-        quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
+        if (answer._outcome) {
+          quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
+        } else {
+          console.log('answer without _outcome',answer);
+        }
       }
     }
   };
