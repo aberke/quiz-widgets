@@ -42,6 +42,7 @@ TODO
 ---
 
 - deal with linger image in background
+- change @huffpostcode to @huffpostLabs
 
 - use directives
 - customize styling for outcomes
@@ -97,6 +98,8 @@ To use the button master when writing widget code:
 
 necessary e2e tests
 ---
+
+- quiz always gets result that it should
 
 neccessary api tests
 ---

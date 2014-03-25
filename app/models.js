@@ -199,7 +199,7 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 var constructOutcome = function(outcomeData) {
 	var new_outcome = new Outcome({
 		_quiz:  	 outcomeData._quiz,
-		index: 		 outcomeData.index, // ordered
+		// index: 		 outcomeData.index, // ordered
 		text:   	 outcomeData.text,
 		description: (outcomeData.description|| null),
 		pic_url: 	 (outcomeData.pic_url 	 || null),
@@ -261,7 +261,10 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		newOutcomeShare.save();
 		newOutcome.share = newOutcomeShare;
 		newOutcome.save();
-		outcomeDict[outcomeData.index] = newOutcome;
+		/* outcomeData._id is fake - generated client-side by Math.random() so that answers could have something to refer to 
+			matching answers to outcomes by answerData._outcome == outcomeData._id
+		*/
+		outcomeDict[outcomeData._id] = newOutcome;
 		newQuiz.outcomeList.push(newOutcome);
 	}
 	for (var i=0; i<quizData.questionList.length; i++) {
@@ -274,7 +277,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 
 		for (var j=0; j<questionData.answerList.length; j++) {
 			var answerData = questionData.answerList[j];
-			answerData._outcome = outcomeDict[answerData._outcome.index];
+			answerData._outcome = outcomeDict[answerData._outcome];
 			addAnswer(answerData, newQuestion); // handles question.answerList.push and answer.save
 		}
 

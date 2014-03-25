@@ -16,7 +16,6 @@ var outcomeContainer = function() {
 	return {
 		restrict: 'E',
 		link: function(scope, element, attrs) {
-			console.log(scope)
 			var content = element[0].querySelector('.outcome-content');
 			
 			scope.$watch("outcome.pic_style", function(value) {

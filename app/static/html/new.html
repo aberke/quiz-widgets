@@ -106,7 +106,7 @@
 
 	<!-- ********************* set-questions *********************  -->
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have unlimited answers, but we warn you that scroll bars do not show up on mobile until the user touches the screen (this is a web browser problem, not a quiz problem).">
-		<h3 class='display-inline'>
+		<h3 ng-class="{'error':quiz.error.question}" class='display-inline'>
 			<button ng-show="showingQuestions" ng-click="hideQuestions()" class='btn btn-default hide-show-btn'> - </button>
 			<button ng-disabled="quiz.outcomeList.length==0" ng-show="!showingQuestions" ng-click="showQuestions()" class='btn btn-default hide-show-btn'> + </button>
 			Questions
@@ -147,7 +147,7 @@
 							</select>
 						</span>
 
-						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o as ((o.index+1) + '. ' + (o.text||o.description)) for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as ((o.index+1) + '. ' + (o.text||o.description)) for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
 							<option value="">{{a._outcome.text || 'OUTCOME'}}</option>
 						</select>
 					</div>
@@ -230,6 +230,7 @@
 			<p id='still-required-title' ng-show="!quiz.title">Title</p>
 			<p id='still-required-outcome' ng-show="!quiz.outcomeList.length">At least 1 Outcome</p>
 			<p id='still-required-question' ng-show="!quiz.questionList.length">At least 1 Question</p>
+			<p class='error' ng-show="quiz.error.question">You've got some issues with your questions -- go fix them</p>
 
 		<button id='create-quiz-btn' ng-disabled="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
 		<p class='inline-block btn-helper'>First preview the mobile version!</p>
