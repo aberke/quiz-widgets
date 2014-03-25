@@ -73,10 +73,13 @@ var FormService = function() {
     }
     return answer.error.any;
   };
-  /* still need this?? should i check that outcome has at least something? */
   this.checkOutcomeError = function(outcome) {
-    outcome.error = { 'any': false, 'text': false };
-
+    outcome.error = { 'any': false, 'empty': false };
+    /* make sure there's at least some data in this outcome */
+    if (!outcome.text && !outcome.description && !outcome.pic_url) {
+      outcome.error.empty = true;
+      outcome.error.any = true;
+    }
     return outcome.error.any;
   };
 
@@ -92,7 +95,6 @@ WidgetService = function() {
     for (var i=0; i<quiz.outcomeList.length; i++) {
       var outcome = quiz.outcomeList[i];
       outcome.answerList = [];
-      outcome.index = i;
       outcomeMap[outcome._id] = i;
     }
     /* create answerList for each outcome and push on answers */
@@ -100,7 +102,11 @@ WidgetService = function() {
       var question = quiz.questionList[i];
       for (var j=0; j<question.answerList.length; j++) {
         var answer = question.answerList[j];
-        quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
+        if (answer._outcome) {
+          quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
+        } else {
+          console.log('answer without _outcome',answer);
+        }
       }
     }
   };
