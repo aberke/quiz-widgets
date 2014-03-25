@@ -425,6 +425,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 		}
 	}
 	$scope.saveOutcome = function(outcome) {
+		console.log('saveOutcome', outcome)
 		if (!outcome._id) { /* create new outcome */
 			outcome['_quiz'] = $scope.quiz._id;
 			create('outcome', outcome, function(data) {
@@ -434,6 +435,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 		} else { /* update existing outcome */
 			update('outcome', outcome);
 		}
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 	};
 	/* ------- save == PUT requests above ------------- */
 
