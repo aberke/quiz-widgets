@@ -115,7 +115,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 
 	$scope.quiz = { 'title': '',
 					'outcomeList':[], // each outcome in outcomeList has an answerList []
-					'error':{ 'question':false, 'any':false, },		
+					'error':{ 'question':false, },		
 					'questionList': [], // each question in questionList has an answerList []
 					};
 
@@ -218,23 +218,17 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 		/* get rid of the circular json -- take out outcome.answerList's */
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
 			$scope.quiz.outcomeList[i].answerList = null;
-
-
 		}
-		console.log($scope.quiz)
-
 		if (!saveAllQuestions()) {
 			$scope.showQuestions();
 			return false;
 		}
-
 		HTTPService.POST('/api/quiz', $scope.quiz).then(function(data) {
 			console.log('POSTED QUIZ',$scope.quiz,'got back data', data);
 			$location.path('/quiz/' + data._id);
 		});
 	};
 	$scope.updateQuizPic = function() { UIService.updateQuizPic($scope.quiz.pic_url); }
-
 
 	var init = function() {
 		UIService.setupPopovers();
