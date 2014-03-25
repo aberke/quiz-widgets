@@ -67,6 +67,7 @@
 		<span ng-show="!hideOutcomes">
 		<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
 			<p class='bold display-inline'>{{$index + 1}}.</p>
+			<p class="bold error display-inline" ng-show="outcome.error.empty">Hey this outcome is empty</p>
 
 			<div class='remove-edit-btns'>
 				<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
@@ -157,7 +158,7 @@
 							</select>
 						</span>
 
-						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url||('outcome '+(o.index+1))) for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
 							<option value="">{{outcomeMap[a._outcome].text || a._outcome.text || 'OUTCOME'}}</option>
 						</select>
 					</div>

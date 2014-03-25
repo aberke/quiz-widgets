@@ -43,9 +43,12 @@ TODO
 ---
 
 - youyoung's bugs
+- deal with possibility that twitter share link could be too long
 - on sharing page let them put in bitly link for sharing -- or automatically create one
 
 - deal with linger image in background
+
+- finish up with >4 answers
 
 
 - finish e2e tests for /edit and /new
