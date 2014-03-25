@@ -158,7 +158,7 @@
 							</select>
 						</span>
 
-						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | filter: {new:'!true'}" ng-class="{'error':a.error._outcome}">
+						<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | filter: {new:'!true', error.any:'!true'}" ng-class="{'error':a.error._outcome}">
 							<option value="">{{outcomeMap[a._outcome].text || a._outcome.text || 'OUTCOME'}}</option>
 						</select>
 					</div>
