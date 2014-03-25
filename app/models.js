@@ -57,18 +57,16 @@ var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
 	index: 		 Number, // questions are ordered -- deprecating -- let quiz.questionList handle
 	text:  		 String,
-	/* list of answers -- keeping answer1 and answer2 fields for backwards compatibility */
-	// answer1: 	 { type: ObjectId, ref: 'Answer'},
-	// answer2: 	 { type: ObjectId, ref: 'Answer'},
 	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
 var outcomeSchema = new Schema({
 	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
 	share: 		 {type: ObjectId, ref: 'Share', default: null},
 	index: 		 Number, // ordered -- deprecating -- let quiz.outcomeList handle
-	text:   	 String,
+	text:   	 {type: String, default: null},
 	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
+	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'
 	pic_credit:  {type: String, default: null},
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
@@ -201,10 +199,11 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 var constructOutcome = function(outcomeData) {
 	var new_outcome = new Outcome({
 		_quiz:  	 outcomeData._quiz,
-		index: 		 outcomeData.index, // ordered
+		// index: 		 outcomeData.index, // ordered
 		text:   	 outcomeData.text,
-		description: (outcomeData.description 	 || null),
+		description: (outcomeData.description|| null),
 		pic_url: 	 (outcomeData.pic_url 	 || null),
+		pic_style: 	 (outcomeData.pic_style  || "bottom-right"),
 		pic_credit:  (outcomeData.pic_credit || null),
 	});
 	return new_outcome;
@@ -262,7 +261,10 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		newOutcomeShare.save();
 		newOutcome.share = newOutcomeShare;
 		newOutcome.save();
-		outcomeDict[outcomeData.index] = newOutcome;
+		/* outcomeData._id is fake - generated client-side by Math.random() so that answers could have something to refer to 
+			matching answers to outcomes by answerData._outcome == outcomeData._id
+		*/
+		outcomeDict[outcomeData._id] = newOutcome;
 		newQuiz.outcomeList.push(newOutcome);
 	}
 	for (var i=0; i<quizData.questionList.length; i++) {
@@ -274,9 +276,8 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		});
 
 		for (var j=0; j<questionData.answerList.length; j++) {
-			console.log('\bquestionData.answerList', j, '\n', questionData.answerList[j])
 			var answerData = questionData.answerList[j];
-			answerData._outcome = outcomeDict[answerData._outcome.index];
+			answerData._outcome = outcomeDict[answerData._outcome];
 			addAnswer(answerData, newQuestion); // handles question.answerList.push and answer.save
 		}
 

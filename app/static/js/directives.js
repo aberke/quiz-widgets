@@ -1,19 +1,50 @@
 /* directives */
 
+
+
+var outcomeContainer = function() {
+	function modifyContainer(scope, element) {
+		element.className += " outcome-container slide";
+	}
+	function setStyle(model, element) {
+		var backgroundImage = "none";
+		if (model.pic_url && model.pic_style && model.pic_style != 'float-right') {
+			backgroundImage = ("url('" + model.pic_url + "')");
+		}
+		element.style.backgroundImage = backgroundImage;
+	}
+	return {
+		restrict: 'E',
+		link: function(scope, element, attrs) {
+			var content = element[0].querySelector('.outcome-content');
+			
+			scope.$watch("outcome.pic_style", function(value) {
+				setStyle(scope.outcome, content);
+			});
+			scope.$watch("outcome.pic_url", function(value) {
+				setStyle(scope.outcome, content);
+			});
+
+			setStyle(scope.outcome, content);
+			modifyContainer(scope, element[0]);
+		},
+		templateUrl: '/directiveTemplates/outcome-container.html',
+	}
+}
+
 var answerContainer = function() {
 
 	function modifyContainer(scope, element) {
 		element.className += (" touchable answer-container " + (scope.answer.pic_style || "bottom-right"));
 
 	}
-	function setStyle(answer, element) {
+	function setStyle(model, element) {
 		var backgroundImage = "none";
-		if (answer.pic_url && answer.pic_style && answer.pic_style != 'bottom-right') {
-			backgroundImage = ("url('" + answer.pic_url + "')");
+		if (model.pic_url && model.pic_style && model.pic_style != 'bottom-right') {
+			backgroundImage = ("url('" + model.pic_url + "')");
 		}
 		element.style.backgroundImage = backgroundImage;
 	}
-
 
 	return {
 		restrict: 'E',

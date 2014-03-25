@@ -109,106 +109,129 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 	}
 	init();
 }
-function NewQuizCntl($scope, $location, UIService, FormService, HTTPService) {
+function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, HTTPService) {
 	$scope.showAddNewOutcome = false;
 
 
 	$scope.quiz = { 'title': '',
-					'outcomeList': [], // each outcome in outcomeList has an answerList []
+					'outcomeList':[], // each outcome in outcomeList has an answerList []
+					'error':{ 'question':false, },		
 					'questionList': [], // each question in questionList has an answerList []
 					};
 
-
-	$scope.updateQuizPic = function() {
-		UIService.updateQuizPic($scope.quiz.pic_url);
-	}
-	$scope.addNewOutcome = function(new_outcome) {
-		/* validate form */
-		FormService.removeAllErrors();
-		var err1 = FormService.checkInput(['new-outcome-text']);
-		if (err1) {
-			return false;
+	/* ------- outcomes ----------------------- */
+	$scope.showingOutcomes = false;
+	$scope.showOutcomes = function() {
+		if ($scope.quiz.outcomeList.length==0) { 
+			$scope.addOutcome();
 		}
-		$scope.showAddNewOutcome = false;
-
-		new_outcome['index'] = $scope.quiz.outcomeList.length + 1;
-		new_outcome['answerList'] = []; // list of answers that point to it -- prevent removing outcomes on /new page with non-empty answers list
-		$scope.quiz.outcomeList.push(new_outcome);
-
-		$scope.new_outcome = {};
+		$scope.showingOutcomes = true;
 	}
+	$scope.hideOutcomes = function() {
+		$scope.showingOutcomes = false;
+	}
+	$scope.addOutcome = function() {
+		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
+		$scope.quiz.outcomeList.push({_id: Math.random(), editing:true});
+		WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists and index's
+	}
+
 	$scope.removeOutcome = function(outcome) {
 		if (outcome.answerList.length > 0) { return false; } // an answer points to it!
-
-		$scope.quiz.outcomeList.splice(outcome.index-1, 1); // outcome.index is not zero-indexed
-		/* decrement the index of all the outcomes that followed */
-		for (var i=outcome.index-1; i<$scope.quiz.outcomeList.length; i++) {
-			$scope.quiz.outcomeList[i].index = i + 1;
-		}
-	}
-	$scope.removeNewAnswer = function(index) {
-		$scope.new_question.answerList.splice(index-1, 1);
-		for (var i=index-1; i<$scope.new_question.answerList.length; i++) {
-			$scope.new_question.answerList[i].index = i + 1;
-		}
-	}
-	$scope.removeQuestion = function(question) {
-		$scope.quiz.questionList.splice(question.index-1, 1); // question.index is not zero-indexed
 		
-		/* decrement the index of all the outcomes that followed */
-		for (var i=question.index-1; i<$scope.quiz.questionList.length; i++) {
-			$scope.quiz.questionList[i].index = i + 1;
+		$scope.quiz.outcomeList.splice($scope.quiz.outcomeList.indexOf(outcome), 1);
+		if ($scope.quiz.outcomeList.length==0) { 
+			$scope.showingOutcomes = false;
+		} 
+		// reset the outcome index's
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
+	}
+	/* ------- outcomes ----------------------- */
+
+
+	/* ------- questions ----------------------- */
+	$scope.showingQuestions = false;
+	$scope.showQuestions = function() {
+		if ($scope.quiz.questionList.length==0) {
+			$scope.addQuestion();
+		}
+		$scope.showingQuestions = true;
+	}
+	$scope.hideQuestions = function() {
+		if (!saveAllQuestions()) { return false; }
+
+		$scope.showingQuestions = false;
+		return true;
+	}
+	$scope.addQuestion = function() {
+		$scope.quiz.questionList.push({_id: Math.random(), 'answerList':[{},{},], 'editing':true,});
+	}
+	var saveAllQuestions = function() {
+		/* ensures that all is valid before calling setupOutcomeAnswerLists */
+		for (var i=0; i<$scope.quiz.questionList.length; i++) {
+			if (!saveQuestion($scope.quiz.questionList[i])) {
+				$scope.quiz.error.question = true;
+				return false;
+			}
+		}
+		$scope.quiz.error.question = false;
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
+		return true;
+	}
+	var saveQuestion = function(question) {
+		/* need to have function not call setupOutcomeAnswerLists */
+		if (FormService.checkQuestionError(question)) {
+			question.editing = true;
+			return false;
+		}
+		question.editing = false;
+		return true;
+	}
+	$scope.saveQuestion = function(question) { // also called by createQuiz
+		if (!saveQuestion(question)) { return false; }
+		/* add answers out of their respective outcome.answerList's */
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
+		return true;
+	}
+
+	$scope.removeQuestion = function(question) {
+		$scope.quiz.questionList.splice($scope.quiz.questionList.indexOf(question), 1);
+		if ($scope.quiz.questionList.length==0) { 
+			$scope.showingQuestions = false;
 		}
 		/* take all that question's answers out of their respective outcome.answerList's */
-		for (var i=0; i<question.answerList.length; i++) {
-			var answer = question.answerList[i];
-			var j = answer._outcome.answerList.indexOf(answer);
-			$scope.quiz.outcomeList[answer._outcome.index-1].answerList.splice(j, 1);
-		}
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
+		return true;
 	}
-	$scope.addNewQuestion = function(new_question) {
-		FormService.removeAllErrors();
-		var err = FormService.checkInput([ 'new-question-text' ]);
-
-		for (var i=0; i<new_question.answerList.length; i++) {
-			var model = ($scope.new_question.answerList[i]._outcome || null);
-			if ($scope.quiz.outcomeList.indexOf(model) < 0) { /* checks edge case: outcome was deleted while selected -- answer points to an outcome no longer in outcomeList */ 
-				model = null;
-			}
-			if (FormService.checkModel([ {'model':model,'elementID':'new-answer-' + (i+1) + '-outcome'}])) {
-				err = true;
-			}
-		}
-		if (err) { return false; }
-
-		$scope.showAddNewQuestion = false;
-
-		new_question['index'] = $scope.quiz.questionList.length + 1;
-		$scope.quiz.questionList.push(new_question);
-
-		/* add each of the questions to the answerList of the outcome they point to */
-		for (var i=0; i<new_question.answerList.length; i++) {
-			var answer = new_question.answerList[i];
-			answer._outcome.answerList.push(answer);
-		}
+	$scope.addAnswer = function(question) {
+		question.answerList.push({_id: Math.random()});
 	}
+	$scope.removeAnswer = function(question,answer,index) {
+		question.answerList.splice(index, 1);
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
+	}
+	/* ------- questions ----------------------- */
+
+
 	$scope.createQuiz = function() {
 		console.log('createQuiz', $scope.quiz)
 		/* get rid of the circular json -- take out outcome.answerList's */
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
 			$scope.quiz.outcomeList[i].answerList = null;
 		}
-
+		if (!saveAllQuestions()) {
+			$scope.showQuestions();
+			return false;
+		}
 		HTTPService.POST('/api/quiz', $scope.quiz).then(function(data) {
-			console.log('data', data)
+			console.log('POSTED QUIZ',$scope.quiz,'got back data', data);
 			$location.path('/quiz/' + data._id);
 		});
 	};
-
+	$scope.updateQuizPic = function() { UIService.updateQuizPic($scope.quiz.pic_url); }
 
 	var init = function() {
 		UIService.setupPopovers();
-		console.log('NewCntl')
 	}
 	init();
 }
@@ -256,7 +279,6 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 	$scope.reloadQuiz = reloadQuiz;
 	/* sometimes want to reload just widget so that .saved properties dont change */
 	var reloadWidget = function(data) {
-		console.log('reloadWidget')
 		quizWidgets[$scope.quiz._id].reloadData(data || $scope.quiz);
 	}
 
@@ -403,8 +425,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 		}
 	}
 	$scope.saveOutcome = function(outcome) {
-		if (FormService.checkOutcomeError(outcome)) { return false; }
-
+		console.log('saveOutcome', outcome)
 		if (!outcome._id) { /* create new outcome */
 			outcome['_quiz'] = $scope.quiz._id;
 			create('outcome', outcome, function(data) {
@@ -414,6 +435,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 		} else { /* update existing outcome */
 			update('outcome', outcome);
 		}
+		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 	};
 	/* ------- save == PUT requests above ------------- */
 
@@ -421,8 +443,8 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 		UIService.setupPopovers();
 		UIService.updateQuizPic($scope.quiz.pic_url);
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
-		console.log($scope.quiz)
 		setWatchers();
+		console.log('done with EditCntl init', $scope.quiz)
 	}
 	init();
 }

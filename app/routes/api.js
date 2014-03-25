@@ -115,6 +115,7 @@ var PUToutcome = function(req, res) {
 		outcome.description = outcomeData.description;
 		outcome.pic_url = outcomeData.pic_url;
 		outcome.pic_credit = outcomeData.pic_credit;
+		outcome.pic_style  = outcomeData.pic_style;
 		outcome.save(function(err) {
 			if (err) { res.send(500, util.handleError(err)); }
 			res.send(outcome);

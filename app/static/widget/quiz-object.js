@@ -62,8 +62,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     var questionList;
     var currQuestionIndex;
     var outcomeMap; // {_outcomeID: outcomeObject}
-    var leadingOutcome = null;
-    var chosenAnswers = [];
+    var leadingOutcome; // set to null in init
+    var chosenAnswers; // []
 
 
     function startQuiz(element) {
@@ -127,6 +127,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         return map;
     }
     function init(){
+        chosenAnswers = [];
+        leadingOutcome = null;
         questionList = quizData.questionList;
         currQuestionIndex = 0;
         outcomeMap = createOutcomeMap(quizData.outcomeList);
@@ -201,8 +203,16 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         window.prompt("Copy to clipboard: Copy(Ctrl+C), Enter", 
         '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
     }
+    function shortenText(text, maxlength) {
+        if (text.length && text.length > maxlength) {
+            text = (text.substring(0, maxlength - 2) + "..");
+        }
+        return text;
+    }
     function shareOutcomeTwitter() {
-        var text = 'I got: ' + leadingOutcome.text + ' -- ' + quizData.title;
+        var text = 'I got: ';
+            text+= (leadingOutcome.text || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
+            text+= ' -- ' + quizData.title;
         twitterShare(quizData, text);
     }
     function copyToClipboard(text) {
@@ -317,14 +327,21 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         return html;
     }
     function outcomeContentHTML(outcome) {
-        var html = "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + outcome.text + "</h1>";
+        var html = "";
+            html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + (outcome.text || "") + "</h1>";
+        if ((outcome.pic_style == 'float-right') && outcome.pic_url) {
+            html+= "    <img src=" + outcome.pic_url + " />"
+        }
             html+= "    <h3 class='outcome-description'>" + (outcome.description || "") + "</h3>";
             html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
         return html;
     }
     function updateOutcomeContent(outcome) {
+        outcomeContent.className = ("outcome-content " + (outcome.pic_style || "bottom-right"));
+        if (outcome.pic_style != "float-right") {
+            outcomeContent.style.backgroundImage = "url(" + outcome.pic_url + ")";
+        }
         outcomeContent.innerHTML = outcomeContentHTML(outcome);
-        outcomeContent.style.backgroundImage = "url(" + outcome.pic_url + ")";
     }
     function outcomeContainerHTML() {
         var onclickShareFB = "quizWidgets['" + quizID + "'].shareOutcomeFB()";

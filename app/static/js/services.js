@@ -73,14 +73,10 @@ var FormService = function() {
     }
     return answer.error.any;
   };
+  /* still need this?? should i check that outcome has at least something? */
   this.checkOutcomeError = function(outcome) {
     outcome.error = { 'any': false, 'text': false };
 
-    /* outcome must have text */
-    if (checkModelError(outcome.text)) { /* returns model.error value -- if outcome.text has error, then outcome should too */
-      outcome.error.text = true;
-      outcome.error.any  = true;
-    }
     return outcome.error.any;
   };
 
@@ -96,6 +92,7 @@ WidgetService = function() {
     for (var i=0; i<quiz.outcomeList.length; i++) {
       var outcome = quiz.outcomeList[i];
       outcome.answerList = [];
+      outcome.index = i;
       outcomeMap[outcome._id] = i;
     }
     /* create answerList for each outcome and push on answers */

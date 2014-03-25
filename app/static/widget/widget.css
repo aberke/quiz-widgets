@@ -366,10 +366,25 @@ p#labs-credit a{
 	width: 100%;
 	background-color: rgba(0,0,0,0.4);
 	border: solid 1px #ffffff;
-	/* background: url('pic_url') */
-	background-size: 50%;
 	background-repeat: no-repeat;
+}
+
+.huffpostlabs-quiz .outcome-container .outcome-content.bottom-right{
+	background-size: 50%;
 	background-position: right bottom;
+}
+.huffpostlabs-quiz .outcome-container .outcome-content.float-right img{
+	max-width: 50%;
+	max-height: 100%;
+	float: right;
+}
+.huffpostlabs-quiz .outcome-container .outcome-content.cover{
+	background-size: cover;
+	background-position: center center;
+}
+.huffpostlabs-quiz .outcome-container .outcome-content.contain{
+	background-size: contain;
+	background-position: bottom center;
 }
 .huffpostlabs-quiz .outcome-text {
 	color: white;
