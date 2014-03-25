@@ -82,6 +82,7 @@
 		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
+	   console.log('window.FB',window.FB)
 	   if (window.FB == undefined) {
 	   	console.log('window.FB == undefined');
 		window.fbAsyncInit = function() {
