@@ -80,10 +80,10 @@
 			</div>
 
 			<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
-				<label><i class='required-star'>*</i>Text:</label>
+				<label>Text</label>
 				<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
 
-				<label>Description:</label>
+				<label>Description</label>
 				<textarea ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
 
 				<label class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="This image will also be used as a thumbnail when sharing result to social networks.

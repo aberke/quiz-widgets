@@ -425,8 +425,6 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 		}
 	}
 	$scope.saveOutcome = function(outcome) {
-		if (FormService.checkOutcomeError(outcome)) { return false; }
-
 		if (!outcome._id) { /* create new outcome */
 			outcome['_quiz'] = $scope.quiz._id;
 			create('outcome', outcome, function(data) {

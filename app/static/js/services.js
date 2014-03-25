@@ -73,14 +73,10 @@ var FormService = function() {
     }
     return answer.error.any;
   };
+  /* still need this?? should i check that outcome has at least something? */
   this.checkOutcomeError = function(outcome) {
     outcome.error = { 'any': false, 'text': false };
 
-    /* outcome must have text */
-    if (checkModelError(outcome.text)) { /* returns model.error value -- if outcome.text has error, then outcome should too */
-      outcome.error.text = true;
-      outcome.error.any  = true;
-    }
     return outcome.error.any;
   };
 

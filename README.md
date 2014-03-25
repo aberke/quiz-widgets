@@ -41,6 +41,8 @@ coming soon
 TODO
 ---
 
+- on sharing page let them put in bitly link for sharing -- or automatically create one
+
 - deal with linger image in background
 - change @huffpostcode to @huffpostLabs
 

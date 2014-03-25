@@ -203,8 +203,16 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         window.prompt("Copy to clipboard: Copy(Ctrl+C), Enter", 
         '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
     }
+    function shortenText(text, maxlength) {
+        if (text.length && text.length > maxlength) {
+            text = (text.substring(0, maxlength - 2) + "..");
+        }
+        return text;
+    }
     function shareOutcomeTwitter() {
-        var text = 'I got: ' + leadingOutcome.text + ' -- ' + quizData.title;
+        var text = 'I got: ';
+            text+= (leadingOutcome.text || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
+            text+= ' -- ' + quizData.title;
         twitterShare(quizData, text);
     }
     function copyToClipboard(text) {
@@ -320,7 +328,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function outcomeContentHTML(outcome) {
         var html = "";
-            html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + outcome.text + "</h1>";
+            html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + (outcome.text || "") + "</h1>";
         if ((outcome.pic_style == 'float-right') && outcome.pic_url) {
             html+= "    <img src=" + outcome.pic_url + " />"
         }
