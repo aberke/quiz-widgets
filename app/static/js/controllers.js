@@ -279,9 +279,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 	$scope.reloadQuiz = reloadQuiz;
 	/* sometimes want to reload just widget so that .saved properties dont change */
 	var reloadWidget = function(data) {
-		if (window.quizWidgets) {
-			quizWidgets[$scope.quiz._id].reloadData(data || $scope.quiz);
-		}
+		quizWidgets[$scope.quiz._id].reloadData(data || $scope.quiz);
 	}
 
 	/* helper functions to remove, update, create for resolving promise */

@@ -100,11 +100,7 @@ WidgetService = function() {
       var question = quiz.questionList[i];
       for (var j=0; j<question.answerList.length; j++) {
         var answer = question.answerList[j];
-        if (answer._outcome) {
-          quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
-        } else {
-          console.log('THIS ANSWER DOESNT HAVE AN _outcome', answer)
-        }
+        quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
       }
     }
   };
