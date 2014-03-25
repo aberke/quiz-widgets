@@ -32,6 +32,7 @@ since last email
 - back button
 - outcomes have descriptions
 - can go back and edit your quizzes
+- outcome pic styling
 
 coming soon
 ---
@@ -41,13 +42,10 @@ coming soon
 TODO
 ---
 
+- youyoung's bugs
 - on sharing page let them put in bitly link for sharing -- or automatically create one
 
 - deal with linger image in background
-- change @huffpostcode to @huffpostLabs
-
-- use directives
-- customize styling for outcomes
 
 
 - finish e2e tests for /edit and /new

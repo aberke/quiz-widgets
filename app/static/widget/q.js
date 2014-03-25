@@ -38,7 +38,7 @@
 
 	var setupTwitter = function() {
 		window.twitterShare = function(quiz, text) {
-			var twitterURL = 'https://twitter.com/share?url=' + (quiz.share.link || window.location.href) + '&text=' + (text || quiz.title) + '&via=HuffPostCode&hashtags=huffpostQuiz';
+			var twitterURL = 'https://twitter.com/share?url=' + (quiz.share.link || window.location.href) + '&text=' + (text || quiz.title) + '&via=HuffPostLabs&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
 			PUT("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
 
