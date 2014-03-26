@@ -2,6 +2,43 @@
 
 
 
+var imgInputLabel = function() {
+
+	 function checkImageSize(model, img_url, maxSize, callback) {
+	 	if (!img_url) { return; }
+
+		var img = document.createElement('img');
+		img.onload = function() {
+			if (img.width > maxSize || img.height > maxSize) {
+				callback();
+			} 
+		};
+		img.src=img_url;
+	}
+
+	return {
+		restrict: 'E',
+		scope: {
+			model: '=model',
+			maxImgSize: '=maxSize',
+			hideLabel: '=hideLabel', // if true: show just warning when its too large and not the label
+		},
+		link: function(scope, element, attrs) {
+			scope.model.maxImgSize = (scope.maxImgSize || scope.model.maxImgSize || 200);
+			
+			scope.$watch("model.pic_url", function(value) {
+				scope.model.big_img = false;
+				// callback only called if image too large
+				checkImageSize(scope.model, value, scope.model.maxImgSize, function() {
+					scope.model.big_img = true;
+					scope.$apply();
+				});
+			});
+		},
+		templateUrl: '/directiveTemplates/img-input-label.html',
+	}
+}
+
 var outcomeContainer = function() {
 	function modifyContainer(scope, element) {
 		element.className += " outcome-container slide";

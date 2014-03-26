@@ -126,6 +126,8 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 					'questionList': [], // each question in questionList has an answerList []
 					};
 
+
+
 	/* ------- outcomes ----------------------- */
 	$scope.showingOutcomes = false;
 	$scope.showOutcomes = function() {

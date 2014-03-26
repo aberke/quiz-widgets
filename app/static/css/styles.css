@@ -4,6 +4,10 @@
 .inline-block { display: inline-block; }
 .text-decoration-none, .text-decoration-none:hover { text-decoration: none; }
 
+.warning {
+	color: #FF7F00;
+}
+
 input.error, select.error, textarea.error, input.ng-invalid {
 	border-color: red;
 }

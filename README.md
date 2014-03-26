@@ -105,6 +105,7 @@ necessary e2e tests
 ---
 
 - quiz always gets result that it should
+- all of the directives
 
 neccessary api tests
 ---
