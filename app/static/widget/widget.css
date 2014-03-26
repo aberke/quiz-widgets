@@ -12,9 +12,9 @@ p#labs-credit a{
 /* try to disable that pinterest bullshit */
 .huffpostlabs-quiz a.pinitshareimage, 
 .huffpostlabs-quiz.no-pin a.pinitshareimage, 
-div.huffpostlabs-quiz.no-pin a.pinitshareimage, 
-div.huffpostlabs-quiz.no-pin a.pinitshareimage {
-	display: none;
+div.huffpostlabs-quiz.no-pin a.pinitshareimage,
+div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
+	display: none!important;
 } 
 
 /* ---------------- FONTS ----------- */
