@@ -300,6 +300,9 @@ section#preview #preview-text-container img{
 	width: 40px;
 	height: 40px;
 }
+#social-page .btn-helper {
+	vertical-align: bottom;
+}
 
 /********************** social-page above ******************/
 

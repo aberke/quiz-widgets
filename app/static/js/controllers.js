@@ -89,6 +89,7 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 	$scope.saveOutcomeShare = function(outcome) {
 		HTTPService.PUT('/api/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
 			console.log('data', data);
+			outcome.share.saved = 'saved';
 		});
 	}
 	var saveQuizShare = function(callback) {
@@ -103,7 +104,11 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 			$scope.shareLinkSaved = true;
 		});
 	}
-	$scope.saveQuizShare = function() { saveQuizShare(); }
+	$scope.saveQuizShare = function() { 
+		saveQuizShare(function() {
+			$scope.quiz.share.saved = 'saved';
+		}); 
+	}
 
 	var init = function() {
 		console.log('QuizCntl', quiz)

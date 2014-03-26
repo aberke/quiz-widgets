@@ -10,8 +10,8 @@
 			Should begin with 'http://'">Share Link-Back</label>
 			<span id='share-link-container'>
 				<input ng-model='shareLink' ng-change="shareLinkSaved=false" id='share-link' type="url" placeholder="{{quiz.share.link}}">
-				<span ng-disabled="!shareLink" ng-show="!shareLinkSaved" ng-click="saveQuizShareLink(shareLink)" class='btn btn-success btn-sm'>SAVE</span>
-				<span ng-show="shareLinkSaved==true" ng-click="saveQuizShareLink(shareLink)">saved</span>
+				<span ng-disabled="!shareLink||shareLinkSaved" ng-click="saveQuizShareLink(shareLink)" class='btn btn-success btn-sm'>SAVE</span>
+				<span class='btn-helper' ng-show="shareLinkSaved==true">saved</span>
 			</span>
 		</div>
 		<div class='col-md-6'>
@@ -78,15 +78,16 @@
 
 		<div class='input-container'>
 			<label>Caption</label>
-			<input placeholder='{{quiz.share.caption || "Find out..."}}' type='text' ng-model='quiz.share.caption' />
+			<input ng-change="quiz.share.saved='unsaved'" placeholder='{{quiz.share.caption || "Find out..."}}' type='text' ng-model='quiz.share.caption' />
 
 			<label>Picture URL</label>
-			<input id='quiz-share-pic-url' type="url" ng-model="quiz.share.pic_url" placeholder="{{quiz.share.pic_url || quiz.pic_url}}">
+			<input ng-change="quiz.share.saved='unsaved'" id='quiz-share-pic-url' type="url" ng-model="quiz.share.pic_url" placeholder="{{quiz.share.pic_url || quiz.pic_url}}">
 
 			<label>Description</label>
-			<input id='quiz-share-description' placeholder="{{quiz.share.description}}" type='text' ng-model='quiz.share.description' />
+			<input ng-change="quiz.share.saved='unsaved'" id='quiz-share-description' placeholder="{{quiz.share.description}}" type='text' ng-model='quiz.share.description' />
 
-			<button ng-click="saveQuizShare()" class='btn btn-sm btn-success'>SAVE</button>
+			<button ng-disabled="quiz.share.saved=='saved'" ng-click="saveQuizShare()" class='btn btn-sm btn-success'>SAVE</button>
+			<span class='btn-helper'>{{quiz.share.saved}}</span>
 		</div>
 	</section>
 
@@ -101,15 +102,16 @@
 				<h4 class='display-inline'>{{outcome.text}}</h4>
 				
 				<label>Caption</label>
-				<input placeholder="You got: {{outcome.text}}" type='text' ng-model='outcome.share.caption' />
+				<input ng-change="outcome.share.saved='unsaved'" placeholder="You got: {{outcome.text}}" type='text' ng-model='outcome.share.caption' />
 
 				<label>Picture URL</label>
-				<input id='outcome-share-pic-url' type="url" ng-model="outcome.share.pic_url" placeholder="{{outcome.share.pic_url || outcome.pic_url}}">
+				<input ng-change="outcome.share.saved='unsaved'" id='outcome-share-pic-url' type="url" ng-model="outcome.share.pic_url" placeholder="{{outcome.share.pic_url || outcome.pic_url}}">
 
 				<label>Description</label>
-				<input id='outcome-share-description' placeholder="{{outcome.description || outcome.share.description}}" type='text' ng-model='outcome.share.description' />
-
-				<button ng-click="saveOutcomeShare(outcome)" class='btn btn-sm btn-success'>SAVE</button>
+				<input ng-change="outcome.share.saved='unsaved'" id='outcome-share-description' placeholder="{{outcome.description || outcome.share.description}}" type='text' ng-model='outcome.share.description' />
+				
+				<button ng-disabled="outcome.share.saved=='saved'" ng-click="saveOutcomeShare(outcome)" class='btn btn-sm btn-success'>SAVE</button>
+				<span class='btn-helper'>{{outcome.share.saved}}</span>
 			</div>
 		</div>
 
