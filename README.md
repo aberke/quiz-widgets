@@ -39,13 +39,10 @@ since last email
 TODO
 ---
 
-- btn stuff -- host in /lib and deal with youyoung's bug
-
 - fix for trivia option (Nick on the politics team would like this)
 	- option to have 1 answer
 	- assign arbitrary number of points to outcome
 	
-- youyoung's bugs
 - deal with possibility that twitter share link could be too long
 - on sharing page let them put in bitly link for sharing -- or automatically create one
 
