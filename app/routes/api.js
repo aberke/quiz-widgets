@@ -176,8 +176,6 @@ var PUTquizShare  = function(req, res) {
 	models.findQuiz(req.params.id, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
 
-		console.log('quiz\n',quiz)
-
 		if (!quiz.share) {
 			models.newShare(quiz, null, shareData, function(err, share) {
 				quiz.share = share;
@@ -204,7 +202,7 @@ var PUToutcomeShare = function(req, res) {
 
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err || !outcome) { return res.send(500); }
-		
+
 		if (!outcome.share) {
 			models.newShare(null, outcome, shareData, function(err, share) {
 				outcome.share = share;
