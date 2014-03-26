@@ -45,6 +45,7 @@ TODO
 - fix for trivia option (Nick on the politics team would like this)
 	- option to have 1 answer
 	- assign arbitrary number of points to outcome
+	
 - .no-pin
 	- wrap quizzes in it
 - youyoung's bugs
