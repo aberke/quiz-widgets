@@ -1,12 +1,21 @@
 /* labs credit at bottom of widgets */
 p#labs-credit{
 	text-align: right;
+	padding-top: 7px;
 }
 p#labs-credit a{
 	color: gray;
 	font-style: italic;
+	vertical-align: middle;
 }
 
+/* try to disable that pinterest bullshit */
+.huffpostlabs-quiz a.pinitshareimage, 
+.huffpostlabs-quiz.no-pin a.pinitshareimage, 
+div.huffpostlabs-quiz.no-pin a.pinitshareimage, 
+div.huffpostlabs-quiz.no-pin a.pinitshareimage {
+	display: none;
+} 
 
 /* ---------------- FONTS ----------- */
 @font-face {
