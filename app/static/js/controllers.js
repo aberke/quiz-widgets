@@ -52,6 +52,16 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 			$location.path('/');
 		});
 	}
+	var countQuestionTotals = function() {
+		for (var i=0; i<$scope.quiz.questionList.length; i++) {
+			var question = $scope.quiz.questionList[i];
+			var sum = 0;
+			for (var j=0; j<question.answerList.length; j++) {
+				sum += question.answerList[j].count;
+			}
+			$scope.quiz.questionList[i].count = sum;
+		}
+	}
 	var countTotalSharesFB = function(quiz) {
 		var count = (quiz.share ? quiz.share.fbCount : 0);
 		for (var i=0; i<quiz.outcomeList.length; i++) {
@@ -71,6 +81,7 @@ function QuizCntl($scope, $location, HTTPService, quiz) {
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
+		countQuestionTotals();
 		$scope.totalSharesFB = countTotalSharesFB(quiz);
 		$scope.totalSharesTwitter = countTotalSharesTwitter(quiz);
 	}
