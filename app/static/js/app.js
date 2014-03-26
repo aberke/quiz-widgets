@@ -16,6 +16,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		$provide.service('WidgetService', WidgetService);
 
 		// register directives
+		$compileProvider.directive('imgInputLabel', imgInputLabel);
 		$compileProvider.directive('answerContainer', answerContainer);
 		$compileProvider.directive('outcomeContainer', outcomeContainer);
 	});

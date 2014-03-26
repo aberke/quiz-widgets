@@ -33,21 +33,18 @@ since last email
 - outcomes have descriptions
 - can go back and edit your quizzes
 - outcome pic styling
-
-coming soon
----
-- embed code as sharing option
+- user feedback when images are large on the /new and /edit pages
 
 
 TODO
 ---
 
+- btn stuff -- host in /lib and deal with youyoung's bug
+
 - fix for trivia option (Nick on the politics team would like this)
 	- option to have 1 answer
 	- assign arbitrary number of points to outcome
 	
-- .no-pin
-	- wrap quizzes in it
 - youyoung's bugs
 - deal with possibility that twitter share link could be too long
 - on sharing page let them put in bitly link for sharing -- or automatically create one
@@ -56,14 +53,16 @@ TODO
 
 - finish up with >4 answers
 
+- embed code as sharing option
+	- make better
+
 
 - finish e2e tests for /edit and /new
 	- e2e tests for outcomes
-- put user feedback on /social page
-	- no user feedback when stuff is saved -- its jarring
 
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
+
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
 	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
@@ -109,6 +108,7 @@ necessary e2e tests
 ---
 
 - quiz always gets result that it should
+- all of the directives
 
 neccessary api tests
 ---

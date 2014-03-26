@@ -4,6 +4,10 @@
 .inline-block { display: inline-block; }
 .text-decoration-none, .text-decoration-none:hover { text-decoration: none; }
 
+.warning {
+	color: #FF7F00;
+}
+
 input.error, select.error, textarea.error, input.ng-invalid {
 	border-color: red;
 }
@@ -299,6 +303,9 @@ section#preview #preview-text-container img{
 #social-page #customize-outcome-sharing .outcome img{
 	width: 40px;
 	height: 40px;
+}
+#social-page .btn-helper {
+	vertical-align: bottom;
 }
 
 /********************** social-page above ******************/

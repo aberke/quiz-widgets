@@ -176,7 +176,7 @@ var PUTquizShare  = function(req, res) {
 	models.findQuiz(req.params.id, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
 
-		if(quiz.share == null) {
+		if (!quiz.share) {
 			models.newShare(quiz, null, shareData, function(err, share) {
 				quiz.share = share;
 				quiz.save(function(err) {
@@ -203,7 +203,7 @@ var PUToutcomeShare = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err || !outcome) { return res.send(500); }
 
-		if(outcome.share == null) {
+		if (!outcome.share) {
 			models.newShare(null, outcome, shareData, function(err, share) {
 				outcome.share = share;
 				outcome.save(function(err) {
@@ -211,14 +211,13 @@ var PUToutcomeShare = function(req, res) {
 					res.send(share);
 				});
 			});
-		} 
-		else {
+		} else {
 			outcome.share.caption 	  = shareData.caption;
 			outcome.share.pic_url 	  = shareData.pic_url;
 			outcome.share.description = shareData.description;
 			outcome.share.save(function(err) {
 				if (err){ return res.send(500, util.handleError(err)); }
-				res.send(share);
+				res.send(outcome.share);
 			});
 		}
 	});
