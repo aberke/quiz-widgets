@@ -34,8 +34,8 @@ var outcomeContainer = function() {
 
 var answerContainer = function() {
 
-	function modifyContainer(scope, element) {
-		element.className += (" touchable answer-container " + (scope.answer.pic_style || "bottom-right"));
+	function setClassName(scope, element) {
+		element.className = ("touchable answer-container " + (scope.answer.pic_style || "bottom-right"));
 
 	}
 	function setStyle(model, element) {
@@ -51,6 +51,7 @@ var answerContainer = function() {
 		link: function(scope, element, attrs) {
 			
 			scope.$watch("answer.pic_style", function(value) {
+				setClassName(scope, element[0]);
 				setStyle(scope.answer, element[0]);
 			});
 			scope.$watch("answer.pic_url", function(value) {
@@ -58,7 +59,7 @@ var answerContainer = function() {
 			});
 
 			setStyle(scope.answer, element[0]);
-			modifyContainer(scope, element[0]);
+			setClassName(scope, element[0]);
 		},
 		templateUrl: '/directiveTemplates/answer-container.html',
 	}
