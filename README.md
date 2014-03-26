@@ -33,11 +33,13 @@ since last email
 - outcomes have descriptions
 - can go back and edit your quizzes
 - outcome pic styling
-
+- user feedback when images are large on the /new and /edit pages
 
 
 TODO
 ---
+
+- btn stuff -- host in /lib and deal with youyoung's bug
 
 - fix for trivia option (Nick on the politics team would like this)
 	- option to have 1 answer
@@ -60,6 +62,7 @@ TODO
 
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
+
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
 	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.

@@ -307,8 +307,8 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage {
 .huffpostlabs-quiz .answers-container.total-answers-4 .answer-container {
 	width: 24.8%;
 }
-.huffpostlabs-quiz .answer-container:hover,
-.huffpostlabs-quiz .answer-container.selected,
+.huffpostlabs-quiz.non-mobile .answer-container:hover,
+.huffpostlabs-quiz.mobile .answer-container.hover, /* fake it on mobile with HuffpostLabsBtn */
 .huffpostlabs-quiz .answer-container:active {
 	background-color: rgba(255,255,255,0.2);
 	cursor: pointer;
