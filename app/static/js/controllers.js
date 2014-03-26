@@ -21,7 +21,7 @@ function MainCntl($scope, $location) {
 		window.location.href=url;
 	}
 	$scope.login = function(){
-		window.location.href=($scope.domain + '/auth/twitter');
+		window.location.href=($scope.domain + '/login');
 	}
 	$scope.logout = function(){
 		window.location.href=($scope.domain + '/logout');

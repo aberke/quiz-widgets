@@ -18,13 +18,35 @@ db.once('open', function callback () {
 
 
 
+exports.findOrCreateUser = function(twitterProfile, callback) {
+	console.log('findOrCreateUser', twitterProfile)
+	User.findOne({twitter_id: twitterProfile.id}, function(err, user){
+		if (err || user) { return callback(err, user); }
+
+		var newUser = new User({
+			twitter_id: 			twitterProfile.id,
+			twitter_username: 		twitterProfile.username,
+			twitter_displayname: 	twitterProfile.displayName,
+		});
+		newUser.save(function(err) {
+			if (err) {
+				console.log('ERROR IN MONGOOSE-MODELS findOrCreateUser save');
+				return callback(err, null);
+			}
+
+			console.log('created user:', newUser);
+			callback(null, newUser);
+		});
+	})
+}
 
 
 var userSchema = new Schema({
-	twitter_id: 	String,
-	twitter_name: 	String,
-	date_created: 	{ type: Date, default: Date.now },
-	quizList: 		[{ type: ObjectId, ref: 'Quiz' }] // need to push quiz on to user upon quiz creation)
+	twitter_id: 			{type: String, default: null},
+	twitter_userName: 		{type: String, default: null},
+	twitter_displayName: 	{type: String, default: null},
+	date_created: 			{ type: Date, default: Date.now },
+	quizList: 				[{ type: ObjectId, ref: 'Quiz' }] // need to push quiz on to user upon quiz creation)
 });
 var shareSchema = new Schema({
 	/* The share model is either owned by a Quiz or an Outcome, since both are sharable */
