@@ -9,8 +9,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	 var domain = 'http://127.0.0.1:8080';
-	//var domain = 'http://quizwidget-petri.dotcloud.com';
+	 //var domain = 'http://127.0.0.1:8080';
+	var domain = 'http://quizwidget-petri.dotcloud.com';
 
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
