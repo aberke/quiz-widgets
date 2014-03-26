@@ -389,6 +389,7 @@ p#labs-credit a{
 .huffpostlabs-quiz .outcome-text {
 	color: white;
 	font-family: Arvo-Bold;
+	margin: 0;
 	padding: 0.5em;
 }
 .huffpostlabs-quiz .outcome-text.long-text {
@@ -410,6 +411,11 @@ p#labs-credit a{
 	color: white;
 	font-family: Arvo-Regular;
 	padding: 0 3em;
+	font-size: 1.4em;
+}
+.huffpostlabs-quiz.mobile .outcome-description {
+	padding: 0 0.7em;
+	font-size: 1.1em;
 }
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;
