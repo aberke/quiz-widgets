@@ -68,6 +68,7 @@
 		    <thead>
 		        <tr>
 		            <th>Question</th>
+		            <th>Sum</th>
 		            <th>Answer 1</th>
 		            <th>Answer 2</th>
 		            <th>Answer 3</th>
@@ -78,13 +79,11 @@
 		        <tr ng-repeat="q in quiz.questionList">
 		            
 		            <td class="text">{{q.text}}</td>
+		            <td class="number">{{q.count}}</td>
 
 		            <td ng-repeat="a in q.answerList">
 		            	<span class='number'>{{a.count}}: </span><span class='text'>{{a.text}}</span>
 		            </td>
-
-		            <!-- <td class="text">{{q.answerList[1].text + ': ' q.answer}}</td>
-		            <td class="number">{{q.answer1.count}}</td> -->
 		        </tr>
 		    </tbody>
 		</table>
