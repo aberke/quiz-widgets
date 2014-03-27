@@ -4,9 +4,11 @@ var express 		= require('express'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
 
+    models 			= require('./models'),
+
 
     authMiddleware  = require('./middleware/authentication-middleware.js'),
-	//passportMiddleware = require('./middleware/passport-middleware.js')(models),
+	passportMiddleware = require('./middleware/passport-middleware.js')(models),
 
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
@@ -26,22 +28,47 @@ app.configure(function () {
 	app.use(connect.json()),
   	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
 	app.use(express.session({secret: process.env.SESSION_SECRET})),
-	//app.use(passportMiddleware.initialize()),
-	//app.use(passportMiddleware.session()),
+	app.use(passportMiddleware.initialize()),
+	app.use(passportMiddleware.session()),
     app.use(express.static(path.join(__dirname, '/static')));
     app.use(expressValidator());
 });
 var server = http.createServer(app);
 
+/* ************** authentication below ******************** */
 
+app.get('/user', function(req, res){
+	console.log('****\nget user', req.user);
+	if (req.user) { res.send(req.user); }
+	else { res.send(null); }
+});
+
+app.get('/login', passportMiddleware.authenticate('twitter'));
+app.get('/auth/twitter/callback', 
+	passportMiddleware.authenticate('twitter', { successReturnToOrRedirect: '/', failureRedirect: '/' }),
+	function(req, res) {
+		console.log('222222')
+	}
+);
+
+app.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
+
+/* ************** authentication above ******************** */
+
+/* **************  routing **************************** */
 api_routes.registerEndpoints(app);
 
 
-app.get('/', 			basicAuth, main_routes.serveBase);
+//app.get('/', 			basicAuth, main_routes.serveBase);
+app.get('/', 			main_routes.serveBase);
 app.get('/new', 		basicAuth, main_routes.serveBase);
 app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
 app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
 app.get('/social/:id',  basicAuth, main_routes.serveBase);
+app.get('/forbidden',  basicAuth, main_routes.serveBase);
 
 app.get('/err', function(req, res) {
 	res.send(500, {'err': "FAKE ERROR"})

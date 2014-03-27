@@ -39,12 +39,19 @@ since last email
 TODO
 ---
 
+- stats page:
+	- total tally for all answers -- as requested by ethan
+
+- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
+
 - fix for trivia option (Nick on the politics team would like this)
 	- option to have 1 answer
 	- assign arbitrary number of points to outcome
 	
 - deal with possibility that twitter share link could be too long
 - on sharing page let them put in bitly link for sharing -- or automatically create one
+
+- be able to reorder questions
 
 - deal with linger image in background
 

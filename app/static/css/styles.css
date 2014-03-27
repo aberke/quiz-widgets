@@ -69,20 +69,46 @@ footer {
 
 /********************** index-page ******************/
 
-#product-title {
-	color: #20b2aa;
-	font-size: 50px;
+#welcome-container a {
+	color: #8B008B;
 }
 
-
-#index-page{
-	min-height: 400px;
-	max-width: 900px;
-	margin: auto;
+#index-page #welcome-container{
+	text-align: center;
+	padding-top: 140px;
+	height: 630px;
+}
+#index-page #welcome-container .right {
+	padding: 65px 50px;
 }
 #index-page #create-new-btn {
-	float: right;
+	color: gray;
+	font-weight: bold;
 }
+
+#product-title {
+	color: #20b2aa;
+	font-size: 55px;
+}
+#view-all-quizzes-btn {
+	width: auto;
+	display: block;
+	border-top: 1px solid gray;
+	text-align: center;
+	height: 120px;
+	padding-top: 40px;
+	font-size: 20px;
+	color: gray;
+	text-decoration: none;
+}
+#view-all-quizzes-btn:hover{
+	background-color: #e0ffff;
+	border-color: #6BCAE2;
+}
+
+
+
+
 
 #index-page .quiz-and-embed-container {
 	margin-top: 30px;
