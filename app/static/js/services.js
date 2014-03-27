@@ -132,6 +132,8 @@ var UIService = function($timeout){
   };
 }
 
+
+
 var HTTPService = function($http, $q){
 
   function HTTP(method, url, data) {
@@ -160,7 +162,9 @@ var HTTPService = function($http, $q){
   HTTPServiceError.prototype = Error.prototype;
 
 
-    /* ---------- below functions return promises --------------------------- */
+  /* ---------- below functions return promises --------------------------- */
+  
+
   this.GETquiz = function(id, onSuccess, onError) {
     return this.GET('/api/quiz/' + id);
   };

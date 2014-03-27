@@ -47,15 +47,6 @@ QuizApp.config(function($routeProvider) {
 				return HTTPService.GET('/api/quiz/all').then(function(data) {
 					return data;
 				});
-			// user: function(BlogcastHTTPService, BlogcastBasicService){
-			// 	return BlogcastHTTPService.getUser().then(function(userData) { 
-			// 		BlogcastBasicService.showLoginOrLogoutButton(userData);
-			// 		if(userData.twitter_id) {
-			// 			return userData;
-			// 		} else {
-			// 			return null;
-			// 		}
-			// 	});
 			}
 		}
 	});

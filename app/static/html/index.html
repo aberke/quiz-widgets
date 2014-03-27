@@ -18,7 +18,13 @@
         <br/>Refine and edit,
         <br/>Play with
         <br/><a href="" ng-click="scrollToById('all-quizzes-include')">existing quizzes</a> below
-        <br/>Or get started with your own: <a href="" ng-click="goTo('/new')" id='create-new-btn' class='btn btn-xs btn-default'>CREATE NEW</a>
+        <br/>
+          
+        <a ng-if="user" href="" ng-click="goTo('/new')" id='create-new-btn' class='btn btn-xs btn-default'>CREATE NEW</a>
+
+        <p ng-if="!user">
+          <a ng-click="login()" id='sign-in-btn' class='btn btn-xs btn-default'>SIGN IN</a> with your team's twitter account
+        </p>
       </p>
     </div>  
 

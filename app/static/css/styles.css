@@ -53,6 +53,11 @@ body {
 .header:hover .brand {
 	display: inline-block;
 }
+.header .username {
+	position: fixed;
+	top: 50px;
+	right: 20px;
+}
 /* have the labs image magically show only when nav header is hovered */
 
 footer {
@@ -81,7 +86,8 @@ footer {
 #index-page #welcome-container .right {
 	padding: 65px 50px;
 }
-#index-page #create-new-btn {
+#index-page #create-new-btn,
+#index-page #sign-in-btn {
 	color: gray;
 	font-weight: bold;
 }
@@ -131,17 +137,12 @@ footer {
 /********************** quiz-page ******************/
 
 #quiz-page section {
-	width: 750px;
+	max-width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
 }
 #quiz-page .outcome-pic {
 	margin-right: 5px;
-}
-#quiz-page section#quiz-embed,
-#quiz-page section#quiz-delete,
-#quiz-page section#social {
-	max-width: 550px;
 }
 #quiz-page th,#quiz-page label {
 	color: purple;

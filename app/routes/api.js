@@ -53,6 +53,13 @@ exports.registerEndpoints = function (app) {
 /* --------------- API --------------------- */
 
 var POSTquiz = function(req, res) {
+	/* newQuiz expects the _user to be in the quizData
+		- why not insert it here from the request?
+		because maybe the editor kept that browser window open forever on the /new page,
+			editing away
+			meanwhile the session was lost on the server
+			but I can't throw away their hard work.
+	*/
 	models.newQuiz(req.body, function(err, quiz) {
 		res.send(quiz);
 	});

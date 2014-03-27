@@ -18,33 +18,11 @@ db.once('open', function callback () {
 
 
 
-exports.findOrCreateUser = function(twitterProfile, callback) {
-	console.log('findOrCreateUser', twitterProfile)
-	User.findOne({twitter_id: twitterProfile.id}, function(err, user){
-		if (err || user) { return callback(err, user); }
-
-		var newUser = new User({
-			twitter_id: 			twitterProfile.id,
-			twitter_username: 		twitterProfile.username,
-			twitter_displayname: 	twitterProfile.displayName,
-		});
-		newUser.save(function(err) {
-			if (err) {
-				console.log('ERROR IN MONGOOSE-MODELS findOrCreateUser save');
-				return callback(err, null);
-			}
-
-			console.log('created user:', newUser);
-			callback(null, newUser);
-		});
-	})
-}
-
 
 var userSchema = new Schema({
 	twitter_id: 			{type: String, default: null},
-	twitter_userName: 		{type: String, default: null},
-	twitter_displayName: 	{type: String, default: null},
+	twitter_username: 		{type: String, default: null},
+	twitter_displayname: 	{type: String, default: null},
 	date_created: 			{ type: Date, default: Date.now },
 	quizList: 				[{ type: ObjectId, ref: 'Quiz' }] // need to push quiz on to user upon quiz creation)
 });
@@ -249,6 +227,17 @@ exports.newQuestion = function(questionData, callback) {
 	});
 	new_question.save(function(err) { callback(err, new_question); });
 }
+exports.newUser = function(userData, callback) { // userData is twitter profile info object
+	var user = new User({
+		twitter_id: 			userData.id,
+		twitter_username: 		userData.username,
+		twitter_displayname: 	userData.displayName,
+	});
+	user.save(function(err) {
+		if (err) { console.log('ERROR IN MONGOOSE-MODELS newUser save'); }
+		callback(err, user);
+	});
+}
 
 exports.newQuiz = function(quizData, callback) { // callback: function(err, data)
 	
@@ -264,7 +253,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 				push questions on to quiz
 	*/
 	var newQuiz = new Quiz({
-		//_user: ?
+		_user: 				quizData._user,
 		title: 				quizData.title,
 		pic_url: 			(quizData.pic_url 	 		|| null),
 		pic_credit: 		(quizData.pic_credit 		|| null),
@@ -303,15 +292,23 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 			addAnswer(answerData, newQuestion); // handles question.answerList.push and answer.save
 		}
 
-		newQuestion.save(function(err) {
-			console.log('\nnewQuestion:\n', newQuestion)
-		});
+		newQuestion.save();
 		newQuiz.questionList.push(newQuestion);
 	}
 	console.log('\n\n***************\nnewQuiz', newQuiz)
+
+	/* save the quiz and push it on to the user's quizList */
 	newQuiz.save(function(err) {
 		if (err) { return callback(err, null); }
-		callback(null, newQuiz)
+		User.findById(quizData._user)
+			.populate('quizList')
+			.exec(function(err, user) {
+				if (err) { return callback(err, null); }
+				user.quizList.push(newQuiz);
+				user.save(function(err) {
+					callback(err, newQuiz);
+				})
+			});
 	});
 }
 exports.findQuizPartial = function(quizID, callback) {
@@ -345,6 +342,7 @@ exports.findQuiz = function(quizID, callback) {
 	}
 
 	Quiz.findById(quizID)
+		.populate('_user')
 		.populate('questionList')
 		.populate('outcomeList')
 		.populate('share')
@@ -422,7 +420,11 @@ exports.findShare = function(shareID, callback) {
 			callback(null, share);
 		});
 }		
-
+exports.findUser = function(userID, callback) {
+	User.findById(userID)
+		.populate('quizList')
+		.exec(callback);
+};
 
 exports.allUsers = function(callback){
 	User.find()

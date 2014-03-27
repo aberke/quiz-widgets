@@ -4,11 +4,9 @@ var express 		= require('express'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
 
-    models 			= require('./models'),
-
 
     authMiddleware  = require('./middleware/authentication-middleware.js'),
-	passportMiddleware = require('./middleware/passport-middleware.js')(models),
+	passportMiddleware = require('./middleware/passport-middleware.js')(),
 
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')

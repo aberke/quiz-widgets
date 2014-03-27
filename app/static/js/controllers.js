@@ -1,11 +1,13 @@
 
-function MainCntl($scope, $location) {
+function MainCntl($scope, $location, UserFactory) {
+	console.log('MainCntl')
 	$scope.domain = window.location.origin;
 	if ($scope.domain == 'http://quizwidget-petri.dotcloud.com'){
 		$scope.domain = 'http://quiz.huffingtonpost.com';
 	}
-
-	$scope.user = null;
+	UserFactory.then(function(user) {
+		$scope.user = user;
+	});
 
 	$scope.scrollToTop = function() {
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -126,10 +128,12 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 	init();
 }
 function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, HTTPService) {
+	console.log('user', $scope.user)
 	$scope.showAddNewOutcome = false;
 
 
-	$scope.quiz = { 'title': '',
+	$scope.quiz = { '_user': $scope.user._id,
+					'title': '',
 					'outcomeList':[], // each outcome in outcomeList has an answerList []
 					'error':{ 'question':false, 'outcome':false, },		
 					'questionList': [], // each question in questionList has an answerList []

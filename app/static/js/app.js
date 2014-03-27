@@ -19,4 +19,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		$compileProvider.directive('imgInputLabel', imgInputLabel);
 		$compileProvider.directive('answerContainer', answerContainer);
 		$compileProvider.directive('outcomeContainer', outcomeContainer);
+
+		// register factories
+		$provide.factory('UserFactory', UserFactory);
 	});

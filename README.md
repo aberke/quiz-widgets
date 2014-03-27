@@ -39,8 +39,9 @@ since last email
 TODO
 ---
 
-- stats page:
-	- total tally for all answers -- as requested by ethan
+- login stuff
+	- restrict access on front end too 
+		- http://blog.brunoscopelliti.com/deal-with-users-authentication-in-an-angularjs-web-app
 
 - http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 

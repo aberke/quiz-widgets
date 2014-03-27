@@ -1,18 +1,17 @@
 /* passport-twitter authentication middleware */
 
-var passport = require('passport'),
+var passport 		= require('passport'),
+    models 			= require('./../models'),
 	TwitterStrategy = require('passport-twitter').Strategy;
 
 
-module.exports = function(models) {
+module.exports = function() {
 	
 	passport.serializeUser(function(user, done) {
-		console.log('\n\nserializeUser')
-	  done(null, user.twitter_id);
+		done(null, user.twitter_id);
 	});
 
 	passport.deserializeUser(function(id, done) {
-		console.log('\n\ndeserializeUser')
 	  models.User.findOne({twitter_id: id}, function(err, user) {
 	    done(err, user);
 	  });
@@ -24,7 +23,11 @@ module.exports = function(models) {
 			callbackURL: ((process.env.PRODUCTION_WWW_HTTP_URL || process.env.LOCAL_WWW_HTTP_URL) + "auth/twitter/callback"),
 		},
 		function(token, tokenSecret, profile, done) {
-			models.findOrCreateUser(profile, done); // function(err, user) { return done(err, user); });
+			models.User.findOne({twitter_id: profile.id}, function(err, user){
+				if (err || user) { return done(err, user); }
+				/* else make a new User */
+				models.newUser(profile, done);
+			});
 		}
 	);
 	passport.use(strategy);

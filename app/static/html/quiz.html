@@ -103,6 +103,9 @@
 	<pre>&lt;div class="huffpostlabs-quiz" id="{{quiz._id}}"&gt;&lt;/div&gt;&lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;&lt;p id="labs-credit"&gt;&lt;a href="http://code.huffingtonpost.com"&gt;Quiz widget by &lt;img height="23px" src="http://quiz.huffingtonpost.com/img/huffpostLABS_outline.png" /&gt;&lt;/a&gt;&lt;/p&gt;</pre>
 </section>
 
+<section>
+	<h4>Owner: {{quiz._user.twitter_displayname || quiz._user.twitter_username || 'Orphaned quiz'}}</h4>
+</section>
 
 <section id='quiz-delete'>
 	<div class="alert alert-danger">
