@@ -62,8 +62,8 @@ app.get('/logout', function(req, res) {
 api_routes.registerEndpoints(app);
 
 
-//app.get('/', 			basicAuth, main_routes.serveBase);
-app.get('/', 			main_routes.serveBase);
+app.get('/', 			basicAuth, main_routes.serveBase);
+//app.get('/', 			main_routes.serveBase);
 app.get('/new', 		basicAuth, main_routes.serveBase);
 app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
 app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
