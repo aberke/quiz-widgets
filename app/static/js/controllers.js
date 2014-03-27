@@ -14,8 +14,9 @@ function MainCntl($scope, $location) {
 		var elt = $('#' + eltID).eq(0);
 		$('html, body').animate({'scrollTop': elt.offset().top}, 'slow', 'swing');
 	}
-	$scope.goTo = function(url) {
-		window.location.href=url;
+	$scope.goTo = function(path) {
+		$location.path(path);
+		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}
 	$scope.login = function(){
 		window.location.href=($scope.domain + '/login');
