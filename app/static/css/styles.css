@@ -1,3 +1,4 @@
+
 .bold { font-weight: bold; }
 .display-block { display: block; }
 .display-inline { display: inline; }
@@ -18,29 +19,48 @@ p.error, h3.error, .error h3,
 
 .btn-helper { color: gray; }
 
-body {
+
+
+/********************** base *************************/
+
+body { 
+	border-top: 1px solid transparent; /* clear */ 
 	background-color: white;
 }
-.header{
-	border-bottom: 2px solid aquamarine;
-	margin:10px;
+#view {
+	margin-top: 60px; /* fixed header has height 60px */
 }
+.header{
+	position: fixed;
+	right: 0;
+	width: 100%;
+	height: 60px;
+	background-color: white;
+	opacity: 0.4;
+	/*opacity: 0;*/
+}
+.header:hover {
+	opacity: 0.8;
+}
+.header .nav>li>a { /* override bootstrap */
+	color: gray;
+	font-size: 18px;
+}
+/* have the labs image magically show only when nav header is hovered */
+.header .brand {
+	display: none;
+}
+.header:hover .brand {
+	display: inline-block;
+}
+/* have the labs image magically show only when nav header is hovered */
+
 footer {
 	text-align: center;
 	border-top: 2px solid lavender;
 	padding: 15px;
 }
 
-.view {
-	/*border: 1px solid purple;*/
-}
-
-.btn h3, .btn h5 {
-	margin: 0;
-	padding: 5px;
-}
-
-/********************** base *************************/
 #mvp {
 	color: crimson;
 	font-size: 18px;
@@ -49,20 +69,10 @@ footer {
 
 /********************** index-page ******************/
 
-/* ---- take out once mvp stuff is out */
-section#mvp-explainer .mvp-btn,section#preview .preview-btn {
-	margin-bottom: 10px;
+#product-title {
+	color: #20b2aa;
+	font-size: 50px;
 }
-section#mvp-explainer #mvp-text-container,section#preview #preview-text-container {
-	border-bottom: 3px solid lavenderblush;
-	margin-bottom: 15px;
-}
-section#preview #preview-text-container img{
-	margin: 10px;
-}
-/* ---- take out once mvp stuff is out */
-
-
 
 
 #index-page{
@@ -129,6 +139,10 @@ section#preview #preview-text-container img{
 	width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
+}
+#new-page #helper-container,
+#edit-page #helper-container {
+	margin-top: 50px;
 }
 #new-page .required-star,
 #edit-page .required-star{
