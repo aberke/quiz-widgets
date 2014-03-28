@@ -15,6 +15,7 @@ function MainCntl($scope, $location) {
 		$('html, body').animate({'scrollTop': elt.offset().top}, 'slow', 'swing');
 	}
 	$scope.goTo = function(path) {
+		console.log('goTo',path)
 		$location.path(path);
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}
@@ -30,26 +31,27 @@ function IndexCntl($scope, HTTPService, quizList) {
 	$scope.quizList = quizList;
 
 
+	$scope.delete = function(quiz) {
+		var confirmed = confirm('Are you sure you want to permenantly delete this quiz?  This quiz will no longer show up on any of the pages on which it is embedded.');
+		if (!confirmed){ return false; }
+		
+		HTTPService.DELETE('/api/quiz/' + quiz._id, quiz).then(function(data) {
+			var index = $scope.quizList.indexOf(quiz);
+			$scope.quizList.splice(index, 1);
+		});
+	}
+
 	var init = function() {
 		console.log('IndexCntl', quizList)
 	}
 	init();
 }
-function QuizCntl($scope, $location, HTTPService, quiz) {
+function QuizCntl($scope, HTTPService, quiz) {
 	$scope.quiz = quiz;
 	$scope.totalSharesFB;
 	$scope.totalSharesTwitter;
 		console.log('QuizCntl', quiz)
 
-	$scope.delete = function() {
-		var confirmed = confirm('Are you sure you want to permenantly delete this quiz?  This quiz will no longer show up on any of the pages on which it is embedded.');
-		if (!confirmed){ return false; }
-		
-		HTTPService.DELETE('/api/quiz/' + quiz._id, $scope.quiz).then(function(data) {
-			console.log('delete returned: ', data);
-			$location.path('/');
-		});
-	}
 	var countQuestionTotals = function() {
 		for (var i=0; i<$scope.quiz.questionList.length; i++) {
 			var question = $scope.quiz.questionList[i];

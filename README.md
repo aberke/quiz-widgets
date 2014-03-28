@@ -39,8 +39,16 @@ since last email
 TODO
 ---
 
-- stats page:
-	- total tally for all answers -- as requested by ethan
+- give each user a page
+	- find all users page in directory
+	- make user's name clickable next to their quiz in the all quizzes view
+
+- different views for my quizzes vs all quizzes:
+	- idea:
+		- always use the same HTLM partial (current name: all-quizzes.html)
+		- restrict the quizzes of that partial -- something like:
+			- q in user.quizList for the user quizzes
+			- q in quizList for all quizzes | {q._user: '!user._id'}
 
 - http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 

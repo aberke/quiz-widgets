@@ -431,6 +431,7 @@ exports.allUsers = function(callback){
 };
 exports.allQuizes = function(callback){
 	Quiz.find()
+		.populate('_user')
 		.populate('questionList')
 		.populate('outcomeList')
 		.exec(callback);

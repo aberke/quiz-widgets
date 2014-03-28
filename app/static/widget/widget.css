@@ -9,13 +9,13 @@ p#labs-credit a{
 	vertical-align: middle;
 }
 
-/* try to disable that pinterest bullshit */
-.huffpostlabs-quiz a.pinitshareimage, 
+/*  now no-pin works */
+/*.huffpostlabs-quiz a.pinitshareimage, 
 .huffpostlabs-quiz.no-pin a.pinitshareimage, 
 div.huffpostlabs-quiz.no-pin a.pinitshareimage,
 div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	display: none!important;
-} 
+} */
 
 /* ---------------- FONTS ----------- */
 @font-face {
