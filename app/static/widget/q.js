@@ -141,20 +141,18 @@
 		PUT("/api/quiz/" + quiz._id + "/increment-started-count", null);
 	}
 	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
+		/* increment counts for quiz, outcome and each chosenAnswer */
 		console.log('quizCompleteCallback', chosenAnswers, outcome)
 
-		var completedDataString = "/api/completed";
-			completedDataString+= ("/quiz/" + quiz._id);
-			completedDataString+= ("/outcome/" + outcome._id);
+		var completedDataString = "/api/completed/";
+			completedDataString+= ("quiz-" + quiz._id);
+			completedDataString+= ("-outcome-" + outcome._id);
+		for (var i=0; i<chosenAnswers.length; i++) {
+			completedDataString+= ("-answer-" + chosenAnswers[i]._id);
+		}
 		console.log('completedDataString', completedDataString)
 		
-		/* increment counts for quiz, outcome and each chosenAnswer */
-		PUT("/api/quiz/" + quiz._id + "/increment-completed-count", null);
-		PUT("/api/outcome/" + outcome._id + "/increment-count", null);
-		// TODO: FIX
-		// for (var i=0; i<chosenAnswers.length; i++) {
-		// 	PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
-		// }
+		PUT(completedDataString, null);
 	}
 
 	function load_quiz_info(quizID, container){
