@@ -48,9 +48,36 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 	app.get('/api/share/:id/increment-fb-count', PUTshareIncrementFBCount);
 	app.get('/api/share/:id/increment-twitter-count', PUTshareIncrementTwitterCount);
+
+
+
+	/* The problem:
+			-- how to PUT completions for the most items at once in one request
+					- more in 1 request == less load on server when a quiz goes viral
+			-- max URL length is 2000 characters and must leave room for JSONP stuff
+		
+		The plan:
+			-- make PUTs like /api/completed/quiz/:quizID/outcome/:outcomeID/answer/:answerID/answer/:answerID
+							  /api/completed/answer/:answerID/answer/:answerID/...etc
+	*/
+	//app.get('/api/completed/:completedData', PUTcompletedData);
 }
 
 /* --------------- API --------------------- */
+
+
+// var PUTcompletedData = function(req, res) {
+// 	var completedData = req.completedData;
+// 	console.log('PUTcompletedData', completedData);
+
+// 	var a = completedData.split('/');
+// 	console.log('\naaaaaaaa\n', a);
+// 	var completedDictionary = {};
+// 	for (var i=0; i<a.length; i++) {
+
+// 	}
+// }
+
 
 var POSTquiz = function(req, res) {
 	models.newQuiz(req.body, function(err, quiz) {

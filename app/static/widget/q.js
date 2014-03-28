@@ -142,10 +142,15 @@
 	}
 	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
 		console.log('quizCompleteCallback', chosenAnswers, outcome)
+
+		var completedDataString = "/api/completed";
+			completedDataString+= ("/quiz/" + quiz._id);
+			completedDataString+= ("/outcome/" + outcome._id);
+		console.log('completedDataString', completedDataString)
 		
 		/* increment counts for quiz, outcome and each chosenAnswer */
 		PUT("/api/quiz/" + quiz._id + "/increment-completed-count", null);
-		PUT("/api/outcome/" + outcome._id + "/increment-count", null);
+		//PUT("/api/outcome/" + outcome._id + "/increment-count", null);
 		// TODO: FIX
 		// for (var i=0; i<chosenAnswers.length; i++) {
 		// 	PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
@@ -176,6 +181,8 @@
 		tempscript.src  = domain + endpoint + "?callback=" + f_name + "";
 		tempscript.type = "text/javascript";
 		document.body.appendChild(tempscript);
+
+		console.log('new tempscript', tempscript.src.length, tempscript.src)
 
 		addWindowFunction(f_name, function(data) {
 			document.body.removeChild(tempscript);
