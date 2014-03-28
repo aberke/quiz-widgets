@@ -17,7 +17,6 @@ function MainCntl($scope, $location, UserFactory) {
 		$('html, body').animate({'scrollTop': elt.offset().top}, 'slow', 'swing');
 	}
 	$scope.goTo = function(path) {
-		console.log('goTo',path)
 		$location.path(path);
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}

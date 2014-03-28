@@ -37,7 +37,7 @@ body {
 	height: 60px;
 	background-color: white;
 	opacity: 0.4;
-	/*opacity: 0;*/
+	z-index: 2; /* make it clickable above other content */
 }
 .header:hover {
 	opacity: 0.8;

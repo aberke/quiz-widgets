@@ -8,6 +8,7 @@ var util 		= require('./../util.js'),
 
 exports.registerEndpoints = function (app) {
 	app.get('/api/user/all', GETallUsers);
+	app.get('/api/user/:id', GETuser);
 
 
 	app.post('/api/quiz', POSTquiz);
@@ -296,55 +297,62 @@ var PUTanswerIncrementCount = function(req, res) {
 	});
 }
 
+var deleteCallback = function(res, err) {
+	if (err) { return res.json(500, {error: util.handleError(err)}); }
+	res.json(200);
+}
 
-var GETallAnswers = function(req, res){
-	models.allAnswers(function (err, answers){
-		if (err) return res.send(util.handleError(err));
-		res.send(answers);
-	});
-};
-var GETallQuestions = function(req, res){
-	models.allQuestions(function (err, questions){
-		if (err) return res.send(util.handleError(err));
-		res.send(questions);
-	});
-};
-var GETallQuizes = function(req, res){
-	models.allQuizes(function (err, quizes){
-		if (err) return res.send(util.handleError(err));
-		res.send(quizes);
-	});
-};
-var GETallUsers = function(req, res){
-	models.allUsers(function (err, users){
-		if (err) return res.send(util.handleError(err));
-		res.send(users);
-	});
-};
-var GETallOutcomes = function(req, res) {
-	models.allOutcomes(function (err, outcomes) {
-		if (err) return res.send(util.handleError(err));
-	});
+var DELETEoutcome = function(req, res) {
+	models.deleteOutcome(req.params.id, function (err) { deleteCallback(res, err); });
+}
+
+/* ------------------ GET ----------------------- */
+
+/* generates the callback function for the non-JSONP GET's */
+var GETcallback = function(response) {
+
+	var callback = function(err, result) { // closure around response
+		if (err) { return response.send(500, util.handleError(err)); }
+		response.send(200, result);
+	}
+	return callback;
 }
 
 
+var GETallAnswers = function(req, res){
+	models.allAnswers(GETcallback(res));
+};
+var GETallQuestions = function(req, res){
+	models.allQuestions(GETcallback(res));
+};
+var GETallQuizes = function(req, res){
+	models.allQuizes(GETcallback(res));
+};
+var GETallUsers = function(req, res){
+	models.allUsers(GETcallback(res));
+};
+var GETallOutcomes = function(req, res) {
+	models.allOutcomes(GETcallback(res));
+}
+
+
+
+var GETuser = function(req, res) {
+	//models.findUser(req.params.id, )
+}
+
 var GETquiz = function(req, res) {
+	/* not using helper callback because NEED JSONP */
 	models.findQuiz(req.params.id, function(err, quiz) {
 		if (err) return res.send(500, util.handleError(err));		
-		res.jsonp(200, quiz);
+		res.jsonp(200, quiz); /* NEED JSONP */
 	});
 }
 var GEToutcome = function(req, res) {
-	models.findOutcome(req.params.id, function(err, outcome) {
-		if (err) return res.send(500, util.handleError(err));
-		res.send(200, outcome);
-	});
+	models.findOutcome(GETcallback(res));
 }
 var GETquestion = function(req, res) {
-	models.findQuestion(req.params.id, function(err, question) {
-		if (err) return res.send(500, util.handleError(err));
-		res.send(200, question);
-	});
+	models.findQuestion(GETcallback(res));
 }
 
 /* --------------- DELETE ---------------------- */
@@ -360,8 +368,6 @@ var DELETEoutcome = function(req, res) {
 var DELETEanswer = function(req, res) {
 	models.deleteAnswer(req.params.id, function(err) {
 		deleteCallback(res, err);
-		// if (err) { return res.json(500, {error: util.handleError(err)}); }
-		// res.json(200);
 	});
 };
 var DELETEquestion = function(req, res) {

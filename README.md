@@ -39,6 +39,9 @@ since last email
 TODO
 ---
 
+- better answer reporting in q.js quiz-object.js
+	- post as they are answered?
+
 
 - login stuff
 	- restrict access on front end too 
