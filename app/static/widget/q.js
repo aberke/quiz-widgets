@@ -142,15 +142,12 @@
 	}
 	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
 		/* increment counts for quiz, outcome and each chosenAnswer */
-		console.log('quizCompleteCallback', chosenAnswers, outcome)
-
 		var completedDataString = "/api/completed/";
 			completedDataString+= ("quiz-" + quiz._id);
 			completedDataString+= ("-outcome-" + outcome._id);
 		for (var i=0; i<chosenAnswers.length; i++) {
 			completedDataString+= ("-answer-" + chosenAnswers[i]._id);
 		}
-		console.log('completedDataString', completedDataString)
 		
 		PUT(completedDataString, null);
 	}
@@ -179,8 +176,6 @@
 		tempscript.src  = domain + endpoint + "?callback=" + f_name + "";
 		tempscript.type = "text/javascript";
 		document.body.appendChild(tempscript);
-
-		console.log('new tempscript', tempscript.src.length, tempscript.src)
 
 		addWindowFunction(f_name, function(data) {
 			document.body.removeChild(tempscript);
