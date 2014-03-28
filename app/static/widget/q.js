@@ -146,9 +146,10 @@
 		/* increment counts for quiz, outcome and each chosenAnswer */
 		PUT("/api/quiz/" + quiz._id + "/increment-completed-count", null);
 		PUT("/api/outcome/" + outcome._id + "/increment-count", null);
-		for (var i=0; i<chosenAnswers.length; i++) {
-			PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
-		}
+		// TODO: FIX
+		// for (var i=0; i<chosenAnswers.length; i++) {
+		// 	PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
+		// }
 	}
 
 	function load_quiz_info(quizID, container){
