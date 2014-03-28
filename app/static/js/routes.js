@@ -11,6 +11,9 @@ QuizApp.config(function($routeProvider) {
 		);
 	};
 	
+	$routeProvider.when('/forbidden', {
+		templateUrl: '/html/forbidden.html',
+	});	
 	$routeProvider.when('/new', {
 		templateUrl: '/html/new.html',
 		controller: NewQuizCntl,

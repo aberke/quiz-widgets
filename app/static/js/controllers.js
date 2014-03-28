@@ -11,17 +11,15 @@ function MainCntl($scope, $location) {
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}
 	$scope.scrollToById = function(eltID) {
-		document.getElementById(eltID).scrollIntoView(true);
+		var elt = $('#' + eltID).eq(0);
+		$('html, body').animate({'scrollTop': elt.offset().top}, 'slow', 'swing');
 	}
-
-	$scope.newPage = function(){
-		$location.path('/new');
-	}
-	$scope.goTo = function(url) {
-		window.location.href=url;
+	$scope.goTo = function(path) {
+		$location.path(path);
+		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}
 	$scope.login = function(){
-		window.location.href=($scope.domain + '/auth/twitter');
+		window.location.href=($scope.domain + '/login');
 	}
 	$scope.logout = function(){
 		window.location.href=($scope.domain + '/logout');

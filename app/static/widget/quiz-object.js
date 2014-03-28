@@ -158,6 +158,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             Collecting + converting these btns for given context handled by the HuffpostLabsBtnMaster */
         if (isMobile) {
             container.className += ' mobile';
+        } else {
+            container.className += ' non-mobile';
         }
         btnMaster = new HuffpostLabsBtnMaster(container);
     }
