@@ -206,7 +206,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
     }
     function shortenText(text, maxlength) {
-        if (text.length && text.length > maxlength) {
+        if (text && text.length && text.length > maxlength) {
             text = (text.substring(0, maxlength - 2) + "..");
         }
         return text;
