@@ -23,7 +23,7 @@ module.exports = function() {
 			callbackURL: ((process.env.PRODUCTION_WWW_HTTP_URL || process.env.LOCAL_WWW_HTTP_URL) + "auth/twitter/callback"),
 		},
 		function(token, tokenSecret, profile, done) {
-			models.User.findOne({twitter_id: profile.id}, function(err, user){
+			models.findUserBy({twitter_id: profile.id}, function(err, user){
 				if (err || user) { return done(err, user); }
 				/* else make a new User */
 				models.newUser(profile, done);

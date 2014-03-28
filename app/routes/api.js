@@ -9,6 +9,8 @@ var util 		= require('./../util.js'),
 exports.registerEndpoints = function (app) {
 	app.get('/api/user/all', GETallUsers);
 	app.get('/api/user/:id', GETuser);
+	app.put('/api/user/:userID/claim-quiz/:quizID', PUTuserClaimQuiz);
+	app.put('/api/user/:userID/relinquish-quiz/:quizID', PUTuserRelinquishQuiz);
 
 
 	app.post('/api/quiz', POSTquiz);

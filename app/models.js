@@ -425,6 +425,11 @@ exports.findUser = function(userID, callback) {
 		.populate('quizList')
 		.exec(callback);
 };
+exports.findUserBy = function(object, callback) {
+	User.findOne(object)
+		.populate('quizList')
+		.exec(callback);
+};
 
 exports.allUsers = function(callback){
 	User.find()

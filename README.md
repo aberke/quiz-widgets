@@ -47,6 +47,10 @@ TODO
 	- restrict access on front end too 
 		- http://blog.brunoscopelliti.com/deal-with-users-authentication-in-an-angularjs-web-app
 
+	- get rid of basic auth and instead have a whitelist of allowed user twitterIDs/twitter_usernames that i'll check in the middleware find-or-create method
+		- whitelist just json that i can update when someone wants an account
+		- special user-accounts branch for updating whitelist
+
 - give each user a page
 	- find all users page in directory
 	- make user's name clickable next to their quiz in the all quizzes view
