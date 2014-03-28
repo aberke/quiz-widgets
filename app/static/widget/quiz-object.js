@@ -212,8 +212,9 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         return text;
     }
     function shareOutcomeTwitter() {
+        console.log(leadingOutcome)
         var text = 'I got: ';
-            text+= (leadingOutcome.text || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
+            text+= (leadingOutcome.text || leadingOutcome.share.caption || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
             text+= ' -- ' + quizData.title;
         twitterShare(quizData, text);
     }

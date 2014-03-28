@@ -60,23 +60,23 @@ exports.registerEndpoints = function (app) {
 			-- make PUTs like /api/completed/quiz/:quizID/outcome/:outcomeID/answer/:answerID/answer/:answerID
 							  /api/completed/answer/:answerID/answer/:answerID/...etc
 	*/
-	//app.get('/api/completed/:completedData', PUTcompletedData);
+	app.get('/api/completed/:completedData', PUTcompletedData);
 }
 
 /* --------------- API --------------------- */
 
 
-// var PUTcompletedData = function(req, res) {
-// 	var completedData = req.completedData;
-// 	console.log('PUTcompletedData', completedData);
+var PUTcompletedData = function(req, res) {
+	var completedData = req.completedData;
+	console.log('PUTcompletedData', completedData);
 
-// 	var a = completedData.split('/');
-// 	console.log('\naaaaaaaa\n', a);
-// 	var completedDictionary = {};
-// 	for (var i=0; i<a.length; i++) {
-
-// 	}
-// }
+	var a = completedData.split('/');
+	console.log('\naaaaaaaa\n', a);
+	var completedDictionary = {};
+	for (var i=0; i<a.length; i++) {
+		
+	}
+}
 
 
 var POSTquiz = function(req, res) {
