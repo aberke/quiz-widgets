@@ -148,7 +148,7 @@
 		for (var i=0; i<chosenAnswers.length; i++) {
 			completedDataString+= ("-answer-" + chosenAnswers[i]._id);
 		}
-		
+
 		PUT(completedDataString, null);
 	}
 
