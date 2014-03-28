@@ -334,11 +334,15 @@ var GETallUsers = function(req, res){
 var GETallOutcomes = function(req, res) {
 	models.allOutcomes(GETcallback(res));
 }
-
-
-
+/* ---------- GET singletons ---------- */
+var GEToutcome = function(req, res) {
+	models.findOutcome(req.params.id, GETcallback(res));
+}
+var GETquestion = function(req, res) {
+	models.findQuestion(req.params.id, GETcallback(res));
+}
 var GETuser = function(req, res) {
-	//models.findUser(req.params.id, )
+	models.findUser(req.params.id, GETcallback(res));
 }
 
 var GETquiz = function(req, res) {
@@ -347,12 +351,6 @@ var GETquiz = function(req, res) {
 		if (err) return res.send(500, util.handleError(err));		
 		res.jsonp(200, quiz); /* NEED JSONP */
 	});
-}
-var GEToutcome = function(req, res) {
-	models.findOutcome(GETcallback(res));
-}
-var GETquestion = function(req, res) {
-	models.findQuestion(GETcallback(res));
 }
 
 /* --------------- DELETE ---------------------- */
