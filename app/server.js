@@ -4,9 +4,9 @@ var express 		= require('express'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
 
-
     authMiddleware  = require('./middleware/authentication-middleware.js'),
 	passportMiddleware = require('./middleware/passport-middleware.js')(),
+
 
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
@@ -60,8 +60,8 @@ app.get('/logout', function(req, res) {
 api_routes.registerEndpoints(app);
 
 
-app.get('/', 			basicAuth, main_routes.serveBase);
-//app.get('/', 			main_routes.serveBase);
+//app.get('/', 			basicAuth, main_routes.serveBase);
+app.get('/', 			main_routes.serveBase);
 app.get('/new', 		basicAuth, main_routes.serveBase);
 app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
 app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
