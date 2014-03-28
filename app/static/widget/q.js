@@ -59,7 +59,7 @@
 			fb_root_div.style.display = 'none';
 			document.body.appendChild(fb_root_div);
 	    }
-		var defaultQuizPicUrl = domain + "/icon/huffpost-H.png";
+		var defaultQuizPicUrl = static_domain + "/icon/huffpost-H.png";
 	    var appIDMap = { "http://quizwidget-petri.dotcloud.com": '611233398931791',
 					     //"http://42461ba5.ngrok.com": '502717763181151',
 
