@@ -67,6 +67,7 @@ app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
 app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
 app.get('/social/:id',  basicAuth, main_routes.serveBase);
 app.get('/forbidden',  basicAuth, main_routes.serveBase);
+app.get('/contact',  basicAuth, main_routes.serveBase);
 
 app.get('/err', function(req, res) {
 	res.send(500, {'err': "FAKE ERROR"})

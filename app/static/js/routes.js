@@ -11,6 +11,9 @@ QuizApp.config(function($routeProvider) {
 		);
 	};
 	
+	$routeProvider.when('/contact', {
+		templateUrl: '/html/contact.html',
+	});	
 	$routeProvider.when('/forbidden', {
 		templateUrl: '/html/forbidden.html',
 	});	
