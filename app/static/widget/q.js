@@ -37,11 +37,10 @@
 
 
 	var setupTwitter = function() {
-		window.twitterShare = function(quiz, text) {
-			var twitterURL = 'https://twitter.com/share?url=' + (quiz.share.link || window.location.href) + '&text=' + (text || quiz.title) + '&via=HuffPostLabs&hashtags=huffpostQuiz';
+		window.twitterShare = function(text, share) {
+			var twitterURL = 'https://twitter.com/share?url=' + (share.link || window.location.href) + '&text=' + (text || '') + '&via=HuffPostLabs&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
-			PUT("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
-
+			PUT("/api/share/" + share._id + "/increment-twitter-count", null);
 		}
 	}
 	var setupFB = function() {
@@ -82,7 +81,6 @@
 		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
-	   console.log('window.FB',window.FB)
 	   if (window.FB == undefined) {
 	   	console.log('window.FB == undefined');
 		window.fbAsyncInit = function() {

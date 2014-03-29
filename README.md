@@ -39,6 +39,9 @@ since last email
 TODO
 ---
 
+- put all the fb sharing stuff in its own 'library as external script'
+	- for labs reuse
+
 - stats page:
 	- total tally for all answers -- as requested by ethan
 
@@ -49,7 +52,7 @@ TODO
 	- assign arbitrary number of points to outcome
 	
 - deal with possibility that twitter share link could be too long
-- on sharing page let them put in bitly link for sharing -- or automatically create one
+	- on sharing page let them put in bitly link for sharing -- or automatically create one
 
 - be able to reorder questions
 

@@ -198,28 +198,27 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         fbShareOutcome(quizData, leadingOutcome);
     }
     function shareQuizTwitter() {
-        twitterShare(quizData);
+        twitterShare(quizData.title, quizData.share);
     }
-    function embedCode() {
-        //codeEmbed(quizData);
-        window.prompt("Copy to clipboard: Copy(Ctrl+C), Enter", 
-        '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
+    function shareOutcomeTwitter() {
+        var text = 'I got: ';
+            text+= (leadingOutcome.text || leadingOutcome.share.caption || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
+            text+= ' -- ' + quizData.title;
+        twitterShare(text, leadingOutcome.share);
     }
     function shortenText(text, maxlength) {
+        /* helper for sharing to twitter */
         if (text && text.length && text.length > maxlength) {
             text = (text.substring(0, maxlength - 2) + "..");
         }
         return text;
     }
-    function shareOutcomeTwitter() {
-        console.log(leadingOutcome)
-        var text = 'I got: ';
-            text+= (leadingOutcome.text || leadingOutcome.share.caption || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
-            text+= ' -- ' + quizData.title;
-        twitterShare(quizData, text);
-    }
     function copyToClipboard(text) {
       window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+    }
+    function embedCode() {
+        window.prompt("Copy to clipboard: Copy(Ctrl+C), Enter", 
+        '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
     }
 
     function titleContainerHTML() {
