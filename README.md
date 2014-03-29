@@ -39,9 +39,6 @@ since last email
 TODO
 ---
 
-- better answer reporting in q.js quiz-object.js
-	- post as they are answered?
-
 
 - login stuff
 	- restrict access on front end too 
@@ -63,6 +60,13 @@ TODO
 			- q in quizList for all quizzes | {q._user: '!user._id'}
 
 
+- put all the fb sharing stuff in its own 'library as external script'
+	- for labs reuse
+
+- stats page:
+	- total tally for all answers -- as requested by ethan
+
+
 - http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 
 - fix for trivia option (Nick on the politics team would like this)
@@ -70,7 +74,7 @@ TODO
 	- assign arbitrary number of points to outcome
 	
 - deal with possibility that twitter share link could be too long
-- on sharing page let them put in bitly link for sharing -- or automatically create one
+	- on sharing page let them put in bitly link for sharing -- or automatically create one
 
 - be able to reorder questions
 

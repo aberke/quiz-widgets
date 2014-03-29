@@ -21,7 +21,6 @@ exports.registerEndpoints = function (app) {
 	app.delete('/api/quiz/:id', DELETEquiz);
 	app.put('/api/quiz/:id/share', PUTquizShare);
 	app.put('/api/quiz/:id/increment-started-count', PUTquizIncrementStartedCount);
-	app.put('/api/quiz/:id/increment-completed-count', PUTquizIncrementCompletedCount);
 
 	app.post('/api/answer', POSTanswer);
 	app.get('/api/answer/all', GETallAnswers);
@@ -39,21 +38,35 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/outcome/:id', GEToutcome);
 	app.put('/api/outcome/:id', PUToutcome);
 	app.delete('/api/outcome/:id', DELETEoutcome);
-	app.put('/api/outcome/:id/increment-count', PUToutcomeIncrementCount);
 	app.put('/api/outcome/:id/share', PUToutcomeShare);
 
-	app.put('/api/answer/:id/increment-count', PUTanswerIncrementCount);
+	//app.put('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 
 	/* JSONP hacks -- these are GET requests because they're with JSONP */
 	app.get('/api/quiz/:id/increment-started-count', PUTquizIncrementStartedCount);
-	app.get('/api/quiz/:id/increment-completed-count', PUTquizIncrementCompletedCount);
-	app.get('/api/outcome/:id/increment-count', PUToutcomeIncrementCount);
-	app.get('/api/answer/:id/increment-count', PUTanswerIncrementCount);
+	//app.get('/api/quiz/:id/increment-completed-count', PUTquizIncrementCompletedCount);
+	//app.get('/api/answer/:id/increment-count', PUTanswerIncrementCount);
 	app.get('/api/share/:id/increment-fb-count', PUTshareIncrementFBCount);
 	app.get('/api/share/:id/increment-twitter-count', PUTshareIncrementTwitterCount);
+
+
+
+	/* The problem:
+			-- how to PUT completions for the most items at once in one request
+					- more in 1 request == less load on server when a quiz goes viral
+			-- max URL length is 2000 characters and must leave room for JSONP stuff
+		
+		The plan:
+			-- make PUTs like /api/completed/quiz/:quizID/outcome/:outcomeID/answer/:answerID/answer/:answerID
+							  /api/completed/answer/:answerID/answer/:answerID/...etc
+	*/
+	app.get('/api/completed/:completedData', PUTcompletedData);
 }
 
 /* --------------- API --------------------- */
+
+
+
 
 var POSTquiz = function(req, res) {
 	/* newQuiz expects the _user to be in the quizData
@@ -232,15 +245,12 @@ var PUToutcomeShare = function(req, res) {
 		}
 	});
 }
-var PUTquizIncrementCompletedCount = function(req, res) {
-	models.findQuizPartial(req.params.id, function(err, quiz) {
+var quizIncrementCompletedCount = function(quizID) {
+	models.findQuizPartial(quizID, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
 
 		quiz.completedCount = quiz.completedCount + 1;
-		quiz.save(function(err) {
-			if (err) { return res.send(500, util.handleError(err)); }
-			res.jsonp(200);
-		});
+		quiz.save(function(err) { if (err) { util.handleError(err); } });
 	});
 }
 var PUTquizIncrementStartedCount = function(req, res) {
@@ -276,27 +286,41 @@ var PUTshareIncrementFBCount = function(req, res) {
 		});
 	});
 }
-var PUToutcomeIncrementCount = function(req, res) {
-	models.findOutcome(req.params.id, function(err, outcome) {
+var outcomeIncrementCount = function(outcomeID) {
+	models.findOutcome(outcomeID, function(err, outcome) {
 		if (err || !outcome) { return res.send(500); }
 
 		outcome.count = outcome.count + 1;
-		outcome.save(function(err) {
-			if (err) { return res.send(500, util.handleError(err)); }
-			res.jsonp(200);
-		});
+		outcome.save(function(err) { if (err) { util.handleError(err); } });
 	});
 }
-var PUTanswerIncrementCount = function(req, res) {
-	models.findAnswer(req.params.id, function(err, answer) {
-		if (err) return res.send(500, util.handleError(err));
+/* helper to PUTcompletedData */
+var answerIncrementCount = function(answerID) {
+	models.findAnswer(answerID, function(err, answer) {
+		if (err) return util.handleError(err);
 
 		answer.count = answer.count + 1;
-		answer.save(function(err) {
-			if (err) { return res.send(500, util.handleError(err)); }
-			res.jsonp(200);
-		});
+		answer.save(function(err) { if (err) { util.handleError(err); } });
 	});
+}
+var PUTcompletedData = function(req, res) {
+	var completedDataString = req.params.completedData;
+
+	var completedDataArray = completedDataString.split('-');
+	for (var i=0; i<completedDataArray.length; i+=2) {
+		var type = completedDataArray[i];
+		var id 	 = completedDataArray[i+1];
+
+		if (type == 'quiz') {
+			quizIncrementCompletedCount(id);
+		} else if (type == 'outcome') {
+			outcomeIncrementCount(id);
+		} else if (type == 'answer') {
+			answerIncrementCount(id);
+		} else {
+			console.log('ERROR: PUTcompletedData of unknown type:', type);
+		}
+	}
 }
 
 var deleteCallback = function(res, err) {

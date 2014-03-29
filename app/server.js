@@ -25,9 +25,11 @@ app.configure(function () {
     app.use(connect.urlencoded()),
 	app.use(connect.json()),
   	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
+
 	app.use(express.session({secret: process.env.SESSION_SECRET})),
 	app.use(passportMiddleware.initialize()),
 	app.use(passportMiddleware.session()),
+
     app.use(express.static(path.join(__dirname, '/static')));
     app.use(expressValidator());
 });

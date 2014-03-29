@@ -37,11 +37,10 @@
 
 
 	var setupTwitter = function() {
-		window.twitterShare = function(quiz, text) {
-			var twitterURL = 'https://twitter.com/share?url=' + (quiz.share.link || window.location.href) + '&text=' + (text || quiz.title) + '&via=HuffPostLabs&hashtags=huffpostQuiz';
+		window.twitterShare = function(text, share) {
+			var twitterURL = 'https://twitter.com/share?url=' + (share.link || window.location.href) + '&text=' + (text || '') + '&via=HuffPostLabs&hashtags=huffpostQuiz';
 			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
-			PUT("/api/share/" + quiz.share._id + "/increment-twitter-count", null);
-
+			PUT("/api/share/" + share._id + "/increment-twitter-count", null);
 		}
 	}
 	var setupFB = function() {
@@ -59,7 +58,7 @@
 			fb_root_div.style.display = 'none';
 			document.body.appendChild(fb_root_div);
 	    }
-		var defaultQuizPicUrl = domain + "/icon/huffpost-H.png";
+		var defaultQuizPicUrl = static_domain + "/icon/huffpost-H.png";
 	    var appIDMap = { "http://quizwidget-petri.dotcloud.com": '611233398931791',
 					     //"http://42461ba5.ngrok.com": '502717763181151',
 
@@ -82,7 +81,6 @@
 		}
 
 	   /* ------------- necessary setup straight from FB ------------- */
-	   console.log('window.FB',window.FB)
 	   if (window.FB == undefined) {
 	   	console.log('window.FB == undefined');
 		window.fbAsyncInit = function() {
@@ -141,14 +139,15 @@
 		PUT("/api/quiz/" + quiz._id + "/increment-started-count", null);
 	}
 	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
-		console.log('quizCompleteCallback', chosenAnswers, outcome)
-		
 		/* increment counts for quiz, outcome and each chosenAnswer */
-		PUT("/api/quiz/" + quiz._id + "/increment-completed-count", null);
-		PUT("/api/outcome/" + outcome._id + "/increment-count", null);
+		var completedDataString = "/api/completed/";
+			completedDataString+= ("quiz-" + quiz._id);
+			completedDataString+= ("-outcome-" + outcome._id);
 		for (var i=0; i<chosenAnswers.length; i++) {
-			PUT("/api/answer/" + chosenAnswers[i]._id + "/increment-count", null);
+			completedDataString+= ("-answer-" + chosenAnswers[i]._id);
 		}
+
+		PUT(completedDataString, null);
 	}
 
 	function load_quiz_info(quizID, container){
