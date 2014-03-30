@@ -6,7 +6,7 @@ QuizApp.config(function($routeProvider) {
 		- returns promise rather than data bc routeProvider wont render controller until promise resolved
 	*/
 	var resolveQuizFunction = function(HTTPService, $location) {
-		return HTTPService.GETquiz($location.path().split('/')[2]).then(
+		return APIservice.GETquiz($location.path().split('/')[2]).then(
 			function(data) { return data; }
 		);
 	};
@@ -46,8 +46,8 @@ QuizApp.config(function($routeProvider) {
 		templateUrl: '/html/index.html',
 		controller: IndexCntl,
 		resolve: { /* returning the promise and then resolving the promise as the data */
-			quizList: function(HTTPService){
-				return HTTPService.GET('/api/quiz/all').then(function(data) {
+			quizList: function(APIservice){
+				return APIservice.GET('/quiz/all').then(function(data) {
 					return data;
 				});
 			}

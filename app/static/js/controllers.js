@@ -28,15 +28,36 @@ function MainCntl($scope, $location, UserFactory) {
 	}
 }
 
-function IndexCntl($scope, HTTPService, quizList) {
+function IndexCntl($scope, APIservice, quizList) {
 	$scope.quizList = quizList;
+
+	$scope.claimQuiz = function(quiz) {
+		if (!$scope.user || quiz._user) { return false; } // directive  owner-only-element should prevent this case
+
+		APIservice.PUT('/user/' + $scope.user._id + '/claim-quiz/' + quiz._id).then(function(data) {
+			console.log('claim quiz returned', data);
+			/* successful so update quizList and user.quizList*/
+			quiz._user = $scope.user;
+			$scope.user.quizList.push(quiz);
+		});
+	}
+	$scope.relinquishQuiz = function(quiz) {
+		console.log('relinquishQuiz', quiz)
+		if (!$scope.user || !quiz._user || quiz._user._id != $scope.user._id) { return false; } // directive  owner-only-element should prevent this case
+		
+		APIservice.PUT('/user/' + $scope.user._id + '/relinquish-quiz/' + quiz._id).then(function(data) {
+			quiz._user = null;
+			var quizIndex = $scope.user.quizList.indexOf(quiz);
+			$scope.user.quizList.splice(quizIndex, 1);
+		});
+	}
 
 
 	$scope.delete = function(quiz) {
 		var confirmed = confirm('Are you sure you want to permenantly delete this quiz?  This quiz will no longer show up on any of the pages on which it is embedded.');
 		if (!confirmed){ return false; }
 		
-		HTTPService.DELETE('/api/quiz/' + quiz._id, quiz).then(function(data) {
+		APIservice.DELETE('/quiz/' + quiz._id, quiz).then(function(data) {
 			var index = $scope.quizList.indexOf(quiz);
 			$scope.quizList.splice(index, 1);
 		});
@@ -47,7 +68,7 @@ function IndexCntl($scope, HTTPService, quizList) {
 	}
 	init();
 }
-function QuizCntl($scope, HTTPService, quiz) {
+function QuizCntl($scope, APIservice, quiz) {
 	$scope.quiz = quiz;
 	$scope.totalSharesFB;
 	$scope.totalSharesTwitter;
@@ -88,7 +109,7 @@ function QuizCntl($scope, HTTPService, quiz) {
 	}
 	init();
 }
-function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
+function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 	$scope.quiz = quiz;
 	$scope.quiz.share = (quiz.share || {});
 	$scope.shareLinkSaved = false;
@@ -99,13 +120,13 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 	}
 
 	$scope.saveOutcomeShare = function(outcome) {
-		HTTPService.PUT('/api/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
+		APIservice.PUT('/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
 			console.log('data', data);
 			outcome.share.saved = 'saved';
 		});
 	}
 	var saveQuizShare = function(callback) {
-		HTTPService.PUT('/api/quiz/' + $scope.quiz._id + '/share', $scope.quiz.share).then(function(data) {
+		APIservice.PUT('/quiz/' + $scope.quiz._id + '/share', $scope.quiz.share).then(function(data) {
 			console.log('data', data);
 			if (callback) { callback(data); }
 		});
@@ -128,7 +149,7 @@ function ShareCntl($scope, UIService, FormService, HTTPService, quiz) {
 	}
 	init();
 }
-function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, HTTPService) {
+function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, APIservice) {
 	console.log('user', $scope.user)
 	$scope.showAddNewOutcome = false;
 
@@ -290,7 +311,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 			return false;
 		}
 		/* ready to post quiz */
-		HTTPService.POST('/api/quiz', $scope.quiz).then(function(data) {
+		APIservice.POST('/quiz', $scope.quiz).then(function(data) {
 			$scope.quiz.saved = 'saved';
 			console.log('POSTED QUIZ',$scope.quiz,'got back data', data);
 			$location.path('/quiz/' + data._id);
@@ -303,7 +324,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, H
 	}
 	init();
 }
-function EditCntl($scope, $location, FormService, HTTPService, UIService, WidgetService, quiz) {
+function EditCntl($scope, $location, FormService, APIservice, UIService, WidgetService, quiz) {
 	$scope.quiz = quiz;
 
 	/* outcomeMap: {outcomeID: outcome} 
@@ -337,7 +358,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 
 	var reloadQuiz = function() {
 		/* reloads widget, reloads $scope.quiz */
-		HTTPService.GETquiz($scope.quiz._id).then(function(data) {
+		APIservice.GETquiz($scope.quiz._id).then(function(data) {
 			reloadWidget(data);
 			$scope.quiz = data;
 			WidgetService.setupOutcomeAnswerLists($scope.quiz);
@@ -410,7 +431,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 
 	var remove = function(type, object, callback) {
 		object.saved = 'deleting';
-		HTTPService.DELETE('/api/' + type + '/' + object._id, object).then(
+		APIservice.DELETE('/' + type + '/' + object._id, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
@@ -421,7 +442,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 	/* addNew == POST request --------------------------------- */
 	var create = function(type, object, callback) {
 		object.saved = 'saving';
-		HTTPService.POST('/api/' + type, object).then(
+		APIservice.POST('/' + type, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
@@ -440,7 +461,7 @@ function EditCntl($scope, $location, FormService, HTTPService, UIService, Widget
 	*/
 	var update = function(type, object, callback) {
 		object.saved = 'saving';
-		HTTPService.PUT('/api/' + type + '/' + object._id, object).then(
+		APIservice.PUT('/' + type + '/' + object._id, object).then(
 			APIsuccess(object, callback),
 			APIerror(object)
 		);

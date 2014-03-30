@@ -176,6 +176,63 @@ var PUTanswer = function(req, res) {
 		});
 	});
 }
+/* mapped to by PUT '/api/user/:userID/relinquish-quiz/:quizID' */
+var PUTuserRelinquishQuiz = function(req, res) {
+	models.User.findOne({_id: req.params.userID}, function(err, user) {
+		if (err || !user) { return res.send(500, util.handleError(err)); }
+		// user with UNpopulated quizList
+		var index = user.quizList.indexOf(req.params.quizID);
+		if (index < 0) { return res.send(500, util.handleError('User ' + user._id + ' an not relinquish-quiz ' + req.params.quizID)); }
+		user.quizList.splice(index, 1);
+		user.save(function(err) {
+			if (err) { return res.send(500, util.handleError(err)); }
+
+			models.findQuiz(req.params.quizID, function(err, quiz) {
+				if (err || !quiz) { return res.send(500, util.handleError(err)); }
+				quiz._user = null;
+				quiz.save(function(err) {
+					if (err) { return res.send(500, util.handleError(err)); }
+					res.send(200, quiz);
+				});
+			});
+		});
+	});
+
+
+
+
+
+	// });
+}
+
+/* mapped to by PUT '/api/user/:userID/claim-quiz/:quizID' */
+var PUTuserClaimQuiz = function(req, res) {
+	/* a user can only claim an orphaned quiz 
+		- get the quiz and make sure it's an orphan -- return 500 if not
+		- get the user
+			- assign the user to the quiz._user
+			- add the quiz to the user.quizList
+	*/
+	models.findQuizPartial(req.params.quizID, function(err, quiz) {
+		if (err || !quiz) { return res.send(500, util.handleError(err)); }
+		if (quiz._user) { return res.send(500, util.handleError('User ' + req.params.userID + ' tried to claim Quiz ' + quiz._id + ', already owned by user ' + quiz._user)); }
+	
+		models.findUser(req.params.userID, function(err, user) {
+			if (err || !user) { return res.send(500, util.handleError(err)); }
+
+			quiz._user = user;
+			quiz.save(function(err) { if (err){ return res.send(500, util.handleError(err)); }});
+		
+			user.quizList.push(quiz);
+			user.save(function(err) { 
+				if (err){ return res.send(500, util.handleError(err)); }
+				res.send(200, quiz);
+			});
+		});
+	});
+
+}
+
 /* doesn't worry about handling any models it owns -- just its own fields */
 var PUTquiz = function(req, res) {
 	var quizData = req.body;
@@ -297,7 +354,7 @@ var outcomeIncrementCount = function(outcomeID) {
 /* helper to PUTcompletedData */
 var answerIncrementCount = function(answerID) {
 	models.findAnswer(answerID, function(err, answer) {
-		if (err) return util.handleError(err);
+		if (err || !answer) { return util.handleError(err); }
 
 		answer.count = answer.count + 1;
 		answer.save(function(err) { if (err) { util.handleError(err); } });

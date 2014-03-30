@@ -11,7 +11,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 	
 		// register services
 		$provide.service('UIService', UIService);
-		$provide.service('HTTPService', HTTPService);
+		$provide.service('APIservice', APIservice);
 		$provide.service('FormService', FormService);
 		$provide.service('WidgetService', WidgetService);
 
@@ -19,6 +19,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		$compileProvider.directive('imgInputLabel', imgInputLabel);
 		$compileProvider.directive('answerContainer', answerContainer);
 		$compileProvider.directive('outcomeContainer', outcomeContainer);
+		$compileProvider.directive('ownerOnlyElement', ownerOnlyElement);
 
 		// register factories
 		$provide.factory('UserFactory', UserFactory);

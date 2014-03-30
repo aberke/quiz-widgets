@@ -39,6 +39,13 @@ since last email
 TODO
 ---
 
+- mongo issue
+	- am I properly deleting questions and outcomes and answers?
+		- do I also need to splice from quiz.questionList when I delete a question?
+
+- need to better handle reporting completed quizzes
+	- grab all answers for given quiz and then sort through them?
+	- use embedded documents in mongo instead?  to better handle performance for reporting answers?
 
 - login stuff
 	- restrict access on front end too 

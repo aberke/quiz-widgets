@@ -134,13 +134,13 @@ var UIService = function($timeout){
 
 
 
-var HTTPService = function($http, $q){
+var APIservice = function($http, $q){
 
-  function HTTP(method, url, data) {
+  function HTTP(method, endpoint, data) {
     var deferred = $q.defer();
     $http({
       method: method,
-      url: url,
+      url: ('/api' + endpoint),
       data: (data || {}),
     })
     .success(function(returnedData){
@@ -148,38 +148,38 @@ var HTTPService = function($http, $q){
     })
     .error(function(errData) { 
       console.log('API ERROR', errData)
-      var e = new HTTPServiceError(errData);
+      var e = new APIserviceError(errData);
       deferred.reject(e);
     });
     return deferred.promise;
   };
   /* when there is an $http error, service rejects promise with a custom Error */
-  function HTTPServiceError(err) {
-    this.name = "HTTPServiceError";
+  function APIserviceError(err) {
+    this.name = "APIserviceError";
     this.data = (err || {});
     this.message = (err || "");
   }
-  HTTPServiceError.prototype = Error.prototype;
+  APIserviceError.prototype = Error.prototype;
 
 
   /* ---------- below functions return promises --------------------------- */
   
 
   this.GETquiz = function(id, onSuccess, onError) {
-    return this.GET('/api/quiz/' + id);
+    return this.GET('/quiz/' + id);
   };
 
-  this.GET= function(url) {
-    return HTTP('GET', url, null);
+  this.GET= function(endpoint) {
+    return HTTP('GET', endpoint, null);
   };
-  this.POST= function(url, data) {
-    return HTTP('POST', url, data);
+  this.POST= function(endpoint, data) {
+    return HTTP('POST', endpoint, data);
   };
-  this.PUT= function(url, data) {
-    return HTTP('PUT', url, data);
+  this.PUT= function(endpoint, data) {
+    return HTTP('PUT', endpoint, data);
   };
-  this.DELETE= function(url) {
-    return HTTP('DELETE', url, null);
+  this.DELETE= function(endpoint) {
+    return HTTP('DELETE', endpoint, null);
   };
 
 };

@@ -1,6 +1,38 @@
 /* directives */
 
 
+var ownerOnlyElement = function() {
+	/* only show these elements to the user who owns the quiz (within scope) */
+
+	function userOwnsQuiz(user, quiz) {
+		if (user && user._id 
+		&& quiz._user && quiz._user._id 
+		&& quiz._user._id==user._id) {
+			return true;
+		}
+		return false;
+	}
+	function hideOrShowCheck(scope, element) {
+		if (!userOwnsQuiz(scope.user, scope.q)) {
+			element.style.display = 'none';
+		} else {
+			element.style.display = 'block';
+		}
+	}
+
+
+	return {
+		restrict: 'EA',
+		link: function(scope, element, attrs) {
+
+			scope.$watch('q._user', function(value) {
+				hideOrShowCheck(scope, element[0]);
+			});
+			hideOrShowCheck(scope, element[0]);
+		}
+	}
+}
+
 
 var imgInputLabel = function() {
 
