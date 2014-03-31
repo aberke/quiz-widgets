@@ -1,0 +1,21 @@
+<!-- all-users.html -->
+
+<div class='row' id='all-users-page'>
+
+	<h2>All Users</h2>
+
+	<div class="list-group">
+	  <a ng-click="owner=u" ng-repeat='u in userList' href="" class="list-group-item" ng-class="{'active':(u._id==owner._id)}">
+	    <h4 class="list-group-item-heading">List group item heading</h4>
+	    <p class="list-group-item-text">...</p>
+	  </a>
+	</div>
+
+	<div class='row user' ng-repeat="user in userList">
+
+		<span class='displayname col-md-4'>{{user.twitter_displayname}}</span>
+		<span class='username col-md-4'>@{{user.twitter_username}}</span>
+		<span class='quiz-count col-md-4'>{{user.quizList.length}} Quizzes</span>
+	</div>
+
+</div>
