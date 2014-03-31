@@ -1,7 +1,8 @@
 /* custom authentication middleware */
 
 var express = require('express'),
-	mongoose_models = require('./../models.js');
+	util 	= require('./../util.js'),
+	models  = require('./../models.js');
 
 
 
@@ -9,29 +10,34 @@ var express = require('express'),
 exports.basicAuth = express.basicAuth(process.env.BASIC_AUTH_USER, process.env.BASIC_AUTH_PASSWORD);
 
 var sendForbiddenResponse = function(res) {
-	/* just redirect to home */
 	res.send(401);
-	return res.redirect(process.env.PRODUCTION_WWW_HTTP_URL || process.env.LOCASTHOST_WWW_HTTP_URL);
+	res.redirect('/forbidden');
 }
 
 /* list of user ids that never need verification  -- currently just Alex Berke's and HuffpostCode's */
 var admin_whitelist = ['525eb49143fdec9000000002', '525f365742342c9300000001'];
 
+
+/* Verifies that a valid user is logged in */
+exports.verifyUser = function(req, res, next) {
+	if (! req.user) { return sendForbiddenResponse(res); }
+	next();
+}
+
 /* 
-Verifies that user accessing protected endpoints does own blogcast
-	(or user is in admin_whitelist)
-	intended to be used on endpoints /blogcast/:id/*
-		- pulls ":id" as blogcastID and verifies that user in session owns that blogcast 
+Verifies that user accessing protected endpoints does own quiz
+	(or user is an admin)
+		- pulls ":quizID" and verifies that user in session owns that quiz 
 */
-exports.verifyUserOwnsBlogcast = function(req, res, next) {
-	mongoose_models.blogcastByID(req.params.id, function(err, blogcast){
-		if (err) return res.send(500);
+exports.verifyQuizOwner = function(req, res, next) {
+	models.findQuizPartial(req.params.quizID, function(err, quiz){
+		if (err) { return res.send(500, util.handleError(err)); }
 
 		/* peel userID out of the passport session info */
-		if (! req.user) return sendForbiddenResponse(res);
+		if (! req.user) { return sendForbiddenResponse(res);}
 		var userID = req.user._id.toString();
 
-		if (! (blogcast._user.toString() == userID || admin_whitelist.indexOf(userID) >= 0)) {
+		if (! (quiz._user.toString() == userID || admin_whitelist.indexOf(userID) >= 0)) {
 			return sendForbiddenResponse(res);
 		}
 

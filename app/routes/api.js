@@ -9,6 +9,7 @@ var util 		= require('./../util.js'),
 exports.registerEndpoints = function (app) {
 	app.get('/api/user/all', GETallUsers);
 	app.get('/api/user/:id', GETuser);
+	app.get('/api/user/:id/quizzes', GETuserQuizzes);
 	app.put('/api/user/:userID/claim-quiz/:quizID', PUTuserClaimQuiz);
 	app.put('/api/user/:userID/relinquish-quiz/:quizID', PUTuserRelinquishQuiz);
 
@@ -401,6 +402,9 @@ var GETcallback = function(response) {
 	return callback;
 }
 
+var GETuserQuizzes = function(req, res) {
+	models.findUserQuizzes(req.user.id, GETcallback(res));
+};
 
 var GETallAnswers = function(req, res){
 	models.allAnswers(GETcallback(res));

@@ -16,8 +16,10 @@ var express 		= require('express'),
 
 
 
-var app 	  = express(),
-	basicAuth = authMiddleware.basicAuth;
+var app 	  		= express(),
+	basicAuth 		= authMiddleware.basicAuth;
+	verifyUser 		= authMiddleware.verifyUser;
+	verifyQuizOwner = authMiddleware.verifyQuizOwner;
 
 app.configure(function () {
     app.set('port', process.env.WWW_PORT || 8080); // dotcloud doesn't have automatically set env variable for port, but know its on 8080
@@ -63,13 +65,17 @@ api_routes.registerEndpoints(app);
 
 
 //app.get('/', 			basicAuth, main_routes.serveBase);
-app.get('/', 			main_routes.serveBase);
-app.get('/new', 		basicAuth, main_routes.serveBase);
-app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
-app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
-app.get('/social/:id',  basicAuth, main_routes.serveBase);
-app.get('/forbidden',  basicAuth, main_routes.serveBase);
-app.get('/contact',  basicAuth, main_routes.serveBase);
+app.get('/', 				main_routes.serveBase);
+app.get('/new', 			verifyUser, main_routes.serveBase);
+app.get('/quiz/:quizID',	basicAuth, main_routes.serveBase);
+app.get('/edit/:quizID',	verifyQuizOwner, main_routes.serveBase);
+app.get('/social/:quizID',  verifyQuizOwner, main_routes.serveBase);
+app.get('/forbidden',  		main_routes.serveBase);
+app.get('/contact',  		basicAuth, main_routes.serveBase);
+app.get('/all-quizzes',  	basicAuth, main_routes.serveBase);
+
+// first design all-users
+//app.get('/all-users',  basicAuth, main_routes.serveBase);
 
 app.get('/err', function(req, res) {
 	res.send(500, {'err': "FAKE ERROR"})

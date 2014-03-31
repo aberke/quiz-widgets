@@ -314,7 +314,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 exports.findQuizPartial = function(quizID, callback) {
 	/* I don't care about populating -- return just quiz */
 	Quiz.findById(quizID).exec(function (err, data) {
-		if (err || !data) { return callback(new Error('Error in models.findQuizPartial'), null); }
+		if (err || !data) { return callback(new Error('Error in models.findQuizPartial'), err); }
 		
 		callback(null, data);
 	});
@@ -436,6 +436,13 @@ exports.allUsers = function(callback){
 		.populate('quizList')
 		.exec(callback);
 };
+exports.findUserQuizzes = function(userID, callback) {
+	Quiz.find({_user: userID})
+		.populate('_user')
+		.populate('questionList')
+		.populate('outcomeList')
+		.exec(callback);
+}
 exports.allQuizes = function(callback){
 	Quiz.find()
 		.populate('_user')

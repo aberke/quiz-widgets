@@ -27,44 +27,15 @@ function MainCntl($scope, $location, UserFactory) {
 		window.location.href=($scope.domain + '/logout');
 	}
 }
+function UserCntl($scope, userList) {
+	$scope.userList = userList;
 
-function IndexCntl($scope, APIservice, quizList) {
-	$scope.quizList = quizList;
+	console.log('userList', $scope.userList)
+}
 
-	$scope.claimQuiz = function(quiz) {
-		if (!$scope.user || quiz._user) { return false; } // directive  owner-only-element should prevent this case
-
-		APIservice.PUT('/user/' + $scope.user._id + '/claim-quiz/' + quiz._id).then(function(data) {
-			console.log('claim quiz returned', data);
-			/* successful so update quizList and user.quizList*/
-			quiz._user = $scope.user;
-			$scope.user.quizList.push(quiz);
-		});
-	}
-	$scope.relinquishQuiz = function(quiz) {
-		console.log('relinquishQuiz', quiz)
-		if (!$scope.user || !quiz._user || quiz._user._id != $scope.user._id) { return false; } // directive  owner-only-element should prevent this case
-		
-		APIservice.PUT('/user/' + $scope.user._id + '/relinquish-quiz/' + quiz._id).then(function(data) {
-			quiz._user = null;
-			var quizIndex = $scope.user.quizList.indexOf(quiz);
-			$scope.user.quizList.splice(quizIndex, 1);
-		});
-	}
-
-
-	$scope.delete = function(quiz) {
-		var confirmed = confirm('Are you sure you want to permenantly delete this quiz?  This quiz will no longer show up on any of the pages on which it is embedded.');
-		if (!confirmed){ return false; }
-		
-		APIservice.DELETE('/quiz/' + quiz._id, quiz).then(function(data) {
-			var index = $scope.quizList.indexOf(quiz);
-			$scope.quizList.splice(index, 1);
-		});
-	}
-
+function IndexCntl($scope) {
 	var init = function() {
-		console.log('IndexCntl', quizList)
+		console.log('IndexCntl')
 	}
 	init();
 }

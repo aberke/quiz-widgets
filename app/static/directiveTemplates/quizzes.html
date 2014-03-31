@@ -1,45 +1,41 @@
-<!-- all-quizzes.html -->
+<!-- quizzes.html -->
 
-<div id='all-quizzes-view'>
+<div id='quizzes-view'>
 
-  <div id='all-quizes-container'>
-
-    <div class='row quiz-and-embed-container' ng-repeat='q in quizList' >
-      <div class='col-sm-8' class='quiz-container'>
-        <div class="huffpostlabs-quiz" id="{{q._id}}"></div>
-      </div>
-
-      <div class='col-sm-4'>
-        <ul class="nav nav-pills nav-stacked">
-          <li>
-            <a class='disabled' ng-if="q._user._id">Owner: {{q._user.twitter_displayname || q._user.twitter_username}}</a>
-            <a ng-click="claimQuiz(q)" ng-if="user._id&&!q._user._id" href="#">Claim Ownership</a>
-          </li>
-          <li><a ng-href="/quiz/{{q._id}}">View Stats</a></li>
-          <li><a owner-only-element ng-href="/edit/{{q._id}}">Edit</a></li>
-          <li><a owner-only-element ng-href="/social/{{q._id}}">Customize Sharing</a></li>
-          <li>
-            <a ng-show="!q.showEmbed" ng-click="q.showEmbed=true" href="">Embed in HTML</a>
-            <a ng-show="q.showEmbed" ng-click="q.showEmbed=false" href="">Hide Embed Code</a>
-
-            <pre class="embed-code" ng-show="q.showEmbed">&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;&lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;&lt;p id="labs-credit"&gt;&lt;a href="http://code.huffingtonpost.com"&gt;Quiz widget by &lt;img height="23px" src="http://quiz.huffingtonpost.com/img/huffpostLABS_outline.png" /&gt;&lt;/a&gt;&lt;/p&gt;</pre>
-          </li>
-
-          <li owner-only-element class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              More <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a ng-click="relinquishQuiz(q)">Relinquish Ownership</a></li>
-              <li><a ng-click="delete(q)">Delete</a></li>
-            </ul>
-          </li>
-
-        </ul>
-      </div>
-
+  <div class='row quiz-and-embed-container' ng-repeat='q in quizList' >
+    <div class='col-sm-8' class='quiz-container'>
+      <div class="huffpostlabs-quiz" id="{{q._id}}"></div>
     </div>
+
+    <div class='col-sm-4'>
+      <ul class="nav nav-pills nav-stacked">
+        <li>
+          <a class='disabled' ng-if="q._user._id">Owner: {{q._user.twitter_displayname || q._user.twitter_username}}</a>
+          <a ng-click="claimQuiz(q)" ng-if="user._id&&!q._user._id" href="#">Claim Ownership</a>
+        </li>
+        <li><a ng-href="/quiz/{{q._id}}">View Stats</a></li>
+        <li><a owner-only-element ng-href="/edit/{{q._id}}">Edit</a></li>
+        <li><a owner-only-element ng-href="/social/{{q._id}}">Customize Sharing</a></li>
+        <li>
+          <a ng-show="!q.showEmbed" ng-click="q.showEmbed=true" href="">Embed in HTML</a>
+          <a ng-show="q.showEmbed" ng-click="q.showEmbed=false" href="">Hide Embed Code</a>
+
+          <pre class="embed-code" ng-show="q.showEmbed">&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;&lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;&lt;p id="labs-credit"&gt;&lt;a href="http://code.huffingtonpost.com"&gt;Quiz widget by &lt;img height="23px" src="http://quiz.huffingtonpost.com/img/huffpostLABS_outline.png" /&gt;&lt;/a&gt;&lt;/p&gt;</pre>
+        </li>
+
+        <li owner-only-element class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="">
+            More <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="relinquishQuiz(q)">Relinquish Ownership</a></li>
+            <li><a href="" ng-click="delete(q)">Delete</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+
   </div>
 </div>
 
-<script src="/widget/q.js"></script>

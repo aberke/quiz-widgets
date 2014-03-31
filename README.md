@@ -39,6 +39,11 @@ since last email
 TODO
 ---
 
+- making login smarter 
+	- redirect to previous page on login callback
+	- but make sure it doesn't go to /forbidden
+		- got to page BEFORE /forbidden
+
 - mongo issue
 	- am I properly deleting questions and outcomes and answers?
 		- do I also need to splice from quiz.questionList when I delete a question?
@@ -145,6 +150,7 @@ necessary e2e tests
 
 - quiz always gets result that it should
 - all of the directives
+- can only get to certain pages if logged in
 
 neccessary api tests
 ---

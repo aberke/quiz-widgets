@@ -5,12 +5,27 @@ QuizApp.config(function($routeProvider) {
 		- for: resolve : {quiz: promise returning function } 
 		- returns promise rather than data bc routeProvider wont render controller until promise resolved
 	*/
-	var resolveQuizFunction = function(HTTPService, $location) {
+	var resolveQuizFunction = function(APIservice, $location) {
 		return APIservice.GETquiz($location.path().split('/')[2]).then(
 			function(data) { return data; }
 		);
 	};
 	
+
+	$routeProvider.when('/all-quizzes', {
+		templateUrl: '/html/all-quizzes.html',
+	});	
+	// $routeProvider.when('/all-users', {
+	// 	templateUrl: '/html/all-users.html',
+	// 	controller: UserCntl,
+	// 	resolve: {
+	// 		userList: function(APIservice) {
+	// 			return APIservice.GET('/user/all').then(function(data) {
+	// 				return data;
+	// 			});
+	// 		}
+	// 	}
+	// });	
 	$routeProvider.when('/contact', {
 		templateUrl: '/html/contact.html',
 	});	
@@ -45,12 +60,5 @@ QuizApp.config(function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: '/html/index.html',
 		controller: IndexCntl,
-		resolve: { /* returning the promise and then resolving the promise as the data */
-			quizList: function(APIservice){
-				return APIservice.GET('/quiz/all').then(function(data) {
-					return data;
-				});
-			}
-		}
 	});
 });
