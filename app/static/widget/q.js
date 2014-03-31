@@ -136,7 +136,7 @@
 		}
 	}
 	var quizStartedCallback = function(quiz) {
-		PUT("/api/quiz/" + quiz._id + "/increment-started-count", null);
+		PUT("/api/quiz/" + quiz._id + "/increment-count/started", null);
 	}
 	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
 		/* increment counts for quiz, outcome and each chosenAnswer */

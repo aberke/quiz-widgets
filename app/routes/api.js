@@ -17,7 +17,7 @@ exports.registerEndpoints = function (app) {
 	app.put('/api/quiz/:id', PUTquiz);
 	app.delete('/api/quiz/:id', DELETEquiz);
 	app.put('/api/quiz/:id/share', PUTquizShare);
-	app.put('/api/quiz/:id/increment-started-count', PUTquizIncrementStartedCount);
+	app.put('/api/quiz/:id/increment-count/started', PUTquizIncrementStartedCount);
 
 	app.post('/api/answer', POSTanswer);
 	app.get('/api/answer/all', GETallAnswers);

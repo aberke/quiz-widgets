@@ -59,7 +59,13 @@ var shareSchema = new Schema({
 	/* for stats */
 	fbCount: 			{type: Number, default: 0},
 	twitterCount: 		{type: Number, default: 0},
-})
+});
+
+var CountLog = new Schema({
+	//model_type: 	String, // [Answer, Outcome, other]
+	model_id: 		String,
+	count: 			{ type: Number, default: 0},
+});
 var quizSchema = new Schema({
 	_user: 		  		{type: ObjectId, ref: 'User', default: null},
 	title: 		  		{type: String, default: null},
@@ -71,9 +77,15 @@ var quizSchema = new Schema({
 	share: 				{type: ObjectId, ref: 'Share', default: null},
 	refresh_icon_url: 	{type: String, default: null},
 	
+	countData 		 	:{
+		startedCount 	:{ type: Number, default: 0},
+		completedCount 	:{ type: Number, default: 0},
+		countLogs 		:[CountLog],
+	},
+
+	/* for backwards compatibility */
 	startedCount: 		{ type: Number, default: 0},
 	completedCount: 	{ type: Number, default: 0},
-
 });
 var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
