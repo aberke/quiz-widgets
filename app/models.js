@@ -61,6 +61,17 @@ var shareSchema = new Schema({
 	twitterCount: 		{type: Number, default: 0},
 });
 
+var statSchema = new Schema({
+	_quiz: id 
+	model_id : id 
+	model_type: String,
+});
+
+/* something like */
+StatSchema.update({_quiz: QUIZID, 
+					model_id: {$in [ID1, ID2, ..., null]}}, 
+				{$incr /* increase at one */}, {upsert: true})
+
 var CountLog = new Schema({
 	//model_type: 	String, // [Answer, Outcome, other]
 	model_id: 		String,
@@ -79,6 +90,7 @@ var quizSchema = new Schema({
 	
 	countData 		 	:{
 		startedCount 	:{ type: Number, default: 0},
+		restartedCount 	:{ type: Number, default: 0},
 		completedCount 	:{ type: Number, default: 0},
 		countLogs 		:[CountLog],
 	},
