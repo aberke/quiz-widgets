@@ -38,9 +38,10 @@ function IndexCntl($scope, HTTPService, quizList) {
 function PublicPreviewCntl($scope, $location, HTTPService) {
 	$scope.quiz;
 
-	HTTPService.GETquiz($location.path().split('/')[3]).then(
-		function(data) { $scope.quiz = data; }
-	);
+	HTTPService.GETquiz($location.path().split('/')[3]).then(function(data) { 
+		$scope.quiz = data;
+		$.getScript("/widget/q.js"); /* now load the quizzes */
+	});
 }
 function QuizCntl($scope, $location, HTTPService, quiz) {
 	$scope.quiz = quiz;
