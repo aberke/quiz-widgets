@@ -9,7 +9,9 @@ var util 		= require('./../util.js'),
 exports.serveBase = function(req, res) {
 	res.sendfile('static/html/base.html');
 }
-
+exports.servePublicPreview = function(req, res) {
+	res.sendfile('static/html/public-preview.html');
+}
 
 
 

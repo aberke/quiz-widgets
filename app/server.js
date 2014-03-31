@@ -62,6 +62,9 @@ var server = http.createServer(app);
 api_routes.registerEndpoints(app);
 
 
+app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
+
+
 app.get('/', 			basicAuth, main_routes.serveBase);
 //app.get('/', 			main_routes.serveBase);
 app.get('/new', 		basicAuth, main_routes.serveBase);
