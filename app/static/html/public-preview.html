@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="QuizApp">
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <title>Quiz at the Lab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quiz Widget App: Create custom quizzes and embed them on your page.">
+    <meta name="author" content="Alex Berke at Huffpost Labs">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <!-- stylesheets -->
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+
+
+    <!-- javascript -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    <!-- angular 1.2 has route as its own module -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
+
+
+    <script src="/js/app.js"></script>
+    <script src="/js/routes.js"></script>
+	<script src="/js/controllers.js"></script>
+    <script src="/js/services.js"></script>
+    <script src="/js/directives.js"></script>
+
+</head>
+<body ng-controller="PublicPreviewCntl" class='container'>
+
+<div id='quiz-page' class='view'>
+
+    <h2 style="text-align:center">{{quiz.title}}</h2>
+
+    <!-- the quiz widget -->
+    <section id='quiz-widget'>
+        <div class="huffpostlabs-quiz" id="{{quiz._id}}"></div>
+        <script src="/widget/q.js"></script>
+    </section>
+
+    <!-- the embed code -->
+    <section id='quiz-embed'>
+        <h4>Embed</h4>
+        <pre>&lt;div class="huffpostlabs-quiz" id="{{quiz._id}}"&gt;&lt;/div&gt;&lt;script src="http://quiz.huffingtonpost.com/widget/q.js"&gt;&lt;/script&gt;&lt;p id="labs-credit"&gt;&lt;a href="http://code.huffingtonpost.com"&gt;Quiz widget by &lt;img height="23px" src="http://quiz.huffingtonpost.com/img/huffpostLABS_outline.png" /&gt;&lt;/a&gt;&lt;/p&gt;</pre>
+    </section>
+
+</div>
+</body>

@@ -35,6 +35,13 @@ function IndexCntl($scope, HTTPService, quizList) {
 	}
 	init();
 }
+function PublicPreviewCntl($scope, $location, HTTPService) {
+	$scope.quiz;
+
+	HTTPService.GETquiz($location.path().split('/')[3]).then(
+		function(data) { $scope.quiz = data; }
+	);
+}
 function QuizCntl($scope, $location, HTTPService, quiz) {
 	$scope.quiz = quiz;
 	$scope.totalSharesFB;
