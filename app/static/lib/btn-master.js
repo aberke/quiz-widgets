@@ -3,7 +3,6 @@
 	Here is what it does:  looks for any item with the 'data-huffpostlabs-btn'
 
 */
-console.log(0);
 
 var HuffpostLabsBtnMaster = function(context) {
 
