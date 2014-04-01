@@ -44,9 +44,6 @@ TODO
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
 
-- stats page:
-	- total tally for all answers -- as requested by ethan
-
 - http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 
 - fix for trivia option (Nick on the politics team would like this)
