@@ -119,6 +119,9 @@ footer {
 	background-color: #e0ffff;
 	border-color: #6BCAE2;
 }
+#index-page #filterBy {
+	display: none;
+}
 
 /********************** index-page above ******************/
 
@@ -150,7 +153,7 @@ footer {
 	float: right;
 	margin-top: 30px;
 }
-#all-users-page #filterBy input {
+ #filterBy input {
 	border-radius: 8px;
 	border: 1px solid #5F9EA0;
 }

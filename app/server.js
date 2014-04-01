@@ -10,7 +10,9 @@ var express 		= require('express'),
 
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
+	auth_routes 	= require('./routes/auth'),
 	api_routes 		= require('./routes/api');
+
 
 
 
@@ -37,30 +39,9 @@ app.configure(function () {
 });
 var server = http.createServer(app);
 
-/* ************** authentication below ******************** */
-
-app.get('/user', function(req, res){
-	console.log('****\nget user', req.user);
-	if (req.user) { res.send(req.user); }
-	else { res.send(null); }
-});
-
-app.get('/login', passportMiddleware.authenticate('twitter'));
-app.get('/auth/twitter/callback', 
-	passportMiddleware.authenticate('twitter', { successReturnToOrRedirect: '/', failureRedirect: '/' }),
-	function(req, res) {
-		console.log('222222')
-	}
-);
-
-app.get('/logout', function(req, res) {
-	req.logout();
-	res.redirect('/');
-});
-
-/* ************** authentication above ******************** */
 
 /* **************  routing **************************** */
+auth_routes.registerEndpoints(app);
 api_routes.registerEndpoints(app);
 
 
@@ -73,9 +54,7 @@ app.get('/social/:quizID',  verifyQuizOwner, main_routes.serveBase);
 app.get('/forbidden',  		main_routes.serveBase);
 app.get('/contact',  		basicAuth, main_routes.serveBase);
 app.get('/all-quizzes',  	basicAuth, main_routes.serveBase);
-
-// first design all-users
-app.get('/user/:search',  basicAuth, main_routes.serveBase);
+app.get('/user/:search',    basicAuth, main_routes.serveBase);
 
 app.get('/err', function(req, res) {
 	res.send(500, {'err': "FAKE ERROR"})

@@ -4,7 +4,7 @@ var UserFactory = function($http, $q) { // it's a factory
 	var user = null;
 	
 	var deferred = $q.defer();
-	$http({method: 'GET', url: '/user'})
+	$http({method: 'GET', url: '/auth/user'})
 	.success(function(data) {
 		if (data.twitter_id) { user =  data; }
 

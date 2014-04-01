@@ -21,10 +21,10 @@ function MainCntl($scope, $location, UserFactory) {
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}
 	$scope.login = function(){
-		window.location.href=($scope.domain + '/login');
+		window.location.href=($scope.domain + '/auth/login');
 	}
 	$scope.logout = function(){
-		window.location.href=($scope.domain + '/logout');
+		window.location.href=($scope.domain + '/auth/logout');
 	}
 }
 function UserCntl($scope, $routeParams, userList) {

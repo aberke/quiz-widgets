@@ -2,7 +2,12 @@
 
 <div id='quizzes-view'>
 
-  <div class='row quiz-and-embed-container' ng-repeat='q in quizList' >
+  <div id='filterBy'>
+    <img src="/img/search-icon.png" />
+    <input ng-model="searchText">
+  </div>
+  
+  <div class='row quiz-and-embed-container' ng-repeat='q in quizList | filter:searchText' >
     <div class='col-sm-8' class='quiz-container'>
       <div class="huffpostlabs-quiz" id="{{q._id}}"></div>
     </div>

@@ -62,10 +62,6 @@ TODO
 		- whitelist just json that i can update when someone wants an account
 		- special user-accounts branch for updating whitelist
 
-- give each user a page
-	- find all users page in directory
-	- make user's name clickable next to their quiz in the all quizzes view
-
 - different views for my quizzes vs all quizzes:
 	- idea:
 		- always use the same HTLM partial (current name: all-quizzes.html)
