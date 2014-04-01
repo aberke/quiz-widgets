@@ -11,6 +11,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 	
 		// register services
 		$provide.service('UIService', UIService);
+		$provide.service('StatService', StatService);
 		$provide.service('HTTPService', HTTPService);
 		$provide.service('FormService', FormService);
 		$provide.service('WidgetService', WidgetService);

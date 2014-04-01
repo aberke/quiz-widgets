@@ -42,8 +42,9 @@ function PublicPreviewCntl($scope, $location, HTTPService) {
 		function(data) { $scope.quiz = data; }
 	);
 }
-function QuizCntl($scope, $location, HTTPService, quiz) {
+function StatsCntl($scope, $location, HTTPService, quiz, stats) {
 	$scope.quiz = quiz;
+	console.log('stats',stats)
 	$scope.totalSharesFB;
 	$scope.totalSharesTwitter;
 		console.log('QuizCntl', quiz)

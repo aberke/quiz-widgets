@@ -62,21 +62,14 @@ var shareSchema = new Schema({
 });
 
 var statSchema = new Schema({
-	_quiz: id 
-	model_id : id 
-	model_type: String,
-});
-
-/* something like */
-StatSchema.update({_quiz: QUIZID, 
-					model_id: {$in [ID1, ID2, ..., null]}}, 
-				{$incr /* increase at one */}, {upsert: true})
-
-var CountLog = new Schema({
-	//model_type: 	String, // [Answer, Outcome, other]
+	_quiz: 			ObjectId,
+	model_type: 	String, // ['Answer', 'Outcome', 'started-count','restarted-count','completed-count', other]
 	model_id: 		String,
 	count: 			{ type: Number, default: 0},
 });
+exports.Stat = mongoose.model('Stat', statSchema);
+
+
 var quizSchema = new Schema({
 	_user: 		  		{type: ObjectId, ref: 'User', default: null},
 	title: 		  		{type: String, default: null},
@@ -87,13 +80,7 @@ var quizSchema = new Schema({
 	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
 	share: 				{type: ObjectId, ref: 'Share', default: null},
 	refresh_icon_url: 	{type: String, default: null},
-	
-	countData 		 	:{
-		startedCount 	:{ type: Number, default: 0},
-		restartedCount 	:{ type: Number, default: 0},
-		completedCount 	:{ type: Number, default: 0},
-		countLogs 		:[CountLog],
-	},
+
 
 	/* for backwards compatibility */
 	startedCount: 		{ type: Number, default: 0},
