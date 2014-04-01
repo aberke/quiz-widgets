@@ -10,6 +10,11 @@ QuizApp.config(function($routeProvider) {
 			function(data) { return data; }
 		);
 	};
+	var resolveQuizStats = function(StatService, $location) {
+		return StatService.GETquizStats($location.path().split('/')[2]).then(
+			function(data) { return data; }
+		);
+	}
 	
 	$routeProvider.when('/forbidden', {
 		templateUrl: '/html/forbidden.html',
@@ -25,11 +30,12 @@ QuizApp.config(function($routeProvider) {
 			quiz: resolveQuizFunction,
 		}
 	});
-	$routeProvider.when('/quiz/:id', {
-		templateUrl: '/html/quiz.html',
-		controller: QuizCntl,
+	$routeProvider.when('/stats/:id', {
+		templateUrl: '/html/stats.html',
+		controller: StatsCntl,
 		resolve: { /* returning the promise and then resolving the promise as the data */
 			quiz: resolveQuizFunction,
+			stats: resolveQuizStats,
 		}
 	});
 	$routeProvider.when('/edit/:id', {

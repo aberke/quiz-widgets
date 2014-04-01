@@ -39,6 +39,8 @@ since last email
 TODO
 ---
 
+- add field for custom CSS
+
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
 

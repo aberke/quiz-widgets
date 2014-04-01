@@ -13,11 +13,15 @@
 			<h3>Quiz</h3>
 			<div>
 				<label>Started</label>
-				<span>{{quiz.startedCount || 0}}</span>
+				<span>{{stats.started || 0}}</span>
 			</div>
 			<div>
 				<label>Completed</label>
-				<span>{{quiz.completedCount || 0}}</span>
+				<span>{{stats.completed || 0}}</span>
+			</div>
+			<div>
+				<label>Restarted</label>
+				<span>{{stats.restarted || 0}}</span>
 			</div>
 			<div>
 				<label>Facebook Shares</label>
@@ -58,7 +62,7 @@
 		    <tbody>
 		        <tr ng-repeat="o in quiz.outcomeList">
 		            <td class="text"><img class='outcome-pic' height="20px" ng-src={{o.pic_url}}></img>{{o.text}}</td>
-		            <td class="number">{{o.count}}</td>
+		            <td class="number">{{stats.Outcome[o._id] || 0}}</td>
 		            <td class="number">{{o.share.fbCount || 0}}</td>
 		            <td class="number">{{o.share.twitterCount || 0}}</td>
 		        </tr>
@@ -72,7 +76,6 @@
 		    <thead>
 		        <tr>
 		            <th>Question</th>
-		            <th>Sum</th>
 		            <th>Answer 1</th>
 		            <th>Answer 2</th>
 		            <th>Answer 3</th>
@@ -83,10 +86,10 @@
 		        <tr ng-repeat="q in quiz.questionList">
 		            
 		            <td class="text">{{q.text}}</td>
-		            <td class="number">{{q.count}}</td>
 
 		            <td ng-repeat="a in q.answerList">
-		            	<span class='number'>{{a.count}}: </span><span class='text'>{{a.text}}</span>
+		            	<span class='number'>{{stats.Answer[a._id] || 0}}: </span>
+		            	<span class='text'>{{a.text}}</span>
 		            </td>
 		        </tr>
 		    </tbody>

@@ -132,6 +132,50 @@ var UIService = function($timeout){
   };
 }
 
+var StatService = function($http, $q) {
+
+  function formatStats (rawData) {
+    // data: {'Answer': {id: count for each Answer}, 'Outcome': {id: count for each Outcome}, 'started': count, singleton etc}
+    var data = {}; 
+    for (var i=0; i<rawData.length; i++) {
+      var stat = rawData[i];
+      var model_type = stat.model_type;
+      var model_id = stat.model_id;
+
+      if (model_id && model_id != 'null') {
+        if (!data[model_type]) { data[model_type] = {}; }
+        data[model_type][model_id] = stat.count;
+      } else {
+        data[model_type] = stat.count;
+      }
+    }
+    return data;
+  }
+
+  function HTTP(method, url, data) {
+    var deferred = $q.defer();
+    $http({
+      method: method,
+      url: url,
+      data: (data || {}),
+    })
+    .success(function(returnedData){
+      data = formatStats(returnedData);
+      deferred.resolve(data);
+    })
+    .error(function(errData) { 
+      console.log('StatsService ERROR', errData)
+      deferred.reject(e);
+    });
+    return deferred.promise;
+  };
+
+  this.GETquizStats = function(quizID) {
+    return HTTP('GET', '/stats/' + quizID + '/all', null);
+  };
+
+}
+
 var HTTPService = function($http, $q){
 
   function HTTP(method, url, data) {

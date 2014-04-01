@@ -12,6 +12,7 @@ var express 		= require('express'),
 
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
+	stats_routes 	= require('./routes/stats'),
 	api_routes 		= require('./routes/api');
 
 
@@ -60,6 +61,7 @@ var server = http.createServer(app);
 
 /* **************  routing **************************** */
 api_routes.registerEndpoints(app);
+stats_routes.registerEndpoints(app);
 
 
 app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
@@ -68,7 +70,7 @@ app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
 app.get('/', 			basicAuth, main_routes.serveBase);
 //app.get('/', 			main_routes.serveBase);
 app.get('/new', 		basicAuth, main_routes.serveBase);
-app.get('/quiz/:quizID',basicAuth, main_routes.serveBase);
+app.get('/stats/:quizID',basicAuth, main_routes.serveBase);
 app.get('/edit/:quizID',basicAuth, main_routes.serveBase);
 app.get('/social/:id',  basicAuth, main_routes.serveBase);
 app.get('/forbidden',  basicAuth, main_routes.serveBase);
