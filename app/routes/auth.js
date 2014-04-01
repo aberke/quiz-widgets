@@ -7,6 +7,10 @@ var authMiddleware  = require('./../middleware/authentication-middleware.js'),
 
 
 exports.registerEndpoints = function (app) {
+
+	app.use(passportMiddleware.initialize());
+	app.use(passportMiddleware.session());
+
 	app.get('/auth/user', user);
 	app.get('/auth/login', login);
 	app.get('/auth/twitter/callback', twitterCallback);

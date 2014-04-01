@@ -31,9 +31,11 @@
 
 </head>
 <body ng-controller="MainCntl">
-    <div class="header">
+    <div class="header" ng-class="{'error':error}">
         <nav>
-            <img class="brand" src="/img/labs.png"></img>
+            <span class='error' ng-if="error">Error: {{error}}</span>
+            <img ng-if="!error" class="brand" src="/img/labs.png"></img>
+            
             <ul class="nav nav-pills pull-right">
                 
                 <li><a href="" ng-click="goTo('/')">HOME</a></li>

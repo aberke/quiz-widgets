@@ -1,6 +1,8 @@
 
-var util 		= require('./../util.js'),
-	models 		= require('./../models.js');
+var util 					= require('./../util.js'),
+	models 					= require('./../models.js'),
+    authMiddleware  		= require('./../middleware/authentication-middleware.js'),
+    verifyQuizEndpointAccess= authMiddleware.verifyQuizEndpointAccess;
 
 
 
@@ -11,7 +13,7 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/user/:id', GETuser);
 	app.get('/api/user/:id/quizzes', GETuserQuizzes);
 	app.put('/api/user/:userID/claim-quiz/:quizID', PUTuserClaimQuiz);
-	app.put('/api/user/:userID/relinquish-quiz/:quizID', PUTuserRelinquishQuiz);
+	app.put('/api/user/:userID/relinquish-quiz/:quizID', verifyQuizEndpointAccess, PUTuserRelinquishQuiz);
 
 
 	app.post('/api/quiz', POSTquiz);

@@ -39,7 +39,9 @@ since last email
 TODO
 ---
 
-- make sure public-page comes through after merge
+- BEFORE YOU PUSH TO MASTER
+	- make sure dotcloud is ready with node_modules
+	- make sure public-page comes through after merge
 
 - making login smarter 
 	- redirect to previous page on login callback

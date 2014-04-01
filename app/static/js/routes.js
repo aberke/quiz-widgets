@@ -10,6 +10,21 @@ QuizApp.config(function($routeProvider) {
 			function(data) { return data; }
 		);
 	};
+	/* the front-end authentication scheme (similar logic on backend)
+		- when going to a route with resolve: {user: userOrRedirect }
+			- check that user logged in
+				- if so: return user
+				- otherwise: reroute to '/'
+	*/
+	var userOrRedirect = function(UserFactory, $location) {
+		return UserFactory.then(function(data) {
+			if (!data){ /* user isn't logged in - redirect to home */
+				$location.path('/'); 
+				return null;
+			}
+			return data; /* success: return user object */
+		});
+	}
 	
 
 	$routeProvider.when('/all-quizzes', {
@@ -35,12 +50,16 @@ QuizApp.config(function($routeProvider) {
 	$routeProvider.when('/new', {
 		templateUrl: '/html/new.html',
 		controller: NewQuizCntl,
+		resolve: {
+			user: userOrRedirect,
+		}
 	});	
 	$routeProvider.when('/social/:id', {
 		templateUrl: '/html/social.html',
 		controller: ShareCntl,
 		resolve: { /* returning the promise and then resolving the promise as the data */
 			quiz: resolveQuizFunction,
+			user: userOrRedirect,
 		}
 	});
 	$routeProvider.when('/quiz/:id', {
@@ -55,6 +74,7 @@ QuizApp.config(function($routeProvider) {
 		controller: EditCntl,
 		resolve: { /* returning the promise and then resolving the promise as the data */
 			quiz: resolveQuizFunction,
+			user: userOrRedirect,
 		}
 	});
 	$routeProvider.when('/', {

@@ -5,9 +5,7 @@ var express 		= require('express'),
     expressValidator= require('express-validator'),
 
     authMiddleware  = require('./middleware/authentication-middleware.js'),
-	passportMiddleware = require('./middleware/passport-middleware.js')(),
-
-
+	
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
 	auth_routes 	= require('./routes/auth'),
@@ -18,10 +16,10 @@ var express 		= require('express'),
 
 
 
-var app 	  		= express(),
-	basicAuth 		= authMiddleware.basicAuth;
-	verifyUser 		= authMiddleware.verifyUser;
-	verifyQuizOwner = authMiddleware.verifyQuizOwner;
+var app 	  			= express(),
+	basicAuth 			= authMiddleware.basicAuth;
+	verifyUser 			= authMiddleware.verifyUser;
+	verifyQuizViewAccess = authMiddleware.verifyQuizViewAccess;
 
 app.configure(function () {
     app.set('port', process.env.WWW_PORT || 8080); // dotcloud doesn't have automatically set env variable for port, but know its on 8080
@@ -31,8 +29,6 @@ app.configure(function () {
   	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
 
 	app.use(express.session({secret: process.env.SESSION_SECRET})),
-	app.use(passportMiddleware.initialize()),
-	app.use(passportMiddleware.session()),
 
     app.use(express.static(path.join(__dirname, '/static')));
     app.use(expressValidator());
@@ -45,12 +41,12 @@ auth_routes.registerEndpoints(app);
 api_routes.registerEndpoints(app);
 
 
-//app.get('/', 			basicAuth, main_routes.serveBase);
-app.get('/', 				main_routes.serveBase);
+app.get('/', 			basicAuth, main_routes.serveBase);
+//app.get('/', 				main_routes.serveBase);
 app.get('/new', 			verifyUser, main_routes.serveBase);
 app.get('/quiz/:quizID',	basicAuth, main_routes.serveBase);
-app.get('/edit/:quizID',	verifyQuizOwner, main_routes.serveBase);
-app.get('/social/:quizID',  verifyQuizOwner, main_routes.serveBase);
+app.get('/edit/:quizID',	verifyQuizViewAccess, main_routes.serveBase);
+app.get('/social/:quizID',  verifyQuizViewAccess, main_routes.serveBase);
 app.get('/forbidden',  		main_routes.serveBase);
 app.get('/contact',  		basicAuth, main_routes.serveBase);
 app.get('/all-quizzes',  	basicAuth, main_routes.serveBase);

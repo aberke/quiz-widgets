@@ -127,8 +127,9 @@ function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 	}
 	init();
 }
-function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, APIservice) {
-	console.log('user', $scope.user)
+function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, APIservice, user) {
+	console.log('user', user)
+	$scope.user = user;
 	$scope.showAddNewOutcome = false;
 
 

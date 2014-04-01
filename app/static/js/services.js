@@ -134,9 +134,11 @@ var UIService = function($timeout){
 
 
 
-var APIservice = function($http, $q){
+var APIservice = function($rootScope, $http, $q){
 
   function HTTP(method, endpoint, data) {
+    $rootScope.error = null;
+    
     var deferred = $q.defer();
     $http({
       method: method,
@@ -146,8 +148,11 @@ var APIservice = function($http, $q){
     .success(function(returnedData){
       deferred.resolve(returnedData);
     })
-    .error(function(errData) { 
-      console.log('API ERROR', errData)
+    .error(function(errData, status) {
+      if (status == 401) { /* the header in base.html pays attention to error */
+        $rootScope.error = 'Unauthorized - sign in and try again';
+      }
+      console.log('API ERROR', status, errData)
       var e = new APIserviceError(errData);
       deferred.reject(e);
     });

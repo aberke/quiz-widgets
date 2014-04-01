@@ -39,12 +39,19 @@ body {
 	opacity: 0.4;
 	z-index: 2; /* make it clickable above other content */
 }
-.header:hover {
+.header:hover, .header.error {
 	opacity: 0.8;
 }
 .header .nav>li>a { /* override bootstrap */
 	color: gray;
 	font-size: 18px;
+}
+.header nav .error {
+	margin: 20px;
+	padding: 5px;
+	background-color: #FFEBCD; /* AKA blanchedalmond;*/
+	color: red;
+	font-size: 28px;
 }
 /* have the labs image magically show only when nav header is hovered */
 .header .brand {
