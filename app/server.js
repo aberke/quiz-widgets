@@ -75,7 +75,6 @@ app.get('/contact',  		basicAuth, main_routes.serveBase);
 app.get('/all-quizzes',  	basicAuth, main_routes.serveBase);
 
 // first design all-users
-app.get('/user/all',  basicAuth, main_routes.serveBase);
 app.get('/user/:search',  basicAuth, main_routes.serveBase);
 
 app.get('/err', function(req, res) {
