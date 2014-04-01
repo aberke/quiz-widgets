@@ -61,7 +61,7 @@
 		    <tbody>
 		        <tr ng-repeat="o in quiz.outcomeList">
 		            <td class="text"><img class='outcome-pic' height="20px" ng-src={{o.pic_url}}></img>{{o.text}}</td>
-		            <td class="number">{{stats.Outcome[o._id]}}</td>
+		            <td class="number">{{stats.Outcome[o._id] || 0}}</td>
 		            <td class="number">{{o.share.fbCount || 0}}</td>
 		            <td class="number">{{o.share.twitterCount || 0}}</td>
 		        </tr>
@@ -87,7 +87,7 @@
 		            <td class="text">{{q.text}}</td>
 
 		            <td ng-repeat="a in q.answerList">
-		            	<span class='number'>{{stats.Answer[a._id]}}: </span>
+		            	<span class='number'>{{stats.Answer[a._id] || 0}}: </span>
 		            	<span class='text'>{{a.text}}</span>
 		            </td>
 		        </tr>
