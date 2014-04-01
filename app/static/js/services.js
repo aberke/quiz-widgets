@@ -142,7 +142,7 @@ var StatService = function($http, $q) {
       var model_type = stat.model_type;
       var model_id = stat.model_id;
 
-      if (model_id) {
+      if (model_id && model_id != 'null') {
         if (!data[model_type]) { data[model_type] = {}; }
         data[model_type][model_id] = stat.count;
       } else {
@@ -160,13 +160,11 @@ var StatService = function($http, $q) {
       data: (data || {}),
     })
     .success(function(returnedData){
-
       data = formatStats(returnedData);
-
       deferred.resolve(data);
     })
     .error(function(errData) { 
-      console.log('StatsService', errData)
+      console.log('StatsService ERROR', errData)
       deferred.reject(e);
     });
     return deferred.promise;

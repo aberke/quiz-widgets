@@ -44,10 +44,29 @@ function PublicPreviewCntl($scope, $location, HTTPService) {
 }
 function StatsCntl($scope, $location, HTTPService, quiz, stats) {
 	$scope.quiz = quiz;
-	console.log('stats',stats)
+	$scope.stats = stats;
+
+	var combineStats = function() {
+		/* for backwards compatibility */
+		$scope.stats.started = ((stats.started || 0) + (quiz.startedCount || 0));
+		$scope.stats.completed = ((stats.completed || 0) + (quiz.completedCount || 0));
+
+		$scope.stats['Answer'] = ($scope.stats['Answer'] || {});
+		for (var q=0; q<quiz.questionList.length; q++) {
+			var question = quiz.questionList[q];
+			for (var i=0; i<question.answerList.length; i++) {
+				var a = question.answerList[i];
+				$scope.stats['Answer'][a._id] = ((stats['Answer'][a._id] || 0) + a.count);
+			}
+		}
+		$scope.stats['Outcome'] = ($scope.stats['Outcome'] || {});
+		for (var i=0; i<quiz.outcomeList.length; i++) {
+			var o = quiz.outcomeList[i];
+			$scope.stats['Outcome'][o._id] = ((stats['Outcome'][o._id] || 0) + o.count);
+		}
+	}
 	$scope.totalSharesFB;
 	$scope.totalSharesTwitter;
-		console.log('QuizCntl', quiz)
 
 	$scope.delete = function() {
 		var confirmed = confirm('Are you sure you want to permenantly delete this quiz?  This quiz will no longer show up on any of the pages on which it is embedded.');
@@ -57,16 +76,6 @@ function StatsCntl($scope, $location, HTTPService, quiz, stats) {
 			console.log('delete returned: ', data);
 			$location.path('/');
 		});
-	}
-	var countQuestionTotals = function() {
-		for (var i=0; i<$scope.quiz.questionList.length; i++) {
-			var question = $scope.quiz.questionList[i];
-			var sum = 0;
-			for (var j=0; j<question.answerList.length; j++) {
-				sum += question.answerList[j].count;
-			}
-			$scope.quiz.questionList[i].count = sum;
-		}
 	}
 	var countTotalSharesFB = function(quiz) {
 		var count = (quiz.share ? quiz.share.fbCount : 0);
@@ -87,7 +96,7 @@ function StatsCntl($scope, $location, HTTPService, quiz, stats) {
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
-		countQuestionTotals();
+		combineStats(); /* for backwards compatibility */
 		$scope.totalSharesFB = countTotalSharesFB(quiz);
 		$scope.totalSharesTwitter = countTotalSharesTwitter(quiz);
 	}

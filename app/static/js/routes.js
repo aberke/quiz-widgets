@@ -11,7 +11,6 @@ QuizApp.config(function($routeProvider) {
 		);
 	};
 	var resolveQuizStats = function(StatService, $location) {
-		console.log('resolveQuizStats', StatService)
 		return StatService.GETquizStats($location.path().split('/')[2]).then(
 			function(data) { return data; }
 		);
