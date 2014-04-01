@@ -39,6 +39,8 @@ since last email
 TODO
 ---
 
+- make sure public-page comes through after merge
+
 - making login smarter 
 	- redirect to previous page on login callback
 	- but make sure it doesn't go to /forbidden

@@ -27,10 +27,17 @@ function MainCntl($scope, $location, UserFactory) {
 		window.location.href=($scope.domain + '/logout');
 	}
 }
-function UserCntl($scope, userList) {
+function UserCntl($scope, $routeParams, userList) {
 	$scope.userList = userList;
+	$scope.searchText;
 
-	console.log('userList', $scope.userList)
+	var init = function() {
+		var search = $routeParams.search;
+		if (search && search != 'all') {
+			$scope.searchText = search;
+		}	
+	}
+	init();
 }
 
 function IndexCntl($scope) {

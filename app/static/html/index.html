@@ -39,14 +39,17 @@
 </div> <!-- welcome-container -->
 
 
-<a ng-if="user&&user.quizList.length" href="" ng-click="scrollToById('quizzes')" class='view-quizzes-btn'>Your Quizzes</a>
-
+<span ng-if="user&&user.quizList.length">
+  <a href="" ng-click="scrollToById('quizzes')" class='view-quizzes-btn'>Your Quizzes</a>
+  <quizzes id='quizzes' owner="user._id"></quizzes>
+</span>
    
-<quizzes id='quizzes' owner="user._id"></quizzes>
 
 <!-- user might have no quizzes... -->
-<a href="" ng-click="scrollToById('quizzes')" class='view-quizzes-btn'>All Quizzes</a>
-<quizzes id='quizzes' owner="null"></quizzes>
+<span ng-if="!user||!user.quizList.length">
+  <a href="" ng-click="scrollToById('quizzes')" class='view-quizzes-btn'>All Quizzes</a>
+  <quizzes id='quizzes' owner="null"></quizzes>
+</span>
 
 </div>
 

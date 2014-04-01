@@ -143,9 +143,38 @@ footer {
 
 /********************** all-users-page ******************/
 
-#all-users-page .user {
-	border: 1px solid gray;
+#all-users-page .title {
+	display: inline-block;
 }
+#all-users-page #filterBy {
+	float: right;
+	margin-top: 30px;
+}
+#all-users-page #filterBy input {
+	border-radius: 8px;
+	border: 1px solid #5F9EA0;
+}
+
+#all-users-page .user-container {
+	border: 1px solid #5F9EA0;
+	border-radius: 6px;
+	background-color: #F5FFFA;
+	margin: 10px 0px;
+}
+#all-users-page .user-container .list-group-item.active{
+	border-color: #5F9EA0;
+	background-color: #5F9EA0;
+}
+#all-users-page .user-container .displayname {
+	font-weight: bold;
+}
+#all-users-page .user-container .username {
+	float: right;
+}
+#all-users-page .quizzes-view {
+	padding: 0px 15px;
+}
+
 /********************** all-users-page ******************/
 
 /********************** quiz-page ******************/

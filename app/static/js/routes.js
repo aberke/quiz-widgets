@@ -15,17 +15,17 @@ QuizApp.config(function($routeProvider) {
 	$routeProvider.when('/all-quizzes', {
 		templateUrl: '/html/all-quizzes.html',
 	});	
-	// $routeProvider.when('/all-users', {
-	// 	templateUrl: '/html/all-users.html',
-	// 	controller: UserCntl,
-	// 	resolve: {
-	// 		userList: function(APIservice) {
-	// 			return APIservice.GET('/user/all').then(function(data) {
-	// 				return data;
-	// 			});
-	// 		}
-	// 	}
-	// });	
+	$routeProvider.when('/user/:search', {
+		templateUrl: '/html/user.html',
+		controller: UserCntl,
+		resolve: {
+			userList: function(APIservice) {
+				return APIservice.GET('/user/all').then(function(data) {
+					return data;
+				});
+			}
+		}
+	});	
 	$routeProvider.when('/contact', {
 		templateUrl: '/html/contact.html',
 	});	

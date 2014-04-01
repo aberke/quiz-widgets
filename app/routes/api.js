@@ -403,7 +403,7 @@ var GETcallback = function(response) {
 }
 
 var GETuserQuizzes = function(req, res) {
-	models.findUserQuizzes(req.user.id, GETcallback(res));
+	models.findUserQuizzes(req.params.id, GETcallback(res));
 };
 
 var GETallAnswers = function(req, res){
