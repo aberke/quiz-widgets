@@ -20,7 +20,7 @@ module.exports = function() {
 	var strategy = new TwitterStrategy({
 			consumerKey: process.env.TWITTER_CONSUMER_KEY,
 			consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-			callbackURL: ((process.env.PRODUCTION_WWW_HTTP_URL || process.env.LOCAL_WWW_HTTP_URL) + "auth/twitter/callback"),
+			callbackURL: "http://quizwidget-petri.dotcloud.com/auth/twitter/callback",// ((process.env.PRODUCTION_WWW_HTTP_URL || process.env.LOCAL_WWW_HTTP_URL) + "auth/twitter/callback"),
 		},
 		function(token, tokenSecret, profile, done) {
 			models.findUserBy({twitter_id: profile.id}, function(err, user){
