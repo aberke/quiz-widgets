@@ -174,7 +174,7 @@ exports.deleteQuiz = function(quizID, callback) {
 }
 
 
-/* doesn't handle saving answer */
+/* doesn't handle saving question */
 var addAnswer = exports.addAnswer = function(answerData, question, callback) {
 	var answer = new Answer({
 		_question:  question,
@@ -185,7 +185,7 @@ var addAnswer = exports.addAnswer = function(answerData, question, callback) {
 		pic_style:  (answerData.pic_style || "bottom-right"),
 	});
 	question.answerList.push(answer);
-	question.save();
+	//question.save();
 	answer.save(function(err) {
 		if (callback) { callback(err, answer); }
 	});
@@ -300,7 +300,8 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		for (var j=0; j<questionData.answerList.length; j++) {
 			var answerData = questionData.answerList[j];
 			answerData._outcome = outcomeDict[answerData._outcome];
-			addAnswer(answerData, newQuestion); // handles question.answerList.push and answer.save
+			// handles question.answerList.push and answer.save -- DOES NOT SAVE QUESTION
+			addAnswer(answerData, newQuestion);
 		}
 
 		newQuestion.save();

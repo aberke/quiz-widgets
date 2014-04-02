@@ -62,8 +62,12 @@ TODO
 			- q in user.quizList for the user quizzes
 			- q in quizList for all quizzes | {q._user: '!user._id'}
 
+- make template for title slide
+	- having template for each slide will help with keeping /new /edit and true widget all the same
 
 - add field for custom CSS
+
+- better handle when user is unknowingly signed out
 
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
@@ -87,6 +91,7 @@ TODO
 - embed code as sharing option
 	- make better
 
+- better error handling in models.newQuiz
 
 - finish e2e tests for /edit and /new
 	- e2e tests for outcomes

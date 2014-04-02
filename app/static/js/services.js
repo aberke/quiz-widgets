@@ -134,7 +134,12 @@ var UIService = function($timeout){
 
 
 var StatService = function($http, $q) {
-  /* GET's stats (flat model schema) and formats them in a dictionary */
+  /* GET's stats (flat model schema) and formats them in a dictionary
+      - each stat is in its own stat model that refers back to _quiz
+          - optimized for efficient updates -- often updated, rarely read
+      - format stats in dictionary 
+          - {'Answer':{id:count for each Answer stat}, 'Outcome': {}, 'completed':count, ....}
+  */
 
   function formatStats (rawData) {
     // data: {'Answer': {id: count for each Answer}, 'Outcome': {id: count for each Outcome}, 'started': count, singleton etc}
@@ -178,7 +183,7 @@ var StatService = function($http, $q) {
 var APIservice = function($rootScope, $http, $q){
 
   function HTTP(method, endpoint, data) {
-    $rootScope.error = null;
+    $rootScope.unauthorized = false;
     
     var deferred = $q.defer();
     $http({
@@ -191,7 +196,8 @@ var APIservice = function($rootScope, $http, $q){
     })
     .error(function(errData, status) {
       if (status == 401) { /* the header in base.html pays attention to error */
-        $rootScope.error = 'Unauthorized - sign in and try again';
+        $rootScope.unauthorized = true;
+        $rootScope.user = null;
       }
       console.log('API ERROR', status, errData)
       var e = new APIserviceError(errData);

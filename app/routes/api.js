@@ -2,7 +2,7 @@
 var util 					= require('./../util.js'),
 	models 					= require('./../models.js'),
     authMiddleware  		= require('./../middleware/authentication-middleware.js'),
-    verifyQuizEndpointAccess= authMiddleware.verifyQuizEndpointAccess;
+    verifyQuizAPIAccess		= authMiddleware.verifyQuizAPIAccess;
 
 
 
@@ -13,36 +13,39 @@ exports.registerEndpoints = function (app) {
 	app.get('/api/user/:id', GETuser);
 	app.get('/api/user/:id/quizzes', GETuserQuizzes);
 	app.put('/api/user/:userID/claim-quiz/:quizID', PUTuserClaimQuiz);
-	app.put('/api/user/:userID/relinquish-quiz/:quizID', verifyQuizEndpointAccess, PUTuserRelinquishQuiz);
+	app.put('/api/user/:userID/relinquish-quiz/:quizID', verifyQuizAPIAccess, PUTuserRelinquishQuiz);
 
-
-	app.post('/api/quiz', POSTquiz);
 	
 	app.get('/api/quiz/all', GETallQuizes);
-	app.get('/api/quiz/:id', GETquiz);
-	app.put('/api/quiz/:id', PUTquiz);
-	app.delete('/api/quiz/:id', DELETEquiz);
-	app.put('/api/quiz/:id/share', PUTquizShare);
-
-	app.post('/api/answer', POSTanswer);
 	app.get('/api/answer/all', GETallAnswers);
-	app.put('/api/answer/:id', PUTanswer);
-	app.delete('/api/answer/:id', DELETEanswer);
-
-	app.post('/api/question', POSTquestion);
-	app.get('/api/question/all', GETallQuestions);
-	app.get('/api/question/:id', GETquestion);
-	app.put('/api/question/:id', PUTquestion);
-	app.delete('/api/question/:id', DELETEquestion);
-
-	app.post('/api/outcome', POSToutcome); /* it must have its _quiz id set */
 	app.get('/api/outcome/all', GETallOutcomes);
-	app.get('/api/outcome/:id', GEToutcome);
-	app.put('/api/outcome/:id', PUToutcome);
-	app.delete('/api/outcome/:id', DELETEoutcome);
-	app.put('/api/outcome/:id/share', PUToutcomeShare);
+	app.get('/api/question/all', GETallQuestions);
+
+	app.get('/api/quiz/:quizID', GETquiz);
+	//app.get('/api/outcome/:id', GEToutcome);
+	//app.get('/api/question/:id', GETquestion);
+
+	app.post('/api/quiz', POSTquiz);
+	app.post('/api/quiz/:quizID/answer', verifyQuizAPIAccess, POSTanswer);
+	app.post('/api/quiz/:quizID/outcome', verifyQuizAPIAccess, POSToutcome); /* it must have its _quiz id set */
+	app.post('/api/quiz/:quizID/question', verifyQuizAPIAccess, POSTquestion);
+	
+	app.put('/api/quiz/:quizID', verifyQuizAPIAccess, PUTquiz);
+	app.put('/api/quiz/:quizID/share', verifyQuizAPIAccess, PUTquizShare);
+	app.put('/api/quiz/:quizID/answer/:id', verifyQuizAPIAccess, PUTanswer);
+	app.put('/api/quiz/:quizID/outcome/:id/share', verifyQuizAPIAccess, PUToutcomeShare);
+	app.put('/api/quiz/:quizID/outcome/:id', verifyQuizAPIAccess, PUToutcome);
+	app.put('/api/quiz/:quizID/question/:id', verifyQuizAPIAccess, PUTquestion);
+
+	app.delete('/api/quiz/:quizID', verifyQuizAPIAccess, DELETEquiz);
+	app.delete('/api/quiz/:quizID/answer/:id', verifyQuizAPIAccess, DELETEanswer);
+	app.delete('/api/quiz/:quizID/outcome/:id', verifyQuizAPIAccess, DELETEoutcome);
+	app.delete('/api/quiz/:quizID/question/:id', verifyQuizAPIAccess, DELETEquestion);
+
+
 
 	/* JSONP hacks -- these are GET requests because they're with JSONP */
+	/* these shares could belong to a quiz or an outcome -- API doesn't care */
 	app.get('/api/share/:id/increment-fb-count', PUTshareIncrementFBCount);
 	app.get('/api/share/:id/increment-twitter-count', PUTshareIncrementTwitterCount);
 }
@@ -71,9 +74,13 @@ var POSTanswer = function(req, res) {
 	models.findQuestion(answerData._question, function(err, question) {
 		if (err || !question) { return res.send(500, util.handleError(err)); }
 
+		// handles question.answerList.push and answer.save -- DOES NOT SAVE QUESTION
 		models.addAnswer(answerData, question, function(err, answer) {
 			if (err) { return res.send(500, util.handleError(err)); }
-			res.send(200, answer);
+			question.save(function(err) {
+				if (err) { return res.send(500, util.handleError(err)); }
+				res.send(200, answer);
+			});
 		});
 	});
 }
@@ -99,6 +106,7 @@ var POSToutcome = function(req, res) {
 	models.findQuiz(outcomeData._quiz, function(err, quiz) {
 		if (err || !quiz) { return res.send(500, util.handleError(err)); }
 
+		// need outcomeData.index ??
 		outcomeData.index = quiz.outcomeList.length + 1;
 		models.newOutcome(outcomeData, function(err, newOutcome) {
 			if (err) { return res.send(500, util.handleError(err)); }
@@ -166,7 +174,7 @@ var PUTuserRelinquishQuiz = function(req, res) {
 		if (err || !user) { return res.send(500, util.handleError(err)); }
 		// user with UNpopulated quizList
 		var index = user.quizList.indexOf(req.params.quizID);
-		if (index < 0) { return res.send(500, util.handleError('User ' + user._id + ' an not relinquish-quiz ' + req.params.quizID)); }
+		if (index < 0) { return res.send(500, util.handleError('User ' + user._id + ' can not relinquish-quiz ' + req.params.quizID)); }
 		user.quizList.splice(index, 1);
 		user.save(function(err) {
 			if (err) { return res.send(500, util.handleError(err)); }
@@ -181,12 +189,6 @@ var PUTuserRelinquishQuiz = function(req, res) {
 			});
 		});
 	});
-
-
-
-
-
-	// });
 }
 
 /* mapped to by PUT '/api/user/:userID/claim-quiz/:quizID' */
@@ -221,7 +223,7 @@ var PUTuserClaimQuiz = function(req, res) {
 var PUTquiz = function(req, res) {
 	var quizData = req.body;
 
-	models.findQuizPartial(req.params.id, function(err, quiz) {
+	models.findQuizPartial(req.params.quizID, function(err, quiz) {
 		if (err || !quiz) { return res.send(500, util.handleError(err)); }
 
 		quiz.title = quizData.title;
@@ -237,7 +239,7 @@ var PUTquiz = function(req, res) {
 var PUTquizShare  = function(req, res) {
 	var shareData = req.body;
 
-	models.findQuiz(req.params.id, function(err, quiz) {
+	models.findQuiz(req.params.quizID, function(err, quiz) {
 		if (err || !quiz) { return res.send(500); }
 
 		if (!quiz.share) {
@@ -286,6 +288,7 @@ var PUToutcomeShare = function(req, res) {
 		}
 	});
 }
+/* actually hit by a GET jsonp request */
 var PUTshareIncrementTwitterCount = function(req, res) {
 	models.findShare(req.params.id, function(err, share) {
 		if (err || !share) { return res.send(500); }
@@ -297,6 +300,7 @@ var PUTshareIncrementTwitterCount = function(req, res) {
 		});
 	});
 }
+/* actually hit by a GET jsonp request */
 var PUTshareIncrementFBCount = function(req, res) {
 	models.findShare(req.params.id, function(err, share) {
 		if (err || !share) { return res.send(500); }
@@ -309,15 +313,6 @@ var PUTshareIncrementFBCount = function(req, res) {
 	});
 }
 
-
-var deleteCallback = function(res, err) {
-	if (err) { return res.json(500, {error: util.handleError(err)}); }
-	res.json(200);
-}
-
-var DELETEoutcome = function(req, res) {
-	models.deleteOutcome(req.params.id, function (err) { deleteCallback(res, err); });
-}
 
 /* ------------------ GET ----------------------- */
 
@@ -363,7 +358,7 @@ var GETuser = function(req, res) {
 
 var GETquiz = function(req, res) {
 	/* not using helper callback because NEED JSONP */
-	models.findQuiz(req.params.id, function(err, quiz) {
+	models.findQuiz(req.params.quizID, function(err, quiz) {
 		if (err) return res.send(500, util.handleError(err));		
 		res.jsonp(200, quiz); /* NEED JSONP */
 	});
@@ -371,27 +366,31 @@ var GETquiz = function(req, res) {
 
 /* --------------- DELETE ---------------------- */
 
-var deleteCallback = function(res, err) {
-	if (err) { return res.json(500, {error: util.handleError(err)}); }
-	res.json(200);
+/* generates the callback */
+var DELETEcallback = function(response) {
+
+	var callback = function(err) { // closure around response
+		if (err) { return response.send(500, util.handleError(err)); }
+		response.send(200);
+	}
+	return callback;
 }
+
+// var deleteCallback = function(res, err) {
+// 	if (err) { return res.json(500, {error: util.handleError(err)}); }
+// 	res.json(200);
+// }
 
 var DELETEoutcome = function(req, res) {
-	models.deleteOutcome(req.params.id, function (err) { deleteCallback(res, err); });
+	models.deleteOutcome(req.params.id, DELETEcallback(res));
 }
 var DELETEanswer = function(req, res) {
-	models.deleteAnswer(req.params.id, function(err) {
-		deleteCallback(res, err);
-	});
+	models.deleteAnswer(req.params.id, DELETEcallback(res));
 };
 var DELETEquestion = function(req, res) {
-	models.deleteQuestion(req.params.id, function(err) { deleteCallback(res, err); });
+	models.deleteQuestion(req.params.id, DELETEcallback(res));
 };
-
 var DELETEquiz = function(req, res) {
-	models.deleteQuiz(req.params.id, function(err) {
-		if (err) { return res.json(500, {error: util.handleError(err)}); }
-		res.json(200);
-	});
+	models.deleteQuiz(req.params.quizID, DELETEcallback(res));
 }
 

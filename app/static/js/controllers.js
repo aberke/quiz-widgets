@@ -324,7 +324,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 		APIservice.POST('/quiz', $scope.quiz).then(function(data) {
 			$scope.quiz.saved = 'saved';
 			console.log('POSTED QUIZ',$scope.quiz,'got back data', data);
-			$location.path('/quiz/' + data._id);
+			$location.path('/stats/' + data._id);
 		});
 	};
 	$scope.updateQuizPic = function() { UIService.updateQuizPic($scope.quiz.pic_url); }
@@ -441,7 +441,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 
 	var remove = function(type, object, callback) {
 		object.saved = 'deleting';
-		APIservice.DELETE('/' + type + '/' + object._id, object).then(
+		APIservice.DELETE('/quiz/' + $scope.quiz._id + '/' + type + '/' + object._id, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
@@ -452,7 +452,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 	/* addNew == POST request --------------------------------- */
 	var create = function(type, object, callback) {
 		object.saved = 'saving';
-		APIservice.POST('/' + type, object).then(
+		APIservice.POST('/quiz/' + $scope.quiz._id + '/' + type, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
@@ -471,7 +471,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 	*/
 	var update = function(type, object, callback) {
 		object.saved = 'saving';
-		APIservice.PUT('/' + type + '/' + object._id, object).then(
+		APIservice.PUT('/quiz/' + $scope.quiz._id + '/' + type + '/' + object._id, object).then(
 			APIsuccess(object, callback),
 			APIerror(object)
 		);

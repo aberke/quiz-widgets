@@ -31,28 +31,34 @@
 
 </head>
 <body ng-controller="MainCntl">
-    <div class="header" ng-class="{'error':error}">
-        <nav>
-            <span class='error' ng-if="error">Error: {{error}}</span>
-            <img ng-if="!error" class="brand" src="/img/labs.png"></img>
-            
-            <ul class="nav nav-pills pull-right">
-                
-                <li><a href="" ng-click="goTo('/')">HOME</a></li>
-                <li><a href="" ng-show="!user" ng-click="login()" id="login-button">Sign In</a></li>
-                <li><a href="" ng-show="user" ng-click="logout()" id="logout-button">Sign Out</a></li>
-                <li ng-class="{active: (page=='help')}">
-                    <a ng-href="{{location.path()}}" class="dropdown-toggle" data-toggle="dropdown">Directory <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="" ng-click="goTo('/user/all')">Users</a></li>
-                        <li><a href="" ng-click="goTo('/all-quizzes')">All Quizzes</a></li>
-                        <li><a href="" ng-click="goTo('/contact')">Contact The Lab</a></li>
-                    </ul>
-                </li>
-                <li><a href="https://github.com/aberke/quiz-widgets" id="source-code-link">Source Code</a></li>
-            </ul>
-        </nav>
+    <div class="header">
+        <!-- it either shows error bar or nav bar -->
+        
+        <div class='error' ng-if="unauthorized">
+            Unauthorized - <a href="" ng-click="login()" id="login-button">Sign In</a> and try again
+        </div>
+        
+        <span ng-if="!unauthorized">
+            <nav>
+                <img class="brand" src="/img/labs.png"></img>
+                <ul class="nav nav-pills pull-right">
+                    
+                    <li><a href="" ng-click="goTo('/')">HOME</a></li>
+                    <li><a href="" ng-show="!user" ng-click="login()" id="login-button">Sign In</a></li>
+                    <li><a href="" ng-show="user" ng-click="logout()" id="logout-button">Sign Out</a></li>
+                    <li ng-class="{active: (page=='help')}">
+                        <a ng-href="{{location.path()}}" class="dropdown-toggle" data-toggle="dropdown">Directory <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click="goTo('/user/all')">Users</a></li>
+                            <li><a href="" ng-click="goTo('/all-quizzes')">All Quizzes</a></li>
+                            <li><a href="" ng-click="goTo('/contact')">Contact The Lab</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://github.com/aberke/quiz-widgets" id="source-code-link">Source Code</a></li>
+                </ul>
+            </nav>
         <span class='username'>{{user.twitter_displayname||user.twitter_username}}</span>
+        </span>
     </div>
 
     <div class='container' id='view' ng-view></div>

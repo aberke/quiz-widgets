@@ -6,7 +6,7 @@
 exports.handleError = function(err, publicErr){
 	if (!err) { return null; }
 	console.log('*****!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!******');
-	console.log(privateErr, publicErr);
+	console.log(err, publicErr);
 	console.log('*****!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!******');
 	return (publicErr || 'ERROR');
 }

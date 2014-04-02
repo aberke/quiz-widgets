@@ -214,11 +214,11 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         }
         return text;
     }
-    function copyToClipboard(text) {
-      window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
-    }
     function embedCode() {
-        window.prompt("Copy to clipboard: Copy(Ctrl+C), Enter", 
+        var prompt = "You can put this quiz on your page too!";
+            prompt+= "\nSimply insert the embed code snippet";
+            prompt+= "\n\nCopy to clipboard: Copy(Ctrl+C), Enter";
+        window.prompt(prompt, 
         '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>');
     }
 
@@ -244,7 +244,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "                <img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";
             html+= "            </div>";
             html+= "            <span class='embed-code'>";
-            html+= "                <input value='" + embedString + "' >";
+            //html+= "                <input value='" + embedString + "' >";
             html+= "                <img src='" + static_domain + "/icon/embed.png' onclick=" + onclickEmbedCode + "></img>";
             html+= "            </span>";
             html+= "        </div>";

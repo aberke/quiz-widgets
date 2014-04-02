@@ -181,6 +181,13 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	border-bottom: 1px solid white;
 	padding: 8px;
 }
+.huffpostlabs-quiz .share-container .embed-code {
+	margin: 4px;
+	cursor: pointer;
+}
+.huffpostlabs-quiz .share-container .embed-code:hover {
+	opacity: 0.8;
+}
 .huffpostlabs-quiz .share-container .embed-code input {
 	border: 1px solid white;
 	font-size: 1em;
