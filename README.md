@@ -72,8 +72,11 @@ TODO
 			- q in quizList for all quizzes | {q._user: '!user._id'}
 
 
+- add field for custom CSS
+
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
+
 
 - stats page:
 	- total tally for all answers -- as requested by ethan
@@ -103,6 +106,8 @@ TODO
 
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
+
+- log number of times restarted?
 
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff

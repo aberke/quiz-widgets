@@ -9,6 +9,7 @@ var express 		= require('express'),
 
 	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
 	auth_routes 	= require('./routes/auth'),
+	stats_routes 	= require('./routes/stats'),
 	api_routes 		= require('./routes/api');
 
 
@@ -37,20 +38,29 @@ var server = http.createServer(app);
 
 
 /* **************  routing **************************** */
-auth_routes.registerEndpoints(app);
+auth_routes.registerEndpoints(app); // login/logout/user etc
 api_routes.registerEndpoints(app);
+stats_routes.registerEndpoints(app);
 
 
-app.get('/', 			basicAuth, main_routes.serveBase);
-//app.get('/', 				main_routes.serveBase);
-app.get('/new', 			verifyUser, main_routes.serveBase);
-app.get('/quiz/:quizID',	basicAuth, main_routes.serveBase);
-app.get('/edit/:quizID',	verifyQuizViewAccess, main_routes.serveBase);
-app.get('/social/:quizID',  verifyQuizViewAccess, main_routes.serveBase);
-app.get('/forbidden',  		main_routes.serveBase);
-app.get('/contact',  		basicAuth, main_routes.serveBase);
-app.get('/all-quizzes',  	basicAuth, main_routes.serveBase);
-app.get('/user/:search',    basicAuth, main_routes.serveBase);
+/* protected with NO auth */
+app.get('/forbidden',  			main_routes.serveBase);
+app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
+
+
+app.get('/new', 				verifyUser, main_routes.serveBase);
+
+/* protected with verifyQuizViewAccess */
+app.get('/edit/:quizID',		verifyQuizViewAccess, main_routes.serveBase);
+app.get('/social/:quizID',  	verifyQuizViewAccess, main_routes.serveBase);
+
+/* protected with basicAuth */
+app.get('/', 					basicAuth, main_routes.serveBase);
+app.get('/contact',  			basicAuth, main_routes.serveBase);
+app.get('/all-quizzes',  		basicAuth, main_routes.serveBase);
+app.get('/user/:search',    	basicAuth, main_routes.serveBase);
+app.get('/stats/:quizID',		basicAuth, main_routes.serveBase);
+
 
 app.get('/err', function(req, res) {
 	res.send(500, {'err': "FAKE ERROR"})

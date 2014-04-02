@@ -10,6 +10,7 @@ QuizApp.config(function($routeProvider) {
 			function(data) { return data; }
 		);
 	};
+
 	/* the front-end authentication scheme (similar logic on backend)
 		- when going to a route with resolve: {user: userOrRedirect }
 			- check that user logged in
@@ -24,6 +25,13 @@ QuizApp.config(function($routeProvider) {
 			}
 			return data; /* success: return user object */
 		});
+	/* GET quiz stats (flat model schema) and return them in a dictionary
+		that controller can easily use
+	*/
+	var resolveQuizStats = function(StatService, $location) {
+		return StatService.GETquizStats($location.path().split('/')[2]).then(
+			function(data) { return data; }
+		);
 	}
 	
 
@@ -62,11 +70,12 @@ QuizApp.config(function($routeProvider) {
 			user: userOrRedirect,
 		}
 	});
-	$routeProvider.when('/quiz/:id', {
-		templateUrl: '/html/quiz.html',
-		controller: QuizCntl,
+	$routeProvider.when('/stats/:id', {
+		templateUrl: '/html/stats.html',
+		controller: StatsCntl,
 		resolve: { /* returning the promise and then resolving the promise as the data */
 			quiz: resolveQuizFunction,
+			stats: resolveQuizStats,
 		}
 	});
 	$routeProvider.when('/edit/:id', {

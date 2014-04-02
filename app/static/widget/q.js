@@ -136,23 +136,26 @@
 		}
 	}
 	var quizStartedCallback = function(quiz) {
-		PUT("/api/quiz/" + quiz._id + "/increment-started-count", null);
+		PUT("/stats/" + quiz._id + "/increment/started-null", null);
+	}
+	var quizRestartedCallback = function(quiz) {
+		PUT("/stats/" + quiz._id + "/increment/restarted-null", null);
 	}
 	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
 		/* increment counts for quiz, outcome and each chosenAnswer */
-		var completedDataString = "/api/completed/";
-			completedDataString+= ("quiz-" + quiz._id);
-			completedDataString+= ("-outcome-" + outcome._id);
+		var completedDataString = ("/stats/" + quiz._id + "/increment/");
+			completedDataString+= ("completed-null");
+			completedDataString+= ("-Outcome-" + outcome._id);
 		for (var i=0; i<chosenAnswers.length; i++) {
-			completedDataString+= ("-answer-" + chosenAnswers[i]._id);
+			completedDataString+= ("-Answer-" + chosenAnswers[i]._id);
 		}
 
-		PUT(completedDataString, null);
+		//PUT(completedDataString, null);
 	}
 
 	function load_quiz_info(quizID, container){
 		GET("/api/quiz/" + quizID, function(data) {
-			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizStartedCallback, quizCompletedCallback);
+			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizStartedCallback, quizCompletedCallback, quizRestartedCallback);
 			this.quizWidgets[quizID] = widget;
 		});
 	};

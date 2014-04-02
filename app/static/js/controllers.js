@@ -46,12 +46,43 @@ function IndexCntl($scope) {
 	}
 	init();
 }
-function QuizCntl($scope, APIservice, quiz) {
+
+function PublicPreviewCntl($scope, $location, HTTPService) {
+	$scope.quiz;
+
+	HTTPService.GETquiz($location.path().split('/')[3]).then(function(data) { 
+		$scope.quiz = data;
+		$.getScript("/widget/q.js"); /* now load the quizzes */
+	});
+}
+function StatsCntl($scope, $location, HTTPService, quiz, stats) {
+
 	$scope.quiz = quiz;
+	$scope.stats = stats;
+
+	var combineStats = function() {
+		/* for backwards compatibility */
+		$scope.stats.started = ((stats.started || 0) + (quiz.startedCount || 0));
+		$scope.stats.completed = ((stats.completed || 0) + (quiz.completedCount || 0));
+
+		$scope.stats['Answer'] = ($scope.stats['Answer'] || {});
+		for (var q=0; q<quiz.questionList.length; q++) {
+			var question = quiz.questionList[q];
+			for (var i=0; i<question.answerList.length; i++) {
+				var a = question.answerList[i];
+				$scope.stats['Answer'][a._id] = ((stats['Answer'][a._id] || 0) + a.count);
+			}
+		}
+		$scope.stats['Outcome'] = ($scope.stats['Outcome'] || {});
+		for (var i=0; i<quiz.outcomeList.length; i++) {
+			var o = quiz.outcomeList[i];
+			$scope.stats['Outcome'][o._id] = ((stats['Outcome'][o._id] || 0) + o.count);
+		}
+	}
 	$scope.totalSharesFB;
 	$scope.totalSharesTwitter;
-		console.log('QuizCntl', quiz)
 
+	// USING??
 	var countQuestionTotals = function() {
 		for (var i=0; i<$scope.quiz.questionList.length; i++) {
 			var question = $scope.quiz.questionList[i];
@@ -81,7 +112,7 @@ function QuizCntl($scope, APIservice, quiz) {
 
 	var init = function() {
 		console.log('QuizCntl', quiz)
-		countQuestionTotals();
+		combineStats(); /* for backwards compatibility */
 		$scope.totalSharesFB = countTotalSharesFB(quiz);
 		$scope.totalSharesTwitter = countTotalSharesTwitter(quiz);
 	}
