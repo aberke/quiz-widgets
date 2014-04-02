@@ -25,7 +25,7 @@
           <a ng-show="!q.showEmbed" ng-click="q.showEmbed=true" href="">Embed in HTML</a>
           <a ng-show="q.showEmbed" ng-click="q.showEmbed=false" href="">Hide Embed Code</a>
 
-          <pre class="embed-code" ng-show="q.showEmbed">&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;&lt;script src="{{domain}}/widget/q.js"&gt;&lt;/script&gt;&lt;p id="labs-credit"&gt;&lt;a href="http://code.huffingtonpost.com"&gt;Quiz widget by &lt;img height="23px" src="http://quiz.huffingtonpost.com/img/huffpostLABS_outline.png" /&gt;&lt;/a&gt;&lt;/p&gt;</pre>
+          <pre class="embed-code" ng-show="q.showEmbed">&lt;div class="huffpostlabs-quiz" id="{{q._id}}"&gt;&lt;/div&gt;&lt;script src="http://quiz.huffingtonpost.com/widget/q.js"&gt;&lt;/script&gt;&lt;p id="labs-credit"&gt;&lt;a href="http://code.huffingtonpost.com"&gt;Quiz widget by &lt;img height="23px" src="http://quiz.huffingtonpost.com/img/huffpostLABS_outline.png" /&gt;&lt;/a&gt;&lt;/p&gt;</pre>
         </li>
 
         <li owner-only-element class="dropdown">
@@ -33,7 +33,7 @@
             More <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a target="_blank" ng-href="{{domain}}/quiz/public/{{q._id}}">View Public Page</a></li>
+            <li><a target="_blank" ng-href="/quiz/public/{{q._id}}">View Public Page</a></li>
             <li><a href="" ng-click="relinquishQuiz(q)">Relinquish Ownership</a></li>
             <li><a href="" ng-click="delete(q)">Delete</a></li>
           </ul>

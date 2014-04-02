@@ -1,15 +1,16 @@
 /* authentication routes */
 
-var authMiddleware  = require('./../middleware/authentication-middleware.js'),
-	passportMiddleware = require('./../middleware/passport-middleware.js')();
+var authMiddleware  	= require('./../middleware/authentication-middleware.js'),
+    passport 			= require('passport'),
+	passportMiddleware  = require('./../middleware/passport-middleware.js')();
 
 
 
 
 exports.registerEndpoints = function (app) {
 
-	//app.use(passportMiddleware.initialize());
-	//app.use(passportMiddleware.session());
+    app.use(passport.initialize());
+    app.use(passport.session());
 
 	app.get('/auth/user', user);
 	app.get('/auth/login', login);

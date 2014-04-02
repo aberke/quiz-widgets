@@ -2,7 +2,6 @@
 function MainCntl($scope, $location, UserFactory) {
 	console.log('MainCntl')
 	$scope.domain = window.location.origin;
-	$scope.cache_domain = 'http://quiz.huffingtonpost.com';
 
 	UserFactory.then(function(user) {
 		$scope.user = user;

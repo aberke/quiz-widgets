@@ -376,11 +376,6 @@ var DELETEcallback = function(response) {
 	return callback;
 }
 
-// var deleteCallback = function(res, err) {
-// 	if (err) { return res.json(500, {error: util.handleError(err)}); }
-// 	res.json(200);
-// }
-
 var DELETEoutcome = function(req, res) {
 	models.deleteOutcome(req.params.id, DELETEcallback(res));
 }
