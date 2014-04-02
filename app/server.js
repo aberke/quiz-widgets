@@ -40,6 +40,7 @@ app.configure(function () {
 });
 var server = http.createServer(app);
 
+console.log('SESSION_SECRET', process.env.SESSION_SECRET)
 
 /* **************  routing **************************** */
 auth_routes.registerEndpoints(app); // login/logout/user etc

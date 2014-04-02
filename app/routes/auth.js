@@ -23,12 +23,29 @@ var user = function(req, res){
 	if (req.user) { res.send(req.user); }
 	else { res.send(null); }
 }
-
+// var login = function(req, res) {
+// 	console.log('\n\n\n*****login*****\n\n','req.query', req.query)
+// 	console.log('req.secret',req.secret)
+// 	console.log('req.session',req.session)
+// 	console.log('req.url',req.url)
+// }
 var login = passportMiddleware.authenticate('twitter');
-var twitterCallback = passportMiddleware.authenticate('twitter', {
-						successReturnToOrRedirect: '/', 
-						failureRedirect: '/' 
-					});
+
+var twitterCallback = function(req, res) {
+	console.log('req.url',req.url)
+	console.log('req.headers', req.headers)
+	console.log('')
+	console.log('\n\n\n*****login*****\n\n','req.query', req.query)
+	console.log('req.secret',req.secret)
+	console.log('req.session',req.session)
+	console.log('req.url',req.url)
+	res.redirect('/forbidden')
+}
+
+//var twitterCallback = passportMiddleware.authenticate('twitter', {
+					// 	successReturnToOrRedirect: '/', 
+					// 	failureRedirect: '/' 
+					// });
 var logout = function(req, res) {
 	req.logout();
 	res.redirect('/');
