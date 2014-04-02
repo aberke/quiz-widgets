@@ -150,7 +150,7 @@
 			completedDataString+= ("-Answer-" + chosenAnswers[i]._id);
 		}
 
-		//PUT(completedDataString, null);
+		PUT(completedDataString, null);
 	}
 
 	function load_quiz_info(quizID, container){

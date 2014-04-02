@@ -41,20 +41,11 @@ TODO
 
 - BEFORE YOU PUSH TO MASTER
 	- make sure dotcloud is ready with node_modules
-	- make sure public-page comes through after merge
-
-- making login smarter 
-	- redirect to previous page on login callback
-	- but make sure it doesn't go to /forbidden
-		- got to page BEFORE /forbidden
 
 - mongo issue
 	- am I properly deleting questions and outcomes and answers?
 		- do I also need to splice from quiz.questionList when I delete a question?
 
-- need to better handle reporting completed quizzes
-	- grab all answers for given quiz and then sort through them?
-	- use embedded documents in mongo instead?  to better handle performance for reporting answers?
 
 - login stuff
 	- restrict access on front end too 
@@ -77,12 +68,8 @@ TODO
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
 
-
-- stats page:
-	- total tally for all answers -- as requested by ethan
-
-
-- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
+- handle native apps
+	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 
 - fix for trivia option (Nick on the politics team would like this)
 	- option to have 1 answer
@@ -106,8 +93,6 @@ TODO
 
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
-
-- log number of times restarted?
 
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
@@ -156,10 +141,13 @@ necessary e2e tests
 - quiz always gets result that it should
 - all of the directives
 - can only get to certain pages if logged in
+- stats logging
 
 neccessary api tests
 ---
 
+- 401 if user doesn't own quiz
+- stats logging
 - on creating question, make sure answers point to valid outcomes
 	- outcome exists and belongs to the quiz that the question belongs to
 

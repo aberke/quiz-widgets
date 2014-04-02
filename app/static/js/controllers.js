@@ -47,15 +47,15 @@ function IndexCntl($scope) {
 	init();
 }
 
-function PublicPreviewCntl($scope, $location, HTTPService) {
+function PublicPreviewCntl($scope, $location, APIservice) {
 	$scope.quiz;
 
-	HTTPService.GETquiz($location.path().split('/')[3]).then(function(data) { 
+	APIservice.GETquiz($location.path().split('/')[3]).then(function(data) { 
 		$scope.quiz = data;
 		$.getScript("/widget/q.js"); /* now load the quizzes */
 	});
 }
-function StatsCntl($scope, $location, HTTPService, quiz, stats) {
+function StatsCntl($scope, quiz, stats) {
 
 	$scope.quiz = quiz;
 	$scope.stats = stats;
@@ -334,7 +334,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	init();
 }
-function EditCntl($scope, $location, FormService, APIservice, UIService, WidgetService, quiz) {
+function EditCntl($scope, FormService, APIservice, UIService, WidgetService, quiz) {
 	$scope.quiz = quiz;
 
 	/* outcomeMap: {outcomeID: outcome} 

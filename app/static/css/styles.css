@@ -126,9 +126,11 @@ footer {
 	background-color: #e0ffff;
 	border-color: #6BCAE2;
 }
-#index-page #filterBy {
+#index-page #filterBy,
+#user-page #quizzes-view #filterBy {
 	display: none;
 }
+
 
 /********************** index-page above ******************/
 
@@ -151,12 +153,12 @@ footer {
 /********************** quizzes-view above ******************/
 
 
-/********************** all-users-page ******************/
+/********************** user-page ******************/
 
-#all-users-page .title {
+#user-page .title {
 	display: inline-block;
 }
-#all-users-page #filterBy {
+#user-page #filterBy {
 	float: right;
 	margin-top: 30px;
 }
@@ -165,27 +167,27 @@ footer {
 	border: 1px solid #5F9EA0;
 }
 
-#all-users-page .user-container {
+#user-page .user-container {
 	border: 1px solid #5F9EA0;
 	border-radius: 6px;
 	background-color: #F5FFFA;
 	margin: 10px 0px;
 }
-#all-users-page .user-container .list-group-item.active{
+#user-page .user-container .list-group-item.active{
 	border-color: #5F9EA0;
 	background-color: #5F9EA0;
 }
-#all-users-page .user-container .displayname {
+#user-page .user-container .displayname {
 	font-weight: bold;
 }
-#all-users-page .user-container .username {
+#user-page .user-container .username {
 	float: right;
 }
-#all-users-page .quizzes-view {
+#user-page .quizzes-view {
 	padding: 0px 15px;
 }
 
-/********************** all-users-page ******************/
+/********************** user-page above ******************/
 
 /********************** quiz-page ******************/
 

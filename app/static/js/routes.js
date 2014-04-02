@@ -25,6 +25,7 @@ QuizApp.config(function($routeProvider) {
 			}
 			return data; /* success: return user object */
 		});
+	};
 	/* GET quiz stats (flat model schema) and return them in a dictionary
 		that controller can easily use
 	*/

@@ -18,7 +18,7 @@
           <a ng-href="/user/{{q._user.twitter_username}}" ng-if="q._user._id">Owner: {{q._user.twitter_displayname || q._user.twitter_username}}</a>
           <a ng-click="claimQuiz(q)" ng-if="user._id&&!q._user._id" href="#">Claim Ownership</a>
         </li>
-        <li><a ng-href="/quiz/{{q._id}}">View Stats</a></li>
+        <li><a ng-href="/stats/{{q._id}}">View Stats</a></li>
         <li><a owner-only-element ng-href="/edit/{{q._id}}">Edit</a></li>
         <li><a owner-only-element ng-href="/social/{{q._id}}">Customize Sharing</a></li>
         <li>
@@ -33,6 +33,7 @@
             More <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
+            <li><a target="_blank" ng-href="{{domain}}/quiz/public/{{q._id}}">View Public Page</a></li>
             <li><a href="" ng-click="relinquishQuiz(q)">Relinquish Ownership</a></li>
             <li><a href="" ng-click="delete(q)">Delete</a></li>
           </ul>
