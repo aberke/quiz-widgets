@@ -441,7 +441,9 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 
 	var remove = function(type, object, callback) {
 		object.saved = 'deleting';
-		APIservice.DELETE('/quiz/' + $scope.quiz._id + '/' + type + '/' + object._id, object).then(
+		var endpoint = (type == 'quiz') ? '' : ('/quiz/' + $scope.quiz._id);
+		endpoint += ('/' + type + '/' + object._id);
+		APIservice.DELETE(endpoint, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
@@ -452,7 +454,9 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 	/* addNew == POST request --------------------------------- */
 	var create = function(type, object, callback) {
 		object.saved = 'saving';
-		APIservice.POST('/quiz/' + $scope.quiz._id + '/' + type, object).then(
+		var endpoint = (type == 'quiz') ? '' : ('/quiz/' + $scope.quiz._id);
+		endpoint += ('/' + type);
+		APIservice.POST(endpoint, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
@@ -471,7 +475,9 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 	*/
 	var update = function(type, object, callback) {
 		object.saved = 'saving';
-		APIservice.PUT('/quiz/' + $scope.quiz._id + '/' + type + '/' + object._id, object).then(
+		var endpoint = (type == 'quiz') ? '' : ('/quiz/' + $scope.quiz._id);
+		endpoint += ('/' + type + '/' + object._id);
+		APIservice.PUT(endpoint, object).then(
 			APIsuccess(object, callback),
 			APIerror(object)
 		);
