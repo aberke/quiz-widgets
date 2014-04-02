@@ -24,6 +24,7 @@ exports.servePublicPreview = function(req, res) {
 
 
 exports.test = function(req, res) {
+	req.session.test = 'TEST';
 	res.send('test')
 }
 

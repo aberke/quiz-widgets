@@ -32,6 +32,7 @@ var user = function(req, res){
 var login = passportMiddleware.authenticate('twitter');
 
 var twitterCallback = function(req, res) {
+
 	console.log('req.url',req.url)
 	console.log('req.headers', req.headers)
 	console.log('')
