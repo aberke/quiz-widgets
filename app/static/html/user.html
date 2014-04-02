@@ -12,7 +12,7 @@
 	<div class="list-group">
 		<div class='user-container' ng-repeat="u in userList | filter:searchText">
 
-			<a ng-click="expand=!expand" href="" class="list-group-item" ng-class="{'active':expand}">
+			<a ng-click="expand=!expand" href="" class="list-group-item" ng-class="{'active':(expand||(searchText==u.twitter_username))}">
 				<span class="list-group-item-heading">
 					<span class="list-group-item-text displayname">{{u.twitter_displayname}}</span>
 					<span class="list-group-item-text username">@{{u.twitter_username}}</span>
@@ -20,7 +20,7 @@
 				<p class="list-group-item-text">{{u.quizList.length}} Quizzes</p>
 			</a>
 
-			<quizzes ng-if="expand" id='quizzes' owner="u._id"></quizzes>
+			<quizzes ng-if="expand||(searchText==u.twitter_username)" id='quizzes' owner="u._id"></quizzes>
 		</div>
 
 	</div>
