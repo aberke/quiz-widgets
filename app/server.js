@@ -3,6 +3,7 @@ var express 		= require('express'),
 	path 			= require('path'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
+    passport 		= require('passport'),
 
     authMiddleware  = require('./middleware/authentication-middleware.js'),
 	
@@ -30,6 +31,9 @@ app.configure(function () {
   	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
 
 	app.use(express.session({secret: process.env.SESSION_SECRET})),
+        
+        app.use(passport.initialize()),
+        app.use(passport.session()),
 
     app.use(express.static(path.join(__dirname, '/static')));
     app.use(expressValidator());
