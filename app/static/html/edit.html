@@ -98,7 +98,7 @@
 				</span>
 			</span>
 
-			<div class="huffpostlabs-quiz quiz-{{quiz._id||'new'}}" ng-class="{'mobile':viewMobile}">
+			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<outcome-container></outcome-container>
 				</div>
@@ -164,7 +164,7 @@
 				<button ng-show="question.answerList.length<4" ng-click="question.answerList.push({new:true,'saved':'unsaved'})" class='btn btn-sm btn-success add-answer-btn'>+ Answer</button>
 			</div>
 
-			<div class="huffpostlabs-quiz quiz-{{quiz._id||'new'}}" ng-class="{'mobile':viewMobile}">
+			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide">
 						<div class="question-share-container">
@@ -213,7 +213,7 @@
 			Dimensions: 30x30
 		</p>
 
-		<div class="huffpostlabs-quiz quiz-{{quiz._id||'new'}}" ng-class="{'mobile':viewMobile}">
+		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 			<div class='outcome-container'>
 				<div class="share-container">
 					<div class="fb-share-container">
