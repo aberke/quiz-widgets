@@ -139,9 +139,15 @@ footer {
 /********************** index-page above ******************/
 
 /********************** documentation-page ******************/
+#documentation-page {
+	min-height: 500px;
+}
 #documentation-page iframe {
 	width: 100%;
 	min-height: 700px;
+}
+#documentation-page .no-google-doc {
+	margin-top: 70px;
 }
 #documentation-page .documentation-please {
 	padding: 0 100px;
@@ -354,10 +360,9 @@ footer {
 	width: 48%;
 	margin-bottom: 10px;
 }
-#new-page #instructions .btn,
-#edit-page #instructions .btn {
-	font-weight: bold;
-	margin-top: 20px;
+#new-page #instructions,
+#edit-page #instructions {
+	margin-top: 30px;
 }
 #new-page section#set-refresh-icon .huffpostlabs-quiz,
 #edit-page section#set-refresh-icon .huffpostlabs-quiz {

@@ -2,10 +2,9 @@
 function MainCntl($scope, $location, UserFactory) {
 	console.log('MainCntl')
 	$scope.domain = window.location.origin;
+	$scope.user;
+	$scope.docDictionary;
 
-	UserFactory.then(function(user) {
-		$scope.user = user;
-	});
 
 	$scope.scrollToTop = function() {
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -24,6 +23,15 @@ function MainCntl($scope, $location, UserFactory) {
 	$scope.logout = function(){
 		window.location.href=($scope.domain + '/auth/logout');
 	}
+	var init = function(){
+		UserFactory.then(function(user) {
+			$scope.user = user;
+		});
+		$.getJSON("/documentation/documentation.json", function(data) {
+			$scope.docDictionary = data;
+		});
+	}
+	init();
 }
 function UserCntl($scope, $routeParams, userList) {
 	$scope.userList = userList;
@@ -46,7 +54,7 @@ function IndexCntl($scope) {
 }
 
 function DocumentationCntl($scope, $routeParams) {
-	$scope.docDictionary;
+	// $scope.docDitionary set in MainCtl
 	$scope.doc;
 
 	// callback for getJSON documentation.json
@@ -61,7 +69,7 @@ function DocumentationCntl($scope, $routeParams) {
 		$scope.$apply();
 	}
 	var init = function() {
-		$.getJSON("/documentation/documentation.json", setup);
+		setup($scope.docDictionary); // docDictionary set in MainCntl
 	}
 	init();
 }

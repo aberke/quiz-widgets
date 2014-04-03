@@ -254,16 +254,24 @@
 	<button id='view-mobile-btn' ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
 	<button id='view-non-mobile-btn' ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
-	<section id='instructions'>
-		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>
-		<button class='btn btn-default' ng-show="showInstructions!=false" ng-click="showInstructions=false">Hide Instructions</button>
-		<div class='instructions-text' ng-show="showInstructions!=false">
-			<p>Here's how it works:</p>
-			<p>You create a set of 'outcomes' -- the possible results of the quiz.</p>
-			<p>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</p>
-			<p>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</p>
-
-			<p>Questions can currently have 2-4 answers.  We are in the process of making this number unlimited.</p>
+<section id='instructions'>
+		<h4>Documentation</h4>
+		<ul>
+			<li ng-repeat="(docString,doc) in docDictionary">
+				<a target="_blank" ng-href="/documentation/{{docString}}">{{doc.title}}</a>
+			</li>
+			<li>
+				<a target="_blank" href="/documentation">All Documentation</a>
+			</li>
+		</ul>
+		<h5>Basics:</h5>
+		<div class='instructions-text'>
+			<p>All changes saved on this page will immediately go live.</p>
+			<p>Here's how it works:<ul>
+				<li>You create a set of 'outcomes' -- the possible results of the quiz.</li>
+				<li>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</li>
+				<li>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</li>
+			</ul></p>
 
 			<p>Quiz dimensions:
 				<ul>

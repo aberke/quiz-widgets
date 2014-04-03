@@ -252,9 +252,17 @@
 	<button ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
 	<section id='instructions'>
-		<button class='btn btn-default' ng-show="showInstructions==false" ng-click="showInstructions=true">Instructions</button>
-		<button class='btn btn-default' ng-show="showInstructions!=false" ng-click="showInstructions=false">Hide Instructions</button>
-		<div class='instructions-text' ng-show="showInstructions!=false">
+		<h4>Documentation</h4>
+		<ul>
+			<li ng-repeat="(docString,doc) in docDictionary">
+				<a target="_blank" ng-href="/documentation/{{docString}}">{{doc.title}}</a>
+			</li>
+			<li>
+				<a target="_blank" href="/documentation">All Documentation</a>
+			</li>
+		</ul>
+		<h5>Basics:</h5>
+		<div class='instructions-text'>
 			<p>All changes saved on this page will immediately go live.</p>
 			<p>Here's how it works:<ul>
 				<li>You create a set of 'outcomes' -- the possible results of the quiz.</li>
