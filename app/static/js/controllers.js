@@ -46,7 +46,9 @@ function IndexCntl($scope) {
 }
 
 function PublicPreviewCntl($scope, $location, APIservice) {
+	console.log('hi')
 	$scope.quiz;
+	console.log($location.path().split('/')[3])
 
 	APIservice.GETquiz($location.path().split('/')[3]).then(function(data) { 
 		$scope.quiz = data;
