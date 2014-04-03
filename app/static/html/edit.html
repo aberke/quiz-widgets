@@ -22,7 +22,7 @@
 			<input ng-change="quiz.saved='unsaved'" id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
+		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 			<div class="slides-container">
 				<div class="slide title-container" style="top: 0%;">
 					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
@@ -38,7 +38,6 @@
 								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
 							</div>
 							<span class="embed-code">
-								<!-- <input value="&lt;div class=&quot;huffpostlabs-quiz&quot; id=&quot;SOME-LONG-ID&quot;&gt;&lt;/div&gt;&lt;script src=&quot;http://quiz.huffingtonpost.com/widget/q.js&quot;&gt;&lt;/script&gt;"> -->
 								<img src="/icon/embed.png">
 							</span>       
 						</div>
@@ -99,7 +98,7 @@
 				</span>
 			</span>
 
-			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
+			<div class="huffpostlabs-quiz quiz-{{quiz._id||'new'}}" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<outcome-container></outcome-container>
 				</div>
@@ -165,7 +164,7 @@
 				<button ng-show="question.answerList.length<4" ng-click="question.answerList.push({new:true,'saved':'unsaved'})" class='btn btn-sm btn-success add-answer-btn'>+ Answer</button>
 			</div>
 
-			<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}">
+			<div class="huffpostlabs-quiz quiz-{{quiz._id||'new'}}" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
 					<div class="slide">
 						<div class="question-share-container">
@@ -214,7 +213,7 @@
 			Dimensions: 30x30
 		</p>
 
-		<div class='huffpostlabs-quiz' ng-class="{'mobile':viewMobile}">
+		<div class="huffpostlabs-quiz quiz-{{quiz._id||'new'}}" ng-class="{'mobile':viewMobile}">
 			<div class='outcome-container'>
 				<div class="share-container">
 					<div class="fb-share-container">

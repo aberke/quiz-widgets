@@ -113,7 +113,7 @@ WidgetService = function() {
 
 }
 
-var UIService = function($timeout){
+var UIService = function($timeout, $rootScope){
 
   var stylesheet = document.createElement('style');
   document.body.appendChild(stylesheet);
@@ -124,12 +124,24 @@ var UIService = function($timeout){
       $('.popover-hover').popover({trigger: 'hover'});
     }, 3000);
   };
-  this.addStyle = function(rule) {
+  var addStyle = function(rule) {
       stylesheet.innerHTML += rule;
   };
   this.updateQuizPic = function(pic_url) {
-    this.addStyle('.huffpostlabs-quiz::after {background-image: url(' + pic_url + ');}');
+    if (!pic_url) {
+      clearQuizPic();
+    } else {
+      addStyle('.quiz-edit::after {background-image: url(' + pic_url + ');}');
+    }
   };
+
+  var clearQuizPic = function() {
+    /* undo updateQuizPic to keep the last image from lingering in the background */
+    addStyle('.quiz-edit::after {background-image: none}');
+  }
+  $rootScope.$on('$locationChangeStart', function() {
+    clearQuizPic();
+  });
 }
 
 

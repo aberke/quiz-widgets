@@ -168,9 +168,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         /* add background image */
         var newClassName = 'quiz-' + quizID;
         container.className += (' ' + newClassName);
-        if (quizData.pic_url) {
-            addStyle('.' + newClassName + '::after {background-image: url(' + quizData.pic_url + ');}');
-        }
+        var backgroundImageStyle = (quizData.pic_url ? ('url(' + quizData.pic_url + ')') : 'none');
+        addStyle('.' + newClassName + '::after {background-image:' + backgroundImageStyle + ';}');
 
         var html = "";
             html+= "<div class='slides-container'>";

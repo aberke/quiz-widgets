@@ -39,6 +39,23 @@ since last email
 TODO
 ---
 
+- make template for title slide
+	- having template for each slide will help with keeping /new /edit and true widget all the same
+
+- add field for custom CSS
+
+- better handle when user is unknowingly signed out
+
+- put all the fb sharing stuff in its own 'library as external script'
+	- for labs reuse
+
+- handle native apps
+	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
+
+- fix for trivia option (Nick on the politics team would like this)
+	- option to have 1 answer
+	- assign arbitrary number of points to outcome
+
 - mongo issue
 	- am I properly deleting questions and outcomes and answers?
 		- do I also need to splice from quiz.questionList when I delete a question?
@@ -58,35 +75,14 @@ TODO
 		- restrict the quizzes of that partial -- something like:
 			- q in user.quizList for the user quizzes
 			- q in quizList for all quizzes | {q._user: '!user._id'}
-
-- make template for title slide
-	- having template for each slide will help with keeping /new /edit and true widget all the same
-
-- add field for custom CSS
-
-- better handle when user is unknowingly signed out
-
-- put all the fb sharing stuff in its own 'library as external script'
-	- for labs reuse
-
-- handle native apps
-	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
-
-- fix for trivia option (Nick on the politics team would like this)
-	- option to have 1 answer
-	- assign arbitrary number of points to outcome
 	
 - deal with possibility that twitter share link could be too long
 	- on sharing page let them put in bitly link for sharing -- or automatically create one
 
 - be able to reorder questions
 
-- deal with linger image in background
-
 - finish up with >4 answers
 
-- embed code as sharing option
-	- make better
 
 - better error handling in models.newQuiz
 
