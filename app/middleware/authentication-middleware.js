@@ -5,8 +5,8 @@ var express = require('express'),
 	models  = require('./../models.js');
 
 
-/* list of user ids that never need verification  -- currently just AlexandraBerke's and HuffpostCode's */
-var ADMIN_WHITELIST = ['525eb49143fdec9000000002', '525f365742342c9300000001'];
+/* list of user ids that never need verification  -- currently just HuffpostLabs' */
+var ADMIN_WHITELIST = ['533968cef62039be56b4cfc6'];
 
 
 
