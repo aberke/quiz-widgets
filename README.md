@@ -39,9 +39,6 @@ since last email
 TODO
 ---
 
-- BEFORE YOU PUSH TO MASTER
-	- make sure dotcloud is ready with node_modules
-
 - mongo issue
 	- am I properly deleting questions and outcomes and answers?
 		- do I also need to splice from quiz.questionList when I delete a question?
