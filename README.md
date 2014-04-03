@@ -38,9 +38,6 @@ since last email
 
 TODO
 ---
-- Documentation
-	- make documentation links in base.html smarter so that it pulls in documentation
-	- replace documenation on /new and /edit pages
 
 - BEFORE YOU PUSH TO MASTER
 	- make sure dotcloud is ready with node_modules
