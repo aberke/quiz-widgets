@@ -1,0 +1,12 @@
+{ 
+	"make-a-quiz": {
+		"string": "make-a-quiz",
+		"title": "Make A Quiz",
+		"resource_url": "https://docs.google.com/document/d/10cnBsJU4o69cWjzbk98J8it1F1e_syg-mSYm1n-zsg8/pub?embedded=true"
+	},
+	"custom-quiz-styling": {
+		"string": "custom-quiz-styling",
+		"title": "Custome Quiz Styling",
+		"resource_url": null
+	}
+}

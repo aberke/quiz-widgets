@@ -38,6 +38,9 @@ since last email
 
 TODO
 ---
+- Documentation
+	- make documentation links in base.html smarter so that it pulls in documentation
+	- replace documenation on /new and /edit pages
 
 - BEFORE YOU PUSH TO MASTER
 	- make sure dotcloud is ready with node_modules
@@ -126,6 +129,22 @@ Further Ideas
 
 - Make poll product as well:
 	- Last slide would load in the oncomplete data to be able to show what other people answered
+
+
+Documentation notes
+---
+Anyone can add documentation by making a Google Doc!
+
+Advantages:
+
+- Once documentation is published, it can continue to be edited via the google doc
+	- these edits are automatically republished
+- Don't need to know HTML or anything about the inner workings of the app to write documentation
+
+How it works:
+
+- I have a JSON file mapping ```{document-name: url for the iframe} ```
+- All that needs to happen to get to that document under /documentation/document-name is for Alex or someone to update that JSON file
 
 Button notes
 ---

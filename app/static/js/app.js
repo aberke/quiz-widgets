@@ -7,6 +7,16 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 
 	})
 
+	.config(function($sceDelegateProvider) {
+		$sceDelegateProvider.resourceUrlWhitelist([
+			// Allow same origin resource loads.
+			'self',
+			// Allow loading from our assets domain.  Notice the difference between * and **.
+			'https://docs.google.com/**',
+			'http://docs.google.com/**'
+		]);
+	})
+
 	.config(function($provide, $compileProvider) {
 	
 		// register services

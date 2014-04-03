@@ -45,6 +45,27 @@ function IndexCntl($scope) {
 	init();
 }
 
+function DocumentationCntl($scope, $routeParams) {
+	$scope.docDictionary;
+	$scope.doc;
+
+	// callback for getJSON documentation.json
+	var setup = function(docDictionary) {
+		$scope.docDictionary = docDictionary;
+		var docString = ($routeParams.docString || null);
+		console.log('$routeParams', $routeParams)
+		console.log('docString',docString)
+
+		$scope.doc =  (docString ? docDictionary[docString] : null);
+		console.log('doc',$scope.doc)
+		$scope.$apply();
+	}
+	var init = function() {
+		$.getJSON("/documentation/documentation.json", setup);
+	}
+	init();
+}
+
 function PublicPreviewCntl($scope, $location, APIservice) {
 	console.log('hi')
 	$scope.quiz;

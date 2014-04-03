@@ -1,0 +1,41 @@
+<div id='documentation-page' class='row'>
+
+	<h2>Documentation</h2>
+
+
+<ul class="col-md-2 nav nav-pills nav-stacked">
+  <li ng-repeat="(docString, d) in docDictionary" ng-class="{'active':(d==doc)}"><a ng-href="/documentation/{{docString}}">{{d.title}}</a></li>
+  <li ><a ng-href="/documentation">Add Documentation</a></li>
+</ul>
+
+
+<div class='col-md-10'>
+
+	<span ng-if="!doc">
+		<div class="documentation-please">
+			<h4>Anyone can add documentation!</h4>
+			<p>All documentation is via Google Docs created and edited by quiz editors like you.</p>
+			<p>For example, see that <a href="/documentation/make-a-quiz">Make A Quiz</a> link?  The documentation there is just a Google Doc created by Katelyn Bogucki.</p>
+			<ul>
+				<li>Create a Google Doc</li>
+				<li>Send Alex or Labs the link to it: 
+					<a href="mailto:alexandra.berke@huffingtonpost.com?subject=[Quiz%20App%20Documentation]">alexandra.berke@huffingtonpost.com</a>
+				</li>
+				<li>Tell your friends about it, so that they can edit it too.</li>
+				<li>Even after it's published, all further edits will automatically be republished on this page</li>
+			</ul>
+		</div>
+	</span>
+
+
+	<span ng-if="doc">
+		<iframe ng-if="doc.resource_url" ng-src="{{doc.resource_url}}" frameborder=0 allowfullscreen></iframe>
+
+		<h4 style="text-align:center" ng-if="!doc.resource_url">Coming Soon</h4>
+	</span>
+
+
+
+</div> <!-- col-md-10 -->
+
+</div>

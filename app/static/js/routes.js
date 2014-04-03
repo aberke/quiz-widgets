@@ -36,6 +36,14 @@ QuizApp.config(function($routeProvider) {
 	}
 	
 
+	$routeProvider.when('/documentation/:docString', {
+		templateUrl: '/documentation/template.html',
+		controller: DocumentationCntl,
+	});
+	$routeProvider.when('/documentation', {
+		templateUrl: '/documentation/template.html',
+		controller: DocumentationCntl,
+	});
 	$routeProvider.when('/all-quizzes', {
 		templateUrl: '/html/all-quizzes.html',
 	});	

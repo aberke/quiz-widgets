@@ -61,6 +61,8 @@ app.get('/contact',  			basicAuth, main_routes.serveBase);
 app.get('/all-quizzes',  		basicAuth, main_routes.serveBase);
 app.get('/user/:search',    	basicAuth, main_routes.serveBase);
 app.get('/stats/:quizID',		basicAuth, main_routes.serveBase);
+app.get('/documentation',	basicAuth, main_routes.serveBase);
+app.get('/documentation/:doc',	basicAuth, main_routes.serveBase);
 
 
 app.get('/err', function(req, res) {

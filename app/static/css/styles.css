@@ -138,6 +138,18 @@ footer {
 
 /********************** index-page above ******************/
 
+/********************** documentation-page ******************/
+#documentation-page iframe {
+	width: 100%;
+	min-height: 700px;
+}
+#documentation-page .documentation-please {
+	padding: 0 100px;
+}
+
+
+/********************** documentation-page above ******************/
+
 /********************** quizzes-view ******************/
 
 
