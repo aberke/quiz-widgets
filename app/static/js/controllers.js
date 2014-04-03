@@ -1,6 +1,5 @@
 
 function MainCntl($scope, $location, UserFactory) {
-	console.log('MainCntl')
 	$scope.domain = window.location.origin;
 	$scope.user;
 	$scope.docDictionary;
@@ -61,11 +60,8 @@ function DocumentationCntl($scope, $routeParams) {
 	var setup = function(docDictionary) {
 		$scope.docDictionary = docDictionary;
 		var docString = ($routeParams.docString || null);
-		console.log('$routeParams', $routeParams)
-		console.log('docString',docString)
 
 		$scope.doc =  (docString ? docDictionary[docString] : null);
-		console.log('doc',$scope.doc)
 		$scope.$apply();
 	}
 	var init = function() {
@@ -75,9 +71,7 @@ function DocumentationCntl($scope, $routeParams) {
 }
 
 function PublicPreviewCntl($scope, $location, APIservice) {
-	console.log('hi')
 	$scope.quiz;
-	console.log($location.path().split('/')[3])
 
 	APIservice.GETquiz($location.path().split('/')[3]).then(function(data) { 
 		$scope.quiz = data;
@@ -140,7 +134,6 @@ function StatsCntl($scope, quiz, stats) {
 	}
 
 	var init = function() {
-		console.log('QuizCntl', quiz)
 		combineStats(); /* for backwards compatibility */
 		$scope.totalSharesFB = countTotalSharesFB(quiz);
 		$scope.totalSharesTwitter = countTotalSharesTwitter(quiz);
@@ -153,7 +146,6 @@ function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 	$scope.shareLinkSaved = false;
 
 	for (var i=0; i<quiz.outcomeList.length; i++) {
-		console.log($scope.quiz.outcomeList[i])
 		$scope.quiz.outcomeList[i].share = (quiz.outcomeList[i].share || {});
 	}
 
@@ -188,7 +180,6 @@ function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 	init();
 }
 function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, APIservice, user) {
-	console.log('user', user)
 	$scope.user = user;
 	$scope.showAddNewOutcome = false;
 
@@ -329,7 +320,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 
 	$scope.createQuiz = function() {
 		$scope.quiz.saved = 'saving';
-		console.log('createQuiz', $scope.quiz)
 		/* get rid of the circular json -- take out outcome.answerList's */
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
 			$scope.quiz.outcomeList[i].answerList = null;
@@ -579,7 +569,6 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 		UIService.updateQuizPic($scope.quiz.pic_url);
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		setWatchers();
-		console.log('done with EditCntl init', $scope.quiz)
 	}
 	init();
 }
