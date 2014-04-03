@@ -150,7 +150,7 @@ function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 	}
 
 	$scope.saveOutcomeShare = function(outcome) {
-		APIservice.PUT('/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
+		APIservice.PUT('/quiz/' + $scope.quiz._id + '/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
 			console.log('data', data);
 			outcome.share.saved = 'saved';
 		});
