@@ -60,11 +60,7 @@ TODO
 	- am I properly deleting questions and outcomes and answers?
 		- do I also need to splice from quiz.questionList when I delete a question?
 
-
-- login stuff
-	- restrict access on front end too 
-		- http://blog.brunoscopelliti.com/deal-with-users-authentication-in-an-angularjs-web-app
-
+- Auth
 	- get rid of basic auth and instead have a whitelist of allowed user twitterIDs/twitter_usernames that i'll check in the middleware find-or-create method
 		- whitelist just json that i can update when someone wants an account
 		- special user-accounts branch for updating whitelist
