@@ -136,6 +136,12 @@ var imgInputLabel = function() {
 		templateUrl: '/directiveTemplates/img-input-label.html',
 	}
 }
+var titleContainer = function() {
+	return {
+		restrict: 'E',
+		templateUrl: '/directiveTemplates/title-container.html',
+	}
+}
 
 var outcomeContainer = function() {
 	function modifyContainer(scope, element) {

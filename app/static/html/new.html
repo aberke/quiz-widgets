@@ -13,35 +13,14 @@
 		<img-input-label max-size="600" model="quiz"></img-input-label>
 		<input ng-change="updateQuizPic()" id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
 
-		<span ng-show="quiz.pic_url">
+		<span ng-show="quiz.pic_url || quiz.pic_credit">
 			<label>Photo Credit</label>
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
 		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 			<div class="slides-container">
-				<div class="slide title-container" style="top: 0%;">
-					<span class="photo-credit">{{quiz.pic_credit || ""}}</span>
-					<div class="title-content">
-						<h1 class="title">{{quiz.title || "YOUR TITLE HERE"}}</h1>
-						<div class="share-container">
-							<div class="fb-share-container">
-								<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
-								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
-							</div>            
-							<div class="twitter-share-container">
-								<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
-							</div>
-							<span class="embed-code">
-								<img src="/icon/embed.png">
-							</span>       
-						</div>
-						<div class="start-container touchable">
-							<h2 class="start-text">START</h2>
-						</div>
-					</div>
-				</div>
+				<title-container></title-container>
 			</div>
 		</div>
 

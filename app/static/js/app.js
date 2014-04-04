@@ -29,6 +29,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		// register directives
 		$compileProvider.directive('quizzes', quizzes);
 		$compileProvider.directive('imgInputLabel', imgInputLabel);
+		$compileProvider.directive('titleContainer', titleContainer);
 		$compileProvider.directive('answerContainer', answerContainer);
 		$compileProvider.directive('outcomeContainer', outcomeContainer);
 		$compileProvider.directive('ownerOnlyElement', ownerOnlyElement);
