@@ -11,6 +11,7 @@
     "passport": "*",
     "connect": "*",
     "connect-ensure-login": "*",
-    "express-validator": "*"
+    "express-validator": "*",
+    "connect-mongo": "*"
   }
 }

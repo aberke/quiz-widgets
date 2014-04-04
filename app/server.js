@@ -3,6 +3,7 @@ var express 		= require('express'),
 	path 			= require('path'),
 	http 			= require('http'),
     expressValidator= require('express-validator'),
+	MongoStore 		= require('connect-mongo')(express),
 
     authMiddleware  = require('./middleware/authentication-middleware.js'),
 	
@@ -29,7 +30,13 @@ app.configure(function () {
 	app.use(connect.json()),
   	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
 
-	app.use(express.session({secret: process.env.SESSION_SECRET})),
+	app.use(express.session({
+		secret: process.env.SESSION_SECRET,
+	    store: new MongoStore({
+	    	db: 'db',
+	    	url: (process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL)
+	    })
+	})),
         
 
     app.use(express.static(path.join(__dirname, '/static')));

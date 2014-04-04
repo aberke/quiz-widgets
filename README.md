@@ -174,3 +174,63 @@ Unresolved Issues
 
 
 
+
+TRIVIA OPTION
+----
+
+Have a set of points
+each question answer either adds point or doesn't
+- one outcome title but description depends on number of right answers %
+
+- add key slide
+	- totally blank slate
+	- editors can put in html for new lines
+	- key slide comes after outcome slide and has button next to refresh button
+
+
+Question:
+	TEXT : owiejroiwejriowejr
+
+	ANSWER1: woeirjwoierj -> 0
+	ANSWRE2: woeirjwoiejr -> 1 (right)
+	ANSWER3: woeirjweiore -> 0
+
+
+
+
+description 1:
+	for more than 90% 
+	woeirjwoeirjoiwejr
+
+description 2:
+	for more than 50% 
+	woeirjwoeirjoiwejr
+
+description 2:
+	otherwise 
+	woeirjwoeirjoiwejr
+
+
+
+
+
+THE Outcome:
+	TITLE: You got #right / #total-questions
+
+	[[DESCRIPTION: 'you killed it! blah blah blah']]
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -189,7 +189,7 @@ var StatService = function($http, $q) {
     return GET('/' + quizID + '/all');
   };
 
-}
+};
 
 
 var APIservice = function($rootScope, $http, $q){
