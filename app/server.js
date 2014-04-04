@@ -34,7 +34,7 @@ app.configure(function () {
 		secret: process.env.SESSION_SECRET,
 	    store: new MongoStore({
 	    	db: 'store',
-	    	url: (process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL)
+	    	url: ((process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL).split(',')[0])
 	    })
 	})),
         
