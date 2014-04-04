@@ -55,6 +55,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     var quizData = quizData;
     var isMobile = mobile;
     var quizID = quizData._id;
+    var quizClassName = ('quiz-' + quizID);
 
     var slidesCntl;
     var btnMaster;
@@ -132,6 +133,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         questionList = quizData.questionList;
         currQuestionIndex = 0;
         outcomeMap = createOutcomeMap(quizData.outcomeList);
+        addCustomStyles();
 
         container.style.display = 'none';
         buildWidget();
@@ -166,10 +168,9 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
     function buildWidget() {
         /* add background image */
-        var newClassName = 'quiz-' + quizID;
-        container.className += (' ' + newClassName);
+        container.className += (' ' + quizClassName);
         var backgroundImageStyle = (quizData.pic_url ? ('url(' + quizData.pic_url + ')') : 'none');
-        addStyle('.' + newClassName + '::after {background-image:' + backgroundImageStyle + ';}');
+        addStyle('.' + quizClassName + '::after {background-image:' + backgroundImageStyle + ';}');
 
         var html = "";
             html+= "<div class='slides-container'>";
@@ -189,6 +190,20 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     document.body.appendChild(stylesheet);
     var addStyle = function(rule) {
         stylesheet.innerHTML += rule;
+    }
+    var addCustomStyles = function() {
+        var styles = quizData.custom_styles;
+        if (typeof styles != "string") { return; }
+
+        console.log('addCustomStyles',typeof styles, styles)
+        /* Don't want the custom_styles to effect styles of any other quiz on the page */
+        
+        console.log('replace quizClassName', quizClassName)
+        styles = styles.replace('.huffpostlabs-quiz', ('.' + quizClassName));
+        styles = styles.replace(/}/g, ('}.' + quizClassName));
+        console.log('addCustomStyles',typeof styles, styles);
+
+        addStyle(styles);
     }
 
     function shareQuizFB() {

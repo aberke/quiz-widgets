@@ -250,6 +250,10 @@ footer {
 	margin: 30px auto;
 	padding-bottom: 15px;
 }
+#new-page #build-container .subsection,
+#edit-page #build-container .subsection{
+	margin: 10px 0px;
+}
 #new-page #helper-container,
 #edit-page #helper-container {
 	margin-top: 50px;

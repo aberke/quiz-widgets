@@ -149,7 +149,7 @@ var UIService = function($timeout, $rootScope){
   }
   var clearCustomStyles = function() {
     console.log('clearCustomStyles')
-    quiz.quiz_custom_styles_sheet.innerHTML = '';
+    quiz_custom_styles_sheet.innerHTML = '';
   }
 
   $rootScope.$on('$locationChangeStart', function() {
