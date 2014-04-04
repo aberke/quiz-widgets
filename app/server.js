@@ -33,7 +33,7 @@ app.configure(function () {
 	app.use(express.session({
 		secret: process.env.SESSION_SECRET,
 	    store: new MongoStore({
-	    	db: 'store',
+	    	db: 'admin',
 	    	url: ((process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL).split(',')[0])
 	    })
 	})),
