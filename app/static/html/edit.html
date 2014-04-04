@@ -9,6 +9,13 @@
 		<script src="/widget/q.js"></script>
 	</section>
 
+	<div id='custom-styling'>
+		<textarea ng-model="quiz.custom_styles"></textarea>
+		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveCustomStyles()" class='btn btn-sm btn-success'>SAVE</button>
+	</div>
+	{{quiz.custom_styles}}
+
+
 	<!-- ********************* set-title *********************  -->
 	<section id='set-title'>
 		<label><i class='required-star'>*</i>Title</label>
@@ -27,7 +34,48 @@
 				<title-container></title-container>
 			</div>
 		</div>
-		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE</button>
+
+
+	<!-- ********************* set-refresh-icon *********************  -->
+	<div id='set-refresh-icon'>
+		<h5>
+			<button ng-show="hideRefreshIcon==false" ng-click="hideRefreshIcon=true" class='btn btn-xs btn-default hide-show-btn hide-btn'> - </button>
+			<button ng-show="hideRefreshIcon||hideRefreshIcon==undefined" ng-click="hideRefreshIcon=false" class='btn btn-xs btn-default show-btn hide-show-btn'> +  </button>
+			Custom Refresh Icon
+		</h5>
+
+		<span ng-show="hideRefreshIcon==false">
+		<p class='instructions-text'>
+			You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
+			Dimensions: 30x30
+		</p>
+
+		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
+			<div class='outcome-container'>
+				<div class="share-container">
+					<div class="fb-share-container">
+						<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">
+						<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">
+					</div>
+					<div class="twitter-share-container">
+						<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
+						<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+					</div>
+					<div class="share-text"><p>Share your results</p></div>
+					<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
+				</div>
+			</div>
+		</div>
+		<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
+		<input ng-change="quiz.saved='unsaved'" id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
+
+<!-- 		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE</button>
+		<p ng-class="{'error': (quiz.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{quiz.saved}}</p> -->
+
+		</span> <!-- hide/show RefreshIcon -->
+	</div> <!-- ********************* set-refresh-icon *********************  -->
+
+		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE QUIZ</button>
 		<p ng-class="{'error': (quiz.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{quiz.saved}}</p>
 
 	</section> <!-- ********************* set-title *********************  -->
@@ -177,44 +225,6 @@
 
 	</section> <!-- ********************* set-questions *********************  -->
 
-
-	<!-- ********************* set-refresh-icon *********************  -->
-	<section id='set-refresh-icon'>
-		<h3>
-			<button ng-show="hideRefreshIcon==false" ng-click="hideRefreshIcon=true" class='btn btn-default hide-show-btn hide-btn'> - </button>
-			<button ng-show="hideRefreshIcon||hideRefreshIcon==undefined" ng-click="hideRefreshIcon=false" class='btn btn-default show-btn hide-show-btn'> + </button>
-			Custom Refresh Icon
-		</h3>
-
-		<span ng-show="hideRefreshIcon==false">
-		<p class='instructions-text'>
-			You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
-			Dimensions: 30x30
-		</p>
-
-		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-			<div class='outcome-container'>
-				<div class="share-container">
-					<div class="fb-share-container">
-						<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">
-						<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">
-					</div>
-					<div class="twitter-share-container">
-						<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-						<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
-					</div>
-					<div class="share-text"><p>Share your results</p></div>
-					<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
-				</div>
-			</div>
-		</div>
-		<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
-		<input ng-change="quiz.saved='unsaved'" id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
-
-		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE</button>
-		<p ng-class="{'error': (quiz.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{quiz.saved}}</p>
-		</span> <!-- hide/show RefreshIcon -->
-	</section> <!-- ********************* set-refresh-icon *********************  -->
 
 	<section id='preview-again'>
 

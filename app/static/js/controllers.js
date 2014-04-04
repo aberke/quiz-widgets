@@ -356,6 +356,18 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 function EditCntl($scope, FormService, APIservice, UIService, WidgetService, quiz) {
 	$scope.quiz = quiz;
 
+	var removeCustomStyles = function(){}
+	var addCustomClass = function(cssString) {
+
+	}
+	$scope.$watch('quiz.custom_styles', function(styles) {
+		UIService.setCustomStyles(styles);
+	});
+
+	$scope.saveCustomStyles = function() {
+		
+	}
+
 	/* outcomeMap: {outcomeID: outcome} 
 		-- outcomeList morphed into this object for easier use with answers
 		each outcome has an answerList so that don't remove objects that answers point to
@@ -372,7 +384,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 				}
 			}
 		}
-		var attributes = ['title', 'pic_url', 'pic_credit', 'refresh_icon_url'];
+		var attributes = ['title', 'pic_url', 'pic_credit', 'custom_styles', 'refresh_icon_url'];
 		for (var i=0; i<attributes.length; i++) {
 			$scope.$watch(
 				'quiz.' + attributes[i],

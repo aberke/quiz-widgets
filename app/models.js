@@ -58,6 +58,7 @@ var quizSchema = new Schema({
 	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
 	share: 				{type: ObjectId, ref: 'Share', default: null},
 	refresh_icon_url: 	{type: String, default: null},
+	custom_styles: 		{type: String, default: null}, /* a string of CSS rules */
 
 
 	/* for backwards compatibility */
@@ -79,6 +80,8 @@ var outcomeSchema = new Schema({
 	pic_url: 	 {type: String, default: null},
 	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'
 	pic_credit:  {type: String, default: null},
+
+	/* for backwards compatibility */
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
 });
 var answerSchema = new Schema({
@@ -88,6 +91,8 @@ var answerSchema = new Schema({
 	pic_url: 		{type: String, default: null},
 	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
 	pic_credit: 	{type: String, default: null},
+
+	/* for backwards compatibility */
 	count:  		{ type: Number, default: 0}, // number of times it's been picked
 });
 
@@ -268,6 +273,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		title: 				quizData.title,
 		pic_url: 			(quizData.pic_url 	 		|| null),
 		pic_credit: 		(quizData.pic_credit 		|| null),
+		custom_styles: 		(quizData.custom_styles 	|| null),
 		refresh_icon_url: 	(quizData.refresh_icon_url 	|| null),
 	});
 	var newShare = new Share({_quiz: newQuiz});

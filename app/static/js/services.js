@@ -117,6 +117,8 @@ var UIService = function($timeout, $rootScope){
 
   var stylesheet = document.createElement('style');
   document.body.appendChild(stylesheet);
+  var quiz_custom_styles_sheet = document.createElement('style');
+  document.body.appendChild(quiz_custom_styles_sheet);
 
   this.setupPopovers = function() {
     /* wait for angular to get back and render verified callers */
@@ -124,6 +126,8 @@ var UIService = function($timeout, $rootScope){
       $('.popover-hover').popover({trigger: 'hover'});
     }, 3000);
   };
+
+  /* for one-off rules like updateQuizPic/clearQuizPic */
   var addStyle = function(rule) {
       stylesheet.innerHTML += rule;
   };
@@ -134,13 +138,23 @@ var UIService = function($timeout, $rootScope){
       addStyle('.quiz-edit::after {background-image: url(' + pic_url + ');}');
     }
   };
-
   var clearQuizPic = function() {
     /* undo updateQuizPic to keep the last image from lingering in the background */
     addStyle('.quiz-edit::after {background-image: none}');
   }
+
+  this.setCustomStyles = function(rules) {
+    console.log('setCustomStyles', rules)
+    quiz_custom_styles_sheet.innerHTML = rules;
+  }
+  var clearCustomStyles = function() {
+    console.log('clearCustomStyles')
+    quiz.quiz_custom_styles_sheet.innerHTML = '';
+  }
+
   $rootScope.$on('$locationChangeStart', function() {
     clearQuizPic();
+    clearCustomStyles();
   });
 }
 

@@ -39,6 +39,11 @@ since last email
 TODO
 ---
 
+- in API better handling of (err || !model)
+	- return 404 if !model
+	- return 500 if err
+	- put handler in util
+
 - add field for custom CSS
 
 - better handle when user is unknowingly signed out

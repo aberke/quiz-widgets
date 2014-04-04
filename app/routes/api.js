@@ -226,10 +226,11 @@ var PUTquiz = function(req, res) {
 	models.findQuizPartial(req.params.quizID, function(err, quiz) {
 		if (err || !quiz) { return res.send(500, util.handleError(err)); }
 
-		quiz.title = quizData.title;
-		quiz.pic_url = quizData.pic_url;
-		quiz.pic_credit = quizData.pic_credit;
-		quiz.refresh_icon_url = quizData.refresh_icon_url;
+		quiz.title 				= quizData.title;
+		quiz.pic_url 			= quizData.pic_url;
+		quiz.pic_credit 		= quizData.pic_credit;
+		quiz.custom_styles 		= quizData.custom_styles;
+		quiz.refresh_icon_url 	= quizData.refresh_icon_url;
 		quiz.save(function(err) {
 			if (err){ return res.send(500, util.handleError(err)); }
 			res.send(quiz);

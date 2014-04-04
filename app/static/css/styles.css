@@ -364,13 +364,13 @@ footer {
 #edit-page #instructions {
 	margin-top: 30px;
 }
-#new-page section#set-refresh-icon .huffpostlabs-quiz,
-#edit-page section#set-refresh-icon .huffpostlabs-quiz {
+#new-page #set-refresh-icon .huffpostlabs-quiz,
+#edit-page #set-refresh-icon .huffpostlabs-quiz {
 	height: 50px;
 	padding: 2%;
 }
-#new-page section#set-refresh-icon input,
-#edit-page section#set-refresh-icon input {
+#new-page #set-refresh-icon input,
+#edit-page #set-refresh-icon input {
 	margin-bottom: 10px;
 }
 #new-page #set-complete p {
