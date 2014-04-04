@@ -33,7 +33,7 @@ app.configure(function () {
 	app.use(express.session({
 		secret: process.env.SESSION_SECRET,
 	    // store: new MongoStore({
-	    // 	db: 'db',
+	    // 	db: 'db.0',
 	    // 	url: (process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL)
 	    // })
 	})),
@@ -68,7 +68,7 @@ app.get('/contact',  			basicAuth, main_routes.serveBase);
 app.get('/all-quizzes',  		basicAuth, main_routes.serveBase);
 app.get('/user/:search',    	basicAuth, main_routes.serveBase);
 app.get('/stats/:quizID',		basicAuth, main_routes.serveBase);
-app.get('/documentation',	basicAuth, main_routes.serveBase);
+app.get('/documentation',		basicAuth, main_routes.serveBase);
 app.get('/documentation/:doc',	basicAuth, main_routes.serveBase);
 
 
