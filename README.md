@@ -39,9 +39,6 @@ since last email
 TODO
 ---
 
-- make template for title slide
-	- having template for each slide will help with keeping /new /edit and true widget all the same
-
 - add field for custom CSS
 
 - better handle when user is unknowingly signed out
