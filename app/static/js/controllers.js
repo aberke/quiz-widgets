@@ -192,6 +192,9 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 					};
 
 
+	$scope.$watch('quiz.custom_styles', function(styles) {
+		UIService.setCustomStyles(styles);
+	});
 
 	/* ------- outcomes ----------------------- */
 	$scope.showingOutcomes = false;
@@ -356,17 +359,9 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 function EditCntl($scope, FormService, APIservice, UIService, WidgetService, quiz) {
 	$scope.quiz = quiz;
 
-	var removeCustomStyles = function(){}
-	var addCustomClass = function(cssString) {
-
-	}
 	$scope.$watch('quiz.custom_styles', function(styles) {
 		UIService.setCustomStyles(styles);
 	});
-
-	$scope.saveCustomStyles = function() {
-		
-	}
 
 	/* outcomeMap: {outcomeID: outcome} 
 		-- outcomeList morphed into this object for easier use with answers

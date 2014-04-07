@@ -154,7 +154,7 @@ var UIService = function($timeout, $rootScope){
 
   $rootScope.$on('$locationChangeStart', function() {
     clearQuizPic();
-    clearCustomStyles();
+    clearCustomStyles(); // if they were saved, then they'll be in the quiz data
   });
 }
 

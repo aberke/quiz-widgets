@@ -263,14 +263,8 @@ footer {
 	color: red;
 	margin-right: 5px;
 }
-#new-page section#set-title, 
-#new-page section#set-outcomes, 
-#new-page section#set-questions, 
-#new-page section#set-sharing,
-#edit-page section#set-title, 
-#edit-page section#set-outcomes, 
-#edit-page section#set-questions, 
-#edit-page section#set-sharing{
+#new-page section,
+#edit-page section{
 	border-bottom: 1px solid lightgray;
 }
 .instructions-text {
