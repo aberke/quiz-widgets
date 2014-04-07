@@ -152,6 +152,9 @@ footer {
 #documentation-page .documentation-please {
 	padding: 0 100px;
 }
+#documentation-page .edit-documentation-btn {
+	margin: 20px 0px 50px 0px;
+}
 
 
 /********************** documentation-page above ******************/

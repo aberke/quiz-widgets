@@ -35,7 +35,9 @@
 	<span ng-if="doc">
 		<iframe ng-if="doc.public_url" ng-src="{{doc.public_url}}" frameborder=0 allowfullscreen></iframe>
 
-		<h4 class='no-google-doc' style="text-align:center" ng-if="!doc.resource_url">Coming Soon</h4>
+		<h4 class='no-google-doc' style="text-align:center" ng-if="!doc.public_url">Coming Soon</h4>
+
+		<a ng-if="doc.edit_url" ng-href="{{doc.edit_url}}" target="_blank" class='btn btn-sm btn-warning edit-documentation-btn'>Edit This Document</a>
 	</span>
 
 
