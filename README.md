@@ -39,12 +39,12 @@ since last email
 TODO
 ---
 
+- assign arbitrary amount of points to outcome in answers
+
 - in API better handling of (err || !model)
 	- return 404 if !model
 	- return 500 if err
 	- put handler in util
-
-- add field for custom CSS
 
 - better handle when user is unknowingly signed out
 
@@ -93,8 +93,7 @@ TODO
 - Deal with Mongo Issues:
 	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
 	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
-- add other share options 
-	- embed currently not functional
+- add other share options
 	- mail should be easy
 - facebook app still in development mode
 - handle case of tie
