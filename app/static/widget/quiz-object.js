@@ -198,7 +198,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         /* Don't want the custom_styles to effect styles of any other quiz on the page 
             - add quizClassName infront of each style - replacing .huffpostlabs-quiz if necessary
         */
-        
         var re = new RegExp('.' + quizClassName + '\ *\n*.huffpostlabs-quiz', 'g'); // in case I caused '.quizClassname.huffpostlabs-quiz as first part of styles string'
         styles = ('.' + quizClassName + ' ' + styles);
         styles = styles.replace(/}/g, ('}.' + quizClassName));
@@ -206,7 +205,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         // take off the last .quizClassName
         styles = styles.substring(0, styles.length - ('.' + quizClassName).length);
 
-        console.log('addCustomStyles',styles.length, typeof styles, styles)
         addStyle(styles);
     }
 

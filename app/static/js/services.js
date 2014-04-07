@@ -144,11 +144,9 @@ var UIService = function($timeout, $rootScope){
   }
 
   this.setCustomStyles = function(rules) {
-    console.log('setCustomStyles', rules)
     quiz_custom_styles_sheet.innerHTML = rules;
   }
   var clearCustomStyles = function() {
-    console.log('clearCustomStyles')
     quiz_custom_styles_sheet.innerHTML = '';
   }
 
