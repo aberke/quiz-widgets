@@ -391,7 +391,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	background-position: right bottom;
 }
 .huffpostlabs-quiz .outcome-container .outcome-content.float-right img{
-	max-width: 50%;
+	max-width: 50% !important;
 	max-height: 100%;
 	float: right;
 }
@@ -427,7 +427,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 .huffpostlabs-quiz .outcome-description {
 	color: white;
 	font-family: Arvo-Regular;
-	padding: 0 3em;
+	padding: 0 3em !important;
 	font-size: 1.4em;
 }
 .huffpostlabs-quiz.mobile .outcome-description {
