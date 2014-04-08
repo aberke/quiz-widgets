@@ -109,7 +109,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	color: white;
 	padding: 0;
 	margin: 0;
-	line-height: 1.1;
+	line-height: 1.1 !important;
 }
 .huffpostlabs-quiz h1{
 	font-size: 3.5em;
@@ -325,7 +325,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	border-left: 0px solid white;
 }
 .huffpostlabs-quiz .answer-text {
-	margin: 0.8em;
+	margin: 0.8em !important;
 }
 .huffpostlabs-quiz .answer-text.long-text{
 	font-size: 1.2em;
