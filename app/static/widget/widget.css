@@ -438,12 +438,14 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	padding: 8px;
+	padding: 0px;
+	height: 46px;
 	vertical-align: baseline;
 }
 .huffpostlabs-quiz .outcome-container .share-text {
 	margin-left: 10px;
 	display: inline-block;
+	vertical-align: middle;
 }
 .huffpostlabs-quiz .outcome-container .share-text p {
 	margin: 0;
@@ -463,7 +465,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 .huffpostlabs-quiz .fb-share-container,
 .huffpostlabs-quiz .twitter-share-container {
 	display: inline-block;
-	margin-left: 4px;
+	margin: 8px 4px 8px 0px;
 }
 .huffpostlabs-quiz .fb-share-container img.fb-share-btn-blue,
 .huffpostlabs-quiz .twitter-share-container img.twitter-share-btn-blue{
