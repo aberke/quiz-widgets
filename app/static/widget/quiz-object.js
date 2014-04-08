@@ -261,7 +261,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "            </div>";
             html+= "            <span class='embed-code'>";
             //html+= "                <input value='" + embedString + "' >";
-            html+= "                <img src='" + static_domain + "/icon/embed.png' onclick=" + onclickEmbedCode + "></img>";
+            html+= "                <img class='share' src='" + static_domain + "/icon/embed.png' onclick=" + onclickEmbedCode + "></img>";
             html+= "            </span>";
             html+= "        </div>";
             html+= "        <div class='start-container touchable' data-huffpostlabs-btn onclick=" + onclickStart + ">";
