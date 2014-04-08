@@ -359,6 +359,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         outcomeContent.className = ("outcome-content " + (outcome.pic_style || "bottom-right"));
         if (outcome.pic_style != "float-right") {
             outcomeContent.style.backgroundImage = "url(" + outcome.pic_url + ")";
+        } else { /* in case it was previously set, need to remove it */
+            outcomeContent.style.backgroundImage = "none";
         }
         outcomeContent.innerHTML = outcomeContentHTML(outcome);
     }
