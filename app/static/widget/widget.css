@@ -160,6 +160,10 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 .huffpostlabs-quiz .title {
 	margin-bottom: 10px;
 	line-height: 1em;
+	font-size: 48px;
+}
+.huffpostlabs-quiz.mobile .title {
+	font-size: 22px;
 }
 
 .huffpostlabs-quiz .title-container .filler-square {
