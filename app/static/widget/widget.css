@@ -431,7 +431,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	font-size: 1.4em;
 }
 .huffpostlabs-quiz.mobile .outcome-description {
-	padding: 0 0.7em;
+	padding: 0 0.7em !important;
 	font-size: 1.1em;
 }
 .huffpostlabs-quiz .outcome-container .share-container {
