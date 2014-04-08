@@ -403,6 +403,10 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	background-size: contain;
 	background-position: bottom center;
 }
+.huffpostlabs-quiz .trivia-results {
+	margin: 0;
+	padding: 0.5em;
+}
 .huffpostlabs-quiz .outcome-text {
 	color: white;
 	font-family: Arvo-Bold;

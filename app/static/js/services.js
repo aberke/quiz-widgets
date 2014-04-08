@@ -47,15 +47,17 @@ var FormService = function() {
   };
 
   /* model checking functions --------------------------------
-      -- return true if there is an error, false otherwise 
+      -- return true if there is an error, false otherwise
   */
-  this.checkQuestionError = function(question) {
+  this.checkQuestionError = function(question, quizType) {
     question.error = { 'any':false, 'text': false };
     /* check that it has text */
     if (checkModelError(question.text)) {
       question.error.text = true;
       question.error.any = true;
     }
+    /* for trivia-quizzes, answers don't point to outcomes */
+    if (quizType == 'trivia-quiz') { return question.error.any; }
     /* check each answer for error */
     for (var i=0; i<question.answerList.length; i++) {
       if (this.checkAnswerError(question.answerList[i])) {
@@ -73,11 +75,17 @@ var FormService = function() {
     }
     return answer.error.any;
   };
-  this.checkOutcomeError = function(outcome) {
-    outcome.error = { 'any': false, 'empty': false };
+  this.checkOutcomeError = function(outcome, quizType) {
+    outcome.error = { 'any': false, 'empty': false, 'min_correct': false };
     /* make sure there's at least some data in this outcome */
     if (!outcome.text && !outcome.description && !outcome.pic_url) {
       outcome.error.empty = true;
+      outcome.error.any = true;
+    }
+    if (quizType != 'trivia-quiz') { return outcome.error.any; }
+    /* trivia-quiz outcomes are 'results' and must have a min_correct set */
+    if (!outcome.rules.min_correct) {
+      outcome.error.min_correct = true;
       outcome.error.any = true;
     }
     return outcome.error.any;

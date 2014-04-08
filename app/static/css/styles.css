@@ -5,9 +5,9 @@
 .inline-block { display: inline-block; }
 .text-decoration-none, .text-decoration-none:hover { text-decoration: none; }
 
-.warning {
-	color: #FF7F00;
-}
+.warning {color: #FF7F00;}
+.green { color: green; }
+.gray { color: gray; }
 
 input.error, select.error, textarea.error, input.ng-invalid {
 	border-color: red;
@@ -324,6 +324,10 @@ footer {
 	width: 100%;
 	border: 2px solid lightblue;
 }
+#new-page select.min-correct,
+#new-page input.min-correct {
+	width: auto;
+}
 #new-page .embed-code input,
 #edit-page .embed-code input{ /* widget.css was overridden */
 	width: auto;
@@ -355,12 +359,18 @@ footer {
 	border-bottom: 3px solid lavenderblush;
 }
 #new-page .answer-inputs input,
+#new-page .answer-inputs .input-container,
 #new-page .answer-inputs select,
 #edit-page .answer-inputs input,
 #edit-page .answer-inputs select {
 	width: 48%;
 	margin-bottom: 10px;
 }
+#new-page .answer-inputs input[type=checkbox],
+#edit-page .answer-inputs input[type=checkbox] {
+	width: auto;
+}
+
 #new-page #instructions,
 #edit-page #instructions {
 	margin-top: 30px;

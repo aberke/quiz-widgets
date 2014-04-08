@@ -70,6 +70,14 @@ QuizApp.config(function($routeProvider) {
 		resolve: {
 			user: userOrRedirect,
 		}
+	});		
+	$routeProvider.when('/new/trivia-quiz', {
+		templateUrl: '/html/new-trivia-quiz.html',
+		controller: NewQuizCntl,
+		resolve: {
+			user: userOrRedirect,
+			quizType: function() { return 'trivia-quiz'; },
+		}
 	});	
 	$routeProvider.when('/social/:id', {
 		templateUrl: '/html/social.html',

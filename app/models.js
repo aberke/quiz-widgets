@@ -64,6 +64,14 @@ var quizSchema = new Schema({
 	/* for backwards compatibility */
 	startedCount: 		{ type: Number, default: 0},
 	completedCount: 	{ type: Number, default: 0},
+
+	/* For Trivia ----  type: 'trivia-quiz' */
+	type: 				{type: String, default: 'default-quiz'},
+	extraSlides: 		[{type: ObjectId, ref: 'Slide'}]
+});
+var slideSchema = new Schema({
+	_quiz: 		 		{type: ObjectId, ref: 'Quiz'},
+	blob: 				{type: String, default: null},
 });
 var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
@@ -83,10 +91,16 @@ var outcomeSchema = new Schema({
 
 	/* for backwards compatibility */
 	count:  	 { type: Number, default: 0}, // number of times its been the outcome
+
+	/* for quizzes of type 'trivia-quiz' */
+	rules: 		 {
+					min_correct: Number,
+					//max_correct: Number,		
+				 },
 });
 var answerSchema = new Schema({
 	_question:  	{type: ObjectId, ref: 'Question'},
-	_outcome: 		{type: ObjectId, ref: 'Outcome'}, // the outcome it adds a point to if selected
+	_outcome: 		{type: ObjectId, ref: 'Outcome', default: null}, // the outcome it adds a point to if selected
 	text:   		String,
 	pic_url: 		{type: String, default: null},
 	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
@@ -94,10 +108,14 @@ var answerSchema = new Schema({
 
 	/* for backwards compatibility */
 	count:  		{ type: Number, default: 0}, // number of times it's been picked
+
+	/* for quizzes of type 'trivia-quiz' */
+	correct: 		{ type: Boolean, default: 'false'},
 });
 
 exports.User 	 = User  	= mongoose.model('User', userSchema);
 exports.Quiz 	 = Quiz 	= mongoose.model('Quiz', quizSchema);
+exports.Slide 	 = Slide 	= mongoose.model('Slide', slideSchema);
 exports.Share 	 = Share 	= mongoose.model('Share', shareSchema);
 exports.Answer   = Answer 	= mongoose.model('Answer', answerSchema);
 exports.Question = Question = mongoose.model('Question', questionSchema);

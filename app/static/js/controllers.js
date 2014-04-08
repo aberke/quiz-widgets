@@ -179,9 +179,13 @@ function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 	}
 	init();
 }
-function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, APIservice, user) {
+function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, APIservice, user, quizType) {
 	$scope.user = user;
 	$scope.showAddNewOutcome = false;
+
+	$scope.quizType = (quizType || 'default-quiz');
+
+	console.log('quizType',quizType)
 
 
 	$scope.quiz = { '_user': $scope.user._id,
@@ -189,12 +193,23 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 					'outcomeList':[], // each outcome in outcomeList has an answerList []
 					'error':{ 'question':false, 'outcome':false, },		
 					'questionList': [], // each question in questionList has an answerList []
+					'type': $scope.quizType,
 					};
 
 
 	$scope.$watch('quiz.custom_styles', function(styles) {
 		UIService.setCustomStyles(styles);
 	});
+
+	/* ------- trivia-results ----------------- */
+
+	$scope.resultsMap = {}; // {min_correct: trivia-result}
+	$scope.availableResultMins = [];
+	$scope.setResultMin = function() {
+
+	}
+
+	/* ------- trivia-results ----------------- */
 
 	/* ------- outcomes ----------------------- */
 	$scope.showingOutcomes = false;
@@ -222,11 +237,13 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 			return false;
 		}
 		$scope.quiz.error.outcome = false;
-		WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
+		if (quizType != 'trivia-quiz') {
+			WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
+		}
 		return true;
 	}
 	var saveOutcome = function(outcome) {
-		if (FormService.checkOutcomeError(outcome)) {
+		if (FormService.checkOutcomeError(outcome, quizType)) {
 			outcome.editing = true;
 			return false;
 		}
@@ -239,7 +256,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	$scope.addOutcome = function() {
 		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
-		$scope.quiz.outcomeList.push({_id: Math.random(), editing:true});
+		$scope.quiz.outcomeList.push({_id: Math.random(), editing:true, rules:{} });
 		//WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
 	}
 
@@ -287,7 +304,8 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	var saveQuestion = function(question) {
 		/* need to have function not call setupOutcomeAnswerLists */
-		if (FormService.checkQuestionError(question)) {
+		// trivia-quiz answers don't have outcomes
+		if (FormService.checkQuestionError(question, quizType)) {
 			question.editing = true;
 			return false;
 		}
@@ -322,6 +340,10 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 
 
 	$scope.createQuiz = function() {
+		console.log('createQuiz', $scope.quiz)
+		return false;
+
+
 		$scope.quiz.saved = 'saving';
 		/* get rid of the circular json -- take out outcome.answerList's */
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {

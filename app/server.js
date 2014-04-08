@@ -57,6 +57,7 @@ app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
 
 
 app.get('/new', 				verifyUser, main_routes.serveBase);
+app.get('/new/:type', 			verifyUser, main_routes.serveBase);
 
 /* protected with verifyQuizViewAccess */
 app.get('/edit/:quizID',		verifyQuizViewAccess, main_routes.serveBase);
