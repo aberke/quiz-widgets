@@ -233,6 +233,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 }
 .huffpostlabs-quiz .question-share-container .fb-share-container, .huffpostlabs-quiz .question-share-container .twitter-share-container {
 	float: right;
+	margin-left: 4px;
 }
 .huffpostlabs-quiz .question-container {
 
