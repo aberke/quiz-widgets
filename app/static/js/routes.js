@@ -69,6 +69,7 @@ QuizApp.config(function($routeProvider) {
 		controller: NewQuizCntl,
 		resolve: {
 			user: userOrRedirect,
+			quizType: function() { return 'default-quiz'; },
 		}
 	});		
 	$routeProvider.when('/new/trivia-quiz', {

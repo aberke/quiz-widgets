@@ -67,7 +67,7 @@ var quizSchema = new Schema({
 
 	/* For Trivia ----  type: 'trivia-quiz' */
 	type: 				{type: String, default: 'default-quiz'},
-	extraSlides: 		[{type: ObjectId, ref: 'Slide'}]
+	extraSlide: 		{type: ObjectId, ref: 'Slide', default: null},
 });
 var slideSchema = new Schema({
 	_quiz: 		 		{type: ObjectId, ref: 'Quiz'},
