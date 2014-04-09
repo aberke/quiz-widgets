@@ -90,6 +90,7 @@ WidgetService = function() {
 
   this.setupOutcomeAnswerLists = function(quiz) {
     /* give each outcome in outcomeList an answerList of answer _id's */
+    console.log('setupOutcomeAnswerLists', quiz)
 
     var outcomeMap = {}; // {outcomeID: index in outcomeList}
     for (var i=0; i<quiz.outcomeList.length; i++) {
@@ -97,6 +98,7 @@ WidgetService = function() {
       outcome.answerList = [];
       outcomeMap[outcome._id] = i;
     }
+    console.log('outcomeMap', outcomeMap)
     /* create answerList for each outcome and push on answers */
     for (var i=0; i<quiz.questionList.length; i++) {
       var question = quiz.questionList[i];
@@ -109,6 +111,7 @@ WidgetService = function() {
         }
       }
     }
+    console.log('quiz.outcomeList', quiz.outcomeList)
   };
 
 }
