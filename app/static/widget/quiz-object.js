@@ -261,7 +261,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
             html+= "            </div>";
             html+= "            <span class='embed-code'>";
             //html+= "                <input value='" + embedString + "' >";
-            html+= "                <img src='" + static_domain + "/icon/embed.png' onclick=" + onclickEmbedCode + "></img>";
+            html+= "                <img class='share' src='" + static_domain + "/icon/embed.png' onclick=" + onclickEmbedCode + "></img>";
             html+= "            </span>";
             html+= "        </div>";
             html+= "        <div class='start-container touchable' data-huffpostlabs-btn onclick=" + onclickStart + ">";
@@ -359,6 +359,8 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         outcomeContent.className = ("outcome-content " + (outcome.pic_style || "bottom-right"));
         if (outcome.pic_style != "float-right") {
             outcomeContent.style.backgroundImage = "url(" + outcome.pic_url + ")";
+        } else { /* in case it was previously set, need to remove it */
+            outcomeContent.style.backgroundImage = "none";
         }
         outcomeContent.innerHTML = outcomeContentHTML(outcome);
     }

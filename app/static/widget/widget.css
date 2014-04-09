@@ -109,7 +109,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	color: white;
 	padding: 0;
 	margin: 0;
-	line-height: 1.1;
+	line-height: 1.1 !important;
 }
 .huffpostlabs-quiz h1{
 	font-size: 3.5em;
@@ -160,6 +160,10 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 .huffpostlabs-quiz .title {
 	margin-bottom: 10px;
 	line-height: 1em;
+	font-size: 48px;
+}
+.huffpostlabs-quiz.mobile .title {
+	font-size: 22px;
 }
 
 .huffpostlabs-quiz .title-container .filler-square {
@@ -181,14 +185,10 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	border-bottom: 1px solid white;
 	padding: 8px;
 }
-.huffpostlabs-quiz .share-container .embed-code {
-	margin: 4px;
-	cursor: pointer;
-}
 .huffpostlabs-quiz .share-container .embed-code:hover {
 	opacity: 0.8;
 }
-.huffpostlabs-quiz .share-container .embed-code input {
+/*.huffpostlabs-quiz .share-container .embed-code input {
 	border: 1px solid white;
 	font-size: 1em;
 	background-color: transparent;
@@ -196,7 +196,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	padding: 5px;
 	margin: 0;
 	vertical-align: top;
-}
+}*/
 .huffpostlabs-quiz .start-container {
 	cursor: pointer;
 }
@@ -233,6 +233,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 }
 .huffpostlabs-quiz .question-share-container .fb-share-container, .huffpostlabs-quiz .question-share-container .twitter-share-container {
 	float: right;
+	margin-left: 4px;
 }
 .huffpostlabs-quiz .question-container {
 
@@ -325,7 +326,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	border-left: 0px solid white;
 }
 .huffpostlabs-quiz .answer-text {
-	margin: 0.8em;
+	margin: 0.8em !important;
 }
 .huffpostlabs-quiz .answer-text.long-text{
 	font-size: 1.2em;
@@ -391,7 +392,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	background-position: right bottom;
 }
 .huffpostlabs-quiz .outcome-container .outcome-content.float-right img{
-	max-width: 50%;
+	max-width: 50% !important;
 	max-height: 100%;
 	float: right;
 }
@@ -431,23 +432,25 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 .huffpostlabs-quiz .outcome-description {
 	color: white;
 	font-family: Arvo-Regular;
-	padding: 0 3em;
+	padding: 0 3em !important;
 	font-size: 1.4em;
 }
 .huffpostlabs-quiz.mobile .outcome-description {
-	padding: 0 0.7em;
+	padding: 0 0.7em !important;
 	font-size: 1.1em;
 }
 .huffpostlabs-quiz .outcome-container .share-container {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	padding: 8px;
+	padding: 0px;
+	height: 46px;
 	vertical-align: baseline;
 }
 .huffpostlabs-quiz .outcome-container .share-text {
 	margin-left: 10px;
 	display: inline-block;
+	vertical-align: middle;
 }
 .huffpostlabs-quiz .outcome-container .share-text p {
 	margin: 0;
@@ -467,8 +470,17 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 .huffpostlabs-quiz .fb-share-container,
 .huffpostlabs-quiz .twitter-share-container {
 	display: inline-block;
-	margin-left: 4px;
 }
+.huffpostlabs-quiz .outcome-container .fb-share-container,
+.huffpostlabs-quiz .outcome-container .twitter-share-container {
+	margin: 8px 4px 8px 0px;
+}
+.huffpostlabs-quiz .title-content .fb-share-container,
+.huffpostlabs-quiz .title-content .twitter-share-container,
+.huffpostlabs-quiz .title-content .embed-code {
+	margin: 0px 2px 0px 0px;
+}
+
 .huffpostlabs-quiz .fb-share-container img.fb-share-btn-blue,
 .huffpostlabs-quiz .twitter-share-container img.twitter-share-btn-blue{
 	display: none;

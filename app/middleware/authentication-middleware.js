@@ -6,7 +6,7 @@ var express = require('express'),
 
 
 /* list of user ids that never need verification  -- currently just HuffpostLabs' */
-var ADMIN_WHITELIST = ['533968cef62039be56b4cfc6'];
+var ADMIN_WHITELIST = ['533c8d0497de9b93004619db'];
 
 
 
