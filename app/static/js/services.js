@@ -99,10 +99,12 @@ WidgetService = function() {
       outcomeMap[outcome._id] = i;
     }
     console.log('outcomeMap', outcomeMap)
+    
     /* create answerList for each outcome and push on answers */
     for (var i=0; i<quiz.questionList.length; i++) {
       var question = quiz.questionList[i];
       console.log('question',i,question)
+
       for (var j=0; j<question.answerList.length; j++) {
         var answer = question.answerList[j];
         console.log('answer',j,answer)
