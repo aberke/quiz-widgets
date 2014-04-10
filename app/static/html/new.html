@@ -81,7 +81,7 @@
 	<!-- ********************* set-outcomes *********************  -->
 	<section id='set-outcomes'>
 		<h3 ng-class="{'error':quiz.error.outcome}" >
-			<button ng-show="showingOutcomes" ng-click="hideOutcomes()" class='btn btn-default hide-show-btn'> - </button>
+			<button ng-disabled="quiz.error.outcome" ng-show="showingOutcomes" ng-click="hideOutcomes()" class='btn btn-default hide-show-btn'> - </button>
 			<button ng-show="!showingOutcomes" ng-click="showOutcomes()" class='btn btn-default hide-show-btn'> + </button>
 			Outcomes
 			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
@@ -138,7 +138,7 @@
 	REPLACE WITH ONCE UNLIMITED ANSWERS COMPLETE
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have unlimited answers, but we warn you that scroll bars do not show up on mobile until the user touches the screen (this is a web browser problem, not a quiz problem)."> -->
 		<h3 ng-class="{'error':quiz.error.question}" class='display-inline'>
-			<button ng-show="showingQuestions" ng-click="hideQuestions()" class='btn btn-default hide-show-btn'> - </button>
+			<button ng-disabled="quiz.error.question" ng-show="showingQuestions" ng-click="hideQuestions()" class='btn btn-default hide-show-btn'> - </button>
 			<button ng-disabled="quiz.outcomeList.length==0" ng-show="!showingQuestions" ng-click="showQuestions()" class='btn btn-default hide-show-btn'> + </button>
 			Questions
 			<em class='instructions-text'>({{quiz.questionList.length}})</em>
