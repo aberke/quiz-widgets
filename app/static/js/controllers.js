@@ -596,6 +596,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 	var init = function() {
 		UIService.setupPopovers();
 		UIService.updateQuizPic($scope.quiz.pic_url);
+		console.log('$scope.quiz',$scope.quiz);
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		setWatchers();
 	}

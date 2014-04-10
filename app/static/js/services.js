@@ -105,12 +105,14 @@ WidgetService = function() {
       outcome.answerList = [];
       outcomeMap[outcome._id] = i;
     }
+
     /* create answerList for each outcome and push on answers */
     for (var i=0; i<quiz.questionList.length; i++) {
       var question = quiz.questionList[i];
+
       for (var j=0; j<question.answerList.length; j++) {
         var answer = question.answerList[j];
-        if (answer._outcome) {
+        if (answer._outcome && quiz.outcomeList[outcomeMap[answer._outcome]]) {
           quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
         } else {
           console.log('answer without _outcome',answer);

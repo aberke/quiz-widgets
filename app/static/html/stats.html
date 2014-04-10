@@ -4,7 +4,6 @@
 <div id='quiz-page' class='view'>
 
 <h5 class='disclaimer'>The Statistics below will under report</h5>
-<h5 class='disclaimer'><strong>NOTE: Stats logging was temporarily shut off between 3/31 5:30pm and 4/1 7pm due to performance concerns</strong></h5>
 
 <!-- the count stats -->
 <section id='stats'>
@@ -21,7 +20,7 @@
 			</div>
 			<div>
 				<label>Restarted</label>
-				<span>{{stats.restarted || 0}} <span class='warning'>(as of 4/1 7pm)</span></span>
+				<span>{{stats.restarted || 0}}</span>
 			</div>
 			<div>
 				<label>Facebook Shares</label>
@@ -89,6 +88,7 @@
 
 		            <td ng-repeat="a in q.answerList">
 		            	<span class='number'>{{stats.Answer[a._id] || 0}}: </span>
+		            	<img height="20px" ng-src={{a.pic_url}}></img>
 		            	<span class='text'>{{a.text}}</span>
 		            </td>
 		        </tr>
