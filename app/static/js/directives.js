@@ -138,8 +138,14 @@ var imgInputLabel = function() {
 }
 var titleContainer = function() {
 	return {
-		restrict: 'E',
+		restrict: 'EC',
 		templateUrl: '/directiveTemplates/title-container.html',
+	}
+}
+var answerKeyContainer = function() {
+	return {
+		restrict: 'EC',
+		templateUrl: '/directiveTemplates/answer-key-container.html',
 	}
 }
 

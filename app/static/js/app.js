@@ -33,7 +33,11 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		$compileProvider.directive('answerContainer', answerContainer);
 		$compileProvider.directive('outcomeContainer', outcomeContainer);
 		$compileProvider.directive('ownerOnlyElement', ownerOnlyElement);
+		$compileProvider.directive('answerKeyContainer', answerKeyContainer);
 
 		// register factories
 		$provide.factory('UserFactory', UserFactory);
 	});
+
+
+

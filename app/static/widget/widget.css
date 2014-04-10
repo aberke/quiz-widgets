@@ -377,7 +377,8 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	left: 0%;
 	width: 100%;
 }
-.huffpostlabs-quiz .outcome-container .outcome-content{
+.huffpostlabs-quiz .outcome-container .outcome-content,
+.huffpostlabs-quiz .answer-key-container .answer-key-content{
 	position: absolute;
 	top: 0;
 	bottom: 52px;
@@ -439,7 +440,8 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	padding: 0 0.7em !important;
 	font-size: 1.1em;
 }
-.huffpostlabs-quiz .outcome-container .share-container {
+.huffpostlabs-quiz .outcome-container .share-container,
+.huffpostlabs-quiz .answer-key-container .share-container {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -447,23 +449,38 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	height: 46px;
 	vertical-align: baseline;
 }
-.huffpostlabs-quiz .outcome-container .share-text {
-	margin-left: 10px;
+.huffpostlabs-quiz .outcome-container .share-text,
+.huffpostlabs-quiz .answer-key-container .share-text {
 	display: inline-block;
 	vertical-align: middle;
 }
-.huffpostlabs-quiz .outcome-container .share-text p {
+.huffpostlabs-quiz .outcome-container .share-text p,
+.huffpostlabs-quiz .answer-key-container .share-text p {
 	margin: 0;
 	font-family: Arvo-Regular;
 }
-.huffpostlabs-quiz .outcome-container .refresh-btn {
+.huffpostlabs-quiz .outcome-container .answer-key-btn,
+.huffpostlabs-quiz .outcome-container .refresh-btn,
+.huffpostlabs-quiz .answer-key-container .refresh-btn  {
 	position: absolute;
-	right: 0;
 	top: 0;
 	margin: 8px; /* same as padding of outer container (share-container) */
 }
+.huffpostlabs-quiz .outcome-container .refresh-btn,
+.huffpostlabs-quiz .answer-key-container .refresh-btn {
+	right: 0;
+}
+.huffpostlabs-quiz .outcome-container .answer-key-btn {
+	right: 40px;
+}
 
 /* --------- OUTCOME CONTAINER above ------ */
+
+/* --------- ANSWER KEY ------ */
+.huffpostlabs-quiz .answer-key-content {
+	padding: 10px;
+}
+/* --------- ANSWER KEY above ------ */
 
 
 /* --------- SHARE ------ */
@@ -472,7 +489,9 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	display: inline-block;
 }
 .huffpostlabs-quiz .outcome-container .fb-share-container,
-.huffpostlabs-quiz .outcome-container .twitter-share-container {
+.huffpostlabs-quiz .outcome-container .twitter-share-container,
+.huffpostlabs-quiz .answer-key-container .fb-share-container,
+.huffpostlabs-quiz .answer-key-container .twitter-share-container {
 	margin: 8px 4px 8px 0px;
 }
 .huffpostlabs-quiz .title-content .fb-share-container,
