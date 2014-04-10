@@ -18,9 +18,10 @@
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
+		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile, 'trivia-quiz': quiz.type=='trivia-quiz'}">
 			<div class="slides-container">
-				<title-container></title-container>
+				<!-- directive fills in contents -->
+				<div class="slide title-container"></div>
 			</div>
 		</div>
 
@@ -122,7 +123,8 @@
 
 			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-					<outcome-container></outcome-container>
+					<!-- directive fills in the content -->
+					<div outcome-container class="slide outcome-container"></div>
 				</div>
 			</div>
 		</div>
@@ -252,6 +254,11 @@
 	<button id='view-non-mobile-btn' ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
 <section id='instructions'>
+	quiz {{quiz}}
+	<br />
+	<br />
+	<br />
+	quiz.outcomelist:{{quiz.outcomeList}}
 		<h4>Documentation</h4>
 		<ul>
 			<li ng-repeat="(docString,doc) in docDictionary">

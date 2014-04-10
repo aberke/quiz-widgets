@@ -18,9 +18,9 @@
 			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
 		</span>
 
-		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
+		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile, 'trivia-quiz': quiz.type=='trivia-quiz'}">
 			<div class="slides-container">
-				<!-- <div class="slide title-container"></div> -->
+				<div class="slide title-container"></div>
 			</div>
 		</div>
 
@@ -256,10 +256,7 @@
 				<button ng-show="outcome.editing" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success'>OK</button>
 			</div>
 
-			<span ng-show="outcome.editing==true" class='edit-outcome-container'>		result: {{outcome}}
-				<label>Text</label>
-				<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
-
+			<span ng-show="outcome.editing==true" class='edit-outcome-container'>
 				<label>Description</label>
 				<textarea maxlength="250" ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
 
@@ -278,43 +275,14 @@
 				<label>
 					For minimum correct:
 					<!-- <select class='min-correct' ng-change="outcome.saved='unsaved'" ng-model="outcome.rules.min_correct" ng-options="i for i in [0,1,2]">{{outcome.rules.min_correct || ''}}</select> -->
-					<input max-length="1" ng-class="{'error':outcome.error.min_correct}" class='min-correct' ng-change="outcome.saved='unsaved'" ng-model="outcome.rules.min_correct" type='number' />
+					<input placeholder="0" ng-class="{'error':outcome.error.min_correct}" class='min-correct' ng-change="outcome.saved='unsaved'" ng-model="outcome.rules.min_correct" type='number' />
 				</label>
 			</span>
 
 			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
 				<div class="slides-container">
-
-<div class='outcome-container'>
-<div class="outcome-content" ng-class="(outcome.pic_style||'float-right')">
-
-	<h1 class='trivia-results'>#/{{quiz.questionList.length}} correct</h1>
-
-	<h1 ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text || ""}}</h1>
-	<img ng-if="(outcome.pic_style=='float-right')&&outcome.pic_url" ng-src="{{outcome.pic_url}}" />
-	<h3 class="outcome-description">{{outcome.description || ""}}</h3>
-	<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
-</div>
-<div class="share-container">
-	<div class="fb-share-container">
-		<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">                
-		<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">            
-	</div>            
-	<div class="twitter-share-container">
-		<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-		<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="/icon/twitter-icon-blue.png">            
-	</div>        
-	<div class="share-text">
-		<p>Share your results</p>
-	</div>
-	<img ng-if="quiz.type=='trivia-quiz'" width="30px" height-"30px" class="answer-key-btn touchable" src="/icon/key.png">
-	<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
-</div>
-</div> <!-- outcome-container -->
-
-
-
-					<!-- <outcome-container></outcome-container> -->
+					<!-- directive fills in the content -->
+					<div outcome-container class="slide outcome-container"></div>
 				</div>
 			</div>
 		</div>
@@ -348,7 +316,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 
 		</span> <!-- hide-show-outcomes -->
 		

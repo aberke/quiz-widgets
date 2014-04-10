@@ -202,13 +202,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	});
 
 	/* ------- trivia-results ----------------- */
-
-	$scope.resultsMap = {}; // {min_correct: trivia-result}
-	$scope.availableResultMins = [];
-	$scope.setResultMin = function() {
-
-	}
-
 	/* ------- trivia-results ----------------- */
 
 	/* ------- outcomes ----------------------- */
@@ -221,22 +214,18 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	$scope.hideOutcomes = function() {
 		if (!saveAllOutcomes()) { return false; }
-
 		$scope.showingOutcomes = false;
 	}
 	var saveAllOutcomes = function() {
 		/* ensures that all is valid before calling setupOutcomeAnswerLists */
-		var err = false;
+		$scope.quiz.error.outcome = false;
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
 			if (!saveOutcome($scope.quiz.outcomeList[i])) {
-				err = true;
+				$scope.quiz.error.outcome = true;
 			}
 		}
-		if (err) {
-			$scope.quiz.error.outcome = true;
-			return false;
-		}
-		$scope.quiz.error.outcome = false;
+		if ($scope.quiz.error.outcome) { return false; }
+		
 		if (quizType != 'trivia-quiz') {
 			WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
 		}
@@ -256,7 +245,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	$scope.addOutcome = function() {
 		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
-		$scope.quiz.outcomeList.push({_id: Math.random(), editing:true, rules:{} });
+		$scope.quiz.outcomeList.push({_id: Math.random(), answerList:[], editing:true, rules:{} });
 		//WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
 	}
 
@@ -340,15 +329,14 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 
 
 	$scope.createQuiz = function() {
-		console.log('createQuiz', $scope.quiz)
-		return false;
 
-
-		$scope.quiz.saved = 'saving';
+		//$scope.quiz.saved = 'saving';
+		console.log(0,$scope.quiz.outcomeList)
 		/* get rid of the circular json -- take out outcome.answerList's */
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
 			$scope.quiz.outcomeList[i].answerList = null;
 		}
+		console.log(1,$scope.quiz.outcomeList)
 		/* error checking */
 		var err = false;
 		if (!saveAllQuestions()) {
@@ -364,6 +352,10 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 			$scope.quiz.saved = null;
 			return false;
 		}
+		console.log(3,$scope.quiz.outcomeList)
+		console.log('createQuiz', $scope.quiz)
+		return false;
+
 		/* ready to post quiz */
 		APIservice.POST('/quiz', $scope.quiz).then(function(data) {
 			$scope.quiz.saved = 'saved';

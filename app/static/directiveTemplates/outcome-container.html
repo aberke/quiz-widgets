@@ -1,5 +1,7 @@
 <div class="outcome-content" ng-class="(outcome.pic_style||'float-right')">
 
+	<h1 ng-if="quiz.type=='trivia-quiz'" class='trivia-results'>{{outcome.rules.min_correct || 0}}/{{quiz.questionList.length}} correct</h1>
+
 	<h1 ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text || ""}}</h1>
 	<img ng-if="(outcome.pic_style=='float-right')&&outcome.pic_url" ng-src="{{outcome.pic_url}}" />
 	<h3 class="outcome-description">{{outcome.description || ""}}</h3>
@@ -17,5 +19,6 @@
 	<div class="share-text">
 		<p>Share your results</p>
 	</div>
+	<img ng-if="quiz.type=='trivia-quiz'&&quiz.extraSlide" width="30px" height-"30px" class="answer-key-btn touchable" src="/icon/key.png">
 	<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
 </div>

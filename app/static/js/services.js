@@ -84,10 +84,11 @@ var FormService = function() {
     }
     if (quizType != 'trivia-quiz') { return outcome.error.any; }
     /* trivia-quiz outcomes are 'results' and must have a min_correct set */
-    if (!outcome.rules.min_correct) {
-      outcome.error.min_correct = true;
-      outcome.error.any = true;
-    }
+    /* ACTUALLY - for now setting default as 0 */
+    // if (!outcome.rules.min_correct) {
+    //   outcome.error.min_correct = true;
+    //   outcome.error.any = true;
+    // }
     return outcome.error.any;
   };
 

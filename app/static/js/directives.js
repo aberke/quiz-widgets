@@ -136,6 +136,11 @@ var imgInputLabel = function() {
 		templateUrl: '/directiveTemplates/img-input-label.html',
 	}
 }
+
+
+
+/* ---------------------- slides below ---------------------------- */
+
 var titleContainer = function() {
 	return {
 		restrict: 'EC',
@@ -150,9 +155,6 @@ var answerKeyContainer = function() {
 }
 
 var outcomeContainer = function() {
-	function modifyContainer(scope, element) {
-		element.className += " outcome-container slide";
-	}
 	function setStyle(model, element) {
 		var backgroundImage = "none";
 		if (model.pic_url && model.pic_style && model.pic_style != 'float-right') {
@@ -161,7 +163,7 @@ var outcomeContainer = function() {
 		element.style.backgroundImage = backgroundImage;
 	}
 	return {
-		restrict: 'E',
+		restrict: 'A', // if its class, could interfere with set recresh_icon_url
 		link: function(scope, element, attrs) {
 			var content = element[0].querySelector('.outcome-content');
 			
@@ -173,7 +175,6 @@ var outcomeContainer = function() {
 			});
 
 			setStyle(scope.outcome, content);
-			modifyContainer(scope, element[0]);
 		},
 		templateUrl: '/directiveTemplates/outcome-container.html',
 	}

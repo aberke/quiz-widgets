@@ -94,7 +94,7 @@ var outcomeSchema = new Schema({
 
 	/* for quizzes of type 'trivia-quiz' */
 	rules: 		 {
-					min_correct: Number,
+					min_correct: {type: Number, default: 0},
 					//max_correct: Number,		
 				 },
 });
