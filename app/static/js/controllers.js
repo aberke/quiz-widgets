@@ -447,6 +447,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 			});
 		} else {
 			question.answerList.splice(index, 1);
+			WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		}
 	}
 	$scope.removeQuestion = function(question) {
@@ -455,6 +456,7 @@ function EditCntl($scope, FormService, APIservice, UIService, WidgetService, qui
 
 		if (!question._id) {
 			$scope.quiz.questionList.splice(index, 1);
+			WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		} else {
 			remove('question', question, function() {
 				$scope.quiz.questionList.splice(index, 1);
