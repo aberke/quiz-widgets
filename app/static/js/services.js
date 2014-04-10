@@ -104,7 +104,9 @@ WidgetService = function() {
 
       for (var j=0; j<question.answerList.length; j++) {
         var answer = question.answerList[j];
+        console.log('answer',answer)
         if (answer._outcome && quiz.outcomeList[outcomeMap[answer._outcome]]) {
+          console.log(quiz.outcomeList[outcomeMap[answer._outcome]])
           quiz.outcomeList[outcomeMap[answer._outcome]].answerList.push(answer._id);
         } else {
           console.log('answer without _outcome',answer);
