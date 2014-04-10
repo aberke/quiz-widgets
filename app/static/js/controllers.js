@@ -185,7 +185,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 
 
 	$scope.quiz = { '_user': $scope.user._id,
-					'title': '',
 					'outcomeList':[], // each outcome in outcomeList has an answerList []
 					'error':{ 'question':false, 'outcome':false, },		
 					'questionList': [], // each question in questionList has an answerList []
@@ -211,17 +210,14 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	var saveAllOutcomes = function() {
 		/* ensures that all is valid before calling setupOutcomeAnswerLists */
-		var err = false;
+		$scope.quiz.error.outcome = false;
 		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
 			if (!saveOutcome($scope.quiz.outcomeList[i])) {
-				err = true;
+			$scope.quiz.error.outcome = true;
 			}
 		}
-		if (err) {
-			$scope.quiz.error.outcome = true;
-			return false;
-		}
-		$scope.quiz.error.outcome = false;
+		if ($scope.quiz.error.outcome) { return false; }
+
 		WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
 		return true;
 	}
@@ -240,11 +236,10 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	$scope.addOutcome = function() {
 		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
 		$scope.quiz.outcomeList.push({_id: Math.random(), editing:true});
-		//WidgetService.setupOutcomeAnswerLists($scope.quiz); // gives outcomes answer lists
 	}
 
 	$scope.removeOutcome = function(outcome) {
-		if (outcome.answerList.length > 0) { return false; } // an answer points to it!
+		if (outcome.answerList && outcome.answerList.length > 0) { return false; } // an answer points to it!
 		
 		$scope.quiz.outcomeList.splice($scope.quiz.outcomeList.indexOf(outcome), 1);
 		if ($scope.quiz.outcomeList.length==0) { 
@@ -271,7 +266,9 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 		return true;
 	}
 	$scope.addQuestion = function() {
-		$scope.quiz.questionList.push({_id: Math.random(), 'answerList':[{},{},], 'editing':true,});
+		/* create question with an _id and 2 answers - each with _id */
+		var newQuestion = {_id: Math.random(), 'answerList':[createAnswer(),createAnswer()], 'editing':true,};
+		$scope.quiz.questionList.push(newQuestion);
 	}
 	var saveAllQuestions = function() {
 		/* ensures that all is valid before calling setupOutcomeAnswerLists */
@@ -311,8 +308,9 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		return true;
 	}
+	var createAnswer = function() { return {_id: Math.random()}; }
 	$scope.addAnswer = function(question) {
-		question.answerList.push({_id: Math.random()});
+		question.answerList.push(createAnswer());
 	}
 	$scope.removeAnswer = function(question,answer,index) {
 		question.answerList.splice(index, 1);
