@@ -4,10 +4,7 @@
 
     <!-- Dont delete this announcement container due to page height styling reasons; just empty it and repopulate it  -->
     <div class='announcement'>
-      <p><strong>UPDATE: Quizzes are now created under user accounts</strong></p>
-      <p>--- You must do the following ---</p>
-      <p><strong>Sign in</strong> with your team's twitter account. Only those signed in with this account will have the ability to create, modify, and delete your quizzes.</p>
-      <p>Find your quizzes below and click <strong>Claim Ownership</strong> in order to put them under your account.</p>
+      <p></p>
     </div>
 
     <div class='col-md-6'>
@@ -28,7 +25,7 @@
         <br/><a href="" ng-click="scrollToById('quizzes')">existing quizzes</a> below
         <br/>
           
-        <a ng-if="user" href="" ng-click="goTo('/new')" id='create-new-btn' class='btn btn-xs btn-default'>CREATE NEW</a>
+        <button ng-if="user" ng-click="goTo('/new')" id='create-new-btn' class='btn btn-xs btn-default'>CREATE NEW</button>
 
         <p ng-if="!user">
           <a ng-click="login()" id='sign-in-btn' class='btn btn-xs btn-default'>SIGN IN</a> with your team's twitter account

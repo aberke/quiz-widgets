@@ -98,6 +98,8 @@ var FormService = function() {
 WidgetService = function() {
 
   this.setupOutcomeAnswerLists = function(quiz) {
+    if (quiz.type == 'trivia-quiz') { return; }
+    
     /* give each outcome in outcomeList an answerList of answer _id's */
 
     var outcomeMap = {}; // {outcomeID: index in outcomeList}
