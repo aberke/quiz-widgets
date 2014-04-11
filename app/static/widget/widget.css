@@ -385,6 +385,7 @@ div.huffpostlabs-quiz.no-pin a.pinitshareimage:hover {
 	background-color: rgba(0,0,0,0.4);
 	border: solid 1px #ffffff;
 	background-repeat: no-repeat;
+	overflow-y: auto;
 }
 
 .huffpostlabs-quiz .outcome-container .outcome-content.bottom-right{
