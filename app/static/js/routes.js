@@ -89,7 +89,7 @@ QuizApp.config(function($routeProvider) {
 	});
 	$routeProvider.when('/edit/:id', {
 		templateUrl: '/html/edit.html',
-		controller: EditCntl,
+		controller: EditQuizCntl,
 		resolve: { /* returning the promise and then resolving the promise as the data */
 			quiz: resolveQuizFunction,
 			user: userOrRedirect,

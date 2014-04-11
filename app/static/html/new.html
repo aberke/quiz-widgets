@@ -80,13 +80,11 @@
 
 	<!-- ********************* set-outcomes *********************  -->
 	<section id='set-outcomes'>
-		<h3 ng-class="{'error':quiz.error.outcome}" >
-			<button ng-disabled="quiz.error.outcome" ng-show="showingOutcomes" ng-click="hideOutcomes()" class='btn btn-default hide-show-btn'> - </button>
-			<button ng-show="!showingOutcomes" ng-click="showOutcomes()" class='btn btn-default hide-show-btn'> + </button>
+		<h3>
 			Outcomes
 			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
 		</h3>
-		<span ng-show="showingOutcomes">
+		
 		<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
 			<p class='bold display-inline'>{{$index + 1}}.</p>
 			<p class="bold error display-inline" ng-show="outcome.error.empty">Hey this outcome is empty</p>
@@ -128,8 +126,6 @@
 		</div>
 
 		<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
-		</span> <!-- hide-show-outcomes -->
-		
 	</section> <!-- ********************* set-outcomes *********************  -->
 
 	<!-- ********************* set-questions *********************  -->
@@ -137,15 +133,12 @@
 <!-- 
 	REPLACE WITH ONCE UNLIMITED ANSWERS COMPLETE
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have unlimited answers, but we warn you that scroll bars do not show up on mobile until the user touches the screen (this is a web browser problem, not a quiz problem)."> -->
-		<h3 ng-class="{'error':quiz.error.question}" class='display-inline'>
-			<button ng-disabled="quiz.error.question" ng-show="showingQuestions" ng-click="hideQuestions()" class='btn btn-default hide-show-btn'> - </button>
-			<button ng-disabled="quiz.outcomeList.length==0" ng-show="!showingQuestions" ng-click="showQuestions()" class='btn btn-default hide-show-btn'> + </button>
+		<h3 class='display-inline'>
 			Questions
 			<em class='instructions-text'>({{quiz.questionList.length}})</em>
 		</h3>
 		<p ng-show="quiz.outcomeList.length==0" class='inline-block instructions-text'>First create the outcomes</p>
 
-		<span ng-show="showingQuestions">
 		<div class="question index-{{$index}}" ng-class="{new:question.new, editing: question.editing}" ng-repeat="question in quiz.questionList">
 			<p class='display-inline bold'>{{$index + 1}}.</p>
 
@@ -215,7 +208,6 @@
 
 		</div>
 		<button ng-disabled="quiz.questionList[quiz.questionList.length-1].editing" ng-click="addQuestion()" id='add-question-btn' class='btn btn-sm btn-default'>+ Give me more</button>
-	</span> <!-- hide/show questions -->
 	</section> <!-- ********************* set-questions *********************  -->
 	
 
@@ -251,7 +243,7 @@
 	<button id='view-mobile-btn' ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
 	<button id='view-non-mobile-btn' ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
-<section id='instructions'>
+	<section id='instructions'>
 		<h4>Documentation</h4>
 		<ul>
 			<li ng-repeat="(docString,doc) in docDictionary">

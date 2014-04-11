@@ -223,7 +223,7 @@ var PUTuserClaimQuiz = function(req, res) {
 var PUTquiz = function(req, res) {
 	var quizData = req.body;
 
-	models.findQuizPartial(req.params.quizID, function(err, quiz) {
+	models.findQuiz(req.params.quizID, function(err, quiz) {
 		if (err || !quiz) { return res.send(500, util.handleError(err)); }
 
 		quiz.title 				= quizData.title;
