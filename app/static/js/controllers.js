@@ -241,7 +241,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	var saveQuestion = function(question) {
 		/* need to have function not call setupOutcomeAnswerLists */
-		// trivia-quiz answers don't have outcomes
 		if (FormService.checkQuestionError(question, quizType)) {
 			question.editing = true;
 			return false;
@@ -273,14 +272,8 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 
 
 	$scope.createQuiz = function() {
+		$scope.quiz.saved = 'saving';
 
-		//$scope.quiz.saved = 'saving';
-		console.log(0,$scope.quiz.outcomeList)
-		/* get rid of the circular json -- take out outcome.answerList's */
-		for (var i=0; i<$scope.quiz.outcomeList.length; i++) {
-			$scope.quiz.outcomeList[i].answerList = null;
-		}
-		console.log(1,$scope.quiz.outcomeList)
 		/* error checking */
 		var err = false;
 		if (!saveAllQuestions()) { err = true; }
@@ -289,9 +282,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 			$scope.quiz.saved = null;
 			return false;
 		}
-		console.log(3,$scope.quiz.outcomeList)
-		console.log('createQuiz', $scope.quiz)
-		return false;
 
 		/* ready to post quiz */
 		APIservice.POST('/quiz', $scope.quiz).then(function(data) {
@@ -301,30 +291,20 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 		});
 	};
 
-	var setWatchers = function() {
-		$scope.$watch(
-			'quiz.pic_url',
-			function() { UIService.updateQuizPic($scope.quiz.pic_url); }
-		);
-		$scope.$watch('quiz.custom_styles',
-			function(styles) { UIService.setCustomStyles(styles); }
-		);
-	}
-
 	var init = function() {
 
 		console.log('quizType',quizType)
 
 		/* construct quiz that will be passed to the parent QuizCntl */
 		var quiz = { 	'_user': 		user._id,
-						'outcomeList':  [createOutcome()], // each outcome in outcomeList has an answerList []
+						'outcomeList':  [], // each outcome in outcomeList has an answerList []
 						'error': 		{ 'question':false, 'outcome':false, },		
 						'questionList': [createQuestion()], // each question in questionList has an answerList []
 						'type': 		(quizType || 'default-quiz'),
 					};
+		if (quizType != 'trivia-quiz') { quiz.outcomeList.push(createOutcome()); }
 		$scope.quiz = quiz;
 		UIService.setupPopovers();
-		setWatchers();
 	}
 	init();
 }
@@ -346,13 +326,6 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 				changeFunction($scope.quiz)
 			);
 		}
-		$scope.$watch(
-			'quiz.pic_url',
-			function() { UIService.updateQuizPic($scope.quiz.pic_url); }
-		);
-		$scope.$watch('quiz.custom_styles',
-			function(styles) { UIService.setCustomStyles(styles); }
-		);
 	}
 	/* helper functions to remove, update, create for resolving promise */
 	var APIsuccess = function(object, callback) {
@@ -499,7 +472,13 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		} else { /* update existing outcome */
 			update('outcome', outcome, callback);
 		}
-	};
+	};	
+	$scope.addAnswer = function(question) {
+		question.answerList.push({'saved':'unsaved'});
+	}
+	$scope.addQuestion = function() {
+		$scope.quiz.questionList.push({'saved':'unsaved', 'editing':true, 'answerList':[{}, {}] });
+	}
 	/* ------- save == PUT/POST requests above ------------- */
 
 	this.init = function() {

@@ -206,9 +206,9 @@ var addAnswer = exports.addAnswer = function(answerData, question, callback) {
 		pic_url: 	(answerData.pic_url   || null),
 		pic_credit: (answerData.pic_credit|| null),
 		pic_style:  (answerData.pic_style || "bottom-right"),
+		correct: 	(answerData.correct   || "false"),
 	});
 	question.answerList.push(answer);
-	//question.save();
 	answer.save(function(err) {
 		if (callback) { callback(err, answer); }
 	});
@@ -223,11 +223,16 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 		pic_url: 	(shareData.pic_url 		|| null),
 		link:  		(shareData.link 		|| null),
 	});
-	share.save(function(err) {
-		if (err) { return callback(err, null); }
-		callback(null, share);
-	});
+	share.save(function(err) { callback(err, share); });
 }
+var newSlide = function(quiz, slideData, callback) {
+	var slide = new Slide({
+		_quiz: 		quiz,
+		blob: 		(slideData.blob || null),
+	});
+	slide.save(function(err) { callback(err, slide); });
+}
+exports.newSlide = newSlide;
 
 /* doesn't save outcome or add share -- just does the construction */
 var constructOutcome = function(outcomeData) {
@@ -276,9 +281,10 @@ exports.newUser = function(userData, callback) { // userData is twitter profile 
 exports.newQuiz = function(quizData, callback) { // callback: function(err, data)
 	
 	// TODO: better error checking
+	if (!quizData._user) { callback('Invalid user', null); }
 	if (!quizData.title.length) { callback('Invalid Quiz Title', null); }
 	if (!quizData.questionList.length) { callback('Invalid Quiz Question List', null); }
-	if (!quizData.outcomeList.length) { callback('Invalid Quiz Outcome List', null); }
+	if (!quizData.outcomeList.length && (quizData.type != 'trivia-quiz')) { callback('Invalid Quiz Outcome List', null); }
 
 	/* Create new quiz.  
 		Then create Outcomes and push on outcomes.
@@ -293,12 +299,20 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		pic_credit: 		(quizData.pic_credit 		|| null),
 		custom_styles: 		(quizData.custom_styles 	|| null),
 		refresh_icon_url: 	(quizData.refresh_icon_url 	|| null),
+
+		type: 				(quizData.type 				|| 'default-quiz'),
 	});
 	var newShare = new Share({_quiz: newQuiz});
 	newShare.save();
 	newQuiz.share = newShare;
 
-	var outcomeDict = {}; // maps {index: outcome} since answerData just has the index
+	if (quizData.extraSlide) { // eg, answer-key for trivia-quiz
+		newSlide(newQuiz, quizData.extraSlide, function(err, slide) {
+			newQuiz.extraSlide = slide;
+		});
+	}
+
+	var outcomeDict = {}; // maps {index: outcome} since answerData just has the fake id
 	for (var i=0; i<quizData.outcomeList.length; i++) {
 		var outcomeData = quizData.outcomeList[i];
 		outcomeData._quiz = newQuiz;
@@ -323,7 +337,9 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 
 		for (var j=0; j<questionData.answerList.length; j++) {
 			var answerData = questionData.answerList[j];
-			answerData._outcome = outcomeDict[answerData._outcome];
+			if (answerData._outcome) {
+				answerData._outcome = outcomeDict[answerData._outcome];
+			}
 			// handles question.answerList.push and answer.save -- DOES NOT SAVE QUESTION
 			addAnswer(answerData, newQuestion);
 		}
@@ -343,7 +359,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 				user.quizList.push(newQuiz);
 				user.save(function(err) {
 					callback(err, newQuiz);
-				})
+				});
 			});
 	});
 }

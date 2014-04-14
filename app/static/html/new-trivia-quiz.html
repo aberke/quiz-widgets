@@ -6,131 +6,8 @@
 <div id='build-container' class='col-md-9'>
 
 	<!-- ********************* set-quiz *********************  -->
-	<section id='set-quiz'>
-		<label><i class='required-star'>*</i>Title</label>
-		<input id='quiz-title' placeholder="YOUR TITLE HERE" type='text' ng-model='quiz.title' />
-
-		<img-input-label max-size="600" model="quiz"></img-input-label>
-		<input ng-change="updateQuizPic()" id='quiz-pic-url' type="url" ng-model="quiz.pic_url">
-
-		<span ng-show="quiz.pic_url || quiz.pic_credit">
-			<label>Photo Credit</label>
-			<input id='quiz-pic-credit' type='text' ng-model='quiz.pic_credit' />
-		</span>
-
-		<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile, 'trivia-quiz': quiz.type=='trivia-quiz'}">
-			<div class="slides-container">
-				<div class="slide title-container"></div>
-			</div>
-		</div>
-
-		<!-- ********************* set-refresh-icon *********************  -->
-		<div class='subsection' id='set-refresh-icon'>
-			<h5>
-				<button ng-show="hideRefreshIcon==false" ng-click="hideRefreshIcon=true" class='btn btn-xs btn-default hide-show-btn hide-btn'> - </button>
-				<button ng-show="hideRefreshIcon||hideRefreshIcon==undefined" ng-click="hideRefreshIcon=false" class='btn btn-xs btn-default show-btn hide-show-btn'> +  </button>
-				Custom Refresh Icon
-				<span style="margin-left:5px;" ng-show="hideRefreshIcon!=false" class='inline-block btn-helper'>  (optional)</span>
-			</h5>
-
-			<span ng-show="hideRefreshIcon==false">
-			<p class='instructions-text'>
-				You can optionally customize the icon on the refresh button that appears at the end of the quiz.  Use a GIF or image.
-				Dimensions: 30x30
-			</p>
-
-			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-				<div class='outcome-container'>
-					<div class="share-container">
-						<div class="fb-share-container">
-							<img width="30px" height="30px" class="share fb-share-btn touchable" src="/icon/fb-icon.png">
-							<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="/icon/fb-icon-blue.png">
-						</div>
-						<div class="twitter-share-container">
-							<img width="30px" height="30px" class="twitter-share-btn share touchable" src="/icon/twitter-icon.png">
-							<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
-						</div>
-						<div class="share-text"><p>Share your results</p></div>
-						<img width="30px" height="30px" class="refresh-btn touchable" ng-src="{{quiz.refresh_icon_url || '/icon/refresh.png'}}">
-					</div>
-				</div>
-			</div>
-			<label class="popover-hover" data-original-title="Refresh Icon URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Make sure this URL starts with 'http://' or 'https://'.  Image should be square and between 50x50 and 20x20 pixels.">Image or GIF URL</label>
-			<input id='quiz-refresh-icon-url' type="url" ng-model="quiz.refresh_icon_url" placeholder="http://quiz.huffingtonpost.com/icon/refresh.png">
-
-			</span> <!-- hide/show RefreshIcon -->
-		</div> <!-- ********************* set-refresh-icon *********************  -->
-
-		<div class='subsection' id='custom-styling'>
-			<h5>
-				<button ng-show="hideCustomStyling==false" ng-click="hideCustomStyling=true" class='btn btn-xs btn-default hide-show-btn hide-btn'> - </button>
-				<button ng-show="hideCustomStyling||hideCustomStyling==undefined" ng-click="hideCustomStyling=false" class='btn btn-xs btn-default show-btn hide-show-btn'> +  </button>
-				Custom Styling
-				<span style="margin-left:5px;" ng-show="hideCustomStyling!=false" class='inline-block btn-helper'>  (optional)</span>
-			</h5>
-
-			<span ng-show="hideCustomStyling==false">
-				<a target="_blank" href="/documentation/custom-quiz-styling">See Documentation</a>
-				<textarea placeholder="YOUR CUSTOM CSS" ng-model="quiz.custom_styles"></textarea>
-			</span>
-		</div> <!-- custom-styling -->
-
-	</section> 
+	<section edit-quiz-partial id='set-quiz'></section> 
 	<!-- ********************* set-quiz *********************  -->
-
-	<!-- ********************* set-outcomes *********************  -->
-	<section ng-if="quiz.type!='trivia-quiz'" id='set-outcomes'>
-		<h3 ng-class="{'error':quiz.error.outcome}" >
-			<button ng-show="showingOutcomes" ng-click="hideOutcomes()" class='btn btn-default hide-show-btn'> - </button>
-			<button ng-show="!showingOutcomes" ng-click="showOutcomes()" class='btn btn-default hide-show-btn'> + </button>
-			Outcomes
-			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
-		</h3>
-		<span ng-show="showingOutcomes">
-		<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
-			<p class='bold display-inline'>{{$index + 1}}.</p>
-			<p class="bold error display-inline" ng-show="outcome.error.empty">Hey this outcome is empty</p>
-
-			<div class='remove-edit-btns'>
-				<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
-				<p ng-show="outcome.answerList.length>1" class='display-inline btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
-				<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
-				
-				<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
-				<button ng-show="outcome.editing" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success'>OK</button>
-			</div>
-
-			<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
-				<label>Text</label>
-				<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
-
-				<label>Description</label>
-				<textarea maxlength="250" ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
-
-				<img-input-label max-size="600" model="outcome"></img-input-label>
-				<input ng-change="outcome.saved='unsaved'" id='outcome-pic-url' type="url" ng-model="outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
-
-				<span ng-show="outcome.pic_url">
-					<label>Photo Credit</label>
-					<input ng-change="outcome.saved='unsaved'" id='new-outcome-pic-credit' type='text' ng-model='outcome.pic_credit' />
-
-					<label>Image/GIF styling</label>
-					<select ng-change="outcome.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='outcome.pic_style' ng-options="s for s in ['bottom-right', 'float-right', 'cover', 'contain']" >
-					</select>
-				</span>
-			</span>
-
-			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<outcome-container></outcome-container>
-				</div>
-			</div>
-		</div>
-
-		<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
-		</span> <!-- hide-show-outcomes -->
-		
-	</section> <!-- ********************* set-outcomes *********************  -->
 	
 
 	<!-- ********************* set-questions *********************  -->
@@ -138,102 +15,21 @@
 <!-- 
 	REPLACE WITH ONCE UNLIMITED ANSWERS COMPLETE
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have unlimited answers, but we warn you that scroll bars do not show up on mobile until the user touches the screen (this is a web browser problem, not a quiz problem)."> -->
-		<h3 ng-class="{'error':quiz.error.question}" class='display-inline'>
-			<button ng-show="showingQuestions" ng-click="hideQuestions()" class='btn btn-default hide-show-btn'> - </button>
-			<button ng-disabled="quiz.type!='trivia-quiz'&&quiz.outcomeList.length==0" ng-show="!showingQuestions" ng-click="showQuestions()" class='btn btn-default hide-show-btn'> + </button>
+		<h3 class='display-inline'>
 			Questions
 			<em class='instructions-text'>({{quiz.questionList.length}})</em>
 		</h3>
-		<p ng-show="quiz.type!='trivia-quiz'&&quiz.outcomeList.length==0" class='inline-block instructions-text'>First create the outcomes</p>
 
-		<span ng-show="showingQuestions">
-		<div class="question index-{{$index}}" ng-class="{new:question.new, editing: question.editing}" ng-repeat="question in quiz.questionList">
-			<p class='display-inline bold'>{{$index + 1}}.</p>
-
-			<div class='remove-edit-btns'>
-				<button ng-click="removeQuestion(question)" class='btn btn-xs btn-danger remove-question'>X</button>
-				<button ng-show="!question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
-				<button ng-show="question.editing==true" ng-click="saveQuestion(question)" class='btn btn-xs btn-success save-question'>OK</button>
-			</div>
-
-			<div ng-show="question.editing">
-				<label>Question Text:</label>
-				<input ng-change="question.saved='unsaved'" class='question-text' type='text' ng-model='question.text' required ng-class="{error: question.error.text}">
-
-				<div class='answer' ng-repeat="a in question.answerList">
-					<div class='remove-edit-btns'>
-						<button ng-show="$index>1" ng-click="removeAnswer(question,a,$index)" class='btn btn-xs btn-danger remove-answer'>X</button>
-					</div>
-					<label ng-class="{'green':a.correct}" class='answer-label'>Answer {{$index + 1}}</label>
-					
-					<div class='answer-inputs'>
-						<input ng-change="a.saved='unsaved';question.saved='unsaved'" id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
-
-						<img-input-label hide-label="true" max-size="200" model="a"></img-input-label>
-						<input ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
-
-						<span ng-show="a.pic_url">
-							<input placeholder='PHOTO CREDIT' class='answer-pic-credit' type='text' ng-model='a.pic_credit' ng-change="a.saved='unsaved';question.saved='unsaved'"/>
-							
-							<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
-								<option value="">IMAGE/GIF STYLING</option>
-							</select>
-						</span>
-
-						<select ng-if="quiz.type!='trivia-quiz'" ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | filter: {new:'!true', error.any:'false'}" ng-class="{'error':a.error._outcome}">
-							<option value="">{{a._outcome.text || 'OUTCOME'}}</option>
-						</select>
-
-						<div class='input-container' ng-if="quiz.type=='trivia-quiz'">
-							<input ng-model="a.correct" type="checkbox" value="true">
-							<span ng-class="{'green':a.correct, 'gray':!a.correct}">correct</span>
-						</div>
-
-					</div>
-				</div>
-				<button ng-show="question.answerList.length<4" ng-click="addAnswer(question)" class='btn btn-sm btn-default btn-sm add-answer-btn'><strong>+ Answer</strong></button>
-			</div>
-
-			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<div class="slide">
-						<div class="question-share-container">
-							<div ng-if="quiz.type!='trivia-quiz'" class='previous-btn'></div>
-							<div class="fb-share-container">
-								<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
-								<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
-							</div>
-							<div class="twitter-share-container">
-								<img width="30px" height="30px" class='twitter-share-btn share touchable' src="http://quiz.huffingtonpost.com/icon/twitter-icon.png">
-								<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
-							</div>
-						</div>
-						<div class="question-answers-container">
-							<div class="question-container">
-								<h2 class="question-text">{{question.text}}</h2>
-							</div>
-							<div class="answers-container total-answers-{{question.answerList.length}}" ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (question.answerList.length > 4)}">
-								<answer-container ng-repeat="answer in question.answerList"></answer-container>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<button ng-disabled="quiz.questionList[quiz.questionList.length-1].editing" ng-click="addQuestion()" id='add-question-btn' class='btn btn-sm btn-default'>+ Give me more</button>
-	</span> <!-- hide/show questions -->
+		<edit-questions-partial></edit-questions-partial>
 	</section> <!-- ********************* set-questions *********************  -->
 
 	<!-- ********************* set-trivia-outcomes *********************  -->
-	<section id='set-trivia-outcomes'>
-		<h3 ng-class="{'error':quiz.error.outcome}" >
-			<button ng-show="showingOutcomes" ng-click="hideOutcomes()" class='btn btn-default hide-show-btn'> - </button>
-			<button ng-show="!showingOutcomes" ng-click="showOutcomes()" class='btn btn-default hide-show-btn'> + </button>
+	<section id='set-outcomes'>
+		<h3>
 			Outcomes
 			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
 		</h3>
-		<span ng-show="showingOutcomes">
+		<!-- <span ng-show="showingOutcomes"> -->
 			<span class='instructions-text'>
 				<p>These are optional.</p>
 				<p><strong>Example use case:</strong> Quiz taker got...</p>
@@ -287,7 +83,7 @@
 			</div>
 		</div>
 
-		<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
+		<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'> + </button>
 		</span> <!-- hide-show-outcomes -->
 		
 	</section> <!-- ********************* set-trivia-outcomes *********************  -->
@@ -297,7 +93,7 @@
 	<section ng-if="quiz.type=='trivia-quiz'" id='set-extra-slide'>
 		<h3 ng-class="{'error':quiz.error.extraSlide}" >
 			<button ng-show="quiz.extraSlide" ng-click="quiz.extraSlide=null;" class='btn btn-danger hide-show-btn'> discard </button>
-			<button ng-show="!quiz.extraSlide" ng-click="showingExtraSlides=true;quiz.extraSlide={}" class='btn btn-default hide-show-btn'> Add </button>
+			<button ng-show="!quiz.extraSlide" ng-click="quiz.extraSlide={}" class='btn btn-default hide-show-btn'> Add </button>
 			Answer Key
 			<span style="margin-left:5px;" ng-show="!quiz.extraSlide" class='inline-block btn-helper'>(optional)</span>
 		</h3>

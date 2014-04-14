@@ -98,6 +98,7 @@ var FormService = function() {
 WidgetService = function() {
 
   this.setupOutcomeAnswerLists = function(quiz) {
+    // trivia-quiz answers don't have outcomes
     if (quiz.type == 'trivia-quiz') { return; }
     
     /* give each outcome in outcomeList an answerList of answer _id's */

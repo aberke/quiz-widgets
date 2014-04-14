@@ -1,0 +1,75 @@
+<!-- edit questions partial -->
+<div class="question index-{{$index}}" ng-class="{new:question.new, editing: question.editing}" ng-repeat="question in quiz.questionList">
+	<p class='display-inline bold'>{{$index + 1}}.</p>
+
+	<div class='remove-edit-btns'>
+		<button ng-show="$index" ng-click="removeQuestion(question)" class='btn btn-xs btn-danger remove-question'>X</button>
+		<button ng-show="!question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
+		<button ng-show="question.editing==true" ng-click="saveQuestion(question)" class='btn btn-xs btn-success save-question'>OK</button>
+	</div>
+
+	<div ng-show="question.editing">
+		<label>Question Text:</label>
+		<input ng-change="question.saved='unsaved'" class='question-text' type='text' ng-model='question.text' required ng-class="{error: question.error.text}">
+
+		<div class='answer' ng-repeat="a in question.answerList">
+			<div class='remove-edit-btns'>
+				<button ng-show="$index>1" ng-click="removeAnswer(question,a,$index)" class='btn btn-xs btn-danger remove-answer'>X</button>
+			</div>
+			<label class='answer-label'>Answer {{$index + 1}}</label>
+			
+			<div class='answer-inputs'>
+				<input ng-change="a.saved='unsaved';question.saved='unsaved'" id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
+
+				<img-input-label hide-label="true" max-size="200" model="a"></img-input-label>
+				<input ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
+
+				<span ng-show="a.pic_url||a.pic_credit">
+					<input placeholder='PHOTO CREDIT' class='answer-pic-credit' type='text' ng-model='a.pic_credit' ng-change="a.saved='unsaved';question.saved='unsaved'"/>
+					
+					<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
+						<option value="">IMAGE/GIF STYLING</option>
+					</select>
+				</span>
+
+				<select ng-if="quiz.type!='trivia-quiz'" ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList" ng-class="{'error':a.error._outcome}">
+					<option value="">OUTCOME</option>
+				</select>
+
+				<div class='input-container' ng-if="quiz.type=='trivia-quiz'">
+					<input ng-model="a.correct" type="checkbox" value="true">
+					<span ng-class="{'green':a.correct, 'gray':!a.correct}">correct</span>
+				</div>
+			</div>
+		</div>
+		<button ng-show="question.answerList.length<4" ng-click="addAnswer(question)" class='btn btn-sm btn-default btn-sm add-answer-btn'><strong>+ Answer</strong></button>
+	</div>
+
+	<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
+		<div class="slides-container">
+			<div class="slide">
+				<div class="question-share-container">
+					<div class='previous-btn'></div>
+					<div class="fb-share-container">
+						<img width="30px" height="30px" class="share fb-share-btn touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon.png">
+						<img width="30px" height="30px" class="share fb-share-btn-blue touchable" src="http://quiz.huffingtonpost.com/icon/fb-icon-blue.png">
+					</div>
+					<div class="twitter-share-container">
+						<img width="30px" height="30px" class='twitter-share-btn share touchable' src="http://quiz.huffingtonpost.com/icon/twitter-icon.png">
+						<img width="30px" height="30px" class="twitter-share-btn-blue share touchable" src="http://quiz.huffingtonpost.com/icon/twitter-icon-blue.png">
+					</div>
+				</div>
+				<div class="question-answers-container">
+					<div class="question-container">
+						<h2 class="question-text">{{question.text}}</h2>
+					</div>
+					<div class="answers-container total-answers-{{question.answerList.length}}" ng-class="total-answers-{{question.answerList.length}}" ng-class="{'total-answers-more': (question.answerList.length > 4)}">
+						<answer-container ng-repeat="answer in question.answerList"></answer-container>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<button ng-disabled="quiz.questionList[quiz.questionList.length-1].editing" ng-click="addQuestion()" id='add-question-btn' class='btn btn-sm btn-default'>+ Give me more</button>

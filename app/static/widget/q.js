@@ -31,6 +31,7 @@
 
 	var scripts 	= [
 					   	(static_domain + "/widget/quiz-object.js"),
+					   	(static_domain + "/widget/quiz-logic.js"),
 					   	(static_domain + "/lib/btn-master.js"),
 					   ];
 	var stylesheets = [(static_domain + "/widget/widget.css")];
@@ -141,13 +142,15 @@
 	var quizRestartedCallback = function(quiz) {
 		PUT("/stats/" + quiz._id + "/increment/restarted-null", null);
 	}
-	var quizCompletedCallback = function(quiz, outcome, chosenAnswers) {
+	var quizCompletedCallback = function(quiz, chosenAnswers, outcome) {
 		/* increment counts for quiz, outcome and each chosenAnswer */
 		var completedDataString = ("/stats/" + quiz._id + "/increment/");
 			completedDataString+= ("completed-null");
-			completedDataString+= ("-Outcome-" + outcome._id);
 		for (var i=0; i<chosenAnswers.length; i++) {
 			completedDataString+= ("-Answer-" + chosenAnswers[i]._id);
+		}
+		if (outcome) {
+			completedDataString+= ("-Outcome-" + outcome._id);
 		}
 
 		PUT(completedDataString, null);

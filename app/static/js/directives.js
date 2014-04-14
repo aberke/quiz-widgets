@@ -25,7 +25,6 @@ var quizzes = function(APIservice, UserFactory) {
 			} else {
 				endpoint = '/quiz/all';
 			}
-			console.log(endpoint)
 			APIservice.GET(endpoint).then(function(data) {
 				scope.quizList = data;
 				$.getScript("/widget/q.js"); /* now load the quizzes */
@@ -63,6 +62,30 @@ var quizzes = function(APIservice, UserFactory) {
 			scope.claimQuiz = claimQuiz;
 			scope.relinquishQuiz = relinquishQuiz;
 		},
+	}
+}
+
+var editQuestionsPartial = function() {
+	return {
+		restrict: 'EA',
+		templateUrl: "/directiveTemplates/edit-questions-partial.html",
+	}
+}
+var editQuizPartial = function(UIService) {
+
+	return {
+		restrict: 'EA',
+		link: function(scope, element, attrs) {
+			
+			scope.$watch(
+				'quiz.pic_url',
+				function() { UIService.updateQuizPic(scope.quiz.pic_url); }
+			);
+			scope.$watch('quiz.custom_styles',
+				function(styles) { UIService.setCustomStyles(styles); }
+			);
+		},
+		templateUrl: "/directiveTemplates/edit-quiz-partial.html",
 	}
 }
 
@@ -157,7 +180,7 @@ var answerKeyContainer = function() {
 var outcomeContainer = function() {
 	function setStyle(model, element) {
 		var backgroundImage = "none";
-		if (model.pic_url && model.pic_style && model.pic_style != 'float-right') {
+		if (model.pic_url && model.pic_style != 'float-right') {
 			backgroundImage = ("url('" + model.pic_url + "')");
 		}
 		element.style.backgroundImage = backgroundImage;
