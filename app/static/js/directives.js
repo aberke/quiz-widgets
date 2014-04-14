@@ -25,6 +25,7 @@ var quizzes = function(APIservice, UserFactory) {
 			} else {
 				endpoint = '/quiz/all';
 			}
+			console.log(endpoint)
 			APIservice.GET(endpoint).then(function(data) {
 				scope.quizList = data;
 				$.getScript("/widget/q.js"); /* now load the quizzes */
@@ -62,30 +63,6 @@ var quizzes = function(APIservice, UserFactory) {
 			scope.claimQuiz = claimQuiz;
 			scope.relinquishQuiz = relinquishQuiz;
 		},
-	}
-}
-
-var editQuestionsPartial = function() {
-	return {
-		restrict: 'EA',
-		templateUrl: "/directiveTemplates/edit-questions-partial.html",
-	}
-}
-var editQuizPartial = function(UIService) {
-
-	return {
-		restrict: 'EA',
-		link: function(scope, element, attrs) {
-			
-			scope.$watch(
-				'quiz.pic_url',
-				function() { UIService.updateQuizPic(scope.quiz.pic_url); }
-			);
-			scope.$watch('quiz.custom_styles',
-				function(styles) { UIService.setCustomStyles(styles); }
-			);
-		},
-		templateUrl: "/directiveTemplates/edit-quiz-partial.html",
 	}
 }
 
@@ -159,25 +136,17 @@ var imgInputLabel = function() {
 		templateUrl: '/directiveTemplates/img-input-label.html',
 	}
 }
-
-
-
-/* ---------------------- slides below ---------------------------- */
-
 var titleContainer = function() {
 	return {
-		restrict: 'EC',
+		restrict: 'E',
 		templateUrl: '/directiveTemplates/title-container.html',
-	}
-}
-var answerKeyContainer = function() {
-	return {
-		restrict: 'EC',
-		templateUrl: '/directiveTemplates/answer-key-container.html',
 	}
 }
 
 var outcomeContainer = function() {
+	function modifyContainer(scope, element) {
+		element.className += " outcome-container slide";
+	}
 	function setStyle(model, element) {
 		var backgroundImage = "none";
 		if (model.pic_url && model.pic_style && model.pic_style != 'float-right') {
@@ -186,7 +155,7 @@ var outcomeContainer = function() {
 		element.style.backgroundImage = backgroundImage;
 	}
 	return {
-		restrict: 'A', // if its class, could interfere with set recresh_icon_url
+		restrict: 'E',
 		link: function(scope, element, attrs) {
 			var content = element[0].querySelector('.outcome-content');
 			
@@ -198,6 +167,7 @@ var outcomeContainer = function() {
 			});
 
 			setStyle(scope.outcome, content);
+			modifyContainer(scope, element[0]);
 		},
 		templateUrl: '/directiveTemplates/outcome-container.html',
 	}
