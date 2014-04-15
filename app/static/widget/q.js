@@ -22,16 +22,10 @@
 	}
 
 
-<<<<<<< Updated upstream
 	this.QuizWidgets = {};
 	this.QuizFunctions = null;
 	this.QuizMobile;
-=======
 
-
-	this.quizWidgets = {};
-	var mobile = false;
->>>>>>> Stashed changes
 
 	var scripts 	= [
 					   	(static_domain + "/widget/quiz-logic.js"),

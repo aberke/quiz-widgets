@@ -54,7 +54,12 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     var quizData = quizData;
     var quizID = quizData._id;
     var quizClassName = ('quiz-' + quizID);
+<<<<<<< Updated upstream
     var onclickPrefix = ("QuizWidgets['" + quizID + "']");
+
+=======
+    var onclickPrefix = ("quizWidgets['" + quizID + "']");
+>>>>>>> Stashed changes
 
     var gameLogic;
     var slidesCntl;
