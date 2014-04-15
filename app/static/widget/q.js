@@ -9,8 +9,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	//var domain = 'http://127.0.0.1:8080';
-	var domain = 'http://quizwidget-petri.dotcloud.com';
+	var domain = 'http://127.0.0.1:8080';
+	//var domain = 'http://quizwidget-petri.dotcloud.com';
 
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
@@ -152,13 +152,6 @@
 
 		PUT(completedDataString, null);
 	}
-
-	function load_quiz_info(quizID, container){
-		GET("/api/quiz/" + quizID, function(data) {
-			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizStartedCallback, quizCompletedCallback, quizRestartedCallback);
-			this.quizWidgets[quizID] = widget;
-		});
-	};
 	var addWindowFunction = function(f_name, f) {
 		window[f_name] = f;
 	}
@@ -270,28 +263,57 @@
 		/* Huffpost decided it was a great idea to make EVERY IMAGE PINABLE - no thanks, especially not on the images that are actually my facebook buttons... awkward.. */
 		container.className += " no-pin";
 	}
+	function showLoading(container) {
+		if (!container) { return; }
+		/* show only the loading gif */
+		container.style.display = "none";
+		
+		var loadingGif = document.createElement("img");
+		loadingGif.src = (static_domain + "/widget/icon/loading.gif");
+		loadingGif.className = "huffpostlabs-loading";
+		loadingGif.style.display = "block";
+		loadingGif.style.margin = "auto";
+		container.parentNode.insertBefore(loadingGif, container.nextSibling);
+	}
+	function doneLoadingCallback(container) {
+		/* undoes the work of showLoading - shows widget and removes loading gif */
+		container.style.display = 'block';
+        container.parentNode.removeChild(container.nextSibling);
+	}
+
+	function load_quiz_info(quizID, container, callback){
+		if (!quizID) { return null; }
+		/* load quiz data - create quiz widet object, replace loading display with widget */
+        GET("/api/quiz/" + quizID, function(data) {
+			this.quizWidgets[quizID] = new HuffpostLabsQuizObject(container, data, mobile, quizStartedCallback, quizCompletedCallback, quizRestartedCallback);
+			doneLoadingCallback(container);
+        	if (callback) { callback(); }
+		});
+	};
 
 	// load dependencies before calling main
 	function main(){
-		setupFB();
-		setupTwitter();
 
 		mobile = isMobile();
-		if (mobile) { 
-			console.log('MOBILE');
-		}
 
 		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
-		for (var i=0; i<widgetContainers.length; i++) {
-			var container = widgetContainers[i];
-			var quizID = container.id;
-			if (quizID) {
-				load_quiz_info(quizID, container);
+		
+		loadDependencies(function() { /* callback after stylesheets and scripts loaded */
+			for (var i=0; i<widgetContainers.length; i++) {
+				var container = widgetContainers[i];
+				/* load quiz data - create quiz widet object, replace loading display with widget */
+				load_quiz_info(container.id, container);
 			}
-			disablePinterestBullshit(container);
+		});
+		/* while loading that quizData.... */
+		for (var c=0; c<widgetContainers.length; c++) {
+			showLoading(widgetContainers[c]);
+			disablePinterestBullshit(widgetContainers[c]);
 		}
+		setupFB();
+		setupTwitter();
 	}
-	loadDependencies(main);
+	main();
 
 	return {quizWidgets: this.quizWidgets};	
 })();
