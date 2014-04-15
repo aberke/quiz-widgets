@@ -1,6 +1,5 @@
 var HuffpostLabsSocialNetworks = function() {
 
-
 	var setupTwitter = function() {
 		window.HuffpostLabsShareTwitter = function(text, url, callback) {
 			var twitterURL = 'https://twitter.com/share?';
@@ -79,14 +78,6 @@ var HuffpostLabsSocialNetworks = function() {
 			shareData.method  = 'feed';
 			shareData.picture = (shareData.picture || defaultSharePicture);
 			shareData.link 	  = (shareData.link    || window.location.href);
-			// FB.ui({
-			// 	method: 'feed',
-			// 	name: shareData.name,
-			// 	picture: (shareData.picture 		|| defaultSharePicture),
-			// 	link: (shareData.link 				|| window.location.href),
-			// 	caption: (shareData.caption 		|| ''),
-			// 	description: (shareData.description || ''),
-			// },
 			FB.ui(shareData, function(response) {
 				if (response && response.post_id) {
 					if (onSuccess) { onSuccess(); }

@@ -44,7 +44,7 @@ var HuffpostLabsSlidesCntl = function(container) {
     return { transitionNext: transitionNext, transitionPrev: transitionPrev, init: init };
 }
 
-var HuffpostLabsQuizObject = function(container, quizData) { //, mobile, startedCallback, completedCallback, restartedCallback) {
+var HuffpostLabsQuizObject = function(container, quizData) {
     console.log('quizData', quizData)
 
     var static_domain = "http://quiz.huffingtonpost.com"; // akamai cache

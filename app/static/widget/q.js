@@ -218,7 +218,6 @@
 		});
 	};
 
-	// load dependencies before calling main
 	function main(){
 
 		this.QuizMobile = isMobile();
@@ -240,10 +239,8 @@
 		setupGlobalQuizFunctions();
 	}
 	main();
-	console.log('*****s',this.QuizFunctions, this.QuizWidgets)
 
 	return {
-		What:'What',
 		QuizWidgets: this.quizWidgets,
 		QuizFunctions: this.QuizFunctions,
 		QuizMobile: this.QuizMobile,
