@@ -31,7 +31,8 @@
 
 	var scripts 	= [
 					   	(static_domain + "/widget/quiz-object.js"),
-					   	(static_domain + "/lib/btn-master.js"),
+					   	(static_domain + "/widget/lib/btn-master.js"),
+					   	(static_domain + "/widget/lib/social-network-sharing.js"),
 					   ];
 	var stylesheets = [(static_domain + "/widget/widget.css")];
 
