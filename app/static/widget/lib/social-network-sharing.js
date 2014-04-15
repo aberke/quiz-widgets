@@ -1,4 +1,4 @@
-function HuffpostLabsSocialNetworks() {
+var HuffpostLabsSocialNetworks = function() {
 
 
 	var setupTwitter = function() {
@@ -19,7 +19,6 @@ function HuffpostLabsSocialNetworks() {
 	      only share on facebook if its from huffpost domain or other if specified -
 	            - need app for each domain
 	   */
-
 		var defaultSharePicture = "http://www.huffingtonpost.com/favicon.ico";
 	    var appIDMap = {
 	    				/* application specific sharing support */
@@ -77,15 +76,18 @@ function HuffpostLabsSocialNetworks() {
 
 
 		window.HuffpostLabsShareFB = function(shareData, onSuccess, onError) {
-			FB.ui({
-				method: 'feed',
-				name: shareData.name,
-				picture: (shareData.picture 		|| defaultSharePicture),
-				link: (shareData.link 				|| window.location.href),
-				caption: (shareData.caption 		|| ''),
-				description: (shareData.description || ''),
-			}, 
-			function(response) {
+			shareData.method  = 'feed';
+			shareData.picture = (shareData.picture || defaultSharePicture);
+			shareData.link 	  = (shareData.link    || window.location.href);
+			// FB.ui({
+			// 	method: 'feed',
+			// 	name: shareData.name,
+			// 	picture: (shareData.picture 		|| defaultSharePicture),
+			// 	link: (shareData.link 				|| window.location.href),
+			// 	caption: (shareData.caption 		|| ''),
+			// 	description: (shareData.description || ''),
+			// },
+			FB.ui(shareData, function(response) {
 				if (response && response.post_id) {
 					if (onSuccess) { onSuccess(); }
 				} else {
@@ -103,7 +105,6 @@ function HuffpostLabsSocialNetworks() {
     	stylesheet.innerHTML = rules; 
 		console.log('FB sharing disabled.');
 	}
-
 
 	setupTwitter();
 	setupFB();
