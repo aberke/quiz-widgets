@@ -39,6 +39,8 @@ since last email
 TODO
 ---
 
+- merge in loading gif on branch fixes
+
 - assign arbitrary amount of points to outcome in answers
 
 - in API better handling of (err || !model)
