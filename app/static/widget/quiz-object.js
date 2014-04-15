@@ -135,12 +135,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         outcomeMap = createOutcomeMap(quizData.outcomeList);
         addCustomStyles();
 
-        container.style.display = 'none';
         buildWidget();
         setupSlides();
         handleMobile();
 
-        container.style.display = 'block';
     }
     function reloadData(data) {
         quizData = data;
