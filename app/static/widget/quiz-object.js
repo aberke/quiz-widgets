@@ -85,6 +85,14 @@ var HuffpostLabsQuizObject = function(container, quizData) {
             updateOutcomeContent(container, outcome);
             QuizFunctions.quizCompleted(quizData, outcome, chosenAnswers);
         }
+    }
+    function incrementOutcome(outcomeID) {
+        var o = outcomeMap[outcomeID];
+        o.points += 1;
+        if (!leadingOutcome || o.points > leadingOutcome.points) {
+            leadingOutcome = o;
+            updateOutcomeContent(o);
+        }
         slidesCntl.transitionNext();
     }
     function nextSlide() {
@@ -97,7 +105,13 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     }
     function init(){
         chosenAnswers = [];
-        gameLogic = new QuizLogic(quizData);
+        
+        if (quizData.type == 'trivia-quiz') {
+            gameLogic = new TriviaLogic(quizData);
+        } else {
+            gameLogic = new QuizLogic(quizData);
+        }
+
         addCustomStyles();
 
         buildWidget();
@@ -287,12 +301,9 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     }
     function questionAnswersContainerHTML(question) {
         var onclickAnswer       = onclickPrefix + ".answer(this)"; // complemented by data-quiz-answer=ANSWER-INDEX
-
-        var onclickStart        = onclickPrefix + ".startQuiz(this)";
         var onclickShareFB      = onclickPrefix + ".shareQuizFB()";
         var onclickShareTwitter = onclickPrefix + ".shareQuizTwitter()";
-
-        var onclickPrevBtn = "QuizWidgets['" + quizID + "'].previous(this)";
+        var onclickPrevBtn      = onclickPrefix + ".previous(this)";
 
         var html = "<div class='slide'>";
             html+= "    <div class='question-share-container'>";
@@ -355,6 +366,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         var onclickShareTwitter = onclickPrefix + ".shareOutcomeTwitter()";
         var onclickRefresh      = onclickPrefix + ".refresh()";
         var onclickNextSlide    = onclickPrefix + ".nextSlide()";
+
 
         var html = "<div class='slide outcome-container'>";
             html+= "    <div class='outcome-content'>";

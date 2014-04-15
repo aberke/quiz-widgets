@@ -47,9 +47,12 @@ TODO
 	- put handler in util
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
 
+=======
+>>>>>>> master
 =======
 >>>>>>> master
 - handle native apps
