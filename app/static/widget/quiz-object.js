@@ -54,16 +54,12 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     var quizData = quizData;
     var quizID = quizData._id;
     var quizClassName = ('quiz-' + quizID);
+    var onclickPrefix = ("QuizWidgets['" + quizID + "']");
 
     var gameLogic;
     var slidesCntl;
     var btnMaster;
-    //var outcomeContent;
-
-    //var questionList;
-    //var currQuestionIndex;
-    //var outcomeMap; // {_outcomeID: outcomeObject}
-    //var leadingOutcome; // set to null in init
+    
     var chosenAnswers; // []
 
 
@@ -74,10 +70,8 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     function previous() { /* inverse of answer */
         slidesCntl.transitionPrev();
         if (chosenAnswers.length) { /* start button doesn't increment it */
-            currQuestionIndex -= 1;
             var previousAnswer = chosenAnswers.pop();
             gameLogic.unchooseAnswer(previousAnswer);
-            //decrementOutcome(previousAnswer._outcome); /* decrement after transition because it is expensive iteration and it doesn't matter if user sees previous slide first */
         }
     }
     function answer(huffpostLabsBtn) { /* the onclick handler is on the huffpostLabsBtn marked with the data-huffpostlabs-btn tag */
@@ -85,71 +79,29 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         var answer = gameLogic.answer(index);
         chosenAnswers.push(answer);
 
-<<<<<<< HEAD
         outcome = gameLogic.outcome(); // returns null if quiz not completed
         if (outcome) {
             updateOutcomeContent(container, outcome);
-            completedCallback(quizData, chosenAnswers, outcome);
-=======
-        if (currQuestionIndex == questionList.length) {
-            QuizFunctions.quizCompleted(quizData, leadingOutcome, chosenAnswers);
->>>>>>> master
+            QuizFunctions.quizCompleted(quizData, chosenAnswers, outcome);
         }
         slidesCntl.transitionNext();
-
-
     }
     function nextSlide() {
         slidesCntl.transitionNext();
     }
-    // function incrementOutcome(outcomeID) {
-    //     var o = outcomeMap[outcomeID];
-    //     o.points += 1;
-    //     if (!leadingOutcome || o.points > leadingOutcome.points) {
-    //         leadingOutcome = o;
-    //         updateOutcomeContent(o);
-    //     }
-    //     return leadingOutcome;
-    // }
-    // function decrementOutcome(outcomeID) {
-    //     outcomeMap[outcomeID].points -= 1;
-    //     for (var outcomeID in outcomeMap) {
-    //         if (outcomeMap[outcomeID].points > leadingOutcome.points) {
-    //             leadingOutcome = outcomeMap[outcomeID];
-    //         }
-    //     }
-    // }
 
     function setupSlides() {
         slidesCntl = new HuffpostLabsSlidesCntl(container);
         slidesCntl.init();
     }
-    // function createOutcomeMap(outcomeList) {
-    //     map = {};
-    //     for (var i=0; i<outcomeList.length; i++) {
-    //         var o = outcomeList[i];
-    //         o.points = 0;
-    //         map[o._id] = o;
-    //     }
-    //     return map;
-    // }
     function init(){
         chosenAnswers = [];
-        //leadingOutcome = null;
-        //questionList = quizData.questionList;
-        //currQuestionIndex = 0;
         gameLogic = new QuizLogic(quizData);
-        //outcomeMap = createOutcomeMap(quizData.outcomeList);
         addCustomStyles();
 
         buildWidget();
         setupSlides();
         handleMobile();
-<<<<<<< HEAD
-        container.style.display = 'block';
-=======
-
->>>>>>> master
     }
     function reloadData(data) {
         quizData = data;
@@ -157,10 +109,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     }
     function refresh() {
         console.log('refresh')
-        //leadingOutcome = null;
         chosenAnswers = [];  /* array of answer objects */
-        //currQuestionIndex = 0;
-        //outcomeMap = createOutcomeMap(quizData.outcomeList);
         gameLogic.reset();
         slidesCntl.init();
         QuizFunctions.quizRestarted(quizData);
@@ -267,10 +216,10 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     }
 
     function titleContainerHTML() {
-        var onclickStart = "QuizWidgets['" + quizID + "'].startQuiz(this)";
-        var onclickShareFB = "QuizWidgets['" + quizID + "'].shareQuizFB()";
-        var onclickShareTwitter = "QuizWidgets['" + quizID + "'].shareQuizTwitter()";
-        var onclickEmbedCode = "QuizWidgets['" + quizID + "'].embedCode()";
+        var onclickStart        = onclickPrefix + ".startQuiz(this)";
+        var onclickShareFB      = onclickPrefix + ".shareQuizFB()";
+        var onclickShareTwitter = onclickPrefix + ".shareQuizTwitter()";
+        var onclickEmbedCode    = onclickPrefix + ".embedCode()";
         
         var embedString = '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>';
         
@@ -336,11 +285,11 @@ var HuffpostLabsQuizObject = function(container, quizData) {
 
     }
     function questionAnswersContainerHTML(question) {
-        var onclickAnswer = "QuizWidgets['" + quizID + "'].answer(this)"; // complemented by data-quiz-answer=ANSWER-INDEX
+        var onclickAnswer       = onclickPrefix + ".answer(this)"; // complemented by data-quiz-answer=ANSWER-INDEX
 
-        var onclickStart = "QuizWidgets['" + quizID + "'].startQuiz(this)";
-        var onclickShareFB = "QuizWidgets['" + quizID + "'].shareQuizFB()";
-        var onclickShareTwitter = "QuizWidgets['" + quizID + "'].shareQuizTwitter()";
+        var onclickStart        = onclickPrefix + ".startQuiz(this)";
+        var onclickShareFB      = onclickPrefix + ".shareQuizFB()";
+        var onclickShareTwitter = onclickPrefix + ".shareQuizTwitter()";
 
         var onclickPrevBtn = "QuizWidgets['" + quizID + "'].previous(this)";
 
@@ -395,23 +344,16 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         
         if (outcome.pic_url && outcome.pic_style != "float-right") {
             outcomeContent.style.backgroundImage = "url(" + outcome.pic_url + ")";
-        } else { /* in case it was previously set, need to remove it */
-            // TODO: TAKE OUT??
+        } else { /* in case it was previously set, then quiz refreshed, need to remove it */
             outcomeContent.style.backgroundImage = "none";
         }
         outcomeContent.innerHTML = outcomeContentHTML(outcome);
     }
     function outcomeContainerHTML() {
-<<<<<<< HEAD
-        var onclickShareFB = "quizWidgets['" + quizID + "'].shareOutcomeFB()";
-        var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareOutcomeTwitter()";
-        var onclickRefresh = "quizWidgets['" + quizID + "'].refresh()";
-        var onclickNextSlide = "quizWidgets['" + quizID + "'].nextSlide()";
-=======
-        var onclickShareFB = "QuizWidgets['" + quizID + "'].shareOutcomeFB()";
-        var onclickShareTwitter = "QuizWidgets['" + quizID + "'].shareOutcomeTwitter()";
-        var onclickRefresh = "QuizWidgets['" + quizID + "'].refresh()";
->>>>>>> master
+        var onclickShareFB      = onclickPrefix + ".shareOutcomeFB()";
+        var onclickShareTwitter = onclickPrefix + ".shareOutcomeTwitter()";
+        var onclickRefresh      = onclickPrefix + ".refresh()";
+        var onclickNextSlide    = onclickPrefix + ".nextSlide()";
 
         var html = "<div class='slide outcome-container'>";
             html+= "    <div class='outcome-content'>";

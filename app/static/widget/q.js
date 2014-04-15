@@ -22,9 +22,16 @@
 	}
 
 
+<<<<<<< Updated upstream
 	this.QuizWidgets = {};
 	this.QuizFunctions = null;
 	this.QuizMobile;
+=======
+
+
+	this.quizWidgets = {};
+	var mobile = false;
+>>>>>>> Stashed changes
 
 	var scripts 	= [
 					   	(static_domain + "/widget/quiz-logic.js"),
@@ -83,7 +90,6 @@
 	var addWindowFunction = function(f_name, f) {
 		window[f_name] = f;
 	}
-
 	/* helper for 'getting' and 'posting' 
 		
 		- using static_domain for GET requests and true domain for POSTS

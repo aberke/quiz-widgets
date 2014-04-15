@@ -19,9 +19,9 @@ function QuizLogic(quizData) {
     }
     var decrementOutcome = function(outcomeID) {
         outcomeMap[outcomeID].points -= 1;
-        for (var outcomeID in outcomeMap) {
-            if (outcomeMap[outcomeID].points > leadingOutcome.points) {
-                leadingOutcome = outcomeMap[outcomeID];
+        for (var id in outcomeMap) {
+            if (outcomeMap[id].points > leadingOutcome.points) {
+                leadingOutcome = outcomeMap[id];
             }
         }
     }
