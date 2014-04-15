@@ -205,25 +205,27 @@ var HuffpostLabsQuizObject = function(container, quizData) { //, mobile, started
         addStyle(styles);
     }
     function shareFB(quiz, outcome) {
-            /* perhaps all this logic should be in quiz-object.js ? */
-        var quizShare = (quiz.share || {});
-        var outcomeShare = (outcome.share || {});
-
         var shareData = {
-            'name': quiz.title,
-            picture: (outcomeShare.pic_url || outcome.pic_url || quizShare.pic_url || quiz.pic_url),
-            link: (quizShare.link),
-            caption: (outcome ? (outcomeShare.caption || 'I got: ' + outcome.text) : (quizShare.caption || 'Find out..')),
-            description: (outcomeShare.description || outcome.description || quizShare.description || ''),
+            name:       quiz.title,
+            link:       (quiz.share.link),
+            caption:    (quiz.share.caption      || 'Find out..'),
+            picture:    (quiz.share.pic_url      || quiz.pic_url),
+            description:(quiz.share.description  || '')
+        };
+        // outcome related things take precedence over just quiz
+        if (outcome) {
+            shareData.picture     = (outcome.share.pic_url || outcome.pic_url || shareData.picture);
+            shareData.caption     = (outcome.share.caption || 'I got: ' + outcome.text);
+            shareData.description = (outcome.share.description || outcome.description || shareData.description);
         }
-        QuizFunctions.fbShare(shareData, (outcomeShare||quizShare||null));
+        QuizFunctions.fbShare(shareData, (outcome ? outcome.share : quiz.share));
     }
 
     function shareQuizFB() {
-        shareFB(quiz);
+        shareFB(quizData);
     }
     function shareOutcomeFB() {
-        shareFB(quizData,leadingOutcome);
+        shareFB(quizData, leadingOutcome);
     }
     function shareQuizTwitter() {
         QuizFunctions.twitterShare(quizData.title, quizData.share);

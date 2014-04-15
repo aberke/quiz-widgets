@@ -25,7 +25,7 @@ var HuffpostLabsSocialNetworks = function() {
 	    				"http://YOUR-SPECIFIC-DOMAIN": 'YOUR-SPECIFIC-APP-ID',
 
 	    				"http://quizwidget-petri.dotcloud.com": '611233398931791',
-					     //"http://42461ba5.ngrok.com": '502717763181151',
+					    "http://7edc0fcb.ngrok.com": '502717763181151',
 
 
 
