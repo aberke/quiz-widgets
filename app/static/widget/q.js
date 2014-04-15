@@ -8,8 +8,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
-	//var domain = 'http://127.0.0.1:8080';
-	var domain = 'http://quizwidget-petri.dotcloud.com';
+	var domain = 'http://127.0.0.1:8080';
+	//var domain = 'http://quizwidget-petri.dotcloud.com';
 
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
@@ -191,7 +191,7 @@
 		container.className += " no-pin";
 	}
 	function showLoading(container) {
-		if (!container) { return; }
+		if (!container || (container.className.indexOf("quiz-edit") > -1)) { return; }
 		/* show only the loading gif */
 		container.style.display = "none";
 		
@@ -205,7 +205,9 @@
 	function doneLoadingCallback(container) {
 		/* undoes the work of showLoading - shows widget and removes loading gif */
 		container.style.display = 'block';
-        container.parentNode.removeChild(container.nextSibling);
+		if (container.nextSibling.className.indexOf("huffpostlabs-loading") > -1) {
+        	container.parentNode.removeChild(container.nextSibling);
+		}
 	}
 
 	function createQuiz(quizID, container, callback){
