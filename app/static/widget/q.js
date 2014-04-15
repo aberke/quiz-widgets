@@ -242,7 +242,7 @@
 	main();
 
 	return {
-		QuizWidgets: this.quizWidgets,
+		QuizWidgets: this.QuizWidgets,
 		QuizFunctions: this.QuizFunctions,
 		QuizMobile: this.QuizMobile,
 	};	

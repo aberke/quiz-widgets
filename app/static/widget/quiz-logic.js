@@ -1,10 +1,10 @@
+/* Handles the Game Logic of quizzes.
 
+
+*/
 
 
 function QuizLogic(quizData) {
-	console.log(quizData, 'QuizLogic')
-    // gets the quizData and takes what it needs
-    var quizData = quizData; 
     var questionList = quizData.questionList;
     var outcomeList = quizData.outcomeList;
     var outcomeMap;

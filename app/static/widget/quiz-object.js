@@ -54,12 +54,8 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     var quizData = quizData;
     var quizID = quizData._id;
     var quizClassName = ('quiz-' + quizID);
-<<<<<<< Updated upstream
     var onclickPrefix = ("QuizWidgets['" + quizID + "']");
 
-=======
-    var onclickPrefix = ("quizWidgets['" + quizID + "']");
->>>>>>> Stashed changes
 
     var gameLogic;
     var slidesCntl;
@@ -87,7 +83,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         outcome = gameLogic.outcome(); // returns null if quiz not completed
         if (outcome) {
             updateOutcomeContent(container, outcome);
-            QuizFunctions.quizCompleted(quizData, chosenAnswers, outcome);
+            QuizFunctions.quizCompleted(quizData, outcome, chosenAnswers);
         }
         slidesCntl.transitionNext();
     }
