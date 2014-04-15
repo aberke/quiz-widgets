@@ -46,11 +46,6 @@ TODO
 	- return 500 if err
 	- put handler in util
 
-- better handle when user is unknowingly signed out
-
-- put all the fb sharing stuff in its own 'library as external script'
-	- for labs reuse
-
 - handle native apps
 	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 
