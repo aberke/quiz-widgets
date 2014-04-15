@@ -46,9 +46,12 @@ TODO
 	- return 500 if err
 	- put handler in util
 
+<<<<<<< HEAD
 - put all the fb sharing stuff in its own 'library as external script'
 	- for labs reuse
 
+=======
+>>>>>>> master
 - handle native apps
 	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 

@@ -5,7 +5,6 @@
 */
 
 
-
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 
@@ -23,145 +22,64 @@
 	}
 
 
-
-
-	this.quizWidgets = {};
-	var mobile = false;
-	var contentModule;
+	this.QuizWidgets = {};
+	this.QuizFunctions = null;
+	this.QuizMobile;
 
 	var scripts 	= [
-					   	(static_domain + "/widget/quiz-object.js"),
 					   	(static_domain + "/widget/quiz-logic.js"),
-					   	(static_domain + "/lib/btn-master.js"),
+					   	(static_domain + "/widget/quiz-object.js"),
+					   	(static_domain + "/widget/lib/btn-master.js"),
+					   	(static_domain + "/widget/lib/social-network-sharing.js"),
 					   ];
 	var stylesheets = [(static_domain + "/widget/widget.css")];
 
 
-	var setupTwitter = function() {
-		window.twitterShare = function(text, share) {
-			var twitterURL = 'https://twitter.com/share?url=' + (share.link || window.location.href) + '&text=' + (text || '') + '&via=HuffPostLabs&hashtags=huffpostQuiz';
-			window.open(twitterURL, 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=300,height=300');
-			PUT("/api/share/" + share._id + "/increment-twitter-count", null);
-		}
-	}
-	var setupFB = function() {
-	    /*
-	    facebook sharing plan:
-	      only share on facebook if its from huffpost domain (or dotcloud or ngrok domain) -
-	            - need app for each domain
-	   */
+	var setupGlobalQuizFunctions = function() {
+		/* define a set of quiz functions that are global
+			- defined functions are callable by 
+				quizFunctions.f_name(arguments)
+		*/
+		this.QuizFunctions = (this.QuizFunctions || {});
 
-	    /* NEED: <div style="display:none" id="fb-root"></div> */
-	    var fb_root_div = document.getElementById('fb-root');
-	    if (!fb_root_div) {
-			fb_root_div = document.createElement('div');
-			fb_root_div.id = 'fb-root';
-			fb_root_div.style.display = 'none';
-			document.body.appendChild(fb_root_div);
-	    }
-		var defaultQuizPicUrl = static_domain + "/icon/huffpost-H.png";
-	    var appIDMap = { "http://quizwidget-petri.dotcloud.com": '611233398931791',
-					     //"http://42461ba5.ngrok.com": '502717763181151',
-
-					     "http://www.huffingtonpost.com": '1427100424195799',
-					     "http://code.huffingtonpost.com": '1427100424195799',
-					     "http://huffingtonpost.com": '1427100424195799',
-					     "http://m.huffpost.com": '1427100424195799',
-					     "http://p.huffingtonpost.com": '1427100424195799',
-					};
-
-		var appID = appIDMap[window.location.origin];
-		if (!appID) { /* NO FB SHARING */
-			console.log('FB sharing disabled.')
-			/* hide all the share buttons */
-			var rules = ".fb-share-btn,huffpostlabs-quiz .fb-share-btn{display:none}";
-			var stylesheet = document.createElement('style');
-    		document.body.appendChild(stylesheet);
-        	stylesheet.innerHTML = rules; 
-			return;
-		}
-
-	   /* ------------- necessary setup straight from FB ------------- */
-	   if (window.FB == undefined) {
-	   	console.log('window.FB == undefined');
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : appID,
-				status     : true,
-				xfbml      : true
+		this.QuizFunctions.twitterShare = function(text, share) {
+			/* using HuffpostLabs social-network-sharing library */
+			HuffpostLabsShareTwitter(text, share.link, function() {
+				PUT("/api/share/" + share._id + "/increment-twitter-count", null);
 			});
-		};
-		(function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) {return;}js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/all.js";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
-	   }
-		/* ------------- necessary setup straight from FB above ----------- */
-		
-
-		window.fbShareQuiz = function(quiz) {
-			var quizShare = (quiz.share || {});
-			FB.ui({
-				method: 'feed',
-				name: quiz.title,
-				picture: (quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
-				link: (quizShare.link || window.location.href),
-				caption: (quizShare.caption || 'Find out..'),
-				description: (quizShare.description || ''),
-			}, 
-			function(response) {
-				if (response && response.post_id) {
-					console.log('FB quiz post was published.');
-					/* log that it was shared */
-					if (!quiz.share._id) { return; }
-					PUT("/api/share/" + quiz.share._id + "/increment-fb-count", null);
+		}
+		this.QuizFunctions.fbShare = function(shareData, share) { 
+			/* using HuffpostLabs social-network-sharing library */
+			HuffpostLabsShareFB(shareData, function() {
+				console.log('FB quiz post was published.');
+				if (share._id) { /* log that it was shared */
+					PUT("/api/share/" + share._id + "/increment-fb-count", null);
 				}
 			});
 		}
-		window.fbShareOutcome = function(quiz, outcome) {
-			var quizShare = (quiz.share || {});
-			var outcomeShare = (outcome.share || {});
-			FB.ui({
-				method: 'feed',
-				name: quiz.title,
-				picture: (outcomeShare.pic_url || outcome.pic_url || quizShare.pic_url || quiz.pic_url || defaultQuizPicUrl),
-				link: (quizShare.link || window.location.href),
-				caption: (outcomeShare.caption || 'I got: ' + outcome.text),
-				description: (outcomeShare.description || outcome.description || quizShare.description || ''),
-			}, 
-			function(response) {
-				if (response && response.post_id) {
-					console.log('FB outcome post was published.');
-					/* log that it was shared */
-					if (!outcome.share._id) { return; }
-					PUT("/api/share/" + outcome.share._id + "/increment-fb-count", null);
-				}
-			});
+		this.QuizFunctions.quizStarted = function(quiz) {
+			PUT("/stats/" + quiz._id + "/increment/started-null", null);
 		}
-	}
-	var quizStartedCallback = function(quiz) {
-		PUT("/stats/" + quiz._id + "/increment/started-null", null);
-	}
-	var quizRestartedCallback = function(quiz) {
-		PUT("/stats/" + quiz._id + "/increment/restarted-null", null);
-	}
-	var quizCompletedCallback = function(quiz, chosenAnswers, outcome) {
-		/* increment counts for quiz, outcome and each chosenAnswer */
-		var completedDataString = ("/stats/" + quiz._id + "/increment/");
-			completedDataString+= ("completed-null");
-		for (var i=0; i<chosenAnswers.length; i++) {
-			completedDataString+= ("-Answer-" + chosenAnswers[i]._id);
+		this.QuizFunctions.quizRestarted = function(quiz) {
+			PUT("/stats/" + quiz._id + "/increment/restarted-null", null);
 		}
-		if (outcome) {
-			completedDataString+= ("-Outcome-" + outcome._id);
-		}
+		this.QuizFunctions.quizCompleted = function(quiz, outcome, chosenAnswers) {
+			/* increment counts for quiz, outcome and each chosenAnswer */
+			var completedDataString = ("/stats/" + quiz._id + "/increment/");
+				completedDataString+= ("completed-null");
+				completedDataString+= ("-Outcome-" + outcome._id);
+			for (var i=0; i<chosenAnswers.length; i++) {
+				completedDataString+= ("-Answer-" + chosenAnswers[i]._id);
+			}
 
-		PUT(completedDataString, null);
+			PUT(completedDataString, null);
+		}
 	}
 
-	function load_quiz_info(quizID, container){
-		GET("/api/quiz/" + quizID, function(data) {
-			var widget = new HuffpostLabsQuizObject(container, data, mobile, quizStartedCallback, quizCompletedCallback, quizRestartedCallback);
-			this.quizWidgets[quizID] = widget;
-		});
-	};
+
+
+
+
 	var addWindowFunction = function(f_name, f) {
 		window[f_name] = f;
 	}
@@ -273,29 +191,59 @@
 		/* Huffpost decided it was a great idea to make EVERY IMAGE PINABLE - no thanks, especially not on the images that are actually my facebook buttons... awkward.. */
 		container.className += " no-pin";
 	}
+	function showLoading(container) {
+		if (!container) { return; }
+		/* show only the loading gif */
+		container.style.display = "none";
+		
+		var loadingGif = document.createElement("img");
+		loadingGif.src = (static_domain + "/widget/icon/loading.gif");
+		loadingGif.className = "huffpostlabs-loading";
+		loadingGif.style.display = "block";
+		loadingGif.style.margin = "auto";
+		container.parentNode.insertBefore(loadingGif, container.nextSibling);
+	}
+	function doneLoadingCallback(container) {
+		/* undoes the work of showLoading - shows widget and removes loading gif */
+		container.style.display = 'block';
+        container.parentNode.removeChild(container.nextSibling);
+	}
 
-	// load dependencies before calling main
+	function createQuiz(quizID, container, callback){
+		if (!quizID) { return null; }
+		/* load quiz data - create quiz widet object, replace loading display with widget */
+        GET("/api/quiz/" + quizID, function(data) {
+			this.QuizWidgets[quizID] = new HuffpostLabsQuizObject(container, data);//, mobile, quizStartedCallback, quizCompletedCallback, quizRestartedCallback);
+			doneLoadingCallback(container);
+        	if (callback) { callback(); }
+		});
+	};
+
 	function main(){
-		setupFB();
-		setupTwitter();
 
-		mobile = isMobile();
-		if (mobile) { 
-			console.log('MOBILE');
-		}
+		this.QuizMobile = isMobile();
 
 		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
-		for (var i=0; i<widgetContainers.length; i++) {
-			var container = widgetContainers[i];
-			var quizID = container.id;
-			if (quizID) {
-				load_quiz_info(quizID, container);
+		
+		loadDependencies(function() { /* callback after stylesheets and scripts loaded */
+			for (var i=0; i<widgetContainers.length; i++) {
+				var container = widgetContainers[i];
+				/* create quiz widget object, replace loading display with widget */
+				createQuiz(container.id, container);
 			}
-			disablePinterestBullshit(container);
+		});
+		/* while loading that quizData.... */
+		for (var c=0; c<widgetContainers.length; c++) {
+			showLoading(widgetContainers[c]);
+			disablePinterestBullshit(widgetContainers[c]);
 		}
+		setupGlobalQuizFunctions();
 	}
-	loadDependencies(main);
+	main();
 
-	return {quizWidgets: this.quizWidgets};	
+	return {
+		QuizWidgets: this.quizWidgets,
+		QuizFunctions: this.QuizFunctions,
+		QuizMobile: this.QuizMobile,
+	};	
 })();
-

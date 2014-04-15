@@ -44,7 +44,7 @@ var HuffpostLabsSlidesCntl = function(container) {
     return { transitionNext: transitionNext, transitionPrev: transitionPrev, init: init };
 }
 
-var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallback, completedCallback, restartedCallback) {
+var HuffpostLabsQuizObject = function(container, quizData) {
     console.log('quizData', quizData)
 
     var static_domain = "http://quiz.huffingtonpost.com"; // akamai cache
@@ -52,7 +52,6 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
     var container = container;
     var quizData = quizData;
-    var isMobile = mobile;
     var quizID = quizData._id;
     var quizClassName = ('quiz-' + quizID);
 
@@ -70,7 +69,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
     function startQuiz(element) {
         slidesCntl.transitionNext();
-        startedCallback(quizData);
+        QuizFunctions.quizStarted(quizData);
     }
     function previous() { /* inverse of answer */
         slidesCntl.transitionPrev();
@@ -86,10 +85,15 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         var answer = gameLogic.answer(index);
         chosenAnswers.push(answer);
 
+<<<<<<< HEAD
         outcome = gameLogic.outcome(); // returns null if quiz not completed
         if (outcome) {
             updateOutcomeContent(container, outcome);
             completedCallback(quizData, chosenAnswers, outcome);
+=======
+        if (currQuestionIndex == questionList.length) {
+            QuizFunctions.quizCompleted(quizData, leadingOutcome, chosenAnswers);
+>>>>>>> master
         }
         slidesCntl.transitionNext();
 
@@ -138,11 +142,14 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         //outcomeMap = createOutcomeMap(quizData.outcomeList);
         addCustomStyles();
 
-        container.style.display = 'none';
         buildWidget();
         setupSlides();
         handleMobile();
+<<<<<<< HEAD
         container.style.display = 'block';
+=======
+
+>>>>>>> master
     }
     function reloadData(data) {
         quizData = data;
@@ -156,13 +163,13 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         //outcomeMap = createOutcomeMap(quizData.outcomeList);
         gameLogic.reset();
         slidesCntl.init();
-        restartedCallback(quizData);
+        QuizFunctions.quizRestarted(quizData);
     }
 
     function handleMobile() {
         /* turn all elements marked with the data-huffpostlabs-btn tag into HuffpostLabsBtns
             Collecting + converting these btns for given context handled by the HuffpostLabsBtnMaster */
-        if (isMobile) {
+        if (QuizMobile) {
             container.className += ' mobile';
         } else {
             container.className += ' non-mobile';
@@ -209,15 +216,31 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
         addStyle(styles);
     }
+    function shareFB(quiz, outcome) {
+        var shareData = {
+            name:       quiz.title,
+            link:       (quiz.share.link),
+            caption:    (quiz.share.caption      || 'Find out..'),
+            picture:    (quiz.share.pic_url      || quiz.pic_url),
+            description:(quiz.share.description  || '')
+        };
+        // outcome related things take precedence over just quiz
+        if (outcome) {
+            shareData.picture     = (outcome.share.pic_url || outcome.pic_url || shareData.picture);
+            shareData.caption     = (outcome.share.caption || 'I got: ' + outcome.text);
+            shareData.description = (outcome.share.description || outcome.description || shareData.description);
+        }
+        QuizFunctions.fbShare(shareData, (outcome ? outcome.share : quiz.share));
+    }
 
     function shareQuizFB() {
-        fbShareQuiz(quizData);
+        shareFB(quizData);
     }
     function shareOutcomeFB() {
-        fbShareOutcome(quizData, leadingOutcome);
+        shareFB(quizData, leadingOutcome);
     }
     function shareQuizTwitter() {
-        twitterShare(quizData.title, quizData.share);
+        QuizFunctions.twitterShare(quizData.title, quizData.share);
     }
     function shareOutcomeTwitter() {
         var text = 'I got: ';
@@ -226,7 +249,7 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         }
             text+= (leadingOutcome.text || leadingOutcome.share.caption || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
             text+= ' -- ' + quizData.title;
-        twitterShare(text, leadingOutcome.share);
+        QuizFunctions.twitterShare(text, leadingOutcome.share);
     }
     function shortenText(text, maxlength) {
         /* helper for sharing to twitter */
@@ -244,10 +267,10 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
     }
 
     function titleContainerHTML() {
-        var onclickStart = "quizWidgets['" + quizID + "'].startQuiz(this)";
-        var onclickShareFB = "quizWidgets['" + quizID + "'].shareQuizFB()";
-        var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
-        var onclickEmbedCode = "quizWidgets['" + quizID + "'].embedCode()";
+        var onclickStart = "QuizWidgets['" + quizID + "'].startQuiz(this)";
+        var onclickShareFB = "QuizWidgets['" + quizID + "'].shareQuizFB()";
+        var onclickShareTwitter = "QuizWidgets['" + quizID + "'].shareQuizTwitter()";
+        var onclickEmbedCode = "QuizWidgets['" + quizID + "'].embedCode()";
         
         var embedString = '<div class="huffpostlabs-quiz" id="' + quizID + '"></div><script src="' + static_domain + '/widget/q.js"></script>';
         
@@ -313,13 +336,13 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
 
     }
     function questionAnswersContainerHTML(question) {
-        var onclickAnswer = "quizWidgets['" + quizID + "'].answer(this)"; // complemented by data-quiz-answer=ANSWER-INDEX
+        var onclickAnswer = "QuizWidgets['" + quizID + "'].answer(this)"; // complemented by data-quiz-answer=ANSWER-INDEX
 
-        var onclickStart = "quizWidgets['" + quizID + "'].startQuiz(this)";
-        var onclickShareFB = "quizWidgets['" + quizID + "'].shareQuizFB()";
-        var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareQuizTwitter()";
+        var onclickStart = "QuizWidgets['" + quizID + "'].startQuiz(this)";
+        var onclickShareFB = "QuizWidgets['" + quizID + "'].shareQuizFB()";
+        var onclickShareTwitter = "QuizWidgets['" + quizID + "'].shareQuizTwitter()";
 
-        var onclickPrevBtn = "quizWidgets['" + quizID + "'].previous(this)";
+        var onclickPrevBtn = "QuizWidgets['" + quizID + "'].previous(this)";
 
         var html = "<div class='slide'>";
             html+= "    <div class='question-share-container'>";
@@ -379,10 +402,16 @@ var HuffpostLabsQuizObject = function(container, quizData, mobile, startedCallba
         outcomeContent.innerHTML = outcomeContentHTML(outcome);
     }
     function outcomeContainerHTML() {
+<<<<<<< HEAD
         var onclickShareFB = "quizWidgets['" + quizID + "'].shareOutcomeFB()";
         var onclickShareTwitter = "quizWidgets['" + quizID + "'].shareOutcomeTwitter()";
         var onclickRefresh = "quizWidgets['" + quizID + "'].refresh()";
         var onclickNextSlide = "quizWidgets['" + quizID + "'].nextSlide()";
+=======
+        var onclickShareFB = "QuizWidgets['" + quizID + "'].shareOutcomeFB()";
+        var onclickShareTwitter = "QuizWidgets['" + quizID + "'].shareOutcomeTwitter()";
+        var onclickRefresh = "QuizWidgets['" + quizID + "'].refresh()";
+>>>>>>> master
 
         var html = "<div class='slide outcome-container'>";
             html+= "    <div class='outcome-content'>";
