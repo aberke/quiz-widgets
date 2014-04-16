@@ -1,128 +1,169 @@
 /* Handles the Game Logic of quizzes.
 
-
+    Object Oriented
+            (OOP with javascript is ugly)
+        DefaultQuizLogic
+            and
+        TriviaQuizLogic
+            inherit from QuizLogic (Base Class)
 */
 
-function TriviaLogic(quizData) {
-    var questionList = quizData.questionList;
-    var outcomeList = quizData.outcomeList;
 
-    var outcomeMap; // {min_correct: outcome}
-    var correct_count;
-    var currQuestionIndex;
+var QuizLogic = function(quizData) { // Base Class
+    if (!quizData) { return; } // prevent further execution when just calling for sake of inheritance definition
+    
+    this.questionList = quizData.questionList;
+    this.outcomeList = quizData.outcomeList;
+    this.currQuestionIndex;
+    
+    this.outcomeMap;
 
-
-    this.correct = function() {
-        return correct_count;
-    }
-    this.answer = function(index) {
-        /* check call is valid -- return null if not */
-        if (currQuestionIndex >= questionList.length || questionList[currQuestionIndex].answerList.length <= index) { return null; } // invalid call of answer()
-        
-        var a = questionList[currQuestionIndex].answerList[index];
-        if (a.correct) { correct_count += 1; }
-        currQuestionIndex += 1;
-        return a;
-    }
-    this.unchooseAnswer = function(a) {
-        if (!a || currQuestionIndex < 1) { return; } // unchoose WHAT answer
-        currQuestionIndex -= 1;
-        if (a.correct) { correct_count -= 1; }
-    }
-    this.outcome = function() {
-        /* 
-            if there are no outcomes - return null
-            if quiz is incomplete - return null
-            otherwise - return outcome that best matches rules
-            possible that only outcomes don't match rules - return null
-        */
-        if (!outcomeList.length || currQuestionIndex < questionList.length) {
-            return null;
-        }
-        for (i=correct_count; i>=0; i--) {
-            if (outcomeMap[i]) { // this is the best option
-                return outcomeMap[i];
-            }
-        }
-        // There were no outcomes for this loser!
-        return null;
-    }
-    this.reset = function() {
-        correct_count = 0;
-        currQuestionIndex = 0;
-    }
-    this.init = function() {
-        outcomeMap = {};
-        for (var i=0; i<outcomeList.length; i++) {
-            var o = outcomeList[i];
-            outcomeMap[o.rules.min_correct] = o;
-        }
-        this.reset();
-    }
     this.init();
-
 }
-
-function QuizLogic(quizData) {
-    var questionList = quizData.questionList;
-    var outcomeList = quizData.outcomeList;
-
-    var outcomeMap;
-    var leadingOutcome;
-    var currQuestionIndex;
-
-    var incrementOutcome = function(outcomeID) {
-        var o = outcomeMap[outcomeID];
-        o.points += 1;
-        if (!leadingOutcome || o.points > leadingOutcome.points) {
-            leadingOutcome = o;
-        }
-    }
-    var decrementOutcome = function(outcomeID) {
-        outcomeMap[outcomeID].points -= 1;
-        for (var id in outcomeMap) {
-            if (outcomeMap[id].points > leadingOutcome.points) {
-                leadingOutcome = outcomeMap[id];
-            }
-        }
-    }
-    this.answer = function(index) {
-        if (currQuestionIndex >= questionList.length) { return null; } // invalid call of answer()
-        
-        var a = questionList[currQuestionIndex].answerList[index];
-        incrementOutcome(a._outcome);
-        currQuestionIndex += 1;
-        return a;
-    }
-    this.unchooseAnswer = function(a) {
-        if (!a || currQuestionIndex < 1) { return; } // unchoose WHAT answer
-        currQuestionIndex -= 1;
-        if (a.correct) { correct_count -= 1; }
-    }
-    this.outcome = function() {
-    	/* if quiz is complete - return leadingOutcome
-    		otherwise: return null
-    	*/
-        if (currQuestionIndex < questionList.length) {
-            return null;
-        } 
-        return leadingOutcome;
-    }
-
-    this.reset = function() {
-        leadingOutcome = null;
-        currQuestionIndex = 0;
-        outcomeMap = {};
-        for (var i=0; i<outcomeList.length; i++) {
-            var o = outcomeList[i];
-            o.points = 0;
-            outcomeMap[o._id] = o;
-        }
-    }
+QuizLogic.prototype.init = function() {
+    this.setupOutcomeMap();
     this.reset();
 }
+QuizLogic.prototype.reset = function() {
+    this.currQuestionIndex = 0;
+}
+QuizLogic.prototype.answer = function(index) {
+    /* return the answer if valid request - otherwise return null */
+    var question = this.questionList[this.currQuestionIndex];
+    //console.log('question',question,index)
+    if (!question || index < 0 || question.answerList.length <= index) { return null; }
+    
+    return question.answerList[index];
+}
+/* Validators used by subclasses */
+QuizLogic.prototype.validUnchooseAnswer = function(a) {
+    /* check call is valid -- return false if not */
+    if (!a || this.currQuestionIndex < 1) { return false; }
+    if (this.questionList[this.currQuestionIndex-1]._id != a._question) { return false; }
+    return true;
+}
+QuizLogic.prototype.quizComplete = function() {
+    return (this.currQuestionIndex == this.questionList.length);
+}
+
+
+
+var TriviaQuizLogic = function(quizData) {
+    // Call the parent constructor
+    QuizLogic.call(this, quizData);
+    this.correct_count;
+}
+// inherit QuizLogic and correct the constructor pointer because it points to QuizLogic
+TriviaQuizLogic.prototype = new QuizLogic();
+TriviaQuizLogic.prototype.constructor = QuizLogic;
+TriviaQuizLogic.prototype.reset = function() {
+    QuizLogic.prototype.reset.call(this);
+    this.correct_count = 0;
+}
+TriviaQuizLogic.prototype.setupOutcomeMap = function() {
+    this.outcomeMap = {}; //{min_correct: outcome}
+    for (var i=0; i<this.outcomeList.length; i++) {
+        var o = this.outcomeList[i];
+        this.outcomeMap[o.rules.min_correct] = o;
+    }
+}
+TriviaQuizLogic.prototype.correct = function() {
+    return this.correct_count;
+}
+TriviaQuizLogic.prototype.answer = function(index) {
+    var a = QuizLogic.prototype.answer.call(this, index);
+    if (!a) { return null; }
+    if (a.correct) { this.correct_count += 1; }
+    this.currQuestionIndex += 1;
+    return a;
+}
+TriviaQuizLogic.prototype.unchooseAnswer = function(a) {
+    /* note this function doesn't have FULL testing coverage -- because I assume it isn't used */
+    if (!this.validUnchooseAnswer(a)) { return false; }
+    this.currQuestionIndex -= 1;
+    if (a.correct) { this.correct_count -= 1; }
+    return true;
+}
+TriviaQuizLogic.prototype.outcome = function() {
+    /* 
+        if there are no outcomes - return null
+        if quiz is incomplete - return null
+        otherwise - return outcome that best matches rules
+        possible that only outcomes don't match rules - return null
+    */
+    if (!this.quizComplete) { return null; }
+    for (var i=this.correct_count; i>=0; i--) {
+        if (this.outcomeMap[i]) { // this is the best option
+            return this.outcomeMap[i];
+        }
+    }
+    return null; // There were no outcomes for this loser!
+}
+
+function DefaultQuizLogic(quizData) {
+    // Call the parent constructor
+    QuizLogic.call(this, quizData);
+    this.leadingOutcome;
+}
+// inherit QuizLogic and correct the constructor pointer because it points to QuizLogic
+DefaultQuizLogic.prototype = new QuizLogic();
+DefaultQuizLogic.prototype.constructor = QuizLogic;
+DefaultQuizLogic.prototype.reset = function() {
+    QuizLogic.prototype.reset.call(this);
+    this.leadingOutcome = null;
+    this.setupOutcomeMap();
+}
+DefaultQuizLogic.prototype.setupOutcomeMap = function() {
+    this.outcomeMap = {};
+    for (var i=0; i<this.outcomeList.length; i++) {
+        var o = this.outcomeList[i];
+        o.points = 0;
+        this.outcomeMap[o._id] = o;
+    }
+}
+/* increment/decrement outcome return true on success, false on failure */
+DefaultQuizLogic.prototype.incrementOutcome = function(outcomeID) {
+    var o = this.outcomeMap[outcomeID];
+    if (!o) { return false; }
+    o.points += 1;
+    if (!this.leadingOutcome || o.points > this.leadingOutcome.points) {
+        this.leadingOutcome = o;
+    }
+    return true;
+}
+DefaultQuizLogic.prototype.decrementOutcome = function(outcomeID) {
+    var o = this.outcomeMap[outcomeID];
+    if (!o) { return false; }
+    o.points -= 1;
+    for (var id in this.outcomeMap) {
+        if (this.outcomeMap[id].points > this.leadingOutcome.points) {
+            this.leadingOutcome = this.outcomeMap[id];
+        }
+    }
+    return true;
+}
+/* increment/decrement outcome return true on success, false on failure */
+
+DefaultQuizLogic.prototype.answer = function(index) {
+    var a = QuizLogic.prototype.answer.call(this, index);
+    if (!a) { return null; }
+    if (!this.incrementOutcome(a._outcome)) { return null; }
+
+    this.currQuestionIndex += 1;
+    return a;
+}
+DefaultQuizLogic.prototype.unchooseAnswer = function(a) {
+    if (!this.validUnchooseAnswer(a)) { return false; }
+    this.currQuestionIndex -= 1;
+    return this.decrementOutcome(a._outcome);
+}
+DefaultQuizLogic.prototype.outcome = function() {
+    if (!this.quizComplete) { return null; }
+    return this.leadingOutcome;
+}
+
 /* For the sake of testing */
-exports.TriviaLogic = TriviaLogic;
-exports.QuizLogic   = QuizLogic;
+exports.TriviaQuizLogic    = TriviaQuizLogic;
+exports.DefaultQuizLogic   = DefaultQuizLogic;
 
 
