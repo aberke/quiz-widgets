@@ -60,7 +60,10 @@
 		    </thead>
 		    <tbody>
 		        <tr ng-repeat="o in quiz.outcomeList">
-		            <td class="text"><img class='outcome-pic' height="20px" ng-src={{o.pic_url}}></img>{{o.text}}</td>
+		            <td class="text">
+		            	<img class='outcome-pic' height="20px" ng-src={{o.pic_url}}>
+		            	{{o.text || o.description}}
+		            </td>
 		            <td class="number">{{stats.Outcome[o._id] || 0}}</td>
 		            <td class="number">{{o.share.fbCount || 0}}</td>
 		            <td class="number">{{o.share.twitterCount || 0}}</td>

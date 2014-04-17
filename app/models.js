@@ -191,8 +191,9 @@ exports.deleteQuiz = function(quizID, callback) {
 					outcomes[j].remove(call);
 				}
 			});
-	totalCalls += 2;
+	totalCalls += 3;
 	Share.remove({ _quiz: quizID }, call);
+	Slide.remove({ _quiz: quizID }, call);
 	Quiz.remove({ _id: quizID }, call);
 }
 
@@ -302,14 +303,19 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 
 		type: 				(quizData.type 				|| 'default-quiz'),
 	});
+
+	/* Saving the quiz doesn't wait on the other saves to finish
+		TODO: make better
+	*/
+
 	var newShare = new Share({_quiz: newQuiz});
 	newShare.save();
 	newQuiz.share = newShare;
 
 	if (quizData.extraSlide) { // eg, answer-key for trivia-quiz
-		newSlide(newQuiz, quizData.extraSlide, function(err, slide) {
-			newQuiz.extraSlide = slide;
-		});
+		var extraSlide = new Slide({ _quiz: newQuiz, blob: quizData.extraSlide.blob });
+		extraSlide.save();
+		newQuiz.extraSlide = extraSlide;
 	}
 
 	var outcomeDict = {}; // maps {index: outcome} since answerData just has the fake id
@@ -397,6 +403,7 @@ exports.findQuiz = function(quizID, callback) {
 		.populate('_user')
 		.populate('questionList')
 		.populate('outcomeList')
+		.populate('extraSlide')
 		.populate('share')
 		.exec(function(err, quiz) {
 			if (err || !quiz) { return callback(new Error('Error in models.findQuiz'), null); }

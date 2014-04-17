@@ -286,7 +286,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 		/* ready to post quiz */
 		APIservice.POST('/quiz', $scope.quiz).then(function(data) {
 			$scope.quiz.saved = 'saved';
-			console.log('POSTED QUIZ',$scope.quiz,'got back data', data);
+			console.log('POSTED QUIZ',$scope.quiz,'\n*****\ngot back data', data);
 			$location.path('/stats/' + data._id);
 		});
 	};

@@ -6,6 +6,14 @@
             and
         TriviaQuizLogic
             inherit from QuizLogic (Base Class)
+
+    Reasonining for prototypical inheritance:
+        With prototypical inheritance, each prototype function exists just once
+            Benefit:
+                - Say there are several quizzes on the page
+                - User goes to page on mobile device which has limited memory capacity
+                - If didn't have prototypical inheritance, browser would have instance each function for each quiz
+                - possible memory overload - bad performance
 */
 
 
@@ -163,6 +171,7 @@ DefaultQuizLogic.prototype.outcome = function() {
 }
 
 /* For the sake of testing */
+exports = {};
 exports.TriviaQuizLogic    = TriviaQuizLogic;
 exports.DefaultQuizLogic   = DefaultQuizLogic;
 

@@ -43,7 +43,19 @@ var HuffpostLabsSlidesCntl = function(container) {
     }
     return { transitionNext: transitionNext, transitionPrev: transitionPrev, init: init };
 }
-
+/*
+HuffpostLabsQuizObject -- The main object that does the work
+    Owns 
+        a BtnMaster (btn-master.js or http://aberke.github.io/huffpostlabs-btn/)
+        a SlideCntl
+        a QuizLogic (quiz-logic.js)
+    - QuizLogic uses prototypical inheritance pattern (quiz-logic.js) -- reasoning in file
+    - Reasoning for why HuffpostLabsQuizObject does not use prototypical inheritance pattern:
+        There is a lot of interaction between the window and this object
+            - need to keep hold on each quizData
+            - relevant methods need to know which quizData they are using and which slides they are modifying
+        - BUT this file should still be refactored
+*/
 var HuffpostLabsQuizObject = function(container, quizData) {
     console.log('quizData', quizData)
 
@@ -57,41 +69,33 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     var onclickPrefix = ("QuizWidgets['" + quizID + "']");
 
 
-    var gameLogic;
+    var quizLogic;
     var slidesCntl;
     var btnMaster;
     
-    var chosenAnswers; // []
+    var chosenAnswers; // [] -- data sent back to server on completion
 
 
-    function startQuiz(element) {
+    function startQuiz() {
         slidesCntl.transitionNext();
-        QuizFunctions.quizStarted(quizData);
+        QuizFunctions.quizStarted(quizData); // logging callback
     }
     function previous() { /* inverse of answer */
         slidesCntl.transitionPrev();
         if (chosenAnswers.length) { /* start button doesn't increment it */
             var previousAnswer = chosenAnswers.pop();
-            gameLogic.unchooseAnswer(previousAnswer);
+            quizLogic.unchooseAnswer(previousAnswer);
         }
     }
     function answer(huffpostLabsBtn) { /* the onclick handler is on the huffpostLabsBtn marked with the data-huffpostlabs-btn tag */
         var index = huffpostLabsBtn.element.getAttribute('data-quiz-answer');
-        var answer = gameLogic.answer(index);
+        var answer = quizLogic.answer(index);
         chosenAnswers.push(answer);
-
-        outcome = gameLogic.outcome(); // returns null if quiz not completed
+        
+        outcome = quizLogic.outcome(); // returns null if quiz not completed
         if (outcome) {
             updateOutcomeContent(container, outcome);
             QuizFunctions.quizCompleted(quizData, outcome, chosenAnswers);
-        }
-    }
-    function incrementOutcome(outcomeID) {
-        var o = outcomeMap[outcomeID];
-        o.points += 1;
-        if (!leadingOutcome || o.points > leadingOutcome.points) {
-            leadingOutcome = o;
-            updateOutcomeContent(o);
         }
         slidesCntl.transitionNext();
     }
@@ -107,9 +111,9 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         chosenAnswers = [];
         
         if (quizData.type == 'trivia-quiz') {
-            gameLogic = new TriviaLogic(quizData);
+            quizLogic = new TriviaQuizLogic(quizData);
         } else {
-            gameLogic = new QuizLogic(quizData);
+            quizLogic = new DefaultQuizLogic(quizData);
         }
 
         addCustomStyles();
@@ -125,7 +129,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     function refresh() {
         console.log('refresh')
         chosenAnswers = [];  /* array of answer objects */
-        gameLogic.reset();
+        quizLogic.reset();
         slidesCntl.init();
         QuizFunctions.quizRestarted(quizData);
     }
@@ -154,6 +158,9 @@ var HuffpostLabsQuizObject = function(container, quizData) {
                 html += questionAnswersContainerHTML(quizData.questionList[i]);
             }
             html+= outcomeContainerHTML();
+        if (quizData.type == 'trivia-quiz' && quizData.extraSlide) {
+            html+= answerKeyContainerHTML();   
+        }
             html+= "</div>";
 
         container.innerHTML = html;
@@ -297,7 +304,28 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         return c;
     }
     function answerKeyContainerHTML() {
+        var onclickRefresh = onclickPrefix + ".refresh()";
 
+        var html = "<div class='slide answer-key-container'>";
+            html+=      "<div class='answer-key-content'>";
+            html+=          quizData.extraSlide.blob;
+            html+=      "</div>";
+            html+=      "<div class='share-container'>";
+            html+=          "<div class='fb-share-container'>";
+            html+=              "<img width='30px' height='30px' class='share fb-share-btn touchable' src='/icon/fb-icon.png'>";                
+            html+=              "<img width='30px' height='30px' class='share fb-share-btn-blue touchable' src='/icon/fb-icon-blue.png'>";            
+            html+=          "</div>            ";
+            html+=          "<div class='twitter-share-container'>";
+            html+=              "<img width='30px' height='30px' class='twitter-share-btn share touchable' src='/icon/twitter-icon.png'>";
+            html+=              "<img width='30px' height='30px' class='twitter-share-btn-blue share touchable' src='/icon/twitter-icon-blue.png'>";           
+            html+=          "</div>";        
+            html+=          "<div class='share-text'>";
+            html+=              "<p>Share your results</p>";
+            html+=          "</div>";
+            html+=          "<img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + (quizData.refresh_icon_url || (static_domain + "/icon/refresh.png")) + "'></img>";
+            html+=      "</div>";
+            html+= "</div>";
+        return html;
     }
     function questionAnswersContainerHTML(question) {
         var onclickAnswer       = onclickPrefix + ".answer(this)"; // complemented by data-quiz-answer=ANSWER-INDEX
@@ -340,7 +368,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     function outcomeContentHTML(outcome) {
         var html = "";
         if (quizData.type == 'trivia-quiz'){
-            html+= ("    <h1 class='trivia-results'>" + gameLogic.correct() + "/" + quizData.questionList.length + " correct</h1>");
+            html+= ("    <h1 class='trivia-results'>" + quizLogic.correct() + "/" + quizData.questionList.length + " correct</h1>");
         }
             html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + (outcome.text || "") + "</h1>";
         if ((outcome.pic_style == 'float-right') && outcome.pic_url) {
@@ -383,7 +411,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
             html+= "        </div>";
             html+= "        <div class='share-text'><p>Share your results</p></div>";
         if (quizData.type=='trivia-quiz'&&quizData.extraSlide) {
-            html+= "        <img width='30px' height='30px' class='answer-key-btn touchable' data-huffpostlabs-btn onclick=" + onclickNextSlide + " src='/icon/key.png'>";            
+            html+= "        <img width='30px' height='30px' class='answer-key-btn touchable' data-huffpostlabs-btn onclick=" + onclickNextSlide + " src='" + static_domain + "/icon/key.png'>";            
         }
             html+= "        <img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + (quizData.refresh_icon_url || (static_domain + "/icon/refresh.png")) + "'></img>";
             html+= "    </div>";
