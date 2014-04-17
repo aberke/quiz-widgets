@@ -364,7 +364,7 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		$scope.quiz = quiz;
 		WidgetService.setupOutcomeAnswerLists($scope.quiz);
 		setWatchers();
-		quizWidgets[quiz._id].reloadData(quiz);
+		QuizWidgets[quiz._id].reloadData(quiz);
 	}
 
 	/* remove ------------------------------------------------- */
@@ -478,6 +478,10 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 	}
 	$scope.addQuestion = function() {
 		$scope.quiz.questionList.push({'saved':'unsaved', 'editing':true, 'answerList':[{}, {}] });
+	}
+	$scope.addOutcome = function() {
+		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
+		$scope.quiz.outcomeList.push({'saved':'unsaved', 'editing':true});
 	}
 	/* ------- save == PUT/POST requests above ------------- */
 

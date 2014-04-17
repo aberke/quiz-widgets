@@ -71,6 +71,12 @@ var editQuestionsPartial = function() {
 		templateUrl: "/directiveTemplates/edit-questions-partial.html",
 	}
 }
+var editOutcomesPartial = function() {
+	return {
+		restrict: 'EA',
+		templateUrl: "/directiveTemplates/edit-outcomes-partial.html",
+	}
+}
 var editQuizPartial = function(UIService) {
 
 	return {

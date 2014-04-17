@@ -9,57 +9,57 @@
 	<section edit-quiz-partial id='set-quiz'></section> 
 	<!-- ********************* set-quiz *********************  -->
 
-	<!-- ********************* set-outcomes *********************  -->
-	<section id='set-outcomes'>
-		<h3>
-			Outcomes
-			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
-		</h3>
+<!-- ********************* set-outcomes *********************  -->
+<section id='set-outcomes'>
+<h3>
+	Outcomes
+	<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
+</h3>
+
+<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
+	<p class='bold display-inline'>{{$index + 1}}.</p>
+	<p class="bold error display-inline" ng-show="outcome.error.empty">Hey this outcome is empty</p>
+
+	<div class='remove-edit-btns'>
+		<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
+		<p ng-show="outcome.answerList.length>1" class='display-inline btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
+		<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
 		
-		<div class="outcome" ng-class="{'editing':(outcome.editing)}" ng-repeat="outcome in quiz.outcomeList">
-			<p class='bold display-inline'>{{$index + 1}}.</p>
-			<p class="bold error display-inline" ng-show="outcome.error.empty">Hey this outcome is empty</p>
+		<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
+		<button ng-show="outcome.editing" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success'>OK</button>
+	</div>
 
-			<div class='remove-edit-btns'>
-				<p ng-show="outcome.answerList.length==1" class='display-inline btn-helper'>1 answer references this outcome</p>
-				<p ng-show="outcome.answerList.length>1" class='display-inline btn-helper'>{{outcome.answerList.length}} answers reference this outcome</p>
-				<button ng-show="!outcome.answerList.length" ng-disabled="outcome.answerList.length>0" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
-				
-				<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
-				<button ng-show="outcome.editing" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success'>OK</button>
-			</div>
+	<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
+		<label>Text</label>
+		<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
 
-			<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
-				<label>Text</label>
-				<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
+		<label>Description</label>
+		<textarea maxlength="250" ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
 
-				<label>Description</label>
-				<textarea maxlength="250" ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
+		<img-input-label max-size="600" model="outcome"></img-input-label>
+		<input ng-change="outcome.saved='unsaved'" id='outcome-pic-url' type="url" ng-model="outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
 
-				<img-input-label max-size="600" model="outcome"></img-input-label>
-				<input ng-change="outcome.saved='unsaved'" id='outcome-pic-url' type="url" ng-model="outcome.pic_url" placeholder="http://dogecoin.com/img/dogecoin-300.png">
+		<span ng-show="outcome.pic_url || outcome.pic_credit">
+			<label>Photo Credit</label>
+			<input ng-change="outcome.saved='unsaved'" id='new-outcome-pic-credit' type='text' ng-model='outcome.pic_credit' />
 
-				<span ng-show="outcome.pic_url">
-					<label>Photo Credit</label>
-					<input ng-change="outcome.saved='unsaved'" id='new-outcome-pic-credit' type='text' ng-model='outcome.pic_credit' />
+			<label>Image/GIF styling</label>
+			<select ng-change="outcome.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='outcome.pic_style' ng-options="s for s in ['bottom-right', 'float-right', 'cover', 'contain']" >
+				<option value="">IMAGE/GIF STYLING</option>
+			</select>
+		</span>
+	</span>
 
-					<label>Image/GIF styling</label>
-					<select ng-change="outcome.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='outcome.pic_style' ng-options="s for s in ['bottom-right', 'float-right', 'cover', 'contain']" >
-						<option value="">IMAGE/GIF STYLING</option>
-					</select>
-				</span>
-			</span>
-
-			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<!-- directive fills in the content -->
-					<div outcome-container class="slide outcome-container"></div>
-				</div>
-			</div>
+	<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
+		<div class="slides-container">
+			<!-- directive fills in the content -->
+			<div outcome-container class="slide outcome-container"></div>
 		</div>
+	</div>
+</div>
 
-		<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
-	</section> <!-- ********************* set-outcomes *********************  -->
+<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
+</section> <!-- ********************* set-outcomes *********************  -->
 
 	<!-- ********************* set-questions *********************  -->
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have up to 4 answers.">
@@ -103,8 +103,8 @@
 
 <div id='helper-container' class='col-md-3'>
 	
-	<button id='view-mobile-btn' ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
-	<button id='view-non-mobile-btn' ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
+	<button ng-show="!viewMobile" ng-click="viewMobile=true" class='btn btn-default'>View Mobile Version</button>
+	<button ng-show="viewMobile" ng-click="viewMobile=false" class='btn btn-default'>View Non-Mobile Version</button>
 
 	<section id='instructions'>
 		<h4>Documentation</h4>

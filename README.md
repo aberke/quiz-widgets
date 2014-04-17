@@ -39,6 +39,8 @@ since last email
 TODO
 ---
 
+- support sharing to tumblr and g+ and email
+
 - assign arbitrary amount of points to outcome in answers
 
 - in API better handling of (err || !model)
@@ -46,19 +48,10 @@ TODO
 	- return 500 if err
 	- put handler in util
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-- put all the fb sharing stuff in its own 'library as external script'
-	- for labs reuse
-
-=======
->>>>>>> master
-=======
->>>>>>> master
 - handle native apps
 	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 
-- fix for trivia option (Nick on the politics team would like this)
+- fix for trivia option (Nick on the politics/viral team would like this)
 	- option to have 1 answer
 	- assign arbitrary number of points to outcome
 
