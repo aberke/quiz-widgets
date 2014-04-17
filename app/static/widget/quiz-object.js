@@ -368,7 +368,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     function outcomeContentHTML(outcome) {
         var html = "";
         if (quizData.type == 'trivia-quiz'){
-            html+= ("    <h1 class='trivia-results'>" + quizLogic.correct() + "/" + quizData.questionList.length + " correct</h1>");
+            html+= ("    <h1 class='trivia-results'>You got " + outcome.correct_count + " out of " + outcome.total_count + "</h1>");
         }
             html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + (outcome.text || "") + "</h1>";
         if ((outcome.pic_style == 'float-right') && outcome.pic_url) {

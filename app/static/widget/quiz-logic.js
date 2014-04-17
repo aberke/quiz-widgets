@@ -94,22 +94,26 @@ TriviaQuizLogic.prototype.unchooseAnswer = function(a) {
 }
 TriviaQuizLogic.prototype.outcome = function() {
     /* 
-        if there are no outcomes - return null
         if quiz is incomplete - return null
         otherwise - return outcome that best matches rules
-        possible that only outcomes don't match rules - return null
+        attach correct_count, question_count to outcome
     */
-    if (!this.quizComplete) { return null; }
+    if (!this.quizComplete()) { return null; }
+    var o = {};
     for (var i=this.correct_count; i>=0; i--) {
         if (this.outcomeMap[i]) { // this is the best option
-            return this.outcomeMap[i];
+            o = this.outcomeMap[i];
+            break;
         }
     }
-    return null; // There were no outcomes for this loser!
+    o.correct_count = this.correct_count;
+    o.total_count   = this.questionList.length;
+    return o;
 }
 
-function DefaultQuizLogic(quizData) {
+var DefaultQuizLogic = function(quizData) {
     // Call the parent constructor
+
     QuizLogic.call(this, quizData);
     this.leadingOutcome;
 }
@@ -170,9 +174,7 @@ DefaultQuizLogic.prototype.outcome = function() {
     return this.leadingOutcome;
 }
 
-/* For the sake of testing */
-exports = {};
+// Need for testing with mocha
+var exports = (exports || {});
 exports.TriviaQuizLogic    = TriviaQuizLogic;
 exports.DefaultQuizLogic   = DefaultQuizLogic;
-
-

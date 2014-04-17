@@ -15,9 +15,10 @@ Testing just the quiz logic - not the user experience
 
 
 var assert 				= require("assert"),
-	quizLogic 			= require("../quiz-logic"),
+	quizLogic 			= require("./../quiz-logic.js"),
 	TriviaQuizLogic 	= quizLogic.TriviaQuizLogic,
 	DefaultQuizLogic 	= quizLogic.DefaultQuizLogic;
+
 
 
 /* --------------- Shared Test Functions ------------------ */
@@ -142,8 +143,8 @@ describe('Trivia Quiz Logic', function() {
 			{answerList: [{correct: false},{correct: true},]},	
 		];
 	var triviaOutcomeList = [
-			{text: 'MIN-CORRECT-1', rules: {min_correct: 1}},
-			{text: 'MIN-CORRECT-3', rules: {min_correct: 3}},
+			{ _id: 0, text: 'MIN-CORRECT-1', rules: {min_correct: 1}},
+			{ _id: 1, text: 'MIN-CORRECT-3', rules: {min_correct: 3}},
 		];
 	var triviaQuizData = {
 		'questionList': triviaQuestionList,
@@ -171,9 +172,12 @@ describe('Trivia Quiz Logic', function() {
 	});
 	describe('outcome function', function() {
 		it('should return null before quiz complete', shouldReturnOutcomeNullBeforeQuizComplete(logic));
-		it('returns null when there is no matching rule', function() {
+		it('returns outcome with just correct_count and total_count when there is no matching rule', function() {
 			answerIncorrect(3);
-			assert.equal(null, logic.outcome());
+			var o = logic.outcome();
+			assert.notEqual(undefined, o.correct_count);
+			assert.notEqual(undefined, o.total_count);
+			assert.equal(undefined, o.text);
 		});
 		it('handles 1 answer right where there is a matching rule', function() {
 			answerIncorrect(2);
