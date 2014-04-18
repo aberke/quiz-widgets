@@ -19,7 +19,7 @@
           <a ng-click="claimQuiz(q)" ng-if="user._id&&!q._user._id" href="#">Claim Ownership</a>
         </li>
         <li><a ng-href="/stats/{{q._id}}">View Stats</a></li>
-        <li><a owner-only-element ng-href="/edit/{{q._id}}">Edit</a></li>
+        <li><a owner-only-element ng-href="/edit/{{q.type}}/{{q._id}}">Edit</a></li>
         <li><a owner-only-element ng-href="/social/{{q._id}}">Customize Sharing</a></li>
         <li>
           <a ng-show="!q.showEmbed" ng-click="q.showEmbed=true" href="">Embed in HTML</a>

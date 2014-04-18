@@ -56,12 +56,17 @@ app.get('/forbidden',  			main_routes.serveBase);
 app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
 
 
+/* protected with verifyUser */
 app.get('/new', 				verifyUser, main_routes.serveBase);
 app.get('/new/:type', 			verifyUser, main_routes.serveBase);
 
+
 /* protected with verifyQuizViewAccess */
 app.get('/edit/:quizID',		verifyQuizViewAccess, main_routes.serveBase);
+app.get('/edit/:type/:quizID',	verifyQuizViewAccess, main_routes.serveBase);
+
 app.get('/social/:quizID',  	verifyQuizViewAccess, main_routes.serveBase);
+
 
 /* protected with basicAuth */
 app.get('/', 					basicAuth, main_routes.serveBase);

@@ -3,6 +3,7 @@
 	<p class='display-inline bold'>{{$index + 1}}.</p>
 
 	<div class='remove-edit-btns'>
+		<p ng-if="question._id&&quiz._id" class='display-inline btn-helper'>{{question.saved}}{{question._id}}</p>
 		<button ng-show="$index" ng-click="removeQuestion(question)" class='btn btn-xs btn-danger remove-question'>X</button>
 		<button ng-show="!question.editing" ng-click="question.editing=true" class='btn btn-xs btn-warning edit-question'>EDIT</button>
 		<button ng-show="question.editing==true" ng-click="saveQuestion(question)" class='btn btn-xs btn-success save-question'>OK</button>

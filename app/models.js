@@ -75,14 +75,12 @@ var slideSchema = new Schema({
 });
 var questionSchema = new Schema({
 	_quiz: 		 {type: ObjectId, ref: 'Quiz'},
-	index: 		 Number, // questions are ordered -- deprecating -- let quiz.questionList handle
 	text:  		 String,
 	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
 var outcomeSchema = new Schema({
 	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
 	share: 		 {type: ObjectId, ref: 'Share', default: null},
-	index: 		 Number, // ordered -- deprecating -- let quiz.outcomeList handle
 	text:   	 {type: String, default: null},
 	description: {type: String, default: null},
 	pic_url: 	 {type: String, default: null},
@@ -238,13 +236,15 @@ exports.newSlide = newSlide;
 /* doesn't save outcome or add share -- just does the construction */
 var constructOutcome = function(outcomeData) {
 	var new_outcome = new Outcome({
-		_quiz:  	 outcomeData._quiz,
-		// index: 		 outcomeData.index, // ordered
-		text:   	 outcomeData.text,
-		description: (outcomeData.description|| null),
-		pic_url: 	 (outcomeData.pic_url 	 || null),
-		pic_style: 	 (outcomeData.pic_style  || "bottom-right"),
-		pic_credit:  (outcomeData.pic_credit || null),
+		_quiz:  	 	outcomeData._quiz,
+		text:   	 	outcomeData.text,
+		description: 	(outcomeData.description|| null),
+		pic_url: 	 	(outcomeData.pic_url 	 || null),
+		pic_style: 	 	(outcomeData.pic_style  || "bottom-right"),
+		pic_credit:  	(outcomeData.pic_credit || null),
+		rules: 		{ 
+			min_correct:(outcomeData.rules.min_correct||0)
+					},
 	});
 	return new_outcome;
 }
@@ -318,7 +318,7 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		newQuiz.extraSlide = extraSlide;
 	}
 
-	var outcomeDict = {}; // maps {index: outcome} since answerData just has the fake id
+	var outcomeDict = {}; // maps {fakeID: outcome} since answerData just has the fake id
 	for (var i=0; i<quizData.outcomeList.length; i++) {
 		var outcomeData = quizData.outcomeList[i];
 		outcomeData._quiz = newQuiz;
@@ -337,7 +337,6 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 		var questionData = quizData.questionList[i];
 		var newQuestion = new Question({
 			_quiz:  	 newQuiz,
-			index: 		 questionData.index, // ordered
 			text:   	 questionData.text,
 		});
 

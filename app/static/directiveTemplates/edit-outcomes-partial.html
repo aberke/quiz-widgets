@@ -5,20 +5,22 @@
 	<p ng-if="outcome.answerList.length" class='display-inline btn-helper'>( {{outcome.answerList.length}} answer<span ng-if="outcome.answerList.length>1">s</span> reference<span ng-if="outcome.answerList.length==1">s</span> this outcome )</p>
 
 	<div class='remove-edit-btns'>
-		<p class='display-inline btn-helper'>{{outcome.saved}}</p>
-		<button ng-disabled="outcome.answerList.length>0||quiz.outcomeList.length<2" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
+		<p ng-if="quiz._id&&outcome._id" class='display-inline btn-helper'>{{outcome.saved}}</p>
+		<button ng-disabled="quiz.type!='trivia'&&(outcome.answerList.length>0||quiz.outcomeList.length<2)" ng-click="removeOutcome(outcome)" class='btn btn-xs btn-danger remove-outcome'>X</button>
 		
 		<button ng-show="!outcome.editing" ng-click="outcome.editing=true" class='btn btn-xs btn-warning edit-outcome'>EDIT</button>
 		<button ng-show="outcome.editing" ng-click="saveOutcome(outcome)" class='btn btn-xs btn-success'>
-			<span ng-if="outcome.saved">SAVE</span>
-			<span ng-if="!outcome.saved">OK</span>
+			<span ng-if="quiz._id&&outcome.saved">SAVE</span>
+			<span ng-if="!(quiz._id&&outcome.saved)">OK</span>
 		</button>
 	</div>
 	<p class="bold error" ng-show="outcome.error.empty">Hey this outcome is empty</p>
 
 	<span ng-show="outcome.editing==true" class='edit-outcome-container'>			
-		<label>Text</label>
-		<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
+		<span ng-if="quiz.type!='trivia-quiz'">
+			<label>Text</label>
+			<input ng-change="outcome.saved='unsaved';outcome.error.text=false" ng-class="{'error':outcome.error.text}" type='text' ng-model='outcome.text' />
+		</span>
 
 		<label>Description</label>
 		<textarea maxlength="250" ng-change="outcome.saved='unsaved'" ng-model='outcome.description'></textarea>
@@ -35,6 +37,15 @@
 				<option value="">IMAGE/GIF STYLING</option>
 			</select>
 		</span>
+
+		<span ng-if="quiz.type=='trivia-quiz'">
+			<p class='warning'>Better input field for editors coming... design help/input appreciated</p>
+			<label>
+				For minimum correct:
+				<!-- <select class='min-correct' ng-change="outcome.saved='unsaved'" ng-model="outcome.rules.min_correct" ng-options="i for i in [0,1,2]">{{outcome.rules.min_correct || ''}}</select> -->
+				<input placeholder="0" ng-class="{'error':outcome.error.min_correct}" class='min-correct' ng-change="outcome.saved='unsaved'" ng-model="outcome.rules.min_correct" type='number' />
+			</label>
+		</span>
 	</span>
 
 	<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
@@ -45,4 +56,4 @@
 	</div>
 </div>
 
-<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'>+ Give me more</button>
+<button ng-click="addOutcome()" id='add-outcome-btn' class='btn btn-sm btn-default'> + </button>

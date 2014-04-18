@@ -25,7 +25,8 @@
         <br/><a href="" ng-click="scrollToById('quizzes')">existing quizzes</a> below
         <br/>
           
-        <button ng-if="user" ng-click="goTo('/new')" id='create-new-btn' class='btn btn-xs btn-default'>CREATE NEW</button>
+        <button ng-if="user" ng-click="goTo('/new/default-quiz')" class='btn btn-xs btn-default create-new-btn'>CREATE NEW QUIZ</button>
+        <button ng-if="user" ng-click="goTo('/new/trivia-quiz')" class='btn btn-xs btn-default create-new-btn'>CREATE NEW TRIVIA</button>
 
         <p ng-if="!user">
           <a ng-click="login()" id='sign-in-btn' class='btn btn-xs btn-default'>SIGN IN</a> with your team's twitter account

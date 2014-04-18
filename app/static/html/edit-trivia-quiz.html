@@ -1,44 +1,59 @@
-<!-- new trivia-quiz creation page -->
+<!-- edit trivia-quiz page -->
 
 
-<div id='new-page' class='view row'>
+<div id='edit-page' class='view row'>
 
 <div id='build-container' class='col-md-9'>
 
+	<section id='preview-widget'>
+		<div class="huffpostlabs-quiz" ng-class="{'mobile':viewMobile}" id="{{quiz._id}}"></div>
+		<script src="/widget/q.js"></script>
+	</section>
+
 	<!-- ********************* set-quiz *********************  -->
-	<section edit-quiz-partial id='set-quiz'></section> 
+	<section id='set-quiz'>
+		<edit-quiz-partial></edit-quiz-partial>
+
+		<button ng-disabled="(!quiz.saved || quiz.saved!='unsaved')" ng-click="saveQuiz()" class='btn btn-sm btn-success'>SAVE QUIZ</button>
+		<p ng-class="{'error': (quiz.saved=='error')}" class='inline-block btn-helper saved-status-text'>{{quiz.saved}}</p>
+	</section> 
 	<!-- ********************* set-quiz *********************  -->
-	
+
 
 	<!-- ********************* set-questions *********************  -->
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have up to 4 answers.">
 <!-- 
 	REPLACE WITH ONCE UNLIMITED ANSWERS COMPLETE
 	<section id='set-questions' class="popover-hover" data-original-title="Question" data-container="body" data-toggle="popover" data-placement="right" data-content="Questions can have unlimited answers, but we warn you that scroll bars do not show up on mobile until the user touches the screen (this is a web browser problem, not a quiz problem)."> -->
-		<h3 class='display-inline'>
+		<h3>
+			<button ng-show="!hideQuestions" ng-click="hideQuestions=true" class='btn btn-default hide-show-btn'> - </button>
+			<button ng-show="hideQuestions" ng-click="hideQuestions=false" class='btn btn-default hide-show-btn'> + </button>
 			Questions
 			<em class='instructions-text'>({{quiz.questionList.length}})</em>
 		</h3>
-
-		<edit-questions-partial></edit-questions-partial>
+		<edit-questions-partial ng-show="!hideQuestions"></edit-questions-partial>
 	</section> <!-- ********************* set-questions *********************  -->
 
 	<!-- ********************* set-trivia-outcomes *********************  -->
 	<section id='set-outcomes'>
 		<h3>
+			<button ng-show="!hideOutcomes" ng-click="hideOutcomes=true" class='btn btn-default hide-show-btn'> - </button>
+			<button ng-show="hideOutcomes" ng-click="hideOutcomes=false" class='btn btn-default hide-show-btn'> + </button>
 			Outcomes
 			<em class='instructions-text'>({{quiz.outcomeList.length}})</em>
 		</h3>
-		<span class='instructions-text'>
-			<p>These are optional.</p>
-			<p><strong>Example use case:</strong> Quiz taker got...</p>
-			<ul>
-				<li>0 correct and you want to let them know how lame that is</li>
-				<li>5/6 correct and you want to congratulate them and let them share their stellar performance on the Facebook.</li>
-			</ul>
-			<p>If a result is not supplied for the quiz taker's number of correct answers, then just the <strong>#/total</strong> text will be shown</p>
+		<span ng-show="!hideOutcomes">
+			<span class='instructions-text'>
+				<p>These are optional.</p>
+				<p><strong>Example use case:</strong> Quiz taker got...</p>
+				<ul>
+					<li>0 correct and you want to let them know how lame that is</li>
+					<li>5/6 correct and you want to congratulate them and let them share their stellar performance on the Facebook.</li>
+				</ul>
+				<p>If a result is not supplied for the quiz taker's number of correct answers, then just the <strong>#/total</strong> text will be shown</p>
+			</span>
+			<edit-outcomes-partial></edit-outcomes-partial>
 		</span>
-		<edit-outcomes-partial ng-show="!hideOutcomes"></edit-outcomes-partial>
 		
 	</section> <!-- ********************* set-trivia-outcomes *********************  -->
 	

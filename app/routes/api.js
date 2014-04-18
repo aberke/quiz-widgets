@@ -106,8 +106,6 @@ var POSToutcome = function(req, res) {
 	models.findQuiz(outcomeData._quiz, function(err, quiz) {
 		if (err || !quiz) { return res.send(500, util.handleError(err)); }
 
-		// need outcomeData.index ??
-		outcomeData.index = quiz.outcomeList.length + 1;
 		models.newOutcome(outcomeData, function(err, newOutcome) {
 			if (err) { return res.send(500, util.handleError(err)); }
 
@@ -125,12 +123,12 @@ var PUToutcome = function(req, res) {
 	models.findOutcome(req.params.id, function(err, outcome) {
 		if (err || !outcome) { return res.send(500, util.handleError(err)); }
 
-		outcome.index = outcomeData.index;
-		outcome.text = outcomeData.text;
-		outcome.description = outcomeData.description;
-		outcome.pic_url = outcomeData.pic_url;
-		outcome.pic_credit = outcomeData.pic_credit;
-		outcome.pic_style  = outcomeData.pic_style;
+		outcome.text 			  = outcomeData.text;
+		outcome.description 	  = outcomeData.description;
+		outcome.pic_url 		  = outcomeData.pic_url;
+		outcome.pic_credit  	  = outcomeData.pic_credit;
+		outcome.pic_style   	  = outcomeData.pic_style;
+		outcome.rules.min_correct = outcomeData.rules.min_correct;
 		outcome.save(function(err) {
 			if (err) { res.send(500, util.handleError(err)); }
 			res.send(outcome);
@@ -162,6 +160,7 @@ var PUTanswer = function(req, res) {
 		answer.pic_credit = answerData.pic_credit;
 		answer.pic_style  = answerData.pic_style;
 		answer._outcome   = answerData._outcome;
+		answer.correct    = answerData.correct;
 		answer.save(function(err) {
 			if (err) { res.send(500, util.handleError(err)); }
 			res.send(answer);

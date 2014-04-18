@@ -63,8 +63,12 @@ QuizApp.config(function($routeProvider) {
 	});	
 	$routeProvider.when('/forbidden', {
 		templateUrl: '/html/forbidden.html',
-	});	
+	});
+
 	$routeProvider.when('/new', {
+		redirectTo: '/new/default-quiz',
+	});		
+	$routeProvider.when('/new/default-quiz', {
 		templateUrl: '/html/new.html',
 		controller: NewQuizCntl,
 		resolve: {
@@ -80,6 +84,38 @@ QuizApp.config(function($routeProvider) {
 			quizType: function() { return 'trivia-quiz'; },
 		}
 	});	
+
+	/* separate templates for editing default-quiz vs trivia-quiz -- direct to correct one */
+	$routeProvider.when('/edit/trivia-quiz/:id', {
+		templateUrl: '/html/edit-trivia-quiz.html',
+		controller: EditQuizCntl,
+		resolve: { /* returning the promise and then resolving the promise as the data */
+			user: userOrRedirect,
+			quiz: function(APIservice, $location) {
+					return APIservice.GETquiz($location.path().split('/')[3]).then(function(quizData) { 
+						if (quizData.type != 'trivia-quiz') { $location.path('/edit/' + quizData._id ); }
+						else { return quizData; }
+					}
+				)},
+		}
+	});
+	$routeProvider.when('/edit/default-quiz/:id', {
+		templateUrl: '/html/edit.html',
+		controller: EditQuizCntl,
+		resolve: { /* returning the promise and then resolving the promise as the data */
+			user: userOrRedirect,
+			quiz: function(APIservice, $location) {
+					return APIservice.GETquiz($location.path().split('/')[3]).then(function(quizData) { 
+						if (quizData.type == 'trivia-quiz') { $location.path('/edit/trivia-quiz/' + quizData._id ); }
+						else { return quizData; }
+					}
+				)},
+		}
+	});
+	$routeProvider.when('/edit/:id', {
+		redirectTo: '/edit/default-quiz/:id',
+	});
+
 	$routeProvider.when('/social/:id', {
 		templateUrl: '/html/social.html',
 		controller: ShareCntl,
@@ -94,14 +130,6 @@ QuizApp.config(function($routeProvider) {
 		resolve: { /* returning the promise and then resolving the promise as the data */
 			quiz: resolveQuizFunction,
 			stats: resolveQuizStats,
-		}
-	});
-	$routeProvider.when('/edit/:id', {
-		templateUrl: '/html/edit.html',
-		controller: EditQuizCntl,
-		resolve: { /* returning the promise and then resolving the promise as the data */
-			quiz: resolveQuizFunction,
-			user: userOrRedirect,
 		}
 	});
 	$routeProvider.when('/', {

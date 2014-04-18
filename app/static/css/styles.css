@@ -103,12 +103,16 @@ footer {
 	min-height: 590px;
 }
 #index-page #welcome-container .right {
-	padding: 65px 50px;
+	padding: 40px 50px;
 }
-#index-page #create-new-btn,
+#index-page .create-new-btn,
 #index-page #sign-in-btn {
 	color: gray;
 	font-weight: bold;
+}
+#index-page .create-new-btn {
+	margin: 5px auto;
+	display: block;
 }
 
 #product-title {

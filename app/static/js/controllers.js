@@ -308,7 +308,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	init();
 }
-function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService, quiz) {
+function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService, user, quiz) {
 
 	var setWatchers = function() {
 		function changeFunction(object, callback) {

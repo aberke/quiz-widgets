@@ -128,7 +128,6 @@ var ownerOnlyElement = function() {
 	}
 }
 
-
 var imgInputLabel = function() {
 
 	 function checkImageSize(model, img_url, maxSize, callback) {
@@ -186,7 +185,7 @@ var answerKeyContainer = function() {
 var outcomeContainer = function() {
 	function setStyle(model, element) {
 		var backgroundImage = "none";
-		if (model.pic_url && model.pic_style != 'float-right') {
+		if (model.pic_url && model.pic_style && model.pic_style != 'float-right') {
 			backgroundImage = ("url('" + model.pic_url + "')");
 		}
 		element.style.backgroundImage = backgroundImage;
