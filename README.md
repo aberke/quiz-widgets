@@ -34,10 +34,15 @@ since last email
 - can go back and edit your quizzes
 - outcome pic styling
 - user feedback when images are large on the /new and /edit pages
-
+- trivia version supported
 
 TODO
 ---
+
+- on quizzes page, sort by
+	- most started
+	- most restarted/started
+	- most completed/started
 
 - trivia documentation
 
@@ -55,9 +60,6 @@ TODO
 - handle native apps
 	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
 
-- fix for trivia option (Nick on the politics/viral team would like this)
-	- option to have 1 answer
-	- assign arbitrary number of points to outcome
 
 - mongo issue
 	- am I properly deleting questions and outcomes and answers?
@@ -91,7 +93,7 @@ TODO
 - add other share options
 	- mail should be easy
 - facebook app still in development mode
-- handle case of tie
+- handle case of tie?
 - deal with resize event?
 - write api tests
 - write e2e tests
