@@ -108,6 +108,7 @@ TriviaQuizLogic.prototype.outcome = function() {
     }
     o.correct_count = this.correct_count;
     o.total_count   = this.questionList.length;
+    o.text = (this.correct_count + ' out of ' + this.questionList.length);
     return o;
 }
 

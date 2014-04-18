@@ -220,8 +220,6 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         var text = 'I got: ';
         if (outcome.share && outcome.share.caption) {
             text+= outcome.share.caption;
-        } else if (quizData.type == 'trivia-quiz') {
-            text+= (outcome.correct_count + ' out of ' + outcome.total_count);
         } else {
             text+= (outcome.text || shortenText(outcome.description, 20) || outcome.pic_url);
         }
@@ -320,8 +318,8 @@ var HuffpostLabsQuizObject = function(container, quizData) {
             html+=      "</div>";
             html+=      "<div class='share-container'>";
             html+=          "<div class='fb-share-container'>";
-            html+=              "<img width='30px' height='30px' class='share fb-share-btn touchable' src='/icon/fb-icon.png'>";                
-            html+=              "<img width='30px' height='30px' class='share fb-share-btn-blue touchable' src='/icon/fb-icon-blue.png'>";            
+            html+= "            <img width='30px' height='30px' class='share fb-share-btn touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon.png'></img>";
+            html+= "            <img width='30px' height='30px' class='share fb-share-btn-blue touchable' data-huffpostlabs-btn onclick=" + onclickShareFB + " src='" + static_domain + "/icon/fb-icon-blue.png'></img>";          
             html+=          "</div>            ";
             html+=          "<div class='twitter-share-container'>";
             html+=              "<img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
@@ -375,12 +373,12 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     }
     function outcomeContentHTML(outcome) {
         var html = "";
-        if (quizData.type == 'trivia-quiz'){
-            html+= ("    <h1 class='trivia-results'>You got " + outcome.correct_count + " out of " + outcome.total_count + "</h1>");
-        }
+        // if (quizData.type == 'trivia-quiz'){
+        //     html+= ("    <h1 class='trivia-results'>You got " + outcome.correct_count + " out of " + outcome.total_count + "</h1>");
+        // }
             html+= "    <h1 class='outcome-text" + textClass(outcome.text) + "'>" + (outcome.text || "") + "</h1>";
         if ((outcome.pic_style == 'float-right') && outcome.pic_url) {
-            html+= "    <img src=" + outcome.pic_url + " />"
+            html+= "    <img src=" + outcome.pic_url + " />";
         }
             html+= "    <h3 class='outcome-description'>" + (outcome.description || "") + "</h3>";
             html+= "    <span class='photo-credit'>" + (outcome.pic_credit || "") + "</span>";
