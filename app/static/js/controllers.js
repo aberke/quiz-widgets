@@ -430,7 +430,7 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		update('quiz', $scope.quiz, reloadQuiz);
 	}
 	$scope.saveQuestion = function(question) {
-		if (FormService.checkQuestionError(question)) {
+		if (FormService.checkQuestionError(question, $scope.quiz.type)) {
 			return false;
 		}
 		var questionIndex = $scope.quiz.questionList.indexOf(question);

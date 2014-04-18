@@ -249,9 +249,7 @@ var constructOutcome = function(outcomeData) {
 		pic_url: 	 	(outcomeData.pic_url 	 || null),
 		pic_style: 	 	(outcomeData.pic_style  || "bottom-right"),
 		pic_credit:  	(outcomeData.pic_credit || null),
-		rules: 		{ 
-			min_correct:(outcomeData.rules.min_correct||0)
-					},
+		rules: 			(outcomeData.rules),
 	});
 	return new_outcome;
 }

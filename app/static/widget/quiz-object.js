@@ -309,7 +309,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
 
         var html = "<div class='slide answer-key-container'>";
             html+=      "<div class='answer-key-content'>";
-            html+=          quizData.extraSlide.blob;
+            html+=          (quizData.extraSlide.blob || '');
             html+=      "</div>";
             html+=      "<div class='share-container'>";
             html+=          "<div class='fb-share-container'>";
