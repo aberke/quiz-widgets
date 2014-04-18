@@ -217,7 +217,6 @@ var HuffpostLabsQuizObject = function(container, quizData) {
     }
     function shareOutcomeTwitter() {
         var outcome = quizLogic.outcome();
-        console.log('shareOutcomeTwitter', outcome)
         var text = 'I got: ';
         if (outcome.share && outcome.share.caption) {
             text+= outcome.share.caption;
