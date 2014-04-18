@@ -26,11 +26,11 @@
 		<div class='col-md-6'> <!-- percentages -->
 			<div>
 				<label>% Completed</label>
-				<span>{{(stats.completed/stats.started)*100 | number:1}}</span>
+				<span>{{((stats.completed||0)/stats.started)*100 | number:1}}</span>
 			</div>
 			<div>
 				<label>% Restarted</label>
-				<span>{{(stats.restarted/stats.started)*100 | number:1}}</span>
+				<span>{{((stats.restarted||0)/stats.started)*100 | number:1}}</span>
 			</div>
 		</div>
 	</div>
