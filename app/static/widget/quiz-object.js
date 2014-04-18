@@ -198,30 +198,36 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         };
         // outcome related things take precedence over just quiz
         if (outcome) {
-            shareData.picture     = (outcome.share.pic_url || outcome.pic_url || shareData.picture);
-            shareData.caption     = (outcome.share.caption || 'I got: ' + outcome.text);
-            shareData.description = (outcome.share.description || outcome.description || shareData.description);
+            var outcomeShare = (outcome.share || {});
+            shareData.picture     = (outcomeShare.pic_url     || outcome.pic_url || shareData.picture);
+            shareData.caption     = (outcomeShare.caption     || 'I got: ' + outcome.text);
+            shareData.description = (outcomeShare.description || outcome.description || shareData.description);
         }
-        QuizFunctions.fbShare(shareData, (outcome ? outcome.share : quiz.share));
+        QuizFunctions.fbShare(shareData, ((outcome&&outcome.share) ? outcome.share : quiz.share));
     }
 
     function shareQuizFB() {
         shareFB(quizData);
     }
     function shareOutcomeFB() {
-        shareFB(quizData, leadingOutcome);
+        shareFB(quizData, quizLogic.outcome());
     }
     function shareQuizTwitter() {
         QuizFunctions.twitterShare(quizData.title, quizData.share);
     }
     function shareOutcomeTwitter() {
+        var outcome = quizLogic.outcome();
+        console.log('shareOutcomeTwitter', outcome)
         var text = 'I got: ';
-        if (quiz.type == 'trivia-quiz') {
-            text+= ('')
+        if (outcome.share && outcome.share.caption) {
+            text+= outcome.share.caption;
+        } else if (quizData.type == 'trivia-quiz') {
+            text+= (outcome.correct_count + ' out of ' + outcome.total_count);
+        } else {
+            text+= (outcome.text || shortenText(outcome.description, 20) || outcome.pic_url);
         }
-            text+= (leadingOutcome.text || leadingOutcome.share.caption || shortenText(leadingOutcome.description, 20) || leadingOutcome.pic_url);
-            text+= ' -- ' + quizData.title;
-        QuizFunctions.twitterShare(text, leadingOutcome.share);
+        text+= ' -- ' + quizData.title;
+        QuizFunctions.twitterShare(text, (outcome.share || quizData.share));
     }
     function shortenText(text, maxlength) {
         /* helper for sharing to twitter */
@@ -305,7 +311,9 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         return c;
     }
     function answerKeyContainerHTML() {
-        var onclickRefresh = onclickPrefix + ".refresh()";
+        var onclickRefresh      = onclickPrefix + ".refresh()";
+        var onclickShareFB      = onclickPrefix + ".shareOutcomeFB()";
+        var onclickShareTwitter = onclickPrefix + ".shareOutcomeTwitter()";
 
         var html = "<div class='slide answer-key-container'>";
             html+=      "<div class='answer-key-content'>";
@@ -317,8 +325,8 @@ var HuffpostLabsQuizObject = function(container, quizData) {
             html+=              "<img width='30px' height='30px' class='share fb-share-btn-blue touchable' src='/icon/fb-icon-blue.png'>";            
             html+=          "</div>            ";
             html+=          "<div class='twitter-share-container'>";
-            html+=              "<img width='30px' height='30px' class='twitter-share-btn share touchable' src='/icon/twitter-icon.png'>";
-            html+=              "<img width='30px' height='30px' class='twitter-share-btn-blue share touchable' src='/icon/twitter-icon-blue.png'>";           
+            html+=              "<img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn share touchable' src='" + static_domain + "/icon/twitter-icon.png'></img>";
+            html+=              "<img width='30px' height='30px' data-huffpostlabs-btn onclick=" + onclickShareTwitter + " class='twitter-share-btn-blue share touchable' src='" + static_domain + "/icon/twitter-icon-blue.png'></img>";          
             html+=          "</div>";        
             html+=          "<div class='share-text'>";
             html+=              "<p>Share your results</p>";
