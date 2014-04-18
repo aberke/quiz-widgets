@@ -1,15 +1,15 @@
 
 <!-- show the stats for which answers were chosen when -->
 
-<div id='quiz-page' class='view'>
+<div id='stats-page' class='view'>
 
 <h5 class='disclaimer'>The Statistics below will under report</h5>
 
 <!-- the count stats -->
 <section id='stats'>
-	<div class='row' id='quiz-stats'>
-		<div class='col-md-6'>
-			<h3>Quiz</h3>
+	<div class='row' id='quiz-metrics'>
+		<h3>User Interaction Metrics</h3>
+		<div class='col-md-6'> <!-- raw numbers -->
 			<div>
 				<label>Started</label>
 				<span>{{stats.started || 0}}</span>
@@ -22,6 +22,23 @@
 				<label>Restarted</label>
 				<span>{{stats.restarted || 0}}</span>
 			</div>
+		</div>
+		<div class='col-md-6'> <!-- percentages -->
+			<div>
+				<label>% Completed</label>
+				<span>{{(stats.completed/stats.started)*100}}</span>
+			</div>
+			<div>
+				<label>% Restarted</label>
+				<span>{{(stats.restarted/stats.started)*100}}</span>
+			</div>
+		</div>
+	</div>
+
+	<div class='row' id='share-metrics'>
+		<h3>Share Metrics</h3>
+		<div class='col-md-6'>
+			<h4>Quiz</h4>
 			<div>
 				<label>Facebook Shares</label>
 				<span>{{quiz.share.fbCount || 0}}</span>
@@ -32,7 +49,7 @@
 			</div>
 		</div>
 		<div class='col-md-6'>
-			<h3>Quiz + All Outcomes</h3>
+			<h4>Quiz + All Outcomes</h4>
 			<div>
 				<label>Facebook Shares</label>
 				<span>{{totalSharesFB}}</span>
@@ -46,13 +63,15 @@
 	</div>
 
 
-	<div id='outcome-stats'>
-		<h4>Outcome Stats</h4>
+	<div class='row' id='outcome-stats'>
+		<h3>Outcome Stats</h3>
 		
 		<table class="table table-hover">
 		    <thead>
 		        <tr>
-		            <th>Outcome</th>
+		            <th>Outcome
+						<span class='helper-text'>  ( {{quiz.outcomeList.length}} total )</span>
+					</th>
 		            <th>Count</th>
 		            <th>Facebook Shares</th>
 		            <th>Twitter Shares</th>
@@ -72,12 +91,14 @@
 		</table>
 	</div>
 
-	<div id='answer-stats'>
-		<h4>Answer Stats</h4>
+	<div class='row' id='question-stats'>
+		<h3>Question Stats</h3>
 		<table class="table table-hover">
 		    <thead>
 		        <tr>
-		            <th>Question</th>
+		            <th>Question 
+		            	<span class='helper-text'>  ({{quiz.questionList.length}} total)</span>
+		            </th>
 		            <th>Answer 1</th>
 		            <th>Answer 2</th>
 		            <th>Answer 3</th>
