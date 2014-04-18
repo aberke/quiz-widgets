@@ -17,27 +17,29 @@ exports.registerEndpoints = function (app) {
 
 	
 	app.get('/api/quiz/all', GETallQuizes);
+	app.get('/api/slide/all', GETallSlides);
 	app.get('/api/answer/all', GETallAnswers);
 	app.get('/api/outcome/all', GETallOutcomes);
 	app.get('/api/question/all', GETallQuestions);
 
 	app.get('/api/quiz/:quizID', GETquiz);
-	//app.get('/api/outcome/:id', GEToutcome);
-	//app.get('/api/question/:id', GETquestion);
 
 	app.post('/api/quiz', POSTquiz);
+	app.post('/api/quiz/:quizID/slide', verifyQuizAPIAccess, POSTslide);
 	app.post('/api/quiz/:quizID/answer', verifyQuizAPIAccess, POSTanswer);
 	app.post('/api/quiz/:quizID/outcome', verifyQuizAPIAccess, POSToutcome); /* it must have its _quiz id set */
 	app.post('/api/quiz/:quizID/question', verifyQuizAPIAccess, POSTquestion);
 	
 	app.put('/api/quiz/:quizID', verifyQuizAPIAccess, PUTquiz);
 	app.put('/api/quiz/:quizID/share', verifyQuizAPIAccess, PUTquizShare);
+	app.put('/api/quiz/:quizID/slide/:id', verifyQuizAPIAccess, PUTslide);
 	app.put('/api/quiz/:quizID/answer/:id', verifyQuizAPIAccess, PUTanswer);
 	app.put('/api/quiz/:quizID/outcome/:id/share', verifyQuizAPIAccess, PUToutcomeShare);
 	app.put('/api/quiz/:quizID/outcome/:id', verifyQuizAPIAccess, PUToutcome);
 	app.put('/api/quiz/:quizID/question/:id', verifyQuizAPIAccess, PUTquestion);
 
 	app.delete('/api/quiz/:quizID', verifyQuizAPIAccess, DELETEquiz);
+	app.delete('/api/quiz/:quizID/slide/:id', verifyQuizAPIAccess, DELETEslide);
 	app.delete('/api/quiz/:quizID/answer/:id', verifyQuizAPIAccess, DELETEanswer);
 	app.delete('/api/quiz/:quizID/outcome/:id', verifyQuizAPIAccess, DELETEoutcome);
 	app.delete('/api/quiz/:quizID/question/:id', verifyQuizAPIAccess, DELETEquestion);
@@ -117,6 +119,37 @@ var POSToutcome = function(req, res) {
 		});
 	});
 };
+var POSTslide = function(req, res) {
+	var slideData = req.body;
+	/* make sure the quiz exists -- get it before creating the slide and then add slide as quiz.extraSlide */
+	models.findQuiz(slideData._quiz, function(err, quiz) {
+		if (err || !quiz) { return res.send(500, util.handleError(err)); }
+
+		if (quiz.extraSlide) { /* some sort of error occurred? */
+			models.deleteSlide(quiz.extraSlide._id, util.handleError);
+		}
+		models.newSlide(slideData, function(err, slide) {
+			if (err) { return res.send(500, util.handleError(err)); }
+			quiz.extraSlide = slide; // if there already was one (error occurred), at least it will still be deleted when quiz deleted
+			quiz.save(function(err) {
+				if (err) { res.send(500, util.handleError(err)); }
+				res.send(slide);
+			});
+		});
+	});
+}
+var PUTslide = function(req, res) {
+	var slideData = req.body;
+	models.findSlide(req.params.id, function(err, slide) {
+		if (err || !slide) { return res.send(500, util.handleError(err)); }
+
+		slide.blob = slideData.blob;
+		slide.save(function(err) {
+			if (err) { res.send(500, util.handleError(err)); }
+			res.send(slide);
+		});
+	})
+}
 var PUToutcome = function(req, res) {
 	var outcomeData = req.body;
 
@@ -330,6 +363,9 @@ var GETuserQuizzes = function(req, res) {
 	models.findUserQuizzes(req.params.id, GETcallback(res));
 };
 
+var GETallSlides = function(req, res) {
+	models.allSlides(GETcallback(res));
+}
 var GETallAnswers = function(req, res){
 	models.allAnswers(GETcallback(res));
 };
@@ -385,6 +421,9 @@ var DELETEanswer = function(req, res) {
 var DELETEquestion = function(req, res) {
 	models.deleteQuestion(req.params.id, DELETEcallback(res));
 };
+var DELETEslide = function(req, res) {
+	models.deleteSlide(req.params.id, DELETEcallback(res));
+}
 var DELETEquiz = function(req, res) {
 	models.deleteQuiz(req.params.quizID, DELETEcallback(res));
 }

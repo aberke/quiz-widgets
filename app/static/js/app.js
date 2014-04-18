@@ -38,6 +38,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		$compileProvider.directive('editQuizPartial', editQuizPartial);
 		$compileProvider.directive('editOutcomesPartial', editOutcomesPartial);
 		$compileProvider.directive('editQuestionsPartial', editQuestionsPartial);
+		$compileProvider.directive('editAnswerKeyPartial', editAnswerKeyPartial);
 
 		// register factories
 		$provide.factory('UserFactory', UserFactory);

@@ -170,7 +170,7 @@ DefaultQuizLogic.prototype.unchooseAnswer = function(a) {
     return this.decrementOutcome(a._outcome);
 }
 DefaultQuizLogic.prototype.outcome = function() {
-    if (!this.quizComplete) { return null; }
+    if (!this.quizComplete()) { return null; }
     return this.leadingOutcome;
 }
 

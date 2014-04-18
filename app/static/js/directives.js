@@ -71,6 +71,12 @@ var editQuestionsPartial = function() {
 		templateUrl: "/directiveTemplates/edit-questions-partial.html",
 	}
 }
+editAnswerKeyPartial = function() {
+	return {
+		restrict: 'EA',
+		templateUrl: "/directiveTemplates/edit-answer-key-partial.html",
+	}
+}
 var editOutcomesPartial = function() {
 	return {
 		restrict: 'EA',
@@ -183,9 +189,10 @@ var answerKeyContainer = function() {
 }
 
 var outcomeContainer = function() {
+	/* default pic_style treated as 'bottom-right' as to reflect outcomeSchema default */
 	function setStyle(model, element) {
 		var backgroundImage = "none";
-		if (model.pic_url && model.pic_style && model.pic_style != 'float-right') {
+		if (model.pic_url && model.pic_style != 'float-right') {
 			backgroundImage = ("url('" + model.pic_url + "')");
 		}
 		element.style.backgroundImage = backgroundImage;

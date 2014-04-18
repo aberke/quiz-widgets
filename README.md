@@ -39,14 +39,18 @@ since last email
 TODO
 ---
 
+- trivia documentation
+
 - support sharing to tumblr and g+ and email
 
 - assign arbitrary amount of points to outcome in answers
 
-- in API better handling of (err || !model)
-	- return 404 if !model
-	- return 500 if err
-	- put handler in util
+- refactor API
+	- save callback functions
+	- in API better handling of (err || !model)
+		- return 404 if !model
+		- return 500 if err
+		- put handler in util
 
 - handle native apps
 	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
@@ -64,12 +68,6 @@ TODO
 		- whitelist just json that i can update when someone wants an account
 		- special user-accounts branch for updating whitelist
 
-- different views for my quizzes vs all quizzes:
-	- idea:
-		- always use the same HTLM partial (current name: all-quizzes.html)
-		- restrict the quizzes of that partial -- something like:
-			- q in user.quizList for the user quizzes
-			- q in quizList for all quizzes | {q._user: '!user._id'}
 	
 - deal with possibility that twitter share link could be too long
 	- on sharing page let them put in bitly link for sharing -- or automatically create one
@@ -99,7 +97,6 @@ TODO
 - write e2e tests
 - make nice 404
 
-- put widget in a custom web component?
 
 Styling TODO for Wenting
 ---
@@ -165,66 +162,4 @@ Unresolved Issues
 - Quizzes will not show up in MT live preview
 	- MT is under HTTPS
 	- quizzes must stay under HTTP so they can load in their arbitrary assets
-
-
-
-
-TRIVIA OPTION
-----
-
-Have a set of points
-each question answer either adds point or doesn't
-- one outcome title but description depends on number of right answers %
-
-- add key slide
-	- totally blank slate
-	- editors can put in html for new lines
-	- key slide comes after outcome slide and has button next to refresh button
-
-
-Question:
-	TEXT : owiejroiwejriowejr
-
-	ANSWER1: woeirjwoierj -> 0
-	ANSWRE2: woeirjwoiejr -> 1 (right)
-	ANSWER3: woeirjweiore -> 0
-
-
-
-
-description 1:
-	for more than 90% 
-	woeirjwoeirjoiwejr
-
-description 2:
-	for more than 50% 
-	woeirjwoeirjoiwejr
-
-description 2:
-	otherwise 
-	woeirjwoeirjoiwejr
-
-
-
-
-
-THE Outcome:
-	TITLE: You got #right / #total-questions
-
-	[[DESCRIPTION: 'you killed it! blah blah blah']]
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -58,58 +58,20 @@
 	</section> <!-- ********************* set-trivia-outcomes *********************  -->
 	
 
-	<!-- ********************* set-extra-slide *********************  -->
-	<section ng-if="quiz.type=='trivia-quiz'" id='set-extra-slide'>
-		<h3 ng-class="{'error':quiz.error.extraSlide}" >
-			<button ng-show="quiz.extraSlide" ng-click="quiz.extraSlide=null;" class='btn btn-danger hide-show-btn'> discard </button>
-			<button ng-show="!quiz.extraSlide" ng-click="quiz.extraSlide={}" class='btn btn-default hide-show-btn'> Add </button>
+	<!-- ********************* set-answer-key *********************  -->
+	<section ng-if="quiz.type=='trivia-quiz'" id='set-answer-key'>
+		<h3 class='display-inline' ng-class="{'error':quiz.error.extraSlide}" >
+			<button ng-show="!quiz.extraSlide" ng-click="addExtraSlide()" class='btn btn-default hide-show-btn'> Add </button>
 			Answer Key
 			<span style="margin-left:5px;" ng-show="!quiz.extraSlide" class='inline-block btn-helper'>(optional)</span>
 		</h3>
-		<span ng-show="quiz.extraSlide">
-			<p class='instructions-text'>You can optionally add an answer key to come after the quiz-taker's result is shown.  You can insert raw content - I suggest you input HTML - you can come to Labs hours for help.</p>
-			<p class='instructions-text'>Have a better idea for this editing tool?  I'd love to hear about it - please send designs to labs!</p>
-			
-			<p class="bold error display-inline" ng-show="extraSlide.error.empty">Hey this is empty</p>
-
-			<textarea rows='10' ng-change="extraSlide.saved='unsaved'" ng-model='quiz.extraSlide.blob'></textarea>
-
-			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<div class="slide answer-key-container">
-						<!-- the rest is filled in by answerKeyContainer directive -->
-					</div>
-				</div>
-			</div>
-
-		</span> <!-- hide-show-outcomes -->
-		
+		<edit-answer-key-partial ng-show="quiz.extraSlide!=null&&quiz.extraSlide!=undefined"></edit-answer-key-partial>
 	</section> <!-- ********************* set-extra-slide *********************  -->
-
-	<!-- ********************* set-complete *********************  -->
-	<section id='set-complete'>
-		<h3 id='ready-text' ng-show="quiz.title&&quiz.questionList.length&&quiz.outcomeList.length">Ready, set...</h3>
-		
-		<h3 id='still-required-text' ng-show="!quiz.title||!quiz.questionList.length||!quiz.outcomeList.length">Still Required:</h3>
-			<p id='still-required-title' ng-show="!quiz.title">Title</p>
-			<p id='still-required-outcome' ng-show="!quiz.outcomeList.length&&quiz.type!='trivia-quiz'">At least 1 Outcome</p>
-			<p id='still-required-question' ng-show="!quiz.questionList.length">At least 1 Question</p>
-
-			<!-- error text and fix buttons -->
-			<p class='error' ng-show="quiz.error.question">
-				<button ng-click="scrollToById('set-questions')" class='btn btn-xs btn-danger'>FIX</button>
-				You've got some issues with your questions
-			</p>
-			<p class='error' ng-show="quiz.error.outcome">
-				<button ng-click="scrollToById('set-outcomes')" class='btn btn-xs btn-danger'>FIX</button>
-				Not so fast.  You've got some empty outcomes
-			</p>
-
-			<p class='instructions-text' ng-show="quiz.saved">{{quiz.saved}}</p>
-
-		<button id='create-quiz-btn' ng-disabled="!quiz.title||!quiz.questionList.length||(!quiz.outcomeList.length&&quiz.type!='trivia-quiz')||quiz.saved=='saving'||quiz.error.outcome||quiz.error.question" ng-click="createQuiz()" class='btn btn btn-success'>Create Quiz</button>
-		<p class='inline-block btn-helper'>First preview the mobile version!</p>
-	</section> <!-- ********************* set-complete *********************  -->
+	
+	<!-- ********************* preview-again *********************  -->
+	<section id='preview-again'>
+		<button ng-click="scrollToTop()" class='btn btn-info btn-lg'>View Newly Saved Quiz</button>
+	</section> <!-- ********************* preview-again *********************  -->
 
 </div> <!-- #build-container col-md-9 -->
 
@@ -131,11 +93,6 @@
 		<h5>Basics:</h5>
 		<div class='instructions-text'>
 			<p>All changes saved on this page will immediately go live.</p>
-			<p>Here's how it works:<ul>
-				<li>You create a set of 'outcomes' -- the possible results of the quiz.</li>
-				<li>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</li>
-				<li>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</li>
-			</ul></p>
 
 			<p>Quiz dimensions:
 				<ul>

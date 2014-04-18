@@ -45,30 +45,12 @@
 
 	<!-- ********************* set-extra-slide *********************  -->
 	<section ng-if="quiz.type=='trivia-quiz'" id='set-extra-slide'>
-		<h3 ng-class="{'error':quiz.error.extraSlide}" >
-			<button ng-show="quiz.extraSlide" ng-click="quiz.extraSlide=null;" class='btn btn-danger hide-show-btn'> discard </button>
-			<button ng-show="!quiz.extraSlide" ng-click="quiz.extraSlide={}" class='btn btn-default hide-show-btn'> Add </button>
+		<h3 class='display-inline' ng-class="{'error':quiz.error.extraSlide}" >
+			<button ng-show="!quiz.extraSlide" ng-click="addExtraSlide()" class='btn btn-default hide-show-btn'> Add </button>
 			Answer Key
 			<span style="margin-left:5px;" ng-show="!quiz.extraSlide" class='inline-block btn-helper'>(optional)</span>
 		</h3>
-		<span ng-show="quiz.extraSlide">
-			<p class='instructions-text'>You can optionally add an answer key to come after the quiz-taker's result is shown.  You can insert raw content - I suggest you input HTML - you can come to Labs hours for help.</p>
-			<p class='instructions-text'>Have a better idea for this editing tool?  I'd love to hear about it - please send designs to labs!</p>
-			
-			<p class="bold error display-inline" ng-show="extraSlide.error.empty">Hey this is empty</p>
-
-			<textarea rows='10' ng-change="extraSlide.saved='unsaved'" ng-model='quiz.extraSlide.blob'></textarea>
-
-			<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
-				<div class="slides-container">
-					<div class="slide answer-key-container">
-						<!-- the rest is filled in by answerKeyContainer directive -->
-					</div>
-				</div>
-			</div>
-
-		</span> <!-- hide-show-outcomes -->
-		
+		<edit-answer-key-partial ng-show="quiz.extraSlide!=null&&quiz.extraSlide!=undefined"></edit-answer-key-partial>
 	</section> <!-- ********************* set-extra-slide *********************  -->
 
 	<!-- ********************* set-complete *********************  -->
@@ -116,11 +98,6 @@
 		<h5>Basics:</h5>
 		<div class='instructions-text'>
 			<p>All changes saved on this page will immediately go live.</p>
-			<p>Here's how it works:<ul>
-				<li>You create a set of 'outcomes' -- the possible results of the quiz.</li>
-				<li>You create a series of questions and each of those questions has a set of answers.  If a user picks a given answer, that answer adds a 'point' to one of the outcomes you created.</li>
-				<li>At the end of the quiz, whichever outcome has the most 'points' will be the outcome for that user.  (Avoid the possibility of a tie).  You create the outcomes, the questions, the answers, and decide which outcome a given answer adds a 'point' to.</li>
-			</ul></p>
 
 			<p>Quiz dimensions:
 				<ul>

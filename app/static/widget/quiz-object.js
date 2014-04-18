@@ -92,8 +92,9 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         var answer = quizLogic.answer(index);
         chosenAnswers.push(answer);
         
-        outcome = quizLogic.outcome(); // returns null if quiz not completed
+        var outcome = quizLogic.outcome(); // returns null if quiz not completed
         if (outcome) {
+            console.log('outcome',outcome)
             updateOutcomeContent(container, outcome);
             QuizFunctions.quizCompleted(quizData, outcome, chosenAnswers);
         }

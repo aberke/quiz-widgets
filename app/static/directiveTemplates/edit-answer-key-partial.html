@@ -1,0 +1,23 @@
+<!-- edit answer-key partial -->
+
+<div class='remove-edit-btns'>
+	<p ng-if="quiz._id" class='display-inline btn-helper'>{{quiz.extraSlide.saved}}</p>
+	<button ng-click="removeExtraSlide(quiz.extraSlide)" class='btn btn-xs btn-danger remove-outcome'>X</button>
+	<button ng-show="quiz._id&&quiz.extraSlide.saved=='unsaved'" ng-click="saveExtraSlide(quiz.extraSlide)" class='btn btn-xs btn-success'>SAVE
+	</button>
+</div>
+
+<p class='instructions-text'>You can optionally add an answer key to come after the quiz-taker's result is shown.  You can insert raw content - I suggest you input HTML - you can come to Labs hours for help.</p>
+<p class='instructions-text'>Have a better idea for this editing tool?  I'd love to see it - please send designs to labs!</p>
+
+<p class="bold error display-inline" ng-show="extraSlide.error.empty">Hey this is empty</p>
+
+<textarea rows='10' ng-change="quiz.extraSlide.saved='unsaved'" ng-model='quiz.extraSlide.blob'></textarea>
+
+<div class="huffpostlabs-quiz quiz-edit" ng-class="{'mobile':viewMobile}">
+	<div class="slides-container">
+		<div class="slide answer-key-container">
+			<!-- the rest is filled in by answerKeyContainer directive -->
+		</div>
+	</div>
+</div>

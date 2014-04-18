@@ -148,6 +148,13 @@ exports.deleteAnswer = function(answerID, callback) {
             });
 		});
 };
+exports.deleteSlide = function(slideID, callback) {
+	Slide.remove({ _id: slideID }, callback);
+};
+var slideSchema = new Schema({
+	_quiz: 		 		{type: ObjectId, ref: 'Quiz'},
+	blob: 				{type: String, default: null},
+});
 
 var deleteQuestion = function(questionID, callback) {
 	var otherComplete = false;
@@ -224,9 +231,9 @@ exports.newShare = function(quiz, outcome, shareData, callback) { // callback: f
 	});
 	share.save(function(err) { callback(err, share); });
 }
-var newSlide = function(quiz, slideData, callback) {
+var newSlide = function(slideData, callback) {
 	var slide = new Slide({
-		_quiz: 		quiz,
+		_quiz: 		slideData._quiz,
 		blob: 		(slideData.blob || null),
 	});
 	slide.save(function(err) { callback(err, slide); });
@@ -471,6 +478,13 @@ exports.findAnswer = function(answerID, callback) {
 			callback(null, answer);
 		});
 }
+exports.findSlide = function(slideID, callback) {
+	Slide.findById(slideID)
+		.exec(function(err, slide) {
+			if (err || !slide) { return callback(new Error('Error in models.findSlide'), null); }
+			callback(null, slide);
+		});
+}
 exports.findShare = function(shareID, callback) {
 	Share.findById(shareID)
 		.exec(function(err, share) {
@@ -521,6 +535,9 @@ exports.allOutcomes = function(callback){
 exports.allAnswers = function(callback){
 	Answer.find().exec(callback);
 };
+exports.allSlides = function(callback) {
+	Slide.find().exec(callback);
+}
 
 
 

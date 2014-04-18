@@ -270,6 +270,15 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	/* ------- questions ----------------------- */
 
+	/* ------- extraSlide ---------------------- */
+	$scope.addExtraSlide = function() {
+		$scope.quiz.extraSlide = {};
+	}
+	$scope.removeExtraSlide = function() {
+		$scope.quiz.extraSlide = null;
+	}
+	/* ------- extraSlide ---------------------- */
+
 
 	$scope.createQuiz = function() {
 		$scope.quiz.saved = 'saving';
@@ -405,6 +414,15 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		if (question._id) { remove('question', question, callback); } 
 		else { callback(); }
 	}
+	$scope.removeExtraSlide = function(slide) {
+		function callback() { 
+			$scope.quiz.extraSlide = null;
+			reloadQuiz($scope.quiz);
+		}
+		if (slide._id) { remove('slide', slide, callback); }
+		else { callback(); }
+	}
+
 
 	/* save ------------------------------------------------- */
 
@@ -472,6 +490,19 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		} else { /* update existing outcome */
 			update('outcome', outcome, callback);
 		}
+	};
+	$scope.saveExtraSlide = function(slide) {
+		function callback(slideData) {
+			slideData.saved = 'saved';
+			$scope.quiz.extraSlide = slideData;
+			reloadQuiz($scope.quiz);
+		}
+		if (!slide._id) {
+			slide._quiz = $scope.quiz._id;
+			create('slide', slide, callback);
+		} else {
+			update('slide', slide, callback);
+		}
 	};	
 	$scope.addAnswer = function(question) {
 		question.answerList.push({'saved':'unsaved'});
@@ -482,6 +513,9 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 	$scope.addOutcome = function() {
 		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
 		$scope.quiz.outcomeList.push({'saved':'unsaved', 'editing':true});
+	}
+	$scope.addExtraSlide = function() {
+		$scope.quiz.extraSlide = { 'saved':'unsaved' };
 	}
 	/* ------- save == PUT/POST requests above ------------- */
 
