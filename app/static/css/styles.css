@@ -17,7 +17,10 @@ p.error, h3.error, .error h3,
 	color: red;
 }
 
-.btn-helper { color: gray; }
+.btn-helper, .helper-text {
+	color: gray;
+	display: inline;
+}
 
 
 
@@ -220,32 +223,35 @@ footer {
 
 /********************** quiz-page ******************/
 
-#quiz-page .disclaimer {
+#stats-page .disclaimer {
 	text-align: center;
 	color: red;
 	margin-top: 50px;
 }
 
-#quiz-page section {
+#stats-page section {
 	max-width: 550px;
 	margin: 30px auto;
 	padding-bottom: 15px;
 }
-#quiz-page .outcome-pic {
+#stats-page .row {
+	margin-bottom: 10px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid lavender;
+}
+#stats-page .outcome-pic {
 	margin-right: 5px;
 }
-#quiz-page th,#quiz-page label {
+#stats-page th,#stats-page label {
 	color: purple;
 }
-#quiz-page .text {
+#stats-page .text {
 	color: gray;
 }
-#quiz-page #stats .number {
+#stats-page #stats .number {
 	color: brown;
 }
-#quiz-page #quiz-stats {
-	margin-bottom: 40px;
-}
+
 /********************** quiz-page above ******************/
 
 
