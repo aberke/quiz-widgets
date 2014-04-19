@@ -1,14 +1,26 @@
 { 
-	"make-a-quiz": {
-		"string": "make-a-quiz-instructions",
-		"title": "Instructions: Make A Quiz",
-		"public_url": "https://docs.google.com/document/d/10cnBsJU4o69cWjzbk98J8it1F1e_syg-mSYm1n-zsg8/pub?embedded=true",
-		"edit_url": "https://docs.google.com/a/huffingtonpost.com/document/d/10cnBsJU4o69cWjzbk98J8it1F1e_syg-mSYm1n-zsg8/edit"
+	"FAQ-and-common-questions": {
+		"string": "FAQ-and-common-questions",
+		"title": "FAQ and Common Questions",
+		"public_url": "https://docs.google.com/document/d/1WQBTC3YN6uSFMZBFoveZK56w361i8RGpSaemfujCbfo/pub?embedded=true",
+		"edit_url": "https://docs.google.com/a/huffingtonpost.com/document/d/1WQBTC3YN6uSFMZBFoveZK56w361i8RGpSaemfujCbfo/edit"
 	},
 	"custom-quiz-styling": {
 		"string": "custom-quiz-styling",
 		"title": "Custom Quiz Styling",
 		"public_url": "https://docs.google.com/document/d/1w0WiYvb4FeX4PurwiVN__IgECaSknchf4IKfyfHDwxY/pub?embedded=true",
 		"edit_url": "https://docs.google.com/a/huffingtonpost.com/document/d/1w0WiYvb4FeX4PurwiVN__IgECaSknchf4IKfyfHDwxY/edit"
+	},
+	"image-and-gif-resources": {
+		"string": "image-and-gif-resources",
+		"title": "Using Images/GIFs",
+		"public_url": "https://docs.google.com/document/d/15PcK-NSCwNssN-4AAj6Tgskttk_KF_5xYMgbm4CIL0Q/pub?embedded=true",
+		"edit_url": "https://docs.google.com/a/huffingtonpost.com/document/d/15PcK-NSCwNssN-4AAj6Tgskttk_KF_5xYMgbm4CIL0Q/edit"
+	},
+	"make-a-quiz": {
+		"string": "make-a-quiz-instructions",
+		"title": "Instructions: Make A Quiz",
+		"public_url": "https://docs.google.com/document/d/10cnBsJU4o69cWjzbk98J8it1F1e_syg-mSYm1n-zsg8/pub?embedded=true",
+		"edit_url": "https://docs.google.com/a/huffingtonpost.com/document/d/10cnBsJU4o69cWjzbk98J8it1F1e_syg-mSYm1n-zsg8/edit"
 	}
 }
