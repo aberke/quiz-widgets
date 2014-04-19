@@ -1,13 +1,24 @@
 <!-- quizzes.html directive template -->
 
 <div id='quizzes-view'>
+  <div id='filter'>
+    <img class='clickable' ng-click="showFilter=!showFilter" src="/img/search-icon.png" />
+    <span ng-show="showFilter" id='filter-options'>
+      <div class='display-inline' id='searchBy'>
+        <input ng-model="searchText">
+      </div>
 
-  <div id='filterBy'>
-    <img src="/img/search-icon.png" />
-    <input ng-model="searchText">
+      <div id='orderBy'>
+        <span>Order by</span>
+        <select ng-model="order" ng-options="op for op in orderOptions">
+          <option value="">newest</option>
+        </select>
+      </div>
+    </span>
   </div>
+
   
-  <div class='row quiz-and-embed-container' ng-repeat='q in quizList | filter:searchText' >
+  <div class='row quiz-and-embed-container' ng-repeat="q in quizList | filter:{$:searchText} | orderBy:(order||'date_created'):true" >
     <div class='col-sm-8' class='quiz-container'>
       <div class="huffpostlabs-quiz" id="{{q._id}}"></div>
     </div>

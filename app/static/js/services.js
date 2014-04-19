@@ -259,16 +259,16 @@ var APIservice = function($rootScope, $http, $q){
     return this.GET('/quiz/' + id);
   };
 
-  this.GET= function(endpoint) {
+  this.GET = function(endpoint) {
     return HTTP('GET', endpoint, null);
   };
-  this.POST= function(endpoint, data) {
+  this.POST = function(endpoint, data) {
     return HTTP('POST', endpoint, data);
   };
-  this.PUT= function(endpoint, data) {
+  this.PUT = function(endpoint, data) {
     return HTTP('PUT', endpoint, data);
   };
-  this.DELETE= function(endpoint) {
+  this.DELETE = function(endpoint) {
     return HTTP('DELETE', endpoint, null);
   };
 

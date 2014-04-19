@@ -19,7 +19,8 @@
 			- there is a write lock per collection -- so keep this in separate collection
 			- reads also blocked on writes to collection
 				- often write to stats, rarely read
-				- when i read from quiz, don't want to database locked due to stats logging
+				- when i read from quiz, don't want database locked due to stats logging
+
 */
 
 
@@ -32,6 +33,7 @@ var util 		= require('./../util.js'),
 
 exports.registerEndpoints = function (app) {
 	app.get('/stats/all', GETallStats);
+	app.get('/stats/all/quiz', GETallStatsQuiz); // all stats where model is quiz
 	app.get('/stats/:quizID/all', GETquizStats);
 	
 
@@ -50,6 +52,13 @@ exports.registerEndpoints = function (app) {
 
 var GETallStats = function(req, res) {
 	Stat.find()
+		.exec(function(err, stats) {
+			if (err) { return res.send(500, util.handleError(err)); }
+			res.send(stats);
+		});
+}
+var GETallStatsQuiz = function(req, res) {
+	Stat.find({ model_id: "null" })
 		.exec(function(err, stats) {
 			if (err) { return res.send(500, util.handleError(err)); }
 			res.send(stats);

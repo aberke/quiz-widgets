@@ -1,13 +1,78 @@
 /* directives */
 
 
-var quizzes = function(APIservice, UserFactory) {
+var quizzes = function(APIservice, UserFactory, $http) {
 	/* <quizzes owner="USERID"></quizzes>
 			get the quizList of owner or get all quizzes if owner null or undefined
 			show ng-repeat: q in quizList
 			- use user from outter scope to decide what to show
 				- using owner-only-element directive in template
 	*/
+
+
+	function setupFilter(scope) {
+		/* Want to filter by the stats
+			Stats are set with updates
+				- a stat doesn't exist until it is incremented
+					- so initialize relevant stats to 0
+		*/
+		scope.orderOptions = [ /* default is newest -- set in template */
+			// the stats recorded
+			"started",
+			"completed",
+			"restarted",
+
+			// ratios computed from stats recorded
+			"completed/started",
+			"restarted/started",
+		];
+
+		scope.quizMap = {}; // {quizID: quiz}
+		var qMap = {}; // {qID: index in quizList}
+		for (var i=0; i<scope.quizList.length; i++) {
+			var q = scope.quizList[i];
+			/* initialize stats to 0 in case they don't yet exist (don't exist until updated) */
+			q.started = 0;
+			q.completed = 0;
+			q.restarted = 0;
+
+			qMap[q._id] = i;
+			scope.quizMap[q._id] = q;
+		}
+		function computeStatsRatios() {
+			for (j=0; j<scope.quizList.length; j++) {
+				var q = scope.quizList[j];
+				q["completed/started"] = (q.completed/q.started);
+				q["restarted/started"] = (q.restarted/q.started);
+			}
+		}
+		
+		/* GET the stats and tack them on to quizzes */
+		$http.get('/stats/all/quiz').success(function(sData) {
+			for (var i=0; i<sData.length; i++) {
+				var s = sData[i];
+				var qIndex = qMap[s._quiz];
+				if (typeof qIndex == "number") {
+					scope.quizList[qIndex][s.model_type] = s.count;
+				}
+			}
+			// now that we have stats, compute the ratios to have those as orderOptions
+			computeStatsRatios();
+		});
+	}
+	function setupSearchText(scope) {
+		/* Problem:
+			user filters for quizzes by searchText -- great
+			BUT when they delete characters, aka make filter less strict,
+				quizzes reshow as black boxes -- need to reload data
+		*/
+		scope.$watch('searchText', function(n,o) {
+			if (n && o && n.length < o.length) {
+				/* inefficient BUT can't re-init existing quizzes, because the filter has changed the HTML */
+				$.getScript("/widget/q.js");
+			}
+		});
+	}
 
 	return {
 		restrict: 'E',
@@ -19,16 +84,24 @@ var quizzes = function(APIservice, UserFactory) {
 			UserFactory.then(function(user) {
 				scope.user = user;
 			});
+			/* if looking at all quizzes, show filter */ 
+			if (!scope.owner) {
+				scope.showFilter = true;
+			}
 
+			/* GET the quizzes */
 			if (scope.owner) {
 				endpoint = ('/user/' + scope.owner + '/quizzes');
 			} else {
 				endpoint = '/quiz/all';
 			}
-			APIservice.GET(endpoint).then(function(data) {
-				scope.quizList = data;
+			APIservice.GET(endpoint).then(function(qData) {
+				scope.quizList = qData;
 				$.getScript("/widget/q.js"); /* now load the quizzes */
+				setupFilter(scope);
 			});
+
+			setupSearchText(scope);
 
 			function claimQuiz(quiz) {
 				if (!scope.user || quiz._user) { return false; } // directive  owner-only-element should prevent this case

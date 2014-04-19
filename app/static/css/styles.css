@@ -22,6 +22,10 @@ p.error, h3.error, .error h3,
 	display: inline;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 
 
 /********************** base *************************/
@@ -168,6 +172,13 @@ footer {
 
 /********************** quizzes-view ******************/
 
+#quizzes-view #filter #searchBy,
+#quizzes-view #filter #orderBy {
+	display: inline-block;
+}
+#quizzes-view #filter #orderBy {
+	float: right;
+}
 
 
 #quizzes-view .quiz-and-embed-container {
@@ -190,11 +201,11 @@ footer {
 #user-page .title {
 	display: inline-block;
 }
-#user-page #filterBy {
+#user-page #searchBy {
 	float: right;
 	margin-top: 30px;
 }
- #filterBy input {
+ #searchBy input {
 	border-radius: 8px;
 	border: 1px solid #5F9EA0;
 }

@@ -18,6 +18,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 	})
 
 	.config(function($provide, $compileProvider) {
+
 	
 		// register services
 		$provide.service('UIService', UIService);
@@ -43,6 +44,5 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		// register factories
 		$provide.factory('UserFactory', UserFactory);
 	});
-
 
 

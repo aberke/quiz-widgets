@@ -199,6 +199,7 @@ exports.deleteQuiz = function(quizID, callback) {
 	totalCalls += 3;
 	Share.remove({ _quiz: quizID }, call);
 	Slide.remove({ _quiz: quizID }, call);
+	Stat.remove({ _quiz: quizID }, call);
 	Quiz.remove({ _id: quizID }, call);
 }
 
