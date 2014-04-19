@@ -41,7 +41,11 @@ var HuffpostLabsSlidesCntl = function(container) {
         nextSlide = slides[currSlideIndex + 1];
         currSlide.style.top = '0%';
     }
-    return { transitionNext: transitionNext, transitionPrev: transitionPrev, init: init };
+    return { 
+        transitionNext: transitionNext, 
+        transitionPrev: transitionPrev, 
+        init: init,
+    };
 }
 /*
 HuffpostLabsQuizObject -- The main object that does the work
