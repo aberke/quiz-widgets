@@ -113,7 +113,6 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         slidesCntl.init();
     }
     function init(){
-        console.log('init', quizData)
         chosenAnswers = [];
         
         if (quizData.type == 'trivia-quiz') {
