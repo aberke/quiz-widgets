@@ -141,10 +141,6 @@ footer {
 	background-color: #e0ffff;
 	border-color: #6BCAE2;
 }
-#index-page #filterBy,
-#user-page #quizzes-view #filterBy {
-	display: none;
-}
 
 
 /********************** index-page above ******************/
@@ -201,11 +197,7 @@ footer {
 #user-page .title {
 	display: inline-block;
 }
-#user-page #searchBy {
-	float: right;
-	margin-top: 30px;
-}
- #searchBy input {
+ #filter input {
 	border-radius: 8px;
 	border: 1px solid #5F9EA0;
 }
