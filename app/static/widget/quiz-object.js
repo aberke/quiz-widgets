@@ -54,22 +54,16 @@ HuffpostLabsQuizObject -- The main object that does the work
         a SlideCntl
         a QuizLogic (quiz-logic.js)
     - QuizLogic uses prototypical inheritance pattern (quiz-logic.js) -- reasoning in file
-    - Reasoning for why HuffpostLabsQuizObject does not use prototypical inheritance pattern:
-        There is a lot of interaction between the window and this object
-            - need to keep hold on each quizData
-            - relevant methods need to know which quizData they are using and which slides they are modifying
-        - BUT this file should still be refactored
+    - Reasoning for why objects in this file do not use prototypical inheritance pattern:
+        No good reason - just to mix it up I guess - bad?
 */
 var HuffpostLabsQuizObject = function(container, quizData) {
     console.log('quizData', quizData)
 
 
-
     var container = container;
     var quizData = quizData;
     var quizID = quizData._id;
-    var quizClassName = ('quiz-' + quizID);
-    var onclickPrefix = ("QuizWidgets['" + quizID + "']");
 
 
     var quizLogic;
