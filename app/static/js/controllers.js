@@ -433,16 +433,27 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		if (FormService.checkQuestionError(question, $scope.quiz.type)) {
 			return false;
 		}
+		/*  
+			1) save JUST the question
+			2) replace question._id with returned data._id rather than question itself to keep the answer list
+			3) save each answer
+			4) when all callbacks for answers are complete, reload quiz
+		*/
 		var questionIndex = $scope.quiz.questionList.indexOf(question);
 
 		var answersCalledback = 0;
-		var answerCallback = function() {
-			answersCalledback += 1;
-			if (answersCalledback == question.answerList.length) {
-				$scope.quiz.questionList[questionIndex] = question;
-				question.editing = false;
-				question.saved = 'saved';
-				reloadQuiz($scope.quiz);
+		var answerCallback = function(answerIndex) {
+			
+			return function(answerData) {
+				question.answerList[answerIndex] = answerData;
+
+				answersCalledback += 1;
+				if (answersCalledback == question.answerList.length) {
+					$scope.quiz.questionList[questionIndex] = question;
+					question.editing = false;
+					question.saved = 'saved';
+					reloadQuiz($scope.quiz);
+				}
 			}
 		}
 		var questionCallback = function(questionData) {
@@ -455,16 +466,9 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 				var answer = question.answerList[i];
 				answer._question = question._id;
 				if (!answer._id) {
-					var j = i; // i will continue iterating
-					create('answer', answer, function(data) {
-						question.answerList[j] = data;
-						answerCallback();
-					});
+					create('answer', answer, answerCallback(i));
 				} else {
-					update('answer', answer, function(data) {
-						question.answerList[j] = data;
-						answerCallback();
-					});
+					update('answer', answer, answerCallback(i));
 				}
 			}
 		}

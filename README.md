@@ -35,14 +35,11 @@ since last email
 - outcome pic styling
 - user feedback when images are large on the /new and /edit pages
 - trivia version supported
+- can sort quizzes on all-quizzes page
 
 TODO
 ---
 
-- on quizzes page, sort by
-	- most started
-	- most restarted/started
-	- most completed/started
 
 - trivia documentation
 
