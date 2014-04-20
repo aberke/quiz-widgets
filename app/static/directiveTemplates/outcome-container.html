@@ -1,8 +1,9 @@
 <div class="outcome-content" ng-class="(outcome.pic_style||'bottom-right')">
 
-	<h1 ng-if="quiz.type=='trivia-quiz'" class='trivia-results'>You got {{outcome.rules.min_correct || 0}} out of {{quiz.questionList.length}}</h1>
+	<h1 ng-if="quiz.type=='trivia-quiz'" class='trivia-results'>{{outcome.rules.min_correct || 0}} out of {{quiz.questionList.length}}</h1>
 
-	<h1 ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text || ""}}</h1>
+	<h1 ng-if="quiz.type!='trivia-quiz'" ng-class="{'long-text':(outcome.text && outcome.text.length > 40), 'extra-long-text':(outcome.text&&outcome.text.length>200)}" class="outcome-text">{{outcome.text || ""}}</h1>
+	
 	<img ng-if="outcome.pic_url&&outcome.pic_style=='float-right'" ng-src="{{outcome.pic_url}}" />
 	<h3 class="outcome-description">{{outcome.description || ""}}</h3>
 	<span class="photo-credit">{{outcome.pic_credit || ""}}</span>
