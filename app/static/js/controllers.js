@@ -58,7 +58,6 @@ function DocumentationCntl($scope, $routeParams) {
 
 	// callback for getJSON documentation.json
 	var setup = function(docDictionary) {
-		$scope.docDictionary = docDictionary;
 		var docString = ($routeParams.docString || null);
 
 		$scope.doc =  (docString ? docDictionary[docString] : null);
