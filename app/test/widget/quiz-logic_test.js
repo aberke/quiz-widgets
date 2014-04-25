@@ -15,10 +15,9 @@ Testing just the quiz logic - not the user experience
 
 
 var assert 				= require("assert"),
-	quizLogic 			= require("./../quiz-logic.js"),
+	quizLogic 			= require("./../../static/widget/quiz-logic.js"),
 	TriviaQuizLogic 	= quizLogic.TriviaQuizLogic,
 	DefaultQuizLogic 	= quizLogic.DefaultQuizLogic;
-
 
 
 /* --------------- Shared Test Functions ------------------ */
@@ -66,9 +65,9 @@ function shouldReturnOutcomeNullBeforeQuizComplete(logic) {
 
 describe('Default Quiz Logic', function() {
 	var outcomeList = [
-		{ _id:'0', text:'OUTCOME-0' },
-		{ _id:'1', text:'OUTCOME-1' },
-		{ _id:'2', text:'OUTCOME-2' },
+		{ _id:'0', desciption:'OUTCOME-0' },
+		{ _id:'1', desciption:'OUTCOME-1' },
+		{ _id:'2', desciption:'OUTCOME-2' },
 	];
 	var questionList = [
 		{ _id: '0', answerList: [{ _question: '0', _outcome:'0' },{ _question: '0', _outcome:'1' }]},
@@ -143,8 +142,8 @@ describe('Trivia Quiz Logic', function() {
 			{answerList: [{correct: false},{correct: true},]},	
 		];
 	var triviaOutcomeList = [
-			{ _id: 0, text: 'MIN-CORRECT-1', rules: {min_correct: 1}},
-			{ _id: 1, text: 'MIN-CORRECT-3', rules: {min_correct: 3}},
+			{ _id: 0, desciption: 'MIN-CORRECT-1', rules: {min_correct: 1}},
+			{ _id: 1, desciption: 'MIN-CORRECT-3', rules: {min_correct: 3}},
 		];
 	var triviaQuizData = {
 		'questionList': triviaQuestionList,
@@ -177,7 +176,7 @@ describe('Trivia Quiz Logic', function() {
 			var o = logic.outcome();
 			assert.notEqual(undefined, o.correct_count);
 			assert.notEqual(undefined, o.total_count);
-			assert.equal(undefined, o.text);
+			assert.equal(undefined, o.desciption);
 		});
 		it('handles 1 answer right where there is a matching rule', function() {
 			answerIncorrect(2);

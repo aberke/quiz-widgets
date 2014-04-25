@@ -40,10 +40,23 @@ since last email
 TODO
 ---
 
+- BEFORE REFACTORING COMPLETE
+	- change the front end controllers to handle the api route changes:
+		- 
+
+- create make file for tests
+
+- fix deleting quizzes!
+
+- return 500.html on error
+- return 404.html on not found
+	- can I do this with middleware?
+
+- get rid of any fields needed for backwards compatibility
+	- update the model
+
 
 - trivia documentation
-
-- support sharing to tumblr and g+ and email
 
 - assign arbitrary amount of points to outcome in answers
 
@@ -126,6 +139,24 @@ How it works:
 - I have a JSON file mapping ```{document-name: url for the iframe} ```
 - All that needs to happen to get to that document under /documentation/document-name is for Alex or someone to update that JSON file
 
+
+Admin
+---
+There is an ADMIN_WHITELIST to allow admin users access to the pages and API endpoints that are usually private to the quiz owner
+
+- Right now, HuffpostLabs is the only user with admin rights
+- To give a user admin rights:
+	- find their user _id in 1 of 2 ways:
+		- query /api/user/all and search for their name until you find their user object
+		- go to their user page by clicking on their name next to one of their quizzes.  The user _id is the id at the end of the URL you are taken to.
+	- copy their user _id
+	- add it to the ADMIN_WHITELIST defined in config.js
+
+
+- Whitelist defined in config.js
+- Whitelist used in authentication-middleware
+
+
 Button notes
 ---
 Using btn-master.js to make mobile friendly buttons.  All our buttons have data tag data-huffpostlabs-btn in order to make them mobile friendly.
@@ -150,8 +181,10 @@ necessary e2e tests
 neccessary api tests
 ---
 
-- 401 if user doesn't own quiz
 - stats logging
+
+
+- 401 if user doesn't own quiz
 - on creating question, make sure answers point to valid outcomes
 	- outcome exists and belongs to the quiz that the question belongs to
 

@@ -1,23 +1,151 @@
 
-var mongooseConfig = {
-	url: process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL,
-	login: process.env.DOTCLOUD_DB_MONGODB_LOGIN || null,
-	pass: process.env.DOTCLOUD_DB_MONGODB_PASSWORD || null
+var mongoose 			= require('mongoose'),
+	mongo 				= require('./mongo.js'),
+	ObjectId 			= mongo.ObjectId,
+	Schema  			= mongo.Schema,
+
+	User 				= require('./user-model.js'),
+	questionAnswerModels= require('./question-answer-models.js'),
+	//Question 			= questionAnswerModels.Question,
+	Answer 				= questionAnswerModels.Answer;
+
+
+var Quiz = function() {
+
+	var _model = mongo.Model('Quiz', {
+		_user: 		  		{type: ObjectId, ref: 'User', default: null},
+		title: 		  		{type: String, default: null},
+		pic_url: 	  		{type: String, default: null},
+		pic_credit: 		{type: String, default: null},
+		date_created: 		{ type: Date, default: Date.now },
+		questionList: 		[{ type: ObjectId, ref: 'Question' }],
+		outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
+		share: 				{type: ObjectId, ref: 'Share', default: null},
+		refresh_icon_url: 	{type: String, default: null},
+		custom_styles: 		{type: String, default: null}, // a string of CSS rules 
+
+
+		// for backwards compatibility 
+		startedCount: 		{ type: Number, default: 0},
+		completedCount: 	{ type: Number, default: 0},
+
+		// For Trivia ----  type: 'trivia-quiz'
+		type: 				{type: String, default: 'default-quiz'},
+		extraSlide: 		{type: ObjectId, ref: 'Slide', default: null},
+	});
+
+	var findPartial = function(quizID, callback) {
+		_model.findById(quizID)
+			.exec(callback);
+	}
+	var create = function(quizID, callback) {
+
+	}
+	var remove = function(quizID, callback) {
+		_model.findById(quizID)
+			.exec(function(err, quiz) {
+				if (err || !quiz) { return callback(err, null); }
+			
+				var numCalled = 0; // tally up the number of mongo functions we're waiting on before can call callback
+				var totalCalls = 0; // +1 for each question in questionList and quiz.outcomeList.share
+				/* complete callback when all calls have executed OR when there is an error */
+				var call = function(err) {
+					numCalled += 1;
+					if ((numCalled >= totalCalls) || err) {
+						callback(err);
+					}
+				}
+
+
+
+				totalCalls += 3;
+				Share.remove(quiz.share, call);
+				Slide.remove(quiz.extraSlide, call);
+				Stat.removeAllQuiz(quizID, call);
+				// remove the quiz itself
+				totalCalls += 1;
+				_model.remove({ _id: quizID }, call);
+			});
+	}
+// exports.deleteQuiz = function(quizID, callback) {
+
+// 	/* delete all the questions and the answers */
+// 	Question.find({ _quiz: quizID})
+// 			.exec(function(err, questions) {
+// 				for (var i=0; i<questions.length; i++) {
+// 					totalCalls += 1;
+// 					deleteQuestion(questions[i]._id, call);
+// 				}
+// 			});
+// 	//iterate through outcomes and call Outcome.delete(outcomeID)
+// 	Outcome.find({ _quiz: quizID})
+// 			.exec(function(err, outcomes) {
+// 				for (var j=0; j<outcomes.length; j++) {
+// 					totalCalls += 2; // itself and its share
+// 					Share.remove({ _outcome: outcomes[j]._id}, call);
+// 					outcomes[j].remove(call);
+// 				}
+// 			});
+// }
+
+
+	return {
+		findPartial: findPartial,
+		create: 	 create,
+		remove: 	 remove,
+
+		model: 		 _model,
+	}
 };
+exports.Quiz = Quiz();
 
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	ObjectId = Schema.ObjectId;
+var Outcome = function() {
 
-mongoose.connect(mongooseConfig.url);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'mongoose database connection error:'));
-db.once('open', function callback () {
-  console.log('mongoose database open... YAY');
-});
+	var _model = mongo.Model('Outcome', {
+		_quiz:  	 {type: ObjectId, ref: 'Quiz'},
+		share: 		 {type: ObjectId, ref: 'Share', default: null},
+		text:   	 {type: String, default: null},
+		description: {type: String, default: null},
+		pic_url: 	 {type: String, default: null},
+		pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'
+		pic_credit:  {type: String, default: null},
+
+		// for backwards compatibility 
+		count:  	 { type: Number, default: 0}, // number of times its been the outcome
+
+		// for quizzes of type 'trivia-quiz' 
+		rules: 		 {
+						min_correct: {type: Number, default: 0},
+						//max_correct: Number,		
+					 },
+	});
+
+	var find = function(outcomeID, callback) {
+		_model.findById(quizID)
+			.exec(callback);
+	}
+	var create = function(quizID, success, fail) {
+
+	}
+	var remove = function(outcomeID, callback) {
+		/* will Share.remove return an error if outcome doesn't own a share? */
+		Share.remove({ _outcome: outcomeID}, function (err) {
+			if (err) { return callback('Share.remove err:', err);  }
+			Outcome.remove({ _id: outcomeID}, callback);
+		});
+	}
 
 
+	return {
 
+
+		model: 		 _model,
+	}
+}
+exports.Outcome = Outcome();
+
+
+/* ------------------- SCHEMA DEFINITIONS -------------------
 
 var userSchema = new Schema({
 	twitter_id: 			{type: String, default: null},
@@ -26,6 +154,62 @@ var userSchema = new Schema({
 	date_created: 			{ type: Date, default: Date.now },
 	quizList: 				[{ type: ObjectId, ref: 'Quiz' }] // need to push quiz on to user upon quiz creation)
 });
+var quizSchema = new Schema({
+	_user: 		  		{type: ObjectId, ref: 'User', default: null},
+	title: 		  		{type: String, default: null},
+	pic_url: 	  		{type: String, default: null},
+	pic_credit: 		{type: String, default: null},
+	date_created: 		{ type: Date, default: Date.now },
+	questionList: 		[{ type: ObjectId, ref: 'Question' }],
+	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
+	share: 				{type: ObjectId, ref: 'Share', default: null},
+	refresh_icon_url: 	{type: String, default: null},
+	custom_styles: 		{type: String, default: null}, // a string of CSS rules 
+
+
+	// for backwards compatibility 
+	startedCount: 		{ type: Number, default: 0},
+	completedCount: 	{ type: Number, default: 0},
+
+	// For Trivia ----  type: 'trivia-quiz'
+	type: 				{type: String, default: 'default-quiz'},
+	extraSlide: 		{type: ObjectId, ref: 'Slide', default: null},
+});
+var outcomeSchema = new Schema({
+	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
+	share: 		 {type: ObjectId, ref: 'Share', default: null},
+	text:   	 {type: String, default: null},
+	description: {type: String, default: null},
+	pic_url: 	 {type: String, default: null},
+	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'
+	pic_credit:  {type: String, default: null},
+
+	// for backwards compatibility 
+	count:  	 { type: Number, default: 0}, // number of times its been the outcome
+
+	// for quizzes of type 'trivia-quiz' 
+	rules: 		 {
+					min_correct: {type: Number, default: 0},
+					//max_correct: Number,		
+				 },
+});
+
+
+var answerSchema = new Schema({
+	_question:  	{type: ObjectId, ref: 'Question'},
+	_outcome: 		{type: ObjectId, ref: 'Outcome', default: null}, // the outcome it adds a point to if selected
+	text:   		String,
+	pic_url: 		{type: String, default: null},
+	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
+	pic_credit: 	{type: String, default: null},
+
+	// for backwards compatibility
+	count:  		{ type: Number, default: 0}, // number of times it's been picked
+
+	// for quizzes of type 'trivia-quiz'
+	correct: 		{ type: Boolean, default: 'false'},
+});
+------------------- SCHEMA DEFINITIONS ------------------- */
 var shareSchema = new Schema({
 	/* The share model is either owned by a Quiz or an Outcome, since both are sharable */
 	_quiz: 				{type: ObjectId, ref: 'Quiz', default: null},
@@ -39,36 +223,7 @@ var shareSchema = new Schema({
 	twitterCount: 		{type: Number, default: 0},
 });
 
-var statSchema = new Schema({
-	_quiz: 			ObjectId,
-	model_type: 	String, // ['Answer', 'Outcome', 'started-count','restarted-count','completed-count', other]
-	model_id: 		String,
-	count: 			{ type: Number, default: 0},
-});
-exports.Stat = mongoose.model('Stat', statSchema);
 
-
-var quizSchema = new Schema({
-	_user: 		  		{type: ObjectId, ref: 'User', default: null},
-	title: 		  		{type: String, default: null},
-	pic_url: 	  		{type: String, default: null},
-	pic_credit: 		{type: String, default: null},
-	date_created: 		{ type: Date, default: Date.now },
-	questionList: 		[{ type: ObjectId, ref: 'Question' }],
-	outcomeList:  		[{ type: ObjectId, ref: 'Outcome' }],
-	share: 				{type: ObjectId, ref: 'Share', default: null},
-	refresh_icon_url: 	{type: String, default: null},
-	custom_styles: 		{type: String, default: null}, /* a string of CSS rules */
-
-
-	/* for backwards compatibility */
-	startedCount: 		{ type: Number, default: 0},
-	completedCount: 	{ type: Number, default: 0},
-
-	/* For Trivia ----  type: 'trivia-quiz' */
-	type: 				{type: String, default: 'default-quiz'},
-	extraSlide: 		{type: ObjectId, ref: 'Slide', default: null},
-});
 var slideSchema = new Schema({
 	_quiz: 		 		{type: ObjectId, ref: 'Quiz'},
 	blob: 				{type: String, default: null},
@@ -78,54 +233,17 @@ var questionSchema = new Schema({
 	text:  		 String,
 	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
-var outcomeSchema = new Schema({
-	_quiz:  	 {type: ObjectId, ref: 'Quiz'},
-	share: 		 {type: ObjectId, ref: 'Share', default: null},
-	text:   	 {type: String, default: null},
-	description: {type: String, default: null},
-	pic_url: 	 {type: String, default: null},
-	pic_style: 	 {type: String, default: "bottom-right"}, // options: 'float-right' 'bottom-right', 'cover', 'contain'
-	pic_credit:  {type: String, default: null},
 
-	/* for backwards compatibility */
-	count:  	 { type: Number, default: 0}, // number of times its been the outcome
-
-	/* for quizzes of type 'trivia-quiz' */
-	rules: 		 {
-					min_correct: {type: Number, default: 0},
-					//max_correct: Number,		
-				 },
-});
-var answerSchema = new Schema({
-	_question:  	{type: ObjectId, ref: 'Question'},
-	_outcome: 		{type: ObjectId, ref: 'Outcome', default: null}, // the outcome it adds a point to if selected
-	text:   		String,
-	pic_url: 		{type: String, default: null},
-	pic_style: 		{type: String, default: "bottom-right"}, // options: 'bottom-right', 'cover', 'contain'
-	pic_credit: 	{type: String, default: null},
-
-	/* for backwards compatibility */
-	count:  		{ type: Number, default: 0}, // number of times it's been picked
-
-	/* for quizzes of type 'trivia-quiz' */
-	correct: 		{ type: Boolean, default: 'false'},
-});
-
-exports.User 	 = User  	= mongoose.model('User', userSchema);
-exports.Quiz 	 = Quiz 	= mongoose.model('Quiz', quizSchema);
+//exports.User 	 = User  	= mongoose.model('User', userSchema);
+//exports.Quiz 	 = Quiz 	= mongoose.model('Quiz', quizSchema);
 exports.Slide 	 = Slide 	= mongoose.model('Slide', slideSchema);
 exports.Share 	 = Share 	= mongoose.model('Share', shareSchema);
-exports.Answer   = Answer 	= mongoose.model('Answer', answerSchema);
+//exports.Answer   = Answer 	= mongoose.model('Answer', answerSchema);
 exports.Question = Question = mongoose.model('Question', questionSchema);
-exports.Outcome  = Outcome  = mongoose.model('Outcome', outcomeSchema);
+//exports.Outcome  = Outcome  = mongoose.model('Outcome', outcomeSchema);
 
 
 
-exports.deleteOutcome = function(outcomeID, callback) {
-	/* will Share.remove return an error if outcome doesn't own a share? */
-	Share.remove({ _outcome: outcomeID}, function (err) { console.log('Share.remove err:', err); });
-	Outcome.remove({ _id: outcomeID}, callback);
-}
 exports.deleteQuestion = function(questionID, callback) {
 	/* removes answers then, on success, the question */
 	Answer.remove({ _question: questionID}, function(err) {
@@ -169,39 +287,6 @@ var deleteQuestion = function(questionID, callback) {
 	});
 }
 
-exports.deleteQuiz = function(quizID, callback) {
-	var numCalled = 0; // tally up the number of mongo functions we're waiting on before can call callback
-	var totalCalls = 0; // +1 for each question in questionList and quiz.outcomeList.share
-	/* complete callback when all calls have executed OR when there is an error */
-	var call = function(err) {
-		numCalled += 1;
-		if ((numCalled >= totalCalls) || err) {
-			callback(err);
-		}
-	}
-
-	/* delete all the questions and the answers */
-	Question.find({ _quiz: quizID})
-			.exec(function(err, questions) {
-				for (var i=0; i<questions.length; i++) {
-					totalCalls += 1;
-					deleteQuestion(questions[i]._id, call);
-				}
-			});
-	Outcome.find({ _quiz: quizID})
-			.exec(function(err, outcomes) {
-				for (var j=0; j<outcomes.length; j++) {
-					totalCalls += 2; // itself and its share
-					Share.remove({ _outcome: outcomes[j]._id}, call);
-					outcomes[j].remove(call);
-				}
-			});
-	totalCalls += 3;
-	Share.remove({ _quiz: quizID }, call);
-	Slide.remove({ _quiz: quizID }, call);
-	Stat.remove({ _quiz: quizID }, call);
-	Quiz.remove({ _id: quizID }, call);
-}
 
 
 /* doesn't handle saving question */
@@ -273,25 +358,14 @@ exports.newQuestion = function(questionData, callback) {
 	});
 	new_question.save(function(err) { callback(err, new_question); });
 }
-exports.newUser = function(userData, callback) { // userData is twitter profile info object
-	var user = new User({
-		twitter_id: 			userData.id,
-		twitter_username: 		userData.username,
-		twitter_displayname: 	userData.displayName,
-	});
-	user.save(function(err) {
-		if (err) { console.log('ERROR IN MONGOOSE-MODELS newUser save'); }
-		callback(err, user);
-	});
-}
 
 exports.newQuiz = function(quizData, callback) { // callback: function(err, data)
 	
 	// TODO: better error checking
 	if (!quizData._user) { callback('Invalid user', null); }
-	if (!quizData.title.length) { callback('Invalid Quiz Title', null); }
-	if (!quizData.questionList.length) { callback('Invalid Quiz Question List', null); }
-	if (!quizData.outcomeList.length && (quizData.type != 'trivia-quiz')) { callback('Invalid Quiz Outcome List', null); }
+	if (!quizData.title || !quizData.title.length) { callback('Invalid Quiz Title', null); }
+	if (!quizData.questionList || !quizData.questionList.length) { callback('Invalid Quiz Question List', null); }
+	if (!quizData.outcomeList || !quizData.outcomeList.length && (quizData.type != 'trivia-quiz')) { callback('Invalid Quiz Outcome List', null); }
 
 	/* Create new quiz.  
 		Then create Outcomes and push on outcomes.
@@ -363,23 +437,9 @@ exports.newQuiz = function(quizData, callback) { // callback: function(err, data
 	/* save the quiz and push it on to the user's quizList */
 	newQuiz.save(function(err) {
 		if (err) { return callback(err, null); }
-		User.findById(quizData._user)
-			.populate('quizList')
-			.exec(function(err, user) {
-				if (err) { return callback(err, null); }
-				user.quizList.push(newQuiz);
-				user.save(function(err) {
-					callback(err, newQuiz);
-				});
-			});
-	});
-}
-exports.findQuizPartial = function(quizID, callback) {
-	/* I don't care about populating -- return just quiz */
-	Quiz.findById(quizID).exec(function (err, data) {
-		if (err || !data) { return callback(new Error('Error in models.findQuizPartial'), err); }
-		
-		callback(null, data);
+		User.addQuiz(quizData._user, newQuiz, function(err, user) {
+			callback(err, newQuiz);
+		});
 	});
 }
 exports.findQuiz = function(quizID, callback) {
@@ -490,29 +550,6 @@ exports.findShare = function(shareID, callback) {
 			if (err || !share) { return callback(new Error('Error in models.findShare'), null); }
 			callback(null, share);
 		});
-}		
-exports.findUser = function(userID, callback) {
-	User.findById(userID)
-		.populate('quizList')
-		.exec(callback);
-};
-exports.findUserBy = function(object, callback) {
-	User.findOne(object)
-		.populate('quizList')
-		.exec(callback);
-};
-
-exports.allUsers = function(callback){
-	User.find()
-		.populate('quizList')
-		.exec(callback);
-};
-exports.findUserQuizzes = function(userID, callback) {
-	Quiz.find({_user: userID})
-		.populate('_user')
-		.populate('questionList')
-		.populate('outcomeList')
-		.exec(callback);
 }
 exports.allQuizes = function(callback){
 	Quiz.find()

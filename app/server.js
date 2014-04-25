@@ -2,95 +2,85 @@ var express 		= require('express'),
 	connect			= require('connect'),
 	path 			= require('path'),
 	http 			= require('http'),
-    expressValidator= require('express-validator'),
-	MongoStore 		= require('connect-mongo')(express),
+	MongoStore 		= require('connect-mongo')(express), // for persistent sessions
 
-    authMiddleware  = require('./middleware/authentication-middleware.js'),
+	config 			= require('./config.js');
+
 	
 
-	main_routes 	= require('./routes/index'), // this is just like doing: var routes = require('./routes/index.js')
-	auth_routes 	= require('./routes/auth'),
-	stats_routes 	= require('./routes/stats'),
-	api_routes 		= require('./routes/api');
 
-
-
-
-
-
-var app 	  			= express(),
-	basicAuth 			= authMiddleware.basicAuth;
-	verifyUser 			= authMiddleware.verifyUser;
-	verifyQuizViewAccess = authMiddleware.verifyQuizViewAccess;
+var app = express();
 
 app.configure(function () {
-    app.set('port', process.env.WWW_PORT || 8080); // dotcloud doesn't have automatically set env variable for port, but know its on 8080
     app.use(express.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
     app.use(connect.urlencoded()),
 	app.use(connect.json()),
   	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
 
 	app.use(express.session({
-		secret: process.env.SESSION_SECRET,
-	    store: new MongoStore({
-	    	db: 'admin', // dotcloud having issue authenticating any other db... :-(
-	    	url: ((process.env.DOTCLOUD_DB_MONGODB_URL || process.env.LOCAL_MONGODB_URL).split(',')[0])
+		secret: config.session_secret,
+	    store: new MongoStore({ // for persistent sessions
+	    	db: config.data.db,
+	    	url: config.data.url
 	    })
 	})),
         
 
     app.use(express.static(path.join(__dirname, '/static')));
-    app.use(expressValidator());
 });
 var server = http.createServer(app);
 
 
-/* **************  routing **************************** */
-auth_routes.registerEndpoints(app); // login/logout/user etc
-api_routes.registerEndpoints(app);
-stats_routes.registerEndpoints(app);
 
+/* ROUTING ---------------------------------------------------- */
 
-/* protected with NO auth */
-app.get('/forbidden',  			main_routes.serveBase);
-app.get('/quiz/public/:quizID', main_routes.servePublicPreview);
+/* all routes beginning with /auth */
+var auth_routes = require('./routes/auth')(app);
 
+/* all routes beginning with /api */
+var api_routes = require('./routes/api')(app);
 
-/* protected with verifyUser */
-app.get('/new', 				verifyUser, main_routes.serveBase);
-app.get('/new/:type', 			verifyUser, main_routes.serveBase);
+/* all routes beginning with /stats */
+var stats_api_routes = require('./routes/stats-api')(app);
 
-
-/* protected with verifyQuizViewAccess */
-app.get('/edit/:quizID',		verifyQuizViewAccess, main_routes.serveBase);
-app.get('/edit/:type/:quizID',	verifyQuizViewAccess, main_routes.serveBase);
-
-app.get('/social/:quizID',  	verifyQuizViewAccess, main_routes.serveBase);
-
-
-/* protected with basicAuth */
-app.get('/', 					basicAuth, main_routes.serveBase);
-app.get('/contact',  			basicAuth, main_routes.serveBase);
-app.get('/all-quizzes',  		basicAuth, main_routes.serveBase);
-app.get('/user/:search',    	basicAuth, main_routes.serveBase);
-app.get('/stats/:quizID',		basicAuth, main_routes.serveBase);
-app.get('/documentation',		basicAuth, main_routes.serveBase);
-app.get('/documentation/:doc',	basicAuth, main_routes.serveBase);
-
+/* define and register routes */
+var main_routes = require('./routes/index')(app);
 
 app.get('/err', function(req, res) {
 	res.send(500, {'err': "FAKE ERROR"})
 });
 
-
-
-
-app.get('/test', main_routes.test);
-
-
-
-
-
-server.listen(app.get('port'), function () {
-    console.log("Express server listening on port " + app.get('port'));
+/* TODO: look up how to send status code with file and finish*/
+app.get('/500', function(req, res) {
+	//res.send(500);
+	res.sendfile('./static/html/500.html');
 });
+
+/* otherwise send 404 */
+app.get('*', function(req, res) {
+	res.send(404);
+	//res.sendfile('./static/html/404.html');
+});
+
+/* ------------------------------------------------- ROUTING */
+
+
+
+/* RUN THE SERVER --------------------------------------------
+		-- IF: this file wasn't 'required'
+			- possible running server from outside -- like from a test -- check 
+*/
+if (!module.parent) {
+	
+	/* connect to mongo */
+	var Mongo = require('./models/mongo.js');
+	var DB = Mongo.connectDB(config.data.url);
+
+
+	server.listen(config.port, function () {
+	    console.log("Express server listening on port " + config.port);
+	});
+};
+/* -----------------------------------RUN THE SERVER ------- */
+
+module.exports = server;

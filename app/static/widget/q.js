@@ -60,18 +60,18 @@
 			});
 		}
 		this.QuizFunctions.quizStarted = function(quiz) {
-			PUT("/stats/" + quiz._id + "/increment/started-null", null);
+			PUT("/stats/" + quiz._id + "/increment/started_null", null);
 		}
 		this.QuizFunctions.quizRestarted = function(quiz) {
-			PUT("/stats/" + quiz._id + "/increment/restarted-null", null);
+			PUT("/stats/" + quiz._id + "/increment/restarted_null", null);
 		}
 		this.QuizFunctions.quizCompleted = function(quiz, outcome, chosenAnswers) {
 			/* increment counts for quiz, outcome and each chosenAnswer */
 			var completedDataString = ("/stats/" + quiz._id + "/increment/");
-				completedDataString+= ("completed-null");
-				completedDataString+= ("-Outcome-" + outcome._id);
+				completedDataString+= ("completed_null");
+				completedDataString+= ("-Outcome_" + outcome._id);
 			for (var i=0; i<chosenAnswers.length; i++) {
-				completedDataString+= ("-Answer-" + chosenAnswers[i]._id);
+				completedDataString+= ("-Answer_" + chosenAnswers[i]._id);
 			}
 
 			PUT(completedDataString, null);

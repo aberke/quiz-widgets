@@ -53,8 +53,9 @@ HuffpostLabsQuizObject -- The main object that does the work
         a BtnMaster (btn-master.js or http://aberke.github.io/huffpostlabs-btn/)
         a SlideCntl
         a QuizLogic (quiz-logic.js)
+        a quizHTMLbuilder (quiz-HTML-builder.js)
     - QuizLogic uses prototypical inheritance pattern (quiz-logic.js) -- reasoning in file
-    - Reasoning for why objects in this file do not use prototypical inheritance pattern:
+    - Reasoning for why objects in this file use classical rather than prototype pattern:
         No good reason - just to mix it up I guess - bad?
 */
 var HuffpostLabsQuizObject = function(container, quizData) {
@@ -101,11 +102,11 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         slidesCntl.transitionNext();
     }
 
-    function setupSlides() {
+    function _setupSlides() {
         slidesCntl = new HuffpostLabsSlidesCntl(container);
         slidesCntl.init();
     }
-    function init(){
+    function _init(){
         chosenAnswers = [];
         
         if (quizData.type == 'trivia-quiz') {
@@ -116,12 +117,12 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         quizHTMLbuilder = new QuizHTMLbuilder(quizData, container);
 
         quizHTMLbuilder.buildWidget();
-        setupSlides();
-        handleMobile();
+        _setupSlides();
+        _handleMobile();
     }
     function reloadData(data) {
         quizData = data;
-        init();
+        _init();
     }
     function refresh() {
         console.log('refresh')
@@ -131,7 +132,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         QuizFunctions.quizRestarted(quizData);
     }
 
-    function handleMobile() {
+    function _handleMobile() {
         /* turn all elements marked with the data-huffpostlabs-btn tag into HuffpostLabsBtns
             Collecting + converting these btns for given context handled by the HuffpostLabsBtnMaster */
         if (QuizMobile) {
@@ -190,7 +191,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         window.prompt(prompt, code);
     }
 
-    init();
+    _init();
     return { 
             startQuiz: startQuiz,
             previous: previous,

@@ -373,6 +373,8 @@ footer {
 }
 #new-page .answer-inputs input,
 #new-page .answer-inputs .input-container,
+#new-page .answer-inputs .points-input-container,
+#edit-page .answer-inputs .points-input-container,
 #new-page .answer-inputs select,
 #edit-page .answer-inputs input,
 #edit-page .answer-inputs select {
@@ -382,6 +384,15 @@ footer {
 #new-page .answer-inputs input[type=checkbox],
 #edit-page .answer-inputs input[type=checkbox] {
 	width: auto;
+}
+#new-page .points-input-container,
+#edit-page .points-input-container {
+	display: inline-block;
+	text-align: right;
+}
+#new-page .points-input-container label,
+#edit-page .points-input-container label {
+	display: inline;
 }
 
 #new-page #instructions,

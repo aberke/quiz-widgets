@@ -107,7 +107,6 @@ var quizzes = function(APIservice, UserFactory, $http) {
 				if (!scope.user || quiz._user) { return false; } // directive  owner-only-element should prevent this case
 
 				APIservice.PUT('/user/' + scope.user._id + '/claim-quiz/' + quiz._id).then(function(data) {
-					console.log('claim quiz returned', data);
 					/* successful so update quizList and user.quizList*/
 					quiz._user = scope.user;
 					scope.user.quizList.push(quiz);
