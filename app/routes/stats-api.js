@@ -52,7 +52,7 @@ var StatsAPIroutes = function(app) {
 		Stat.findAll(util.sendDataOrError(res));
 	}
 	var GETallStatsQuiz = function(req, res) {
-		Stat.findAllQuiz(sendDataOrError(res));
+		Stat.findAllQuiz(util.sendDataOrError(res));
 	}
 	var GETquizStats = function(req, res) {
 		Stat.findByQuiz(req.params.quizID, util.sendDataOrError(res));

@@ -181,7 +181,7 @@ var Answer = function() {
 	var update = function(answerID, answerData, callback) {
 		_model.findById(answerID).exec(function(err, answer) {
 			if (err || !answer) { return callback(err || "No such Answer " + answerID); }
-			console.log('answer.text', answer.text)
+
 			answer.text 	  = (answerData.text 		|| answer.text);
 			answer.pic_url 	  = (answerData.pic_url 	|| answer.pic_url);
 			answer.pic_credit = (answerData.pic_credit 	|| answer.pic_credit);
