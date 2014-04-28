@@ -186,6 +186,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         var re = new RegExp('.' + quizClassName + '\ *\n*.huffpostlabs-quiz', 'g'); // in case I caused '.quizClassname.huffpostlabs-quiz as first part of styles string'
         styles = ('.' + quizClassName + ' ' + styles);
         styles = styles.replace(/}/g, ('}.' + quizClassName));
+        styles = styles.replace(/,/g, (',.' + quizClassName));
         styles = styles.replace(re, ('.' + quizClassName));
         // take off the last .quizClassName
         styles = styles.substring(0, styles.length - ('.' + quizClassName).length);
