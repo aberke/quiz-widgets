@@ -15,7 +15,6 @@ var assert 	= require('assert'),
 	Stat 	= require('./../../models/stats-models.js');
 
 
-console.log('TODO: stats tests')
 
 describe('Stat tests', function() {
 	var quizID_answer = "5356538058b5ff3faba4ba7d";
@@ -88,9 +87,4 @@ describe('Stat tests', function() {
 			});
 		});});
 	});
-
-
-
-
-
 });

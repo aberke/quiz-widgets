@@ -57,14 +57,6 @@ var User = function() {
 				user.save(function(err) { callback(err, user); });
 			})
 	}
-	var quizzes = function(userID, callback) {
-		Quiz.find({_user: userID})
-			.populate('_user')
-			.populate('questionList')
-			.populate('outcomeList')
-			.exec(callback);
-	}
-
 	return {
 		all: 				all,
 		find: 				find,

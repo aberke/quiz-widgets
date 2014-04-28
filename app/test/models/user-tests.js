@@ -16,9 +16,6 @@
 		- User.findByTwitterID
 		- User.addQuiz
 		- User.removeQuiz
-
-
-	TODO: TEST DATE CREATED IN USER TEST
 */
 
 var assert 	= require('assert'),

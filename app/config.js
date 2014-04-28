@@ -4,6 +4,9 @@
 */
 var config = {
 
+	// testing flag for things like authentication middleware
+	"testing": (process.env.TESTING || false),
+
 	// need session secret to use express.session
 	"session_secret": (process.env.SESSION_SECRET || 'no-secrets'),
 

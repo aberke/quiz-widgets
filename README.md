@@ -40,11 +40,20 @@ since last email
 TODO
 ---
 
+- trivia API tests
+- claim and relinguish quiz
+
 - BEFORE REFACTORING COMPLETE
 	- change the front end controllers to handle the api route changes:
-		- 
+		- put('/api/quiz/:quizID/question/:id'
+		- delete('/api/quiz/:quizID/question/:questionID/answer/:id'
+		- app.post('/api/quiz/:quizID/question/:questionID/answer'
+
+
+	- replace model functions that should use UPDATE (look for 'TODO')
 
 - create make file for tests
+	- set TESTING=true environment variable in make file
 
 - fix deleting quizzes!
 
