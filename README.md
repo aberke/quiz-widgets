@@ -41,7 +41,6 @@ TODO
 ---
 
 - trivia API tests
-- claim and relinguish quiz
 
 - BEFORE REFACTORING COMPLETE
 	- change the front end controllers to handle the api route changes:
