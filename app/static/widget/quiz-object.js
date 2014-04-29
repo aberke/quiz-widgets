@@ -183,13 +183,35 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         /* Don't want the custom_styles to effect styles of any other quiz on the page 
             - add quizClassName infront of each style - replacing .huffpostlabs-quiz if necessary
         */
-        var re = new RegExp('.' + quizClassName + '\ *\n*.huffpostlabs-quiz', 'g'); // in case I caused '.quizClassname.huffpostlabs-quiz as first part of styles string'
         styles = ('.' + quizClassName + ' ' + styles);
-        styles = styles.replace(/}/g, ('}.' + quizClassName));
-        styles = styles.replace(/,/g, (',.' + quizClassName));
-        styles = styles.replace(re, ('.' + quizClassName));
+
+        var re1 = new RegExp('.huffpostlabs-quiz', 'g');
+        styles = styles.replace(re1, ('.' + quizClassName));
+
+        var strongerRule = ('.' + quizClassName + ' ');
+        styles = styles.replace(/}/g, ('}' + strongerRule));
         // take off the last .quizClassName
-        styles = styles.substring(0, styles.length - ('.' + quizClassName).length);
+        styles = styles.substring(0, styles.length - strongerRule.length);
+
+        /* need to replace all commas in the styles with ,.quizClassName
+            but must avoid doing so within a style rule's {} like { color: rgb(0,0,0); }
+        */
+        var withinStyle = false;
+        var i=0;
+        while(i < styles.length) {
+            var character = styles[i];
+            if (character == '{') {
+                withinStyle = true;
+            } else if (character == '}') {
+                withinStyle = false;
+            } else if (character == ',' && !withinStyle) {
+                styles = styles.substring(0, i+1) + strongerRule + styles.substring(i+1);
+            }
+            i++;
+        }
+        //get rid of the duplicates
+        var re2 = new RegExp('.' + quizClassName + '\ *\n*\ *.' + quizClassName, 'g');
+        styles = styles.replace(re2, '.' + quizClassName);
 
         addStyle(styles);
     }
