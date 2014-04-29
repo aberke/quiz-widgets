@@ -40,6 +40,9 @@ since last email
 TODO
 ---
 
+- add documentation for running locally
+- add documentation for running tests
+	- first create make file
 
 - trivia documentation
 
