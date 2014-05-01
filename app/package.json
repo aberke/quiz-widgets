@@ -12,6 +12,7 @@
     "connect": "*",
     "connect-ensure-login": "*",
     "express-validator": "*",
-    "connect-mongo": "*"
+    "connect-mongo": "*",
+    "mocha": ""
   }
 }

@@ -54,17 +54,14 @@ describe('stats-API', function() {
 	
 	// start server before -- close server after
 	beforeEach(function (done) {
-		server.listen(port, function (err) {
-			console.log('\nAPI test server listening on port ' + port + '\n');
-			done(err);
-		});
+		server.listen(port, done);
 	});
 	afterEach(function() {
 		server.close();
 	});
 	//clear out all the existing stats for our quizID
 	beforeEach(function(done) {
-		Stat.model.remove({ _quiz: quizID }, done);
+		Stat.model.remove({}, done);
 	});
 
 	it('increments started count', function(done) {
@@ -154,26 +151,26 @@ describe('stats-API', function() {
 			request('/stats/' + quizID + '/all', function(data) {
 				assert.equal(data.length, answerIDlist.length + 2);
 				for (var j=0; j<data.length; j++) {
-					// TODO: LOOK UP LIST CHECKER
-					//assert.inList(data[j].model_type, ['Answer','Outcome','completed'])
+					var types = ['Answer','Outcome','completed'];
+					assert.notEqual(types.indexOf(data[j].model_type), -1);
 					assert.equal(data[j].count, 3);
 				}
 				done();
 			});
 		});});});
 	});
-	it ('retrieves all stats and all quiz stats as different items', function() {
+	it ('retrieves all stats and all quiz stats as different items', function(done) {
 		var dataString = ("/stats/" + quizID + "/increment/");
 		dataString+= ("completed_null");
 		dataString+= ("-Outcome_" + outcomeID);
 		for (var i=0; i<answerIDlist.length; i++) {
 			dataString+= ("-Answer_" + answerIDlist[i]);
-		} 
+		}
 		request(dataString, function(data) {
 		request(dataString, function(data) {
 		request(dataString, function(data) {
 			request('/stats/all/quiz', function(data) {
-				assert.equal(data.length, answerIDlist + 1);
+				assert.equal(data.length, 1);
 			});
 			request('/stats/all', function(data) {
 				assert.equal(data.length, answerIDlist.length + 2);

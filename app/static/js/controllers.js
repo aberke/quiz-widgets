@@ -104,17 +104,6 @@ function StatsCntl($scope, quiz, stats) {
 	$scope.totalSharesFB;
 	$scope.totalSharesTwitter;
 
-	// USING??
-	var countQuestionTotals = function() {
-		for (var i=0; i<$scope.quiz.questionList.length; i++) {
-			var question = $scope.quiz.questionList[i];
-			var sum = 0;
-			for (var j=0; j<question.answerList.length; j++) {
-				sum += question.answerList[j].count;
-			}
-			$scope.quiz.questionList[i].count = sum;
-		}
-	}
 	var countTotalSharesFB = function(quiz) {
 		var count = (quiz.share ? quiz.share.fbCount : 0);
 		for (var i=0; i<quiz.outcomeList.length; i++) {
@@ -240,7 +229,7 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	}
 	var saveQuestion = function(question) {
 		/* need to have function not call setupOutcomeAnswerLists */
-		if (FormService.checkQuestionError(question, quizType)) {
+		if (FormService.checkQuestionError(question, $scope.quiz)) {
 			question.editing = true;
 			return false;
 		}
@@ -290,20 +279,16 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 			$scope.quiz.saved = null;
 			return false;
 		}
-
 		/* ready to post quiz */
 		APIservice.POST('/quiz', $scope.quiz).then(function(data) {
-			$scope.quiz.saved = 'saved';
 			console.log('POSTED QUIZ',$scope.quiz,'\n*****\ngot back data', data);
 			$location.path('/stats/' + data._id);
 		});
 	};
 
 	var init = function() {
-
 		console.log('quizType',quizType)
-
-		/* construct quiz that will be passed to the parent QuizCntl */
+		/* construct quiz base */
 		var quiz = { 	'_user': 		user._id,
 						'outcomeList':  [], // each outcome in outcomeList has an answerList []
 						'error': 		{ 'question':false, 'outcome':false, },		
@@ -317,6 +302,9 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	init();
 }
 function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService, user, quiz) {
+	/* Pattern: Make the API call and update just the data affected all locally
+			- don't make GET request from server because don't want to lose unsaved work
+	*/
 
 	var setWatchers = function() {
 		function changeFunction(object, callback) {
@@ -335,7 +323,10 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 			);
 		}
 	}
-	/* helper functions to remove, update, create for resolving promise */
+
+	/* API helper functions ---------------------------------------------- */
+	var endpointPrefix = ('/quiz/' + quiz._id);
+
 	var APIsuccess = function(object, callback) {
 		return function(successData) {
 			object.editing = false;
@@ -347,47 +338,52 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 		/* yes its simple but make error handling always the same -- so call this helper to generate function */
 		return function(err) { object.saved = 'error'; };
 	}
-	var makeAPIrequest = function(requestFunction, type, object, callback) {
+	var makeAPIrequest = function(requestFunction, endpoint, object, callback) {
 		object.saved = 'saving';
 		/* construct endpoint: /quiz/quizID/[type if not quiz]/[objectID if not a POST and type not quiz] */
-		var endpoint = (type == 'quiz') ? '' : ('/quiz/' + $scope.quiz._id);
-		endpoint += ('/' + type);
-		if (object._id) { endpoint += ('/' + object._id); };
+		if (endpoint.substring(0, endpointPrefix.length) != endpointPrefix) {
+			endpoint = (endpointPrefix + endpoint);
+		}
 		requestFunction(endpoint, object).then(
 			APIsuccess(object, callback), // returns a function
 			APIerror(object)
 		);
 	}
-	var remove = function(type, object, callback) {
-		makeAPIrequest(APIservice.DELETE, type, object, callback);
+	var remove = function(endpoint, object, callback) {
+		makeAPIrequest(APIservice.DELETE, endpoint, object, callback);
 	}
-	var create = function(type, object, callback) {
-		makeAPIrequest(APIservice.POST, type, object, callback);
+	var create = function(endpoint, object, callback) {
+		makeAPIrequest(APIservice.POST, endpoint, object, callback);
 	}
-	var update = function(type, object, callback) {
-		makeAPIrequest(APIservice.PUT, type, object, callback);
+	var update = function(endpoint, object, callback) {
+		makeAPIrequest(APIservice.PUT, endpoint, object, callback);
 	}
 	var reloadQuiz = function(quiz) {
 		/* reloads widget, resets watchers, resets outcomeAnswerLists */
 		$scope.quiz = quiz;
-		WidgetService.setupOutcomeAnswerLists($scope.quiz);
+		console.log(quiz)
+		WidgetService.setupOutcomeAnswerLists(quiz);
 		setWatchers();
 		QuizWidgets[quiz._id].reloadData(quiz);
 	}
+	/* ---------------------------------------------- API helper functions */
 
-	/* remove ------------------------------------------------- */
+	/* remove ------------------------------------------------- 
+		Pattern: 
+			1. If it has an _id, remove it server side, otherwise straight to callback
+			2. on callback, remove it from the list that contained it
+	*/
 
 	$scope.removeOutcome = function(outcome) {
 		if (outcome.answerList && outcome.answerList.length > 0) { return false; } // an answer points to it!
 		
 		function callback() {
-			/* remove from the outcomeList */
 			var index = $scope.quiz.outcomeList.indexOf(outcome);
 			$scope.quiz.outcomeList.splice(index, 1);
 			reloadQuiz($scope.quiz);
 		}
 		if (!outcome._id) { callback() } 
-		else { remove('outcome', outcome, callback); }
+		else { remove('/outcome/' + outcome._id, outcome, callback); }
 	};
 	$scope.removeAnswer = function(question, answer) {
 
@@ -398,9 +394,8 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 			$scope.quiz.questionList[questionIndex] = question;
 			reloadQuiz($scope.quiz);
 		}
-		/* if answer doesnt have real mongo id then not saved server side */
-		if (answer._id) { remove('answer', answer, callback); }
-		else { callback(); }
+		if (!answer._id) { callback(); }
+		else { remove('/question/' + question._id + '/answer/' + answer._id, answer, callback); }
 	}
 	$scope.removeQuestion = function(question) {
 
@@ -409,16 +404,15 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 			$scope.quiz.questionList.splice(index, 1);
 			reloadQuiz($scope.quiz);
 		}
-
-		if (question._id) { remove('question', question, callback); } 
-		else { callback(); }
+		if (!question._id) { callback(); }
+		else { remove('/question/' + question._id, question, callback); } 
 	}
 	$scope.removeExtraSlide = function(slide) {
 		function callback() { 
 			$scope.quiz.extraSlide = null;
 			reloadQuiz($scope.quiz);
 		}
-		if (slide._id) { remove('slide', slide, callback); }
+		if (slide._id) { remove('/slide/' + slide._id, slide, callback); }
 		else { callback(); }
 	}
 
@@ -426,57 +420,33 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 	/* save ------------------------------------------------- */
 
 	$scope.saveQuiz = function() {
-		update('quiz', $scope.quiz, reloadQuiz);
+		console.log('updating with', $scope.quiz)
+		update('/quiz/' + $scope.quiz._id, $scope.quiz, function() {
+			/* PUT returns not fully populated quiz - GET quiz again for reloadQuiz */
+			APIservice.GETquiz($scope.quiz._id).then(function(data) {
+				console.log('GETquiz', data)
+				$scope.quiz = data;
+				reloadQuiz(data);
+			});
+		});
 	}
 	$scope.saveQuestion = function(question) {
-		if (FormService.checkQuestionError(question, $scope.quiz.type)) {
+		if (FormService.checkQuestionError(question, $scope.quiz)) {
 			return false;
 		}
-		/*  
-			1) save JUST the question
-			2) replace question._id with returned data._id rather than question itself to keep the answer list
-			3) save each answer
-			4) when all callbacks for answers are complete, reload quiz
-		*/
-		var questionIndex = $scope.quiz.questionList.indexOf(question);
+		/*  Save question + answers with one call */
+		var index = $scope.quiz.questionList.indexOf(question);
 
-		var answersCalledback = 0;
-		var answerCallback = function(answerIndex) {
-			
-			return function(answerData) {
-				question.answerList[answerIndex] = answerData;
-
-				answersCalledback += 1;
-				if (answersCalledback == question.answerList.length) {
-					$scope.quiz.questionList[questionIndex] = question;
-					question.editing = false;
-					question.saved = 'saved';
-					reloadQuiz($scope.quiz);
-				}
-			}
-		}
-		var questionCallback = function(questionData) {
+		var callback = function(questionData) {
 			question._id = questionData._id;
-			question.editing = true;
-			question.saved = 'saving';
-
-			/* save all the answers with returned questionData._id */
-			for (var i=0; i<question.answerList.length; i++) {
-				var answer = question.answerList[i];
-				answer._question = question._id;
-				if (!answer._id) {
-					create('answer', answer, answerCallback(i));
-				} else {
-					update('answer', answer, answerCallback(i));
-				}
-			}
+			// GET the question again, just to be safe -- it was so much data that was saved and there were previously bugs in the form of answer duplication
+			APIservice.GET(endpointPrefix + '/question/' + questionData._id).then(function(data) {
+				$scope.quiz.questionList[index] = data;
+				reloadQuiz($scope.quiz);
+			});
 		}
-		if (question._id) {
-			update('question', question, questionCallback);
-		} else {
-			question._quiz = $scope.quiz._id;
-			create('question', question, questionCallback);
-		}
+		if (question._id) { update('/question/' + question._id, question, callback); }
+		else { create('/question', question, callback); }
 	}
 	$scope.saveOutcome = function(outcome) {
 		if (FormService.checkOutcomeError(outcome)) { return false; }
@@ -486,13 +456,8 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 			$scope.quiz.outcomeList[index] = outcomeData; // needs the _id
 			reloadQuiz($scope.quiz);
 		}
-		
-		if (!outcome._id) { /* create new outcome */
-			outcome._quiz = $scope.quiz._id;
-			create('outcome', outcome, callback);
-		} else { /* update existing outcome */
-			update('outcome', outcome, callback);
-		}
+		if (!outcome._id) { create('/outcome', outcome, callback); }
+		else { update('/outcome/' + outcome._id, outcome, callback); }
 	};
 	$scope.saveExtraSlide = function(slide) {
 		function callback(slideData) {
@@ -500,12 +465,8 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 			$scope.quiz.extraSlide = slideData;
 			reloadQuiz($scope.quiz);
 		}
-		if (!slide._id) {
-			slide._quiz = $scope.quiz._id;
-			create('slide', slide, callback);
-		} else {
-			update('slide', slide, callback);
-		}
+		if (!slide._id) { create('/slide', slide, callback); }
+		else { update('/slide/' + slide._id, slide, callback); }
 	};	
 	$scope.addAnswer = function(question) {
 		question.answerList.push({'saved':'unsaved'});
@@ -515,7 +476,7 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 	}
 	$scope.addOutcome = function() {
 		/* initializing outcome with fake _id  so that answers can still refer to it by _id with answer._outcome */
-		$scope.quiz.outcomeList.push({'saved':'unsaved', 'editing':true});
+		$scope.quiz.outcomeList.push({'saved':'unsaved', 'editing':true, '_id': null});
 	}
 	$scope.addExtraSlide = function() {
 		$scope.quiz.extraSlide = { 'saved':'unsaved' };

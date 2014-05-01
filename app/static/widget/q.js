@@ -14,10 +14,10 @@
 
 	 /* akamai cache domain: 'quiz.huffingtonpost.com'
 			Only use it for GET requests on foreign host
-			- if on our own host, we care to see changes right away, not cache
+			- if on our own host or in development, we care to see changes right away, not cache
 	 */
 	var static_domain = 'http://quiz.huffingtonpost.com';
-	if (window.location.origin == domain) {
+	if (window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
 		static_domain = domain;
 	}
 
@@ -47,6 +47,7 @@
 		this.QuizFunctions.twitterShare = function(text, share) {
 			/* using HuffpostLabs social-network-sharing library */
 			HuffpostLabsShareTwitter(text, share.link, function() {
+				console.log('aaa')
 				PUT("/api/share/" + share._id + "/increment-twitter-count", null);
 			});
 		}

@@ -1,10 +1,10 @@
 /* Outcome model */
 
 
-var mongo 	= require('./mongo.js'),
-	ObjectId= mongo.ObjectId,
+var mongo 		= require('./mongo.js'),
+	ObjectId 	= mongo.ObjectId,
 
-	Share   = require('./share-model.js');
+	Share   	= require('./share-model.js');
 
 
 
@@ -24,6 +24,7 @@ var Outcome = function() {
 		// for quizzes of type 'trivia-quiz' 
 		rules: 		{
 						min_correct: {type: Number, default: 0},
+						default: { min_correct: 0}
 					},
 	});
 
@@ -41,8 +42,8 @@ var Outcome = function() {
 			pic_credit: (outcomeData.pic_credit || null)
 		});
 		outcome.share = Share.create({ _outcome: outcome });
-		if (outcomeData.rules) {
-			outcome.rules = outcomeData.rules;
+		if (outcomeData.rules && (outcomeData.rules.min_correct != undefined)) {
+			outcome.rules.min_correct = outcomeData.rules.min_correct;
 		}
 		outcome.save(function(err) { if(callback) callback(err, outcome); });
 		return outcome;
@@ -72,12 +73,12 @@ var Outcome = function() {
 		_model.findById(outcomeID).exec(function(err, outcome) {
 			if (err || !outcome) { return callback(err || 'Outcome does not exist'); }
 			
-			outcome.text 			  = (outcomeData.text || outcome.text);
-			outcome.description 	  = (outcomeData.description || outcome.description);
-			outcome.pic_url 		  = (outcomeData.pic_url || outcome.pic_url);
-			outcome.pic_credit  	  = (outcomeData.pic_credit || outcome.pic_credit);
-			outcome.pic_style   	  = (outcomeData.pic_style || outcome.pic_style);
-			outcome.rules			  = (outcomeData.rules || outcome.rules);
+			if ("text" in outcomeData) 		  { outcome.text = outcomeData.text; }
+			if ("description" in outcomeData) { outcome.description = outcomeData.description; }
+			if ("pic_url" in outcomeData) 	  { outcome.pic_url = outcomeData.pic_url; }
+			if ("pic_credit" in outcomeData)  { outcome.pic_credit = outcomeData.pic_credit; }
+			if ("pic_style" in outcomeData)   { outcome.pic_style = outcomeData.pic_style; }
+			if ("rules" in outcomeData) 	  { outcome.rules = outcomeData.rules; }
 			outcome.save(function(err) { callback(err, outcome); });
 		});
 	}
@@ -99,10 +100,4 @@ var Outcome = function() {
 		model: 				_model,
 	}
 }();
-exports.Outcome = Outcome;
-
-
-
-
-
 module.exports = Outcome;

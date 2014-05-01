@@ -1,9 +1,7 @@
 /* custom authentication middleware */
 
-var express = require('express'),
-	util 	= require('./../routes/common-util.js'),
-	models  = require('./../models/quiz-models.js'),
-	Quiz 	= models.Quiz,
+var util 	= require('./../routes/common-util.js'),
+	Quiz    = require('./../models/quiz-model.js'),
 
 	config 	= require('./../config.js');
 
@@ -19,8 +17,18 @@ var AuthenticationMiddleware = function() {
 	*/
 	var _admin_whitelist = config.ADMIN_WHITELIST;
 
-	var basicAuth = express.basicAuth(config.BASIC_AUTH_USER, config.BASIC_AUTH_PASSWORD);
-
+	var basicAuth = function(req, res, next) {
+	    if (req.headers.authorization && req.headers.authorization.search('Basic ') === 0) {
+	        // fetch login and password
+	        if (new Buffer(req.headers.authorization.split(' ')[1], 'base64').toString() == config.BASIC_AUTH_USER + ':' + config.BASIC_AUTH_PASSWORD) {
+	            next();
+	            return;
+	        }
+	    }
+	    console.log('Unable to authenticate user', req.headers.authorization);
+	    res.header('WWW-Authenticate', 'Basic realm="Admin Area"');
+	    _sendForbiddenResponse(res);
+	}
 
 	var _sendForbiddenResponse = function(res, err) {
 		res.send(401, (err || ''));
@@ -55,6 +63,8 @@ var AuthenticationMiddleware = function() {
 
 	/* Verifies that a valid user is logged in */
 	var verifyUser = function(req, res, next) {
+		if (config.testing == true || config.testing == 'true') { return next(); }
+		
 		if (! req.user) { return _sendForbiddenViewResponse(res, 'User not logged in'); }
 		next();
 	}

@@ -16,20 +16,10 @@ var Util = function() {
 		Called with response object to wrap in closure
 		Returns function utilizing the response
 	*/
-	// var _sendSuccess = function(res) {
-	// 	return function(data) {
-	// 		return res.send(data);
-	// 	}
-	// }
-	// var _sendError = function(res) {
-	// 	return function(err) {
-	// 		return res.send(500, _handleError(err));
-	// 	}
-	// }
 	var _sendDataOrError = function(res) {
 		return function(err, data) {
 			if (err) { return res.send(500, _handleError(err)); }
-			res.send(data);
+			res.send(200, data);
 		}
 	}
 	/* ------ Route function helpers -------------------- */

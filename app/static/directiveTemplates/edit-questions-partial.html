@@ -34,7 +34,7 @@
 				</span>
 
 				<span ng-if="quiz.type!='trivia-quiz'">
-					<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList" ng-class="{'error':a.error._outcome}">
+					<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover answer-outcome" data-original-title="Outcome (required)" data-container="body" data-toggle="popover" data-placement="right" data-content="When a user selects this answer, a point will be added towards this outcome." ng-required ng-model='a._outcome' ng-options="o._id as (o.text||o.description||o.pic_url) for o in quiz.outcomeList | hasIDfilter" ng-class="{'error':a.error._outcome}">
 						<option value="">OUTCOME</option>
 					</select>
 <!-- 					<div class='points-input-container'>

@@ -5,15 +5,13 @@ var assert 			= require("assert"),
 
 
 	User 			= require('./../../models/user-model.js'),
+	Slide 			= require('./../../models/slide-model.js'),
 	Share 			= require('./../../models/share-model.js'),
 	Outcome 		= require('./../../models/outcome-model.js'),
 	Question 		= require('./../../models/question-answer-models.js').Question
 	Answer  		= require('./../../models/question-answer-models.js').Answer,
 	
-	quiz_models 	= require('./../../models/quiz-models.js'),
-	Quiz 			= quiz_models.Quiz,
-	//Outcome 		= quiz_models.Outcome,
-	Slide 			= quiz_models.Slide,
+	Quiz 			= require('./../../models/quiz-model.js'),
 
 	server  		= require('./../../server.js'),
 	port 			= 3337,
@@ -36,8 +34,8 @@ var request = function(method, path, data, callback) {
 		res.on('data', function(d) { response_data += d; });
 		res.on('end', function (chunk) {
 			response_data += (chunk || '');
-			if (status != 200) { return callback(new Error("request returned with " + status), response_data); }
-			if (typeof response_data == "string" && response_data != "OK") { response_data = JSON.parse(response_data); }
+			if (status != 200) { return callback(new Error("request returned with status: " + status), response_data); }
+			if (response_data && typeof response_data == "string" && response_data != "OK") { response_data = JSON.parse(response_data); }
 			if (callback) callback(null, response_data);
 		});
 	});	
@@ -90,7 +88,7 @@ describe('API', function() {
 	/* SETUP/TEARDOWN ---------------------------------------- */
 
 	// start server before -- close server after
-	beforeEach(function (done) { server.listen(port, done); });
+	beforeEach(function (done) { server.listen(port, function(err) { done(err); }); });
 	afterEach(function() { server.close(); });
 
 	// clear out our models
@@ -220,7 +218,6 @@ describe('API', function() {
 		it ('PUT /api/quiz/:quizID/slide', function(done) {
 			var putData = { blob: "NEW-SLIDE-CONTENT" };
 			PUT('/api/quiz/' + quizID + '/slide/' + slideID, putData, function(err, data) {
-				assert.equal(data.blob, putData.blob);
 				GET('/api/slide/all', function(err, data) {
 					assert.equal(data.length, 1);
 					assert.equal(data[0].blob, putData.blob);
@@ -446,7 +443,6 @@ describe('API', function() {
 		beforeEach(function(done) {
 			questionID = quiz.questionList[0];
 			answerData = {
-				_question: questionID,
 				_outcome:  quiz.outcomeList[0],
 				text: "TEST-ANSWER-TEXT",
 				pic_url: 'http://huffingtonpost.com/favicon.ico',
@@ -488,7 +484,7 @@ describe('API', function() {
 			GET('/api/quiz/' + quizID, function(err, data) {
 				var a = data.questionList[0].answerList[2];
 				assert.equal(a._id, answerID);
-				assert.equal(a._question, answerData._question);
+				assert.equal(a._question, data.questionList[0]._id);
 				assert.equal(a._outcome, answerData._outcome);
 				assert.equal(a.text, answerData.text);
 				assert.equal(a.pic_url, answerData.pic_url);
@@ -562,6 +558,21 @@ describe('API', function() {
 				assert.equal(data.length, 2);
 				done(err);
 			});
+		});
+		it ('GET /api/quiz/:quizID/question/:id', function(done) {
+			GET('/api/quiz/' + quizID + '/question/' + questionID, function(err, data) {
+				assert.equal(data._id, questionID);
+				assert.equal(data._quiz, quizID);
+				assert.equal(data.text, questionData.text);
+				assert.equal(data.answerList.length, 2);
+				assert.equal(data.answerList[0]._question, questionID);
+				assert.equal(data.answerList[0]._outcome, quiz.outcomeList[0]);
+				assert.equal(data.answerList[0].text, questionData.answerList[0].text);
+				assert.equal(data.answerList[1]._question, questionID);
+				assert.equal(data.answerList[1]._outcome, quiz.outcomeList[0]);
+				assert.equal(data.answerList[1].text, questionData.answerList[1].text);
+				done(err);
+			})
 		});
 		it ('tests POST Question maintains order', function(done) {
 			GET('/api/quiz/' + quizID, function(err, data) {
@@ -637,29 +648,8 @@ describe('API', function() {
 				],
 			}; */
 			PUT('/api/quiz/' + quizID + '/question/' + questionID, putData, function(err, data) {
-				console.log(data)
 				assert.equal(data.text, putData.text);
 				assert.equal(data.answerList.length, 3);
-				assert.equal(data.answerList[0]._outcome, putData.answerList[0]._outcome);
-				assert.equal(data.answerList[0].text, putData.answerList[0].text);
-				assert.equal(data.answerList[0].pic_url, putData.answerList[0].pic_url);
-				assert.equal(data.answerList[0].pic_style, null);
-				assert.equal(data.answerList[0].pic_credit, null);
-
-
-				assert.equal(data.answerList[1]._outcome, putData.answerList[1]._outcome);
-				assert.equal(data.answerList[1].text, putData.answerList[1].text);
-				assert.equal(data.answerList[1].pic_url, putData.answerList[1].pic_url);
-				assert.equal(data.answerList[1].pic_style, putData.answerList[1].pic_style);
-				assert.equal(data.answerList[1].pic_credit, putData.answerList[1].pic_credit);
-
-				assert.equal(data.answerList[2]._question, questionID);
-				assert.equal(data.answerList[2]._outcome, putData.answerList[0]._outcome);
-				assert.equal(data.answerList[2].text, putData.answerList[2].text);
-				assert.equal(data.answerList[2].pic_url, null);
-				assert.equal(data.answerList[2].pic_style, null);
-				assert.equal(data.answerList[2].pic_credit, null);
-
 				GET('/api/quiz/' + quizID, function(err, data) {
 					var question = data.questionList[1];
 					assert.equal(question.text, putData.text);
@@ -693,17 +683,232 @@ describe('API', function() {
 
 	/* /api/quiz/* tests ---------------------------------------- */
 	describe('/api/quiz/*', function() {
-		//it('GET /api/quiz/*')
+		/* quiz has 5 outcomes, 5 questions, 
+			each question has 4 answers, each answer references the outcome with its same index
+				ie, question-4, answer-3 references outcome-3
+		*/
+		var newQuizData;
+		var newQuizID;
+		beforeEach(function(done) {
+			newQuizData = {
+				_user: 		  		userID, // set once user POST calls back
+				title: 		  		'QUIZ-TITLE',
+				pic_url: 			'PIC-URL',
+				pic_credit: 		'PIC-CREDIT',
+				refresh_icon_url: 	'REFRESH-ICON-URL',
+				custom_styles: 		'CUSTOM-STYLES',
+				outcomeList:  		[ { _id:'0', text: 'OUTCOME-0', description: 'OUTCOME-0' },
+									  { _id:'1', text: 'OUTCOME-1', description: 'OUTCOME-1' },
+									  { _id:'2', text: 'OUTCOME-2', description: 'OUTCOME-2' },
+									  { _id:'3', text: 'OUTCOME-3', description: 'OUTCOME-3' },
+									  { _id:'4', text: 'OUTCOME-4', description: 'OUTCOME-4' },
+									],
+				questionList: 		[
+									  { text: 'QUESTION-0', answerList: [{ text: 'ANSWER-0', _outcome:'0' },{ text: 'ANSWER-1', _outcome:'1' },{ text: 'ANSWER-2', _outcome:'2' },{ text: 'ANSWER-3', _outcome:'3' },]},
+									  { text: 'QUESTION-1', answerList: [{ text: 'ANSWER-0', _outcome:'0' },{ text: 'ANSWER-1', _outcome:'1' },{ text: 'ANSWER-2', _outcome:'2' },{ text: 'ANSWER-3', _outcome:'3' },]},
+									  { text: 'QUESTION-2', answerList: [{ text: 'ANSWER-0', _outcome:'0' },{ text: 'ANSWER-1', _outcome:'1' },{ text: 'ANSWER-2', _outcome:'2' },{ text: 'ANSWER-3', _outcome:'3' },]},
+									  { text: 'QUESTION-3', answerList: [{ text: 'ANSWER-0', _outcome:'0' },{ text: 'ANSWER-1', _outcome:'1' },{ text: 'ANSWER-2', _outcome:'2' },{ text: 'ANSWER-3', _outcome:'3' },]},
+									  { text: 'QUESTION-4', answerList: [{ text: 'ANSWER-0', _outcome:'0' },{ text: 'ANSWER-1', _outcome:'1' },{ text: 'ANSWER-2', _outcome:'2' },{ text: 'ANSWER-3', _outcome:'3' },]},
+									],
+			};
+			POST('/api/quiz', newQuizData, function(err, data) {
+				newQuizID = data._id;
+				done(err);
+			});
+		});
+		it('GET /api/quiz/all', function(done) {
+			GET('/api/quiz/all', function(err, data) {
+				assert.equal(data.length, 2);
+				done(err);
+			});
+		});
+		it('GET /api/outcome/all', function(done) {
+			GET('/api/outcome/all', function(err, data) {
+				assert.equal(data.length,7);
+				done(err);
+			});
+		});
+		it('GET /api/question/all', function(done) {
+			GET('/api/question/all', function(err, data) {
+				assert.equal(data.length, quizData.questionList.length + newQuizData.questionList.length);
+				done(err);
+			});
+		});
+		it('GET /api/answer/all', function(done) {
+			GET('/api/answer/all', function(err, data) {
+				assert.equal(data.length, (quizData.questionList.length*2) + (4*5));
+				done(err);
+			});
+		});
+		it ('maintains order of questions and answers in POST', function(done) {
+			GET('/api/quiz/' + newQuizID, function(err, data) {
+				var qList = data.questionList;
+				for (i=0; i<qList.length; i++) {
+					var q = qList[i];
+					assert.equal(q.answerList.length, newQuizData.questionList[i].answerList.length);
+					assert.equal(q.text, newQuizData.questionList[i].text);
+					for (var j=0; j<q.answerList.length; j++) {
+						assert.equal(q.answerList[j].text, newQuizData.questionList[i].answerList[j].text);
+					}
+				}
+				done(err);
+			});
+		});
+		it ('POSTs all outcomes correctly', function(done) {
+			GET('/api/quiz/' + newQuizID, function(err, data) {
+				var oList = data.outcomeList;
+				assert.equal(oList.length, newQuizData.outcomeList.length);
+				for (var i=0; i<oList.length; i++) {
+					assert.equal(oList[i].text, newQuizData.outcomeList[i].text);
+					assert.equal(oList[i].description, newQuizData.outcomeList[i].description);
+					assert.equal(oList[i].pic_url, null);
+					assert.equal(oList[i].pic_credit, null);
+					assert.equal(oList[i].pic_style, null);
+				}
+				done(err);
+			});
+		});
+		it ('POST correctly points answers to their outcomes', function(done) {
+			GET('/api/quiz/' + newQuizID, function(err, data) {
+				var qList = data.questionList;
+				for (i=0; i<qList.length; i++) {
+					var q = qList[i];
+					for (var j=0; j<q.answerList.length; j++) {
+						assert.equal(q.answerList[j]._outcome, data.outcomeList[j]._id);
+					}
+				}
+				done(err);
+			});
+		});
+		it ('POSTs basic Quiz data correctly', function(done) {
+			GET('/api/quiz/' + newQuizID, function(err, data) {
+				assert.equal(data._user._id, newQuizData._user);
+				assert.equal(data.title, newQuizData.title);
+				assert.equal(data.pic_url, newQuizData.pic_url);
+				assert.equal(data.pic_style, newQuizData.pic_style);
+				assert.equal(data.pic_credit, newQuizData.pic_credit);
+				assert.equal(data.refresh_icon_url, newQuizData.refresh_icon_url);
+				assert.equal(data.custom_styles, newQuizData.custom_styles);
+				assert.equal(data.type, "default-quiz");
+				done(err);
+			});
+		});
+		it ('DELETE /api/quiz/:id', function(done) {
+			DELETE('/api/quiz/' + newQuizID, function(err) {
+				GET('/api/outcome/all', function(err, data) {
+					assert.equal(data.length, quizData.outcomeList.length);
+				});
+				GET('/api/question/all', function(err, data) {
+					assert.equal(data.length, quizData.questionList.length);
+				});
+				GET('/api/answer/all', function(err, data) {
+					assert.equal(data.length, quizData.questionList.length*2);
+				});
+				GET('/api/quiz/all', function(err, data) {
+					assert.equal(data.length, 1);
+					done(err);
+				});
+			});
+		});
+		it ('PUT /api/quiz/:id', function(done) {
+			var putData = {
+				title: 		  		'NEW-QUIZ-TITLE',
+				pic_url: 			'NEW-PIC-URL',
+				pic_credit: 		'NEW-PIC-CREDIT',
+				refresh_icon_url: 	'NEW-REFRESH-ICON-URL',
+				custom_styles: 		'NEW-CUSTOM-STYLES',
+			}
+			PUT('/api/quiz/' + newQuizID, putData, function(err, data) {
+				GET('/api/quiz/' + newQuizID, function(err, data) {
+					assert.equal(data.title, putData.title);
+					assert.equal(data.pic_url, putData.pic_url);
+					assert.equal(data.pic_style, putData.pic_style);
+					assert.equal(data.pic_credit, putData.pic_credit);
+					assert.equal(data.refresh_icon_url, putData.refresh_icon_url);
+					assert.equal(data.custom_styles, putData.custom_styles);
+					assert.equal(data.type, "default-quiz");
+					done(err);
+				});
+			});
+		});
 	});
 
 	/* ---------------------------------------- /api/quiz/* tests */
 
-
 	/* trivia-quiz tests ---------------------------------------- */
+	describe('Trivia Quiz', function() {
+		/* quiz has 5 outcomes, 5 questions, 
+			each question has 4 answers, each answer references the outcome with its same index
+				ie, question-4, answer-3 references outcome-3
+		*/
+		var triviaData;
+		var triviaID;
+		beforeEach(function(done) {
+			triviaData = {
+				_user: 		  		userID, // set once user POST calls back
+				title: 		  		'TRIVIA-TITLE',
+				outcomeList:  		[ { text: 'OUTCOME-0', rules: {} },
+									  { text: 'OUTCOME-1', rules: { min_correct: 1 } },
+									  { text: 'OUTCOME-2' },
+									],
+				questionList: 		[
+									  { text: 'QUESTION-0', answerList: [{ text: 'ANSWER-0', correct: true },{ text: 'ANSWER-1' }]},
+									  { text: 'QUESTION-1', answerList: [{ text: 'ANSWER-0', correct: true },{ text: 'ANSWER-1' }]},
+									],
+				extraSlide: 		{ blob: 'BLOB' },
+				type: 				'trivia-quiz',
+			};
+			POST('/api/quiz', triviaData, function(err, data) {
+				trivia = data;
+				triviaID = data._id;
+				done(err);
+			});
+		});
+		it('GET /api/quiz/all', function(done) {
+			GET('/api/quiz/all', function(err, data) {
+				assert.equal(data.length, 2);
+				done(err);
+			});
+		});
+		it('POSTs basic trivia-quiz data correctly', function(done) {
+			GET('/api/quiz/' + triviaID, function(err, data) {
+				assert.equal(data._user._id, triviaData._user);
+				assert.equal(data.title, triviaData.title);
+				assert.equal(data.extraSlide._quiz, triviaID);
+				assert.equal(data.extraSlide.blob, triviaData.extraSlide.blob);
+				assert.equal(data.type, 'trivia-quiz');
+				done(err);
+			});
+		});
+		it ('POSTs outcomeList correctly with rules', function(done) {
+			GET('/api/quiz/' + triviaID, function(err, data) {
+				var oList = data.outcomeList;
+				assert.equal(oList[0].text, triviaData.outcomeList[0].text);
+				assert.equal(oList[0].description, null);
+				assert.equal(oList[0].rules.min_correct, 0);
+				assert.equal(oList[1].text, triviaData.outcomeList[1].text);
+				assert.equal(oList[1].description, null);
+				assert.equal(oList[1].rules.min_correct, 1);
+				assert.equal(oList[2].rules.min_correct, 0);
+				done(err);
+			});
+		});
+		it ('POSTs questions and answers correctly, maintaining order and correct boolean', function(done) {
+			GET('/api/quiz/' + triviaID, function(err, data) {
+				var qList = data.questionList;
+				assert.equal(qList.length, 2);
+				for (var i=0; i<qList.length; i++) {
+					assert.equal(qList[i].text, triviaData.questionList[i].text);
+					assert.equal(qList[i].answerList[0].text, triviaData.questionList[i].answerList[0].text);
+					assert.equal(qList[i].answerList[1].text, triviaData.questionList[i].answerList[1].text);
+					assert.equal(qList[i].answerList[0].correct, true);
+					assert.equal(qList[i].answerList[1].correct, false);
+				}
+				done(err);
+			});
+		});
+	});
 	/* ---------------------------------------- trivia-quiz tests */
-
-
-
 
 });
 

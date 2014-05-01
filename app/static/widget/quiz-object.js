@@ -142,6 +142,7 @@ var HuffpostLabsQuizObject = function(container, quizData) {
         }
         btnMaster = new HuffpostLabsBtnMaster(container);
     }
+    
     function shareFB(quiz, outcome) {
         var shareData = {
             name:       quiz.title,

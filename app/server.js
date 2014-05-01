@@ -2,7 +2,7 @@ var express 		= require('express'),
 	connect			= require('connect'),
 	path 			= require('path'),
 	http 			= require('http'),
-	MongoStore 		= require('connect-mongo')(express), // for persistent sessions
+	MongoStore 		= require('connect-mongo')(connect), // for persistent sessions
 
 	config 			= require('./config.js');
 
@@ -10,24 +10,24 @@ var express 		= require('express'),
 
 
 var app = express();
+/* configure app */
+app.use(connect.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
+app.use(connect.urlencoded()),
+app.use(connect.json()),
+app.use(connect.cookieParser()), /* must come before session because sessions use cookies */
+//app.use(cookies()),
 
-app.configure(function () {
-    app.use(express.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
-    app.use(connect.urlencoded()),
-	app.use(connect.json()),
-  	app.use(express.cookieParser()), /* must come before session because sessions use cookies */
+app.use(connect.session({
+	secret: config.session_secret,
+    store: new MongoStore({ // for persistent sessions
+    	db: config.data.db,
+    	url: config.data.url
+    })
+})),
+    
 
-	app.use(express.session({
-		secret: config.session_secret,
-	    store: new MongoStore({ // for persistent sessions
-	    	db: config.data.db,
-	    	url: config.data.url
-	    })
-	})),
-        
+app.use(express.static(path.join(__dirname, '/static')));
 
-    app.use(express.static(path.join(__dirname, '/static')));
-});
 var server = http.createServer(app);
 
 
@@ -46,20 +46,11 @@ var stats_api_routes = require('./routes/stats-api')(app);
 /* define and register routes */
 var main_routes = require('./routes/index')(app);
 
-app.get('/err', function(req, res) {
-	res.send(500, {'err': "FAKE ERROR"})
-});
-
-/* TODO: look up how to send status code with file and finish*/
-app.get('/500', function(req, res) {
-	//res.send(500);
-	res.sendfile('./static/html/500.html');
-});
 
 /* otherwise send 404 */
 app.get('*', function(req, res) {
-	res.send(404);
-	//res.sendfile('./static/html/404.html');
+	res.status(404)
+		.sendfile('./static/html/404.html');
 });
 
 /* ------------------------------------------------- ROUTING */

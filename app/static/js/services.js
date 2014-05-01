@@ -49,7 +49,7 @@ var FormService = function() {
   /* model checking functions --------------------------------
       -- return true if there is an error, false otherwise
   */
-  this.checkQuestionError = function(question, quizType) {
+  this.checkQuestionError = function(question, quiz) {
     question.error = { 'any':false, 'text': false };
     /* check that it has text */
     if (checkModelError(question.text)) {
@@ -57,19 +57,26 @@ var FormService = function() {
       question.error.any = true;
     }
     /* for trivia-quizzes, answers don't point to outcomes */
-    if (quizType == 'trivia-quiz') { return question.error.any; }
-    /* check each answer for error */
+    if (quiz.type == 'trivia-quiz') { return question.error.any; }
+    /* check each answer for error 
+        first create outcomeMap {outcomeID: outcome} so can verify answers point to outcomes that were not deleted
+    */
+    var outcomeMap = {};
+    for (var i=0; i<quiz.outcomeList.length; i++) {
+      var o = quiz.outcomeList[i];
+      outcomeMap[o._id] = o;
+    }
     for (var i=0; i<question.answerList.length; i++) {
-      if (this.checkAnswerError(question.answerList[i])) {
+      if (this.checkAnswerError(question.answerList[i], outcomeMap)) {
         question.error.any = true;
       }
     }
     return question.error.any;
   };
-  this.checkAnswerError = function(answer) {
+  this.checkAnswerError = function(answer, outcomeMap) {
     answer.error = { 'any': false, '_outcome': false };
     /* verify outcome is in outcomeMap */
-    if (!answer._outcome) {
+    if (!answer._outcome || !outcomeMap[answer._outcome]) {
       answer.error.any = true;
       answer.error._outcome = true;
     }
@@ -255,7 +262,7 @@ var APIservice = function($rootScope, $http, $q){
   /* ---------- below functions return promises --------------------------- */
   
 
-  this.GETquiz = function(id, onSuccess, onError) {
+  this.GETquiz = function(id) {
     return this.GET('/quiz/' + id);
   };
 

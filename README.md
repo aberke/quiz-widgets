@@ -3,62 +3,67 @@ quiz-widgets
 <img src="http://www.cosgrovecare.org.uk/wp-content/uploads/2013/08/Quiz_button-small.png"
  alt="quiz-widget logo" align="right" />
 
-Quiz Widget App -- Let's go viral
-
-<http://quizwidget-petri.dotcloud.com>
-
-Who's your spirit hacker?
----
-<http://www.huffingtonpost.com/2014/02/27/quiz_n_4869792.html>
-
-
-
-Changes since meeting with editors
+Running Locally
 ---
 
-- Each question can have 2-4 answers! 
-	- still working on ability to create unlimited number of answers (it's a styling issue)
-- ability to customize image positioning for each answer on the /new page
-- sharing buttons on every question
-- more mobile friendly buttons (with accomanying library)
-- photo credit shows on hover
-- ability to customize the quiz share link-back via the /social page
-- refresh button at end of quiz 
-	- it can be customized on the /new page (with GIFs too!)
-- on /new page can toggle between previewing mobile and non-mobile version
+- Clone this repo
+- Install node
+- Install and run mongo
+- ```cd app```
+- Install the dependencies from ```package.json```: ```npm install``` 
+- Run the server: ```node server.js```
+-- Note: May need to toggle ```domain``` within ```app/static/widget/q.js``` between commits to production
 
-since last email
+
+Running The Tests
 ---
-- back button
-- outcomes have descriptions
-- can go back and edit your quizzes
-- outcome pic styling
-- user feedback when images are large on the /new and /edit pages
-- trivia version supported
-- can sort quizzes on all-quizzes page
+
+From within ```/app```
+```NODE_ENV='testing' mocha```
+
+
+Running in Production
+---
+
+- Currently run on Dotcloud under the HuffpostLabs account
+- App logic is within ```/app```
+	- Outer directory mainly for dotcloud configuration
+- The following files and directories are necessary in their respective places for running on dotcloud, but are not necessary to the app
+	- ```/.dotcloudgitignore```
+	- ```dotcloud.yml```
+	- ```/app/prebuild.sh```
+	- ```supervisord.conf```
+	- ```/.dotcloud``` (not necessary - just directs CLI to push with git)
 
 TODO
 ---
 
-- trivia API tests
+- test before pushing to dotcloud
+	- delete node_modules and use npm install
+	- make sure all still works
+	- make sure deleting quizzes works
 
-- BEFORE REFACTORING COMPLETE
-	- change the front end controllers to handle the api route changes:
-		- put('/api/quiz/:quizID/question/:id'
-		- delete('/api/quiz/:quizID/question/:questionID/answer/:id'
-		- app.post('/api/quiz/:quizID/question/:questionID/answer'
+- after pushing before dotcloud
+	- answer stats logging
 
+- create testing makefile
+	- test all
+		- in background: run mongo ```mongod```
+	- test api 
+		- ```NODE_ENV='testing' mocha```
+	- test e2e
+		- in background: must run node locally with auth disabled
+			- ```NODE_ENV='testing' node server.js```
+		- in background: must run webdriver 
+			- ```webdriver-manager start```
+		- run tests with protractor 
+			- ```protractor test/conf.js```
 
-	- replace model functions that should use UPDATE (look for 'TODO')
-
-- create make file for tests
-	- set TESTING=true environment variable in make file
-
-- fix deleting quizzes!
-
-- return 500.html on error
-- return 404.html on not found
-	- can I do this with middleware?
+- e2e test todo:
+	- widget_test.js
+	- new-trivia_test.js
+	- edit_test.js
+	- post quiz with controller in index_test.js
 
 - get rid of any fields needed for backwards compatibility
 	- update the model
@@ -68,12 +73,6 @@ TODO
 
 - assign arbitrary amount of points to outcome in answers
 
-- refactor API
-	- save callback functions
-	- in API better handling of (err || !model)
-		- return 404 if !model
-		- return 500 if err
-		- put handler in util
 
 - handle native apps
 	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
@@ -97,8 +96,6 @@ TODO
 - finish up with >4 answers
 
 
-- better error handling in models.newQuiz
-
 - finish e2e tests for /edit and /new
 	- e2e tests for outcomes
 
@@ -106,16 +103,13 @@ TODO
 	- highlight on hover over item on left side
 
 - Deal with Mongo Issues:
-	- migrate data: turn old questions with answer1 and answer2 into just answerList stuff
 	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
 - add other share options
 	- mail should be easy
 - facebook app still in development mode
 - handle case of tie?
 - deal with resize event?
-- write api tests
 - write e2e tests
-- make nice 404
 
 
 Styling TODO for Wenting
@@ -124,12 +118,6 @@ Styling TODO for Wenting
 	- use ngrok to test on phones too
 	- font doensn't look right on firefox
 - Design for unlimited answers
-
-Further Ideas
----
-
-- Make poll product as well:
-	- Last slide would load in the oncomplete data to be able to show what other people answered
 
 
 Documentation notes
@@ -162,7 +150,7 @@ There is an ADMIN_WHITELIST to allow admin users access to the pages and API end
 
 
 - Whitelist defined in config.js
-- Whitelist used in authentication-middleware
+- Whitelist used in /middleware/authentication-middleware
 
 
 Button notes
@@ -177,24 +165,6 @@ To use the button master when writing widget code:
 - create a ```HuffpostLabsBtnMaster``` to convert your buttons: ```var myBtnMaster = new HuffpostLabsBtnMaster(context)``` where context is the HTML container that contains your buttons.
 - HuffpostLabsBtnMaster will find all of the elements with the ```data-huffpostlabs-btn```, grab each elements onclick handler, and retrofit each element with better event handling that calls that handler.
 
-
-necessary e2e tests
----
-
-- quiz always gets result that it should
-- all of the directives
-- can only get to certain pages if logged in
-- stats logging
-
-neccessary api tests
----
-
-- stats logging
-
-
-- 401 if user doesn't own quiz
-- on creating question, make sure answers point to valid outcomes
-	- outcome exists and belongs to the quiz that the question belongs to
 
 Unresolved Issues
 ---

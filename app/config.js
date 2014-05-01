@@ -5,7 +5,12 @@
 var config = {
 
 	// testing flag for things like authentication middleware
-	"testing": (process.env.TESTING || false),
+	"testing": (process.env.NODE_ENV && process.env.NODE_ENV == 'testing'),
+	// test user to send out in Auth if testing
+	"test_user": {
+		"_id": "TEST-ID",
+		"twitter_id": "TEST-TWITTER-ID"
+	},
 
 	// need session secret to use express.session
 	"session_secret": (process.env.SESSION_SECRET || 'no-secrets'),

@@ -7,8 +7,9 @@ exports.config = {
 
   specs: [
   		//	'*_test.js',
-  			//'edit_test.js'
-  			'api_test.js'
+  			'new-quiz_test.js',
+  			//'edit_test.js',
+  			'index_test.js',
   		],
 
 	// A base URL for your application under test. Calls to protractor.get()

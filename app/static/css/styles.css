@@ -37,7 +37,7 @@ body {
 #view {
 	margin-top: 60px; /* fixed header has height 60px */
 }
-.header{
+#header{
 	position: fixed;
 	right: 0;
 	width: 100%;
@@ -46,32 +46,32 @@ body {
 	opacity: 0.4;
 	z-index: 2; /* make it clickable above other content */
 }
-.header:hover, .header .error {
+#header:hover, #header .error {
 	opacity: 0.8;
 }
-.header .nav>li>a { /* override bootstrap */
+#header .nav>li>a { /* override bootstrap */
 	color: gray;
 	font-size: 18px;
 }
-.header div.error {
+#header div.error {
 	width: auto;
 	padding: 15px;
 	background-color: #FFEBCD; /* AKA blanchedalmond;*/
 	color: red;
 	font-size: 28px;
 }
-.header div.error #login-button {
+#header div.error #login-button {
 	font-weight: bold;
 	color: red;
 }
 /* have the labs image magically show only when nav header is hovered */
-.header .brand {
+#header .brand {
 	display: none;
 }
-.header:hover .brand {
+#header:hover .brand {
 	display: inline-block;
 }
-.header .username {
+#header .username {
 	position: fixed;
 	top: 50px;
 	right: 20px;

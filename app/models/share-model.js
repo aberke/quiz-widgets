@@ -17,15 +17,16 @@ var Share = function() {
 		fbCount: 			{type: Number, default: 0},
 		twitterCount: 		{type: Number, default: 0},
 	});
-	// TODO -- USE UPDATE
 	var update = function(shareID, shareData, callback) {
 		_model.findById(shareID)
 			.exec(function(err, share) {
 				if (err || !share) { return callback(err); }
-				share.link 			= (shareData.link 		|| share.link);
-				share.caption 		= (shareData.caption 	|| share.caption);
-				share.pic_url 		= (shareData.pic_url 	|| share.pic_url);
-				share.description 	= (shareData.description|| share.description);
+
+				if ("link" in shareData) 		{ share.link = shareData.link; }
+				if ("caption" in shareData) 	{ share.caption = shareData.caption; }
+				if ("pic_url" in shareData) 	{ share.pic_url = shareData.pic_url; }
+				if ("description" in shareData) { share.description = shareData.description; }
+				
 				share.save(function(err) { callback(err, share); });
 			});
 	}
@@ -33,13 +34,13 @@ var Share = function() {
 		_model.update(
 			{ _id: shareID }, // query
 			{ $inc: { fbCount: 1 } }, {} // the update
-		).exec(callback);
+		).exec(function(err) { callback(err); });
 	}
 	var incrementTwitter = function(shareID, callback) {
 		_model.update(
 			{ _id: shareID }, // query
-			{ $inc: { 'twitterCount': 1 } }, {} // the update
-		).exec(callback);
+			{ $inc: { twitterCount: 1 } }, {} // the update
+		).exec(function(err) { callback(err); });
 	}
 	var create = function(shareData, callback) {
 		if (!shareData._quiz && !shareData._outcome) { return callback('Share must reference _quiz or _outcome', null); }
@@ -56,8 +57,12 @@ var Share = function() {
 		share.save(function(err) { if(callback) callback(err, share); });
 		return share; // for the impatient like Quiz.create()
 	}
+	var remove = function(shareID, callback) {
+		_model.remove({ _id: shareID }).exec(callback);
+	}
 	return {
 		create: 			create,
+		remove: 			remove,
 		update: 			update,
 		incrementFB: 		incrementFB,
 		incrementTwitter: 	incrementTwitter,

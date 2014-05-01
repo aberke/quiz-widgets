@@ -3,10 +3,10 @@ var util 					= require('./common-util.js'),
 
     authMiddleware  		= require('./../middleware/authentication-middleware.js'),
     verifyQuizAPIAccess		= authMiddleware.verifyQuizAPIAccess,
-
-	models 					= require('./../models/quiz-models.js'),
-	Quiz 					= models.Quiz,
+			
+	Quiz 					= require('./../models/quiz-model.js'),
     User 					= require('./../models/user-model.js'),
+	Slide					= require('./../models/slide-model.js'),
     Share 					= require('./../models/share-model.js'),
     Outcome 				= require('./../models/outcome-model.js'),
     Question 				= require('./../models/question-answer-models.js').Question,
@@ -32,16 +32,14 @@ var APIroutes = function(app) {
 		app.get('/api/question/all', GETallQuestions);
 
 		app.get('/api/quiz/:quizID', GETquiz);
+		app.get('/api/quiz/:quizID/outcome/:id', GEToutcome);
+		app.get('/api/quiz/:quizID/question/:id', GETquestion);
 
 		app.post('/api/quiz', POSTquiz);
 		app.post('/api/quiz/:quizID/slide', verifyQuizAPIAccess, POSTslide);
 		app.post('/api/quiz/:quizID/outcome', verifyQuizAPIAccess, POSToutcome);
 		app.post('/api/quiz/:quizID/question', verifyQuizAPIAccess, POSTquestion);
 		app.post('/api/quiz/:quizID/question/:questionID/answer', verifyQuizAPIAccess, POSTanswer);
-
-		app.get('/api/quiz/:quizID/question/:questionID/answer', function(req, res) {
-			res.send('OK')
-		});
 		
 		app.put('/api/quiz/:quizID', verifyQuizAPIAccess, PUTquiz);
 		app.put('/api/quiz/:quizID/share', verifyQuizAPIAccess, PUTquizShare);
@@ -141,20 +139,7 @@ var APIroutes = function(app) {
 	/* doesn't worry about handling any models it owns -- just its own fields */
 	var PUTquiz = function(req, res) {
 		var quizData = req.body;
-
-		models.findQuiz(req.params.quizID, function(err, quiz) {
-			if (err || !quiz) { return res.send(500, util.handleError(err)); }
-
-			quiz.title 				= quizData.title;
-			quiz.pic_url 			= quizData.pic_url;
-			quiz.pic_credit 		= quizData.pic_credit;
-			quiz.custom_styles 		= quizData.custom_styles;
-			quiz.refresh_icon_url 	= quizData.refresh_icon_url;
-			quiz.save(function(err) {
-				if (err){ return res.send(500, util.handleError(err)); }
-				res.send(quiz);
-			});
-		});
+		Quiz.update(req.params.quizID, quizData, util.sendDataOrError(res));
 	};
 	var PUTquizShare  = function(req, res) {
 		var shareData = req.body;
@@ -252,7 +237,7 @@ var APIroutes = function(app) {
 		Quiz.removeSlide(req.params.quizID, req.params.id, DELETEcallback(res));
 	}
 	var DELETEquiz = function(req, res) {
-		models.deleteQuiz(req.params.quizID, DELETEcallback(res));
+		Quiz.remove(req.params.quizID, DELETEcallback(res));
 	}
 
 

@@ -1,10 +1,10 @@
 
-var mongoose 			= require('mongoose'),
-	mongo 				= require('./mongo.js'),
+var mongo 				= require('./mongo.js'),
 	ObjectId 			= mongo.ObjectId,
-	Schema  			= mongo.Schema,
 
+	Stat				= require('./stats-models.js'),
 	User				= require('./user-model.js'),
+	Slide				= require('./slide-model.js'),
 	Share				= require('./share-model.js'),
 	Outcome 			= require('./outcome-model.js'),
 	Question 			= require('./question-answer-models.js').Question;
@@ -95,50 +95,6 @@ var questionSchema = new Schema({
 	answerList:  [{type: ObjectId, ref: 'Answer'}],
 });
 ------------------- SCHEMA DEFINITIONS ------------------- */
-
-/* Slide -------------------------------------------------------- */
-var Slide = function() {
-	var _model = mongo.Model('Slide', {
-		_quiz: 		 		{type: ObjectId, ref: 'Quiz'},
-		blob: 				{type: String, default: null},
-	});
-	var create = function(slideData, callback) {
-		if (!slideData._quiz) { return callback('Slide must reference _quiz', null); }
-		var slide = new _model({
-			_quiz: 	slideData._quiz,
-			blob: 	(slideData.blob || null)
-		});
-		slide.save(function(err) { callback(err, slide); });
-		return slide; // for the impatient, like Quiz.create()
-	}
-	var all = function(callback) {
-		_model.find().exec(callback);
-	}
-	// TODO: USE UPDATE
-	var update = function(slideID, slideData, callback) {
-		_model.findById(slideID)
-			.exec(function(err, slide) {
-				if (err || !slide) { return callback(err); }
-				slide._quiz = (slideData._quiz || slide._quiz);
-				slide.blob  = (slideData.blob || slide.blob);
-				slide.save(callback);
-			});
-	}
-	var remove = function(slideID, callback) {
-		_model.remove({ _id: slideID }).exec(callback);
-	}
-	return {
-		create: create,
-		all: 	all,
-		update: update,
-		remove: remove,
-		model:  _model,
-	}
-}();
-exports.Slide = Slide;
-/* ------------------------------------------------------ Slide */
-
-
 
 var Quiz = function() {
 
@@ -376,27 +332,29 @@ var Quiz = function() {
 				var numCalled = 0; // tally up the number of mongo functions we're waiting on before can call callback
 				var totalCalls = 0; // +1 for each question in questionList and quiz.outcomeList.share
 				/* complete callback when all calls have executed OR when there is an error */
-				var call = function(err) {
-					numCalled += 1;
-					if ((numCalled >= totalCalls) || err) {
-						callback(err);
+				var call = function() {
+					totalCalls += 1;
+					
+					return function(err) {
+						numCalled += 1;
+						if ((numCalled >= totalCalls) || err) {
+							callback(err);
+						}
 					}
 				}
 				for (var q=0; q<quiz.questionList.length; q++) {
-					totalCalls += 1;
-					Question.remove(quiz.questionList[q], call);
+					Question.remove(quiz.questionList[q], call());
 				}
 				for (var o=0; o<quiz.outcomeList.length; o++) {
-					totalCalls += 1;
-					Outcome.remove(quiz.outcomeList[o], call);
+					Outcome.remove(quiz.outcomeList[o], call());
 				}
-				totalCalls += 3;
-				Share.remove(quiz.share, call);
-				Slide.remove(quiz.extraSlide, call);
-				Stat.removeAllQuiz(quizID, call);
+				if (quiz.share) {  Share.remove(quiz.share, call()); }
+				
+				if (quiz.extraSlide) { Slide.remove(quiz.extraSlide, call()); }
+
+				Stat.removeAllQuiz(quizID, call());
 				// remove the quiz itself
-				totalCalls += 1;
-				_model.remove({ _id: quizID }, call);
+				_model.remove({ _id: quizID }, call());
 			});
 	}
 	var updateShare = function(quizID, shareData, callback) {
@@ -415,16 +373,24 @@ var Quiz = function() {
 		});
 	}
 
-	/* TODO -- REPLACE WITH UPDATE */
 	var setUser = function(quizID, userID, callback) {
-		_model.findById(quizID)
-			.exec(function(err, quiz) {
-				if (err || !quiz) { return callback(err); }
-				quiz._user = userID;
-				quiz.save(callback);
-			});
+		_model.findById(quizID, function(err, quiz) {
+			if (err || !quiz) { return callback(err || 'No such Quiz ' + quizID); }
+			quiz._user = userID;
+			quiz.save(function(err) { callback(err, quiz); });
+		});
 	}
-	/* TODO -- REPLACE WITH UPDATE */
+	var update = function(quizID, quizData, callback) {
+		_model.findById(quizID).exec(function(err, quiz) {
+			if ("title" in quizData) 			{ quiz.title = quizData.title; }
+			if ("pic_url" in quizData) 			{ quiz.pic_url = quizData.pic_url; }
+			if ("pic_credit" in quizData) 		{ quiz.pic_credit = quizData.pic_credit; }
+			if ("custom_styles" in quizData) 	{ quiz.custom_styles = quizData.custom_styles; }
+			if ("refresh_icon_url" in quizData) { quiz.refresh_icon_url = quizData.refresh_icon_url; }
+			
+			quiz.save(callback)
+		});
+	}
 
 	return {
 		all: 			all,
@@ -434,6 +400,7 @@ var Quiz = function() {
 
 		create: 	 	create,
 		remove: 	 	remove,
+		update: 		update,
 
 		setUser: 	 	setUser,
 
@@ -451,7 +418,7 @@ var Quiz = function() {
 		model: 		 	_model,
 	}
 }();
-exports.Quiz = Quiz;
+module.exports = Quiz;
 
 
 

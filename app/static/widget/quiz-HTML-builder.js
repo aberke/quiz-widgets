@@ -28,13 +28,35 @@ QuizHTMLbuilder.prototype.addCustomStyles = function() {
     /* Don't want the custom_styles to effect styles of any other quiz on the page 
         - add quizClassName infront of each style - replacing .huffpostlabs-quiz if necessary
     */
-    var re = new RegExp('.' + this.quizClassName + '\ *\n*.huffpostlabs-quiz', 'g'); // in case I caused '.quizClassname.huffpostlabs-quiz as first part of styles string'
     styles = ('.' + this.quizClassName + ' ' + styles);
-    styles = styles.replace(/}/g, ('}.' + this.quizClassName));
-    styles = styles.replace(re, ('.' + this.quizClassName));
-    // take off the last .quizClassName
-    styles = styles.substring(0, styles.length - ('.' + this.quizClassName).length);
 
+    var re1 = new RegExp('.huffpostlabs-quiz', 'g');
+    styles = styles.replace(re1, ('.' + this.quizClassName));
+
+    var strongerRule = ('.' + this.quizClassName + ' ');
+    styles = styles.replace(/}\ *.*/g, ('}' + strongerRule));
+    // take off the last .quizClassName
+    styles = styles.substring(0, styles.length - strongerRule.length);
+
+    /* need to replace all commas in the styles with ,.quizClassName
+        but must avoid doing so within a style rule's {} like { color: rgb(0,0,0); }
+    */
+    var withinStyle = false;
+    var i=0;
+    while(i < styles.length) {
+        var character = styles[i];
+        if (character == '{') {
+            withinStyle = true;
+        } else if (character == '}') {
+            withinStyle = false;
+        } else if (character == ',' && !withinStyle) {
+            styles = styles.substring(0, i+1) + strongerRule + styles.substring(i+1);
+        }
+        i++;
+    }
+    //get rid of the duplicates
+    var re2 = new RegExp('.' + this.quizClassName + '\ *\n*\ *.' + this.quizClassName, 'g');
+    styles = styles.replace(re2, '.' + this.quizClassName);
     this.addStyle(styles);
 }
 
@@ -136,7 +158,7 @@ QuizHTMLbuilder.prototype.answerKeyContainerHTML = function() {
         html+=          "<div class='share-text'>";
         html+=              "<p>Share your results</p>";
         html+=          "</div>";
-        html+=          "<img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + (this.quizData.refresh_icon_url || (static_domain + "/icon/refresh.png")) + "'></img>";
+        html+=          "<img width='30px' height='30px' class='refresh-btn touchable' data-huffpostlabs-btn onclick=" + onclickRefresh + " src='" + (this.quizData.refresh_icon_url || (this.static_domain + "/icon/refresh.png")) + "'></img>";
         html+=      "</div>";
         html+= "</div>";
     return html;

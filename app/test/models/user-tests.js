@@ -27,6 +27,9 @@ describe('User tests', function() {
 	var currentUser = null;
 
 	beforeEach(function(done) {
+		User.model.remove({}, done);
+	});
+	beforeEach(function(done) {
 		User.create({
 			id: 'TEST-USER-TWITTER-ID', //
 			username: 'TEST-TWITTER-USERNAME',
@@ -35,9 +38,6 @@ describe('User tests', function() {
 			currentUser = doc;
 			done(err);
 		});
-	});
-	afterEach(function(done) {
-		User.model.remove({}, done);
 	});
 
 

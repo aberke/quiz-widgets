@@ -17,7 +17,7 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 		]);
 	})
 
-	.config(function($provide, $compileProvider) {
+	.config(function($provide, $compileProvider, $filterProvider) {
 
 	
 		// register services
@@ -43,6 +43,9 @@ var QuizApp = angular.module('QuizApp', ['ngRoute'])
 
 		// register factories
 		$provide.factory('UserFactory', UserFactory);
+
+		// register filters
+		$filterProvider.register('hasIDfilter', hasIDfilter);
 	});
 
 

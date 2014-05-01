@@ -41,7 +41,6 @@ var IndexRoutes = function (app) {
 		
 	}
 	var _serveBase = function(req, res) {
-		console.log('SERVE BASE',req.user)
 		res.sendfile('static/html/base.html');
 	}
 	var _servePublicPreview = function(req, res) {
