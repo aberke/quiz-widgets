@@ -9,17 +9,22 @@ Running Locally
 - Clone this repo
 - Install node
 - Install and run mongo
-- ```cd app```
-- Install the dependencies from ```package.json```: ```npm install``` 
-- Run the server: ```node server.js```
--- Note: May need to toggle ```domain``` within ```app/static/widget/q.js``` between commits to production
+- ```$ cd app```
+- Install the dependencies from ```package.json```: ```$ npm install``` 
+- Run the server: ```$ node server.js```
+- Notes: 
+	- Need to set the following environment variables to allow signin with twitter:
+		- TWITTER_CONSUMER_KEY 
+		- TWITTER_CONSUMER_SECRET
+		- Use the quiz-widgets twitter app or create a new twitter app to get these keys
+	- May need to toggle ```domain``` within ```app/static/widget/q.js``` between commits to production
 
 
 Running The Tests
 ---
 
-From within ```/app```
-```NODE_ENV='testing' mocha```
+From within ```/app``` run 
+```$ NODE_ENV='testing' mocha```
 
 
 Running in Production
@@ -38,45 +43,14 @@ Running in Production
 TODO
 ---
 
-- test before pushing to dotcloud
-	- delete node_modules and use npm install
-	- make sure all still works
-	- make sure deleting quizzes works
-
 - after pushing before dotcloud
 	- answer stats logging
-
-- create testing makefile
-	- test all
-		- in background: run mongo ```mongod```
-	- test api 
-		- ```NODE_ENV='testing' mocha```
-	- test e2e
-		- in background: must run node locally with auth disabled
-			- ```NODE_ENV='testing' node server.js```
-		- in background: must run webdriver 
-			- ```webdriver-manager start```
-		- run tests with protractor 
-			- ```protractor test/conf.js```
-
-- e2e test todo:
-	- widget_test.js
-	- new-trivia_test.js
-	- edit_test.js
-	- post quiz with controller in index_test.js
 
 - get rid of any fields needed for backwards compatibility
 	- update the model
 
 
 - trivia documentation
-
-- assign arbitrary amount of points to outcome in answers
-
-
-- handle native apps
-	- http://debug0.huffingtonpost.com/mobile/v1/entries/5030064?device=v6,ios,small,hires&format=html
-
 
 - mongo issue
 	- am I properly deleting questions and outcomes and answers?
@@ -101,23 +75,6 @@ TODO
 
 - make nicer instructions on /new and /edit
 	- highlight on hover over item on left side
-
-- Deal with Mongo Issues:
-	- there are orphaned documents because previously was not correctly handling DELETEquiz.  AKA There are questions, answers, outcomes, shares, that belong to a no longer existing quiz.
-- add other share options
-	- mail should be easy
-- facebook app still in development mode
-- handle case of tie?
-- deal with resize event?
-- write e2e tests
-
-
-Styling TODO for Wenting
----
-- QA styles on each browser
-	- use ngrok to test on phones too
-	- font doensn't look right on firefox
-- Design for unlimited answers
 
 
 Documentation notes
