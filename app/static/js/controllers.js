@@ -81,17 +81,18 @@ function StatsCntl($scope, quiz, stats) {
 
 	$scope.quiz = quiz;
 	$scope.stats = stats;
-
+	console.log('stats',stats)
 	var combineStats = function() {
 		/* for backwards compatibility */
 		$scope.stats.started = ((stats.started || 0) + (quiz.startedCount || 0));
 		$scope.stats.completed = ((stats.completed || 0) + (quiz.completedCount || 0));
-
+		console.log('stats', stats)
 		$scope.stats['Answer'] = ($scope.stats['Answer'] || {});
 		for (var q=0; q<quiz.questionList.length; q++) {
 			var question = quiz.questionList[q];
 			for (var i=0; i<question.answerList.length; i++) {
 				var a = question.answerList[i];
+				console.log('answer',a,stats['Answer'][a._id])
 				$scope.stats['Answer'][a._id] = ((stats['Answer'][a._id] || 0) + a.count);
 			}
 		}
