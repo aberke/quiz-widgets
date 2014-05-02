@@ -47,14 +47,12 @@
 		this.QuizFunctions.twitterShare = function(text, share) {
 			/* using HuffpostLabs social-network-sharing library */
 			HuffpostLabsShareTwitter(text, share.link, function() {
-				console.log('aaa')
 				PUT("/api/share/" + share._id + "/increment-twitter-count", null);
 			});
 		}
 		this.QuizFunctions.fbShare = function(shareData, share) { 
 			/* using HuffpostLabs social-network-sharing library */
 			HuffpostLabsShareFB(shareData, function() {
-				console.log('FB quiz post was published.');
 				if (share._id) { /* log that it was shared */
 					PUT("/api/share/" + share._id + "/increment-fb-count", null);
 				}

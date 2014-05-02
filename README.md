@@ -39,42 +39,28 @@ Running in Production
 	- ```/app/prebuild.sh```
 	- ```supervisord.conf```
 	- ```/.dotcloud``` (not necessary - just directs CLI to push with git)
+- Huffpost DevOps has set up an Akamai cache for us
+	- ```quiz.huffingtonpost.com``` cached and fetches data from ```http://quizwidget-petri.dotcloud.com/```
+	- The cache is to cache assets that would be requested by /widget/q.js for a quiz -- these are the items that could be requested hundreds of times at once when a quiz goes live on a Huffpost Page
+	- .ttf, .png files cached for an hour
+	- .css, .js extensions cached for 10 minutes
+		- Any GET data is actually a .js asset, since it is requested with a JSONP request
+		- That means any time an editor saves changes on the /edit page, changes will take up to 10 minutes to go live.
+	- Note: A quiz references URLs for images that we do not host - can't cache these
 
 TODO
 ---
 
-- after pushing before dotcloud
-	- answer stats logging
-
 - get rid of any fields needed for backwards compatibility
-	- update the model
-
-
-- trivia documentation
-
-- mongo issue
-	- am I properly deleting questions and outcomes and answers?
-		- do I also need to splice from quiz.questionList when I delete a question?
-
-- Auth
-	- get rid of basic auth and instead have a whitelist of allowed user twitterIDs/twitter_usernames that i'll check in the middleware find-or-create method
-		- whitelist just json that i can update when someone wants an account
-		- special user-accounts branch for updating whitelist
-
-	
+	- go into mongo to transfer the data and then update the model
+	- the only fields that matter are the count fields
+		- Easy solution: could just get rid of these fields without going into mongo and the earlier quizzes will just drasticaly under report stats
+- trivia documentation	
 - deal with possibility that twitter share link could be too long
 	- on sharing page let them put in bitly link for sharing -- or automatically create one
-
 - be able to reorder questions
-
 - finish up with >4 answers
 
-
-- finish e2e tests for /edit and /new
-	- e2e tests for outcomes
-
-- make nicer instructions on /new and /edit
-	- highlight on hover over item on left side
 
 
 Documentation notes

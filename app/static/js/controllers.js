@@ -46,10 +46,7 @@ function UserCntl($scope, $routeParams, userList) {
 }
 
 function IndexCntl($scope) {
-	var init = function() {
-		console.log('IndexCntl')
-	}
-	init();
+	
 }
 
 function DocumentationCntl($scope, $routeParams) {
@@ -81,18 +78,17 @@ function StatsCntl($scope, quiz, stats) {
 
 	$scope.quiz = quiz;
 	$scope.stats = stats;
-	console.log('stats',stats)
+
 	var combineStats = function() {
 		/* for backwards compatibility */
 		$scope.stats.started = ((stats.started || 0) + (quiz.startedCount || 0));
 		$scope.stats.completed = ((stats.completed || 0) + (quiz.completedCount || 0));
-		console.log('stats', stats)
+		
 		$scope.stats['Answer'] = ($scope.stats['Answer'] || {});
 		for (var q=0; q<quiz.questionList.length; q++) {
 			var question = quiz.questionList[q];
 			for (var i=0; i<question.answerList.length; i++) {
 				var a = question.answerList[i];
-				console.log('answer',a,stats['Answer'][a._id])
 				$scope.stats['Answer'][a._id] = ((stats['Answer'][a._id] || 0) + a.count);
 			}
 		}
@@ -140,13 +136,11 @@ function ShareCntl($scope, UIService, FormService, APIservice, quiz) {
 
 	$scope.saveOutcomeShare = function(outcome) {
 		APIservice.PUT('/quiz/' + $scope.quiz._id + '/outcome/' + outcome._id + '/share', outcome.share).then(function(data) {
-			console.log('data', data);
 			outcome.share.saved = 'saved';
 		});
 	}
 	var saveQuizShare = function(callback) {
 		APIservice.PUT('/quiz/' + $scope.quiz._id + '/share', $scope.quiz.share).then(function(data) {
-			console.log('data', data);
 			if (callback) { callback(data); }
 		});
 	}
@@ -288,7 +282,6 @@ function NewQuizCntl($scope, $location, WidgetService, UIService, FormService, A
 	};
 
 	var init = function() {
-		console.log('quizType',quizType)
 		/* construct quiz base */
 		var quiz = { 	'_user': 		user._id,
 						'outcomeList':  [], // each outcome in outcomeList has an answerList []
@@ -362,7 +355,6 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 	var reloadQuiz = function(quiz) {
 		/* reloads widget, resets watchers, resets outcomeAnswerLists */
 		$scope.quiz = quiz;
-		console.log(quiz)
 		WidgetService.setupOutcomeAnswerLists(quiz);
 		setWatchers();
 		QuizWidgets[quiz._id].reloadData(quiz);
@@ -421,11 +413,9 @@ function EditQuizCntl($scope, FormService, APIservice, UIService, WidgetService,
 	/* save ------------------------------------------------- */
 
 	$scope.saveQuiz = function() {
-		console.log('updating with', $scope.quiz)
 		update('/quiz/' + $scope.quiz._id, $scope.quiz, function() {
 			/* PUT returns not fully populated quiz - GET quiz again for reloadQuiz */
 			APIservice.GETquiz($scope.quiz._id).then(function(data) {
-				console.log('GETquiz', data)
 				$scope.quiz = data;
 				reloadQuiz(data);
 			});
