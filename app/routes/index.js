@@ -30,13 +30,13 @@ var IndexRoutes = function (app) {
 
 
 		/* protected with basicAuth */
-		app.get('/', 					basicAuth, _serveBase);
-		app.get('/contact',  			basicAuth, _serveBase);
-		app.get('/all-quizzes',  		basicAuth, _serveBase);
-		app.get('/user/:search',    	basicAuth, _serveBase);
-		app.get('/stats/:quizID',		basicAuth, _serveBase);
-		app.get('/documentation',		basicAuth, _serveBase);
-		app.get('/documentation/:doc',	basicAuth, _serveBase);
+		app.get('/', 					_serveBase);
+		app.get('/contact',  			_serveBase);
+		app.get('/all-quizzes',  		_serveBase);
+		app.get('/user/:search',    	_serveBase);
+		app.get('/stats/:quizID',		_serveBase);
+		app.get('/documentation',		_serveBase);
+		app.get('/documentation/:doc',	_serveBase);
 
 		
 	}
