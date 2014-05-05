@@ -20,7 +20,7 @@
 			<label class='answer-label'>Answer {{$index + 1}}</label>
 			
 			<div class='answer-inputs'>
-				<input ng-change="a.saved='unsaved';question.saved='unsaved'" id='answer-text' type='text' ng-model='a.text' required placeholder='ANSWER TEXT'>
+				<input ng-change="a.saved='unsaved';question.saved='unsaved'" id='answer-text' type='text' ng-model='a.text' placeholder='ANSWER TEXT'>
 
 				<img-input-label hide-label="true" max-size="200" model="a"></img-input-label>
 				<input ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image URL" data-container="body" data-toggle="popover" data-placement="right" data-content="Provide a URL to a publicly hosted image.  Make sure this URL starts with 'http://' or 'https://' and is SMALL." id='new-answer-pic-url' type="url" ng-model="a.pic_url" placeholder="ANSWER IMAGE/GIF URL" >
@@ -28,7 +28,7 @@
 				<span ng-show="a.pic_url||a.pic_credit">
 					<input placeholder='PHOTO CREDIT' class='answer-pic-credit' type='text' ng-model='a.pic_credit' ng-change="a.saved='unsaved';question.saved='unsaved'"/>
 					
-					<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-required ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
+					<select ng-change="a.saved='unsaved';question.saved='unsaved'" class="popover-hover" data-original-title="Image/GIF Styling" data-container="body" data-toggle="popover" data-placement="right" data-content="Default: bottom-right" ng-model='a.pic_style' ng-options="s for s in ['bottom-right', 'cover', 'contain']" >
 						<option value="">IMAGE/GIF STYLING</option>
 					</select>
 				</span>
