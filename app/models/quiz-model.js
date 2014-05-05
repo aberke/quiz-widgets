@@ -182,7 +182,9 @@ var Quiz = function() {
 		});
 	}
 	var all = function(callback) {
-		_model.find().exec(callback);
+		_model.find()
+			.populate('_user')
+			.exec(callback);
 	}
 	var removeSlide = function(quizID, slideID, callback) {
 		_model.findById(quizID).exec(function(err, quiz) {
