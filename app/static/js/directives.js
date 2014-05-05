@@ -96,6 +96,7 @@ var quizzes = function(APIservice, UserFactory, $http) {
 				endpoint = '/quiz/all';
 			}
 			APIservice.GET(endpoint).then(function(qData) {
+				console.log('got', endpoint, qData)
 				scope.quizList = qData;
 				$.getScript("/widget/q.js"); /* now load the quizzes */
 				setupFilter(scope);

@@ -719,6 +719,7 @@ describe('API', function() {
 		it('GET /api/quiz/all', function(done) {
 			GET('/api/quiz/all', function(err, data) {
 				assert.equal(data.length, 2);
+				assert.equal(data[0]._user.twitter_displayName, data[0]._user.twitter_displayName);
 				done(err);
 			});
 		});
