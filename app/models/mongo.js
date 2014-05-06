@@ -18,7 +18,7 @@ var Mongo = function() {
 	}
 	/* takes a model name and object definition -- creates model and returns it */
 	var _Model = function(name, object) {
-		schema = new Schema(object);
+		schema = new Schema(object, {read: 'nearest'});
 		return mongoose.model(name, schema);
 	}
 
