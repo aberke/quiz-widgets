@@ -187,8 +187,8 @@ var HuffpostLabsQuizObject = function(container, quizData) {
             prompt+= "\n\nCopy to clipboard: Copy(Ctrl+C), Enter";
 
         var code   = '<div class="huffpostlabs-quiz" id="' + quizData._id + '"></div>';
-            code  += '<script src="' + static_domain + '/widget/q.js"></script>';
-            code  += '<p id="labs-credit"><a href="http://code.huffingtonpost.com">Quiz widget by <img height="23px" src="' + static_domain + '/img/huffpostLABS_outline.png" /></a></p>';
+            code  += '<script src="http://code.huffingtonpost.com/widget/q.js"></script>';
+            code  += '<p id="labs-credit"><a href="http://code.huffingtonpost.com">Quiz widget by <img height="23px" src="http://code.huffingtonpost.com/img/huffpostLABS_outline.png" /></a></p>';
         window.prompt(prompt, code);
     }
 
