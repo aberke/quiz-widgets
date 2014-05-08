@@ -15,13 +15,13 @@ app.use(connect.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
 app.use(connect.urlencoded()),
 app.use(connect.json()),
 app.use(connect.cookieParser()), /* must come before session because sessions use cookies */
-//app.use(cookies()),
 
 app.use(connect.session({
 	secret: config.session_secret,
     store: new MongoStore({ // for persistent sessions
     	db: config.data.db,
-    	url: config.data.url
+    	url: config.data.url,
+    	auto_reconnect: true,
     })
 })),
     
