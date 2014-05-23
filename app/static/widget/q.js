@@ -3,10 +3,12 @@
 	This is pure javascript - no jQuery
 
 */
+console.log('******************** 0')
 
 
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
+console.log('******************** 1')
 
 	//var domain = 'http://127.0.0.1:8080';
 	var domain = 'http://quizwidget-petri.dotcloud.com';
@@ -217,6 +219,7 @@
 		var widgetContainers = document.getElementsByClassName('huffpostlabs-quiz');
 		
 		loadDependencies(function() { /* callback after stylesheets and scripts loaded */
+			console.log('loadDependencies called back')
 			for (var i=0; i<widgetContainers.length; i++) {
 				var container = widgetContainers[i];
 				/* create quiz widget object, replace loading display with widget */
