@@ -124,10 +124,12 @@
 	}
 
 	var withScripts = function(srcList, callback) {
+		console.log('withScripts', srcList)
 		var numScripts = srcList.length;
 		var numLoaded = 0;
         function scriptLoaded() {
             numLoaded++;
+        	console.log('scriptLoaded', numLoaded)
             if (numLoaded === numScripts) {
                 callback();
             }
@@ -137,8 +139,10 @@
 			var script_tag = document.createElement('script');
 			script_tag.setAttribute("type","text/javascript");
 			script_tag.setAttribute("src", srcList[i]);
-			if (script_tag.readyState) {
-				script_tag.onreadystatechange = function () { // For old versions of IE
+			if (script_tag.readyState) { // For old versions of IE
+				console.log('script_tag.readyState', script_tag.readyState)
+				script_tag.onreadystatechange = function () {
+					console.log('onreadystatechange', this.readyState)
 					if (this.readyState == 'complete' || this.readyState == 'loaded') {
 						scriptLoaded();
 					}
