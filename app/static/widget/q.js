@@ -19,9 +19,11 @@ console.log(!!window.location.origin && true)
 			- if on our own host or in development, we care to see changes right away, not cache
 	 */
 	var static_domain = 'http://quiz.huffingtonpost.com';
-	/* ie doesn't have window.location.origin - but this is just for using the tool*/
-	if (!!window.location.origin && window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
-		static_domain = domain;
+	if (window.location.origin) { /* ie doesn't have window.location.origin - but this is just for using the tool*/
+		console.log('---------------- 33')
+		if (window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
+			static_domain = domain;
+		}
 	}
 	// TAKE OUT AFTER DEBUGGING
 	static_domain = domain;
