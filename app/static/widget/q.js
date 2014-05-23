@@ -3,8 +3,6 @@
 	This is pure javascript - no jQuery
 
 */
-console.log('******************** 0')
-
 
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
@@ -19,7 +17,8 @@ console.log('******************** 1')
 			- if on our own host or in development, we care to see changes right away, not cache
 	 */
 	var static_domain = 'http://quiz.huffingtonpost.com';
-	if (window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
+	/* ie doesn't have window.location.origin */
+	if (window.location.origin && window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
 		static_domain = domain;
 	}
 
