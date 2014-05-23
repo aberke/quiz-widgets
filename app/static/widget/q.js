@@ -6,7 +6,7 @@
 
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
-console.log('******************** 1')
+console.log('******************** 11111')
 
 	//var domain = 'http://127.0.0.1:8080';
 	var domain = 'http://quizwidget-petri.dotcloud.com';
