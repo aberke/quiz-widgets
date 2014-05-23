@@ -7,6 +7,8 @@
 /* wrap in anonymous function as to not interfere with existing function and variable names */
 (function() {
 console.log('******************** 11111')
+console.log(window.location.origin)
+console.log(!!window.location.origin && true)
 
 	//var domain = 'http://127.0.0.1:8080';
 	var domain = 'http://quizwidget-petri.dotcloud.com';
@@ -18,7 +20,7 @@ console.log('******************** 11111')
 	 */
 	var static_domain = 'http://quiz.huffingtonpost.com';
 	/* ie doesn't have window.location.origin - but this is just for using the tool*/
-	if (window.location.origin && window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
+	if (!!window.location.origin && window.location.origin == domain || window.location.origin.match(new RegExp('http://localhost', 'g'))) {
 		static_domain = domain;
 	}
 	// TAKE OUT AFTER DEBUGGING
