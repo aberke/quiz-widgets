@@ -3,6 +3,15 @@ quiz-widgets
 <img src="http://www.cosgrovecare.org.uk/wp-content/uploads/2013/08/Quiz_button-small.png"
  alt="quiz-widget logo" align="right" />
 
+Quiz Tool live: <http://bit.ly/huffpostlabs-quiz>
+
+* The quiz tool allows anyone to make a mobile-friendly quiz widget.
+	- The Quiz creator is given an embed code after creation to embed on their HTML page
+
+* Scores of Huffpost editors have created quizzes.  Some have gone viral.
+	- Example: <http://www.huffingtonpost.com/2014/04/21/geography-quiz_n_5175289.html>
+
+
 Running Locally
 ---
 
@@ -16,7 +25,7 @@ Running Locally
 	- Need to set the following environment variables to allow signin with twitter:
 		- TWITTER_CONSUMER_KEY 
 		- TWITTER_CONSUMER_SECRET
-		- Use the quiz-widgets twitter app or create a new twitter app to get these keys
+		- Use the HuffpostLabs quiz-widgets twitter app or create a new twitter app to get these keys
 	- May need to toggle ```domain``` within ```app/static/widget/q.js``` between commits to production
 
 

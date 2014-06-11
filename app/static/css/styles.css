@@ -78,10 +78,21 @@ body {
 }
 /* have the labs image magically show only when nav header is hovered */
 
+
 footer {
+	margin-top: 30px;
+	border-top: 5px solid lavender;
 	text-align: center;
-	border-top: 2px solid lavender;
-	padding: 15px;
+	padding: 20px;
+}
+#by-alex {
+	padding: 20px;
+	text-align: right;
+	color: lightcoral;
+	opacity: 0.7;
+	font-weight: bold;
+	margin-top: -60px;
+	display: block;
 }
 
 #mvp {

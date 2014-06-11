@@ -18,6 +18,7 @@
 
 
 var QuizLogic = function(quizData) { // Base Class
+    // TODO: TAKE OUT AND MAKE SURE STILL WORKS
     if (!quizData) { return; } // prevent further execution when just calling for sake of inheritance definition
     
     this.questionList = quizData.questionList;
@@ -63,7 +64,7 @@ var TriviaQuizLogic = function(quizData) {
 }
 // inherit QuizLogic and correct the constructor pointer because it points to QuizLogic
 TriviaQuizLogic.prototype = new QuizLogic();
-TriviaQuizLogic.prototype.constructor = QuizLogic;
+TriviaQuizLogic.prototype.constructor = QuizLogic; // = TriviaQuizLogic
 TriviaQuizLogic.prototype.reset = function() {
     QuizLogic.prototype.reset.call(this);
     this.correct_count = 0;
@@ -120,7 +121,7 @@ var DefaultQuizLogic = function(quizData) {
 }
 // inherit QuizLogic and correct the constructor pointer because it points to QuizLogic
 DefaultQuizLogic.prototype = new QuizLogic();
-DefaultQuizLogic.prototype.constructor = QuizLogic;
+DefaultQuizLogic.prototype.constructor = QuizLogic; // = DefaultQuizLogic
 DefaultQuizLogic.prototype.reset = function() {
     QuizLogic.prototype.reset.call(this);
     this.leadingOutcome = null;
