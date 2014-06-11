@@ -1,6 +1,6 @@
 quiz-widgets
 ============
-<img style="max-width:300px" src="http://quizwidget-petri.dotcloud.com/img/example-quiz-screenshot.png"
+<img style="width:300px" src="http://quizwidget-petri.dotcloud.com/img/example-quiz-screenshot.png"
  alt="quiz-widget logo" align="right" />
 
 Quiz Tool live: <http://bit.ly/huffpostlabs-quiz>
